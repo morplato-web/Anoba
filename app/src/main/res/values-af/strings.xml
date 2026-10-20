@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anoba</string>
+
+    <!-- Roller -->
+    <string name="role_admin">Bestuurder</string>
+    <string name="role_muhtar">Muhtar</string>
+    <string name="role_moderator">Moderator</string>
+    <string name="role_member">Lid</string>
+    <string name="role_guest">Gaste</string>
+
+    <!-- Foutboodskappe -->
+    <string name="error_invalid_email">Ongeldige e-posformaat.</string>
+    <string name="error_wrong_password">Verkeerde wagwoord.</string>
+    <string name="error_user_not_found">Gebruiker nie gevind nie.</string>
+    <string name="error_user_disabled">Hierdie rekening is gedeaktiveer.</string>
+    <string name="error_too_many_requests">Te veel pogings, probeer asseblief later weer.</string>
+    <string name="error_email_already_in_use">Hierdie e-posadres is reeds in gebruik.</string>
+    <string name="error_weak_password">Wagwoord is te swak.</string>
+    <string name="error_network_request_failed">Netwerkverbinding fout.</string>
+    <string name="error_unknown">\'n Onverwagte fout het voorgekom.</string>
+    <string name="error_password_too_short">Wagwoord moet minstens 6 karakters wees.</string>
+    <string name="error_username_short">Gebruikersnaam is te kort.</string>
+    <string name="error_passwords_mismatch">Wagwoorde stem nie ooreen nie.</string>
+    <string name="anonymous">Anoniem</string>
+    <string name="error_comments_loading">Fout tydens laai van kommentaar.</string>
+    <string name="error_comment_send">Kon nie kommentaar stuur nie.</string>
+    <string name="error_login_required">Teken asseblief in om voort te gaan.</string>
+    <string name="error_action_failed">Aksie het misluk.</string>
+    <string name="error_delete_failed">Verwydering het misluk.</string>
+    <string name="error_unauthorized">Jy het nie toestemming vir hierdie aksie nie.</string>
+    <string name="error_member_only_letter">Registreer asseblief om \'n brief te skryf.</string>
+    <string name="error_member_only_reaction">Registreer asseblief om interaksie te hê.</string>
+    <string name="error_letter_not_found">Brief nie gevind nie.</string>
+    <string name="error_letter_loading">Fout tydens laai van brief.</string>
+    <string name="unknown_error">Onbekende fout.</string>
+
+    <!-- UI State Algemene Tekste -->
+    <string name="state_loading">Laai tans&#8230;</string>
+    <string name="state_error_loading">\'n Fout het voorgekom tydens die laai van data.</string>
+    <string name="camera_permission_denied">Kameratoestemming geweier. Laat dit asseblief in instellings toe.</string>
+    <string name="state_no_data">Nog geen boodskappe nie.</string>
+    <string name="state_retry">Probeer Weer</string>
+    <string name="state_transcribing">Transkribeer tans&#8230;</string>
+    <string name="state_loading_more">Laai meer&#8230;</string>
+    <string name="state_load_error">Laai fout. Probeer weer.</string>
+    <string name="chat_search_placeholder">Soek in boodskappe&#8230;</string>
+    <string name="chat_input_placeholder">Tik \'n boodskap&#8230;</string>
+    <string name="chat_search_group_placeholder">Soek in groepboodskappe&#8230;</string>
+    <string name="notification_channel_name">Anoba Boodskappe</string>
+    <string name="notification_default_title">Nuwe Boodskap</string>
+    <string name="notification_permission_denied_rationale">Kennisgewingtoestemming geweier. Jy kan dit in instellings aanskakel om belangrike boodskappe nie te mis nie.</string>
+
+    <!-- Auth & AuthService -->
+    <string name="guest">Gaste</string>
+    <string name="auth_generic_fail">Aksie kon nie uitgevoer word nie.</string>
+    <string name="auth_user_object_null">Sessiefout: Gebruikervoorwerp is leeg.</string>
+    <string name="auth_password_reset_success">Wagwoordterugstel-e-pos is gestuur.</string>
+    <string name="auth_not_logged_in">Teken asseblief eers in.</string>
+    <string name="auth_password_update_success">Wagwoord suksesvol opgedateer.</string>
+    <string name="auth_user_not_found">Gebruiker nie gevind nie.</string>
+    <string name="auth_username_update_success">Naam suksesvol opgedateer.</string>
+    <string name="auth_image_upload_fail">Beeld kon nie gelaai word nie.</string>
+    <string name="auth_profile_photo_update_success">Profielfoto opgedateer.</string>
+    <string name="auth_account_deleted_success">Jou rekening is suksesvol verwyder.</string>
+    <string name="auth_process_completed">Proses suksesvol voltooi.</string>
+
+    <!-- Algemeen -->
+    <string name="cancel">Kanselleer</string>
+    <string name="common_cancel">Kanselleer</string>
+    <string name="delete">Verwyder</string>
+    <string name="common_back">Gaan Terug</string>
+    <string name="common_close">Sluit</string>
+    <string name="common_confirm">OK</string>
+    <string name="common_listen">Luister</string>
+    <string name="common_stop">Stop</string>
+    <string name="common_record">Stoor</string>
+    <string name="common_hide">Versteek</string>
+    <string name="common_just_now">nou net</string>
+    <string name="common_minutes_ago">%d minute gelede</string>
+    <string name="common_hours_ago">%d uur gelede</string>
+    <string name="common_days_ago">%d dae gelede</string>
+    <string name="common_minutes_later">%d minute later</string>
+    <string name="common_hours_later">%d uur later</string>
+    <string name="common_days_later">%d dae later</string>
+    <string name="common_unknown">Onbekend</string>
+    <string name="transcription_ai_report">Hierdie stemboodskap is ontleed deur die plaaslike AI-enjin op jou toestel. Inhoud verwerk in %1$s.</string>
+
+    <!-- Chat & MyContent -->
+    <string name="chathome_uploading_media">Media word gelaai&#8230;</string>
+    <string name="mycontent_guest_warning">Registreer asseblief om inhoud te deel.</string>
+    <string name="mycontent_guide_add">Voeg by Gids (Anoba)</string>
+    <string name="mycontent_guide_remove">Verwyder uit Gids</string>
+    <string name="mycontent_guide_updated">Gidstatus opgedateer.</string>
+    <string name="mycontent_error_loading">Inhoud kon nie gelaai word nie.</string>
+    <string name="mycontent_error_delete">Inhoud kon nie verwyder word nie.</string>
+    <string name="mycontent_error_timeout">Verbinding het verval.</string>
+    <string name="mycontent_published_tab">Gepubliseer</string>
+    <string name="mycontent_drafts_tab">Konsepte</string>
+    <string name="mycontent_back">Terug</string>
+    <string name="follow">Volg</string>
+    <string name="following">Volg tans</string>
+    <string name="feed_explore">Verken</string>
+    <string name="feed_following">Volg tans</string>
+    <string name="feed_following_empty">Jy volg nog niemand nie, of hulle het nog niks deel nie.</string>
+    <string name="feed_following_go_explore">Begin verken</string>
+    <string name="followers">Volgelinge</string>
+    <string name="following_label">Volg tans</string>
+    <string name="mycontent_home">Tuisblad</string>
+    <string name="mycontent_new_video">Nuwe Video</string>
+    <string name="mycontent_new_photo">Nuwe Foto</string>
+    <string name="mycontent_new_audio">Nuwe Klank</string>
+    <string name="mycontent_new_letter">Nuwe Brief</string>
+    <string name="mycontent_from_gallery">Van Galery</string>
+    <string name="mycontent_upload_cancelled">Oplaai gekanselleer.</string>
+    <string name="mycontent_video_preparing">Video word voorberei vir redigering&#8230;</string>
+    <string name="mycontent_content_loading">Inhoud word gelaai&#8230;</string>
+    <string name="mycontent_publish_success">Inhoud suksesvol gepubliseer!</string>
+    <string name="mycontent_unpublish_success">Inhoud is van publikasie verwyder.</string>
+    <string name="mycontent_sheet_published">Gepubliseer</string>
+    <string name="mycontent_sheet_draft">Konsep</string>
+    <string name="mycontent_sheet_views">Kyke</string>
+    <string name="mycontent_sheet_reactions">Interaksie</string>
+    <string name="mycontent_sheet_comments">Kommentaar</string>
+    <string name="mycontent_sheet_open">Oopmaak</string>
+    <string name="mycontent_sheet_unpublish">Verwyder Publikasie</string>
+    <string name="mycontent_sheet_publish">Publiseer</string>
+    <string name="mycontent_sheet_edit">Redigeer</string>
+    <string name="mycontent_sheet_delete">Verwyder</string>
+    <string name="mycontent_card_video_thumb">Video Voorskou</string>
+    <string name="mycontent_card_play_video">Speel Video</string>
+    <string name="mycontent_card_user_photo">Gebruiker Foto</string>
+    <string name="mycontent_card_audio_waveform">Klankgolf</string>
+    <string name="mycontent_delete_dialog_title">Verwyder Inhoud</string>
+    <string name="mycontent_delete_dialog_text">Is jy seker jy wil hierdie inhoud permanent verwyder?</string>
+    <string name="mycontent_delete_dialog_confirm">Ja, Verwyder</string>
+    <string name="mycontent_delete_dialog_cancel">Kanselleer</string>
+    <string name="mycontent_no_published_content">Jy het nog geen gepubliseerde inhoud nie.</string>
+    <string name="mycontent_no_draft_content">Jy het nog geen konsep-inhoud nie.</string>
+
+    <!-- Sohbet (ChatHome & PrivateChat) -->
+    <string name="chathome_messages_deleted_snackbar">%1$d boodskappe verwyder</string>
+    <string name="chathome_undo">Ontdoen</string>
+    <string name="chathome_messages_copied">Boodskappe gekopieer</string>
+    <string name="chathome_file_downloading">LAAI LÊER AF</string>
+    <string name="chathome_download_started">Aflaai het begin&#8230;</string>
+    <string name="chathome_download_failed">Aflaai het misluk.</string>
+    <string name="chathome_edit_message">Redigeer Boodskap</string>
+    <string name="chathome_back">Terug</string>
+    <string name="chathome_home">Tuisblad</string>
+    <string name="chathome_today">Vandag</string>
+    <string name="chathome_yesterday">Gister</string>
+    <string name="chathome_delete_all_messages">Verwyder alle boodskappe</string>
+    <string name="chathome_delete_all_dialog_title">Verwyder Alle Boodskappe</string>
+    <string name="chathome_delete_all_dialog_text">Alle boodskappe in hierdie kamer sal permanent verwyder word. Is jy seker?</string>
+    <string name="chathome_delete">Verwyder</string>
+    <string name="chathome_cancel">Kanselleer</string>
+    <string name="chathome_gallery">Galery</string>
+    <string name="chathome_select_from_gallery">Kies uit Galery</string>
+    <string name="chathome_photo">Foto</string>
+    <string name="chathome_open_camera">Maak Kamera Oop</string>
+    <string name="chathome_photo_description">Foto</string>
+    <string name="chathome_video">Video</string>
+    <string name="chathome_open_video">Neem Video Op</string>
+    <string name="chathome_share_preparing">Deel word voorberei&#8230;</string>
+    <string name="chathome_share_with">Deel met&#8230;</string>
+    <string name="chathome_share_failed">Deel het misluk.</string>
+    <string name="chathome_image_uri_error">Kon nie beeldpad skep nie.</string>
+    <string name="chathome_video_uri_error">Kon nie videopad skep nie.</string>
+    <string name="chathome_anonymous">Anoniem</string>
+    <string name="chathome_background_image_description">Gesprek agtergrond</string>
+    <string name="privatechat_title">Privaat Gesprek</string>
+    <string name="privatechat_no_messages">Nog geen boodskappe met %1$s nie.</string>
+    <string name="privatechat_no_messages_default_user">Geselekteerde Gebruiker</string>
+    <string name="privatechat_no_messages_default_user_with_name">%1$s</string>
+    <string name="privatechat_error">Fout: %1$s</string>
+    <string name="groupitem_private_group">Privaat Groep</string>
+    <string name="groupitem_public_group">Openbare Groep</string>
+    <string name="groupitem_info_content_description">Groepinligting</string>
+    <string name="groupchatlist_add_group">Voeg Groep By</string>
+    <string name="groupchatlist_title">Groepgesprek</string>
+    <string name="groupchatlist_back">Terug</string>
+    <string name="groupchatlist_home">Tuisblad</string>
+    <string name="groupchatlist_hide_list">Versteek Lys</string>
+    <string name="groupchatlist_show_list">Wys Lys</string>
+    <string name="groupchatlist_no_groups">Nog geen groepe nie.</string>
+    <string name="groupchatlist_dialog_create_new_group">Skep Nuwe Groep</string>
+    <string name="groupchatlist_dialog_group_name">Groepnaam</string>
+    <string name="groupchatlist_dialog_group_description">Groepbeskrywing</string>
+    <string name="groupchatlist_dialog_private_group">Privaat Groep?</string>
+    <string name="groupchatlist_dialog_private_group_desc">Slegs genooide lede</string>
+    <string name="groupchatlist_dialog_create">Skep</string>
+    <string name="groupchatlist_dialog_cancel">Kanselleer</string>
+    <string name="groupchatlist_error_name_empty">Groepnaam mag nie leeg wees nie.</string>
+    <string name="groupchatlist_error_no_user">Gebruiker kon nie bepaal word nie.</string>
+    <string name="groupchatlist_success_group_created">Groep suksesvol geskep!</string>
+    <string name="groupchatlist_default_description">Nuwe groep geskep.</string>
+
+    <string name="chat_profile_image">Profielfoto</string>
+    <string name="chat_sent_image">Gestuurde Beeld</string>
+    <string name="chat_play_video">Speel Video</string>
+    <string name="chat_pause">Pouse</string>
+    <string name="chat_play">Speel</string>
+    <string name="chat_message_read">Gelees</string>
+    <string name="chat_message_sent">Gestuur</string>
+    <string name="chat_today">Vandag</string>
+    <string name="chat_me">Jy</string>
+    <string name="chat_typing">Tik tans&#8230;</string>
+
+    <!-- Chat Selection Mode -->
+    <string name="chat_selection_title">%1$d gekies</string>
+    <string name="chat_selection_close">Sluit Seleksie</string>
+    <string name="chat_selection_save_to_gallery">Stoor in Galery</string>
+    <string name="chat_selection_share">Deel</string>
+    <string name="chat_selection_copy">Kopieer</string>
+    <string name="chat_selection_edit">Redigeer</string>
+    <string name="chat_selection_reply">Antwoord</string>
+    <string name="chat_selection_transcribe">Transkribeer</string>
+    <string name="chat_selection_delete">Verwyder</string>
+
+    <!-- HomeScreen -->
+    <string name="home_menu">Spyskaart</string>
+    <string name="home_my_contents">My Inhoud</string>
+    <string name="home_learn_turkish">Leer Turks</string>
+    <string name="home_videos">Video\'s</string>
+    <string name="home_photos">Foto\'s</string>
+    <string name="home_audios">Klanke</string>
+    <string name="home_letters">Briewe</string>
+    <string name="home_chat">Gesprek</string>
+    <string name="home_no_content">Nog geen inhoud nie.</string>
+    <string name="home_share_content">Deel</string>
+    <string name="home_pin_content">Speld vas</string>
+    <string name="home_pinned_filter">My Keuses</string>
+    <string name="tutorial_title_pin">My Keuses</string>
+    <string name="tutorial_desc_pin">Jy kan jou persoonlike voer skep deur inhoud te speld wat jou interesseer.</string>
+    <string name="tutorial_title_following">Mense wat ek volg</string>
+    <string name="tutorial_desc_following">Gebruik hierdie filter om slegs plasings van mense te sien wat jy volg.</string>
+
+    <string name="tutorial_title_quarantine">Karantyn-poel</string>
+    <string name="tutorial_desc_quarantine">U kan inhoud wat nie deur die gemeenskap verlang word nie en in die hersieningsproses geneem is, hier volg.</string>
+
+    <string name="popular_sheet_title">1000+</string>
+    <string name="popular_sheet_subtitle">1000+ interaksies</string>
+    <string name="popular_sheet_empty">Nog geen 1000+ inhoud nie.</string>
+    <string name="popular_owner_title">Gelukwensing! 🏆</string>
+    <string name="popular_owner_message">Jou plasing is op die 1000+ bladsy</string>
+    <string name="popular_reactor_title">Jy deel die sukses! ✨</string>
+    <string name="popular_reactor_message">Inhoud waarop jy gereageer het, is op die 1000+ bladsy</string>
+    <string name="status_in_review">Word hersien</string>
+
+    <string name="quarantine_explanation_forbidden">Die gemeenskap het hierdie inhoud as \'onvanpas / ongeskik\' gemerk.</string>
+    <string name="quarantine_explanation_delete">Die gemeenskap het versoek dat hierdie inhoud \'verwyder\' word.</string>
+    <string name="quarantine_explanation_generic">Inhoud word hersien.</string>
+    <string name="quarantine_footer_note">Die finale hersiening sal deur die Anoba-span gedoen word.</string>
+
+    <string name="tutorial_title_popular">1000+</string>
+    <string name="tutorial_desc_popular">Plasings wat meer as 1000 interaksies in enige emosie oorskry, word hier vertoon.</string>
+    <string name="profilescreen_home">Tuisblad</string>
+    <string name="profilescreen_email">E-pos</string>
+    <string name="profilescreen_user_number">Gebruikernommer</string>
+    <string name="profilescreen_blocked_users">Geblokkeerde Gebruikers</string>
+    <string name="profilescreen_edit_profile">Redigeer Profiel</string>
+
+    <!-- GroupChatScreen specific -->
+    <string name="groupchatscreen_not_logged_in">Jy moet inteken.</string>
+    <string name="groupchatscreen_downloading_file">Lêer word afgelaai&#8230;</string>
+    <string name="groupchatscreen_download_started">Aflaai het begin.</string>
+    <string name="groupchatscreen_download_failed">Aflaai het misluk.</string>
+    <string name="groupchatscreen_share_preparing">Deel word voorberei&#8230;</string>
+    <string name="groupchatscreen_share_with">Deel met&#8230;</string>
+    <string name="groupchatscreen_share_failed">Deel het misluk.</string>
+    <string name="groupchatscreen_image_uri_error">Beeldpad fout.</string>
+    <string name="groupchatscreen_video_uri_error">Videopad fout.</string>
+    <string name="groupchatscreen_title_default">Groepgesprek</string>
+    <string name="groupchatscreen_back">Terug</string>
+    <string name="groupchatscreen_home">Tuisblad</string>
+    <string name="groupchatscreen_typing_one">%1$s tik tans&#8230;</string>
+    <string name="groupchatscreen_typing_two">%1$s en %2$s tik tans&#8230;</string>
+    <string name="groupchatscreen_typing_many">%1$s en ander tik tans&#8230;</string>
+    <string name="groupchatscreen_edit_mode">Redigeermodus</string>
+    <string name="groupchatscreen_cancel_edit">Kanselleer Redigering</string>
+    <string name="groupchatscreen_edit_message_title">Redigeer Boodskap</string>
+
+    <!-- GroupInfo Screen -->
+    <string name="groupinfo_title">Groepinligting</string>
+    <string name="groupinfo_back">Terug</string>
+    <string name="groupinfo_cancel_edit">Kanselleer Redigering</string>
+    <string name="groupinfo_save_changes">Stoor Veranderinge</string>
+    <string name="groupinfo_edit_group">Redigeer Groep</string>
+    <string name="groupinfo_group_profile_image">Groep Profielfoto</string>
+    <string name="groupinfo_change_image">Verander Foto</string>
+    <string name="groupinfo_group_name">Groepnaam</string>
+    <string name="groupinfo_group_description">Groepbeskrywing</string>
+    <string name="groupinfo_mute_group">Demp Groep</string>
+    <string name="groupinfo_is_private">Is dit Privaat?</string>
+    <string name="groupinfo_member_management">Lede</string>
+    <string name="groupinfo_invite_member">Nooi Lid Uit</string>
+    <string name="groupinfo_remove_member">Verwyder Lid</string>
+    <string name="groupinfo_group_settings">Groepinstellings</string>
+    <string name="groupinfo_delete_group_permanently">Verwyder Groep Permanent</string>
+    <string name="groupinfo_leave_group">Verlaat Groep</string>
+    <string name="groupinfo_leave_group_confirm">Is jy seker jy wil hierdie groep verlaat?</string>
+    <string name="groupinfo_dialog_invite_member_title">Nooi Lid Uit</string>
+    <string name="groupinfo_dialog_delete_group_title">Verwyder Groep</string>
+    <string name="groupinfo_dialog_delete_group_text">Is jy seker jy wil hierdie groep verwyder? Hierdie aksie kan nie ongedaan gemaak word nie.</string>
+    <string name="groupinfo_dialog_confirm_delete">Ja, Verwyder</string>
+    <string name="groupinfo_dialog_cancel">Kanselleer</string>
+    <string name="groupinfo_dialog_remove_member_title">Verwyder Lid</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_title">Verwyder Lid</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_text">Verwyder %1$s uit groep?</string>
+
+    <!-- User Selection Dialog -->
+    <string name="userselection_title">Begin Gesprek</string>
+    <string name="userselection_search_placeholder">Soek in kontakte&#8230;</string>
+    <string name="userselection_search_icon">Soek</string>
+    <string name="userselection_start_chat_prompt">Tik om \'n gesprek te begin</string>
+    <string name="userselection_profile_image_description">%1$s se profielfoto</string>
+    <string name="userselection_dialog_search_placeholder">Soek gebruiker&#8230;</string>
+    <string name="userselection_dialog_search_icon">Soek-ikoon</string>
+    <string name="userselection_dialog_clear_search">Maak Soektog Skoon</string>
+    <string name="userselection_dialog_no_results">Geen resultate gevind nie.</string>
+    <string name="userselection_dialog_profile_image_description">%1$s se profielfoto</string>
+    <string name="userselection_dialog_close">Sluit</string>
+
+    <!-- Profil & Drawer -->
+    <string name="drawer_my_profile">My Profiel</string>
+    <string name="drawer_logout">Teken Uit</string>
+    <string name="drawer_logout_dialog_title">Teken Uit</string>
+    <string name="drawer_logout_dialog_text">Is jy seker jy wil uitteken?</string>
+    <string name="drawer_logout_dialog_confirm">Ja</string>
+    <string name="drawer_logout_dialog_dismiss">Nee</string>
+    <string name="drawer_privacy_policy">Privaatheidsbeleid</string>
+    <string name="profilescreen_info_not_available">Profielinligting nie beskikbaar nie.</string>
+    <string name="profilescreen_try_again">Probeer Weer</string>
+    <string name="profilescreen_email_not_specified">E-pos nie gespesifiseer nie</string>
+    <string name="profilescreen_guest_user">Gaste-gebruiker</string>
+    <string name="profilescreen_close_app">Sluit Toepassing</string>
+    <string name="profilescreen_back">Terug</string>
+    <string name="profileedit_title">Redigeer Profiel</string>
+    <string name="profileedit_display_name_label">Vertoonnaam</string>
+    <string name="profileedit_save_changes">Stoor Veranderinge</string>
+    <string name="profileedit_delete_account_and_data">Verwyder Rekening en Data</string>
+    <string name="profileedit_delete_account_confirm_title">Is jy seker?</string>
+    <string name="profileedit_delete_account_confirm_text">Jou rekening sal permanent verwyder word.</string>
+    <string name="profileedit_delete_account_password_label">Wagwoord</string>
+    <string name="profileedit_deleting_process">Verwyder tans&#8230;</string>
+    <string name="profileedit_delete_account_success_toast">Rekening verwyder.</string>
+    <string name="profileedit_delete_account_error_password">Verkeerde wagwoord.</string>
+    <string name="profileedit_enter_password_warning">Voer asseblief jou wagwoord in.</string>
+    <string name="profileedit_delete_permanently">VERWYDER</string>
+    <string name="profileedit_cancel">Kanselleer</string>
+    <string name="profileedit_profile_updated_toast">Profiel opgedateer.</string>
+    <string name="profileedit_photo_updated_toast">Foto opgedateer.</string>
+    <string name="profileedit_name_updated_toast">Naam opgedateer.</string>
+
+    <!-- Video & Kamera -->
+    <string name="video_upload_success">Video suksesvol gelaai ✅</string>
+    <string name="video_upload_error">Fout tydens laai van video ❌</string>
+    <string name="video_uploading">Video word gelaai&#8230;</string>
+    <string name="camera_back">Terug</string>
+    <string name="camera_stop_recording">Stop Opname</string>
+    <string name="camera_start_recording">Begin Opname</string>
+    <string name="camera_preview_pause">Pouse</string>
+    <string name="camera_preview_play">Speel</string>
+    <string name="camera_cancel">Kanselleer</string>
+    <string name="camera_save">Stoor</string>
+    <string name="camera_permission_request_text">Kamera- en oudiotoestemmings word vereis.</string>
+    <string name="camera_permission_request_button">Vra Toestemming</string>
+    <string name="camera_video_title">Video %1$s</string>
+
+    <!-- VideoCard specific -->
+    <string name="videocard_user_profile_image">Gebruiker Profielfoto</string>
+    <string name="videocard_play_video">Speel Video</string>
+    <string name="videocard_view_count">Aantal Kyke</string>
+    <string name="videocard_video_title">Video: %1$s</string>
+    <string name="videocard_comments">Kommentaar</string>
+    <string name="videocard_delete_confirm_title">Verwyder Video</string>
+    <string name="videocard_delete_confirm_text">Is jy seker jy wil hierdie video permanent verwyder?</string>
+    <string name="videocard_delete_confirm_yes">Ja, Verwyder</string>
+    <string name="videocard_delete_confirm_no">Kanselleer</string>
+
+    <!-- VideoDetailScreen specific -->
+    <string name="video_detail_share_chooser_title">Deel video&#8230;</string>
+    <string name="video_detail_share_preparing">Deel word voorberei&#8230;</string>
+    <string name="video_detail_back">Terug</string>
+    <string name="video_detail_share">Deel</string>
+    <string name="videohome_home">Tuisblad</string>
+    <string name="videodetail_play_pause">Speel/Pouse</string>
+    <string name="videodetail_rewind">10s Terug</string>
+    <string name="videodetail_forward">10s Vorentoe</string>
+    <string name="videodetail_unmute">Skakel klank aan</string>
+    <string name="videodetail_mute">Skakel klank af</string>
+    <string name="videodetail_comments_count">%d kommentaar</string>
+    <string name="videodetail_restart">Begin oor</string>
+    <string name="videodetail_playback_speed">Speelspoed</string>
+
+    <!-- VideoEditScreen specific -->
+    <string name="video_edit_title">Redigeer</string>
+    <string name="video_edit_back">Terug</string>
+    <string name="video_edit_error">Fout voorgekom: %1$s</string>
+    <string name="video_edit_success">Suksesvol gestoor.</string>
+    <string name="video_edit_loading">Laai tans&#8230;</string>
+    <string name="video_edit_mute_on">Demp</string>
+    <string name="video_edit_mute_off">Skakel klank aan</string>
+    <string name="video_edit_rotate">Draai</string>
+    <string name="video_edit_apply_and_save">Pas toe en Stoor</string>
+    <string name="video_edit_saving">Stoor tans&#8230;</string>
+    <string name="video_edit_play">Speel</string>
+    <string name="video_edit_processing">Verwerk tans&#8230;</string>
+
+    <!-- VideoCommentsScreen specific -->
+    <string name="videocomments_title">Video Kommentaar</string>
+    <string name="videocomments_back">Terug</string>
+    <string name="videocomments_home">Tuisblad</string>
+    <string name="videocomments_replying_to">Antwoord op %1$s</string>
+    <string name="videocomments_cancel_reply">Kanselleer Antwoord</string>
+    <string name="videocomments_comment_placeholder">Skryf \'n kommentaar&#8230;</string>
+    <string name="videocomments_like">Hou van</string>
+    <string name="videocomments_reply">Antwoord</string>
+    <string name="videocomments_delete">Verwyder</string>
+    <string name="videocomments_no_comments">Nog geen kommentaar nie.</string>
+    <string name="videocomments_profile_image">Profielfoto</string>
+    <string name="videocomments_send">Stuur</string>
+
+    <!-- VideoHomeScreen specific -->
+    <string name="videohome_title">Video\'s</string>
+    <string name="videohome_back">Terug</string>
+    <string name="videohome_no_videos">Nog geen video\'s nie.</string>
+    <string name="videohome_error_duration">Tydsduur kon nie gelaai word nie.</string>
+
+    <!-- Photo Modülü -->
+    <string name="photohome_title">Foto\'s</string>
+    <string name="photohome_back">Terug</string>
+    <string name="photohome_home">Tuisblad</string>
+    <string name="photohome_no_photos">Nog geen foto\'s gelaai nie.</string>
+    <string name="photocreate_title">Voeg Nuwe Foto By</string>
+    <string name="photocreate_cancelled">Fotoneem gekanselleer.</string>
+    <string name="photocreate_file_prepare_error">Kon nie fotolêer voorberei nie.</string>
+    <string name="photocreate_permission_denied">Kameratoestemming geweier.</string>
+    <string name="photocreate_permission_requesting">Kameratoestemming word gevra&#8230;</string>
+    <string name="photocreate_success_toast">Fotokonsep geskep ✅</string>
+    <string name="photocreate_failure_toast">Kon nie foto oplaai nie.</string>
+    <string name="photocreate_uploading_title">Laai tans&#8230;</string>
+    <string name="photocreate_upload_preview">Gelaaide foto voorskou</string>
+    <string name="photocreate_creating_draft">Fotokonsep word geskep&#8230;</string>
+    <string name="photodetail_title">Foto</string>
+    <string name="photodetail_back">Terug</string>
+    <string name="photodetail_share">Deel</string>
+    <string name="photodetail_home">Tuisblad</string>
+    <string name="photodetail_share_chooser_title">Deel foto&#8230;</string>
+    <string name="photodetail_share_preparing">Deel word voorberei&#8230;</string>
+    <string name="photodetail_anonymous">Anoniem</string>
+    <string name="photodetail_photo_description">Foto %1$s</string>
+    <string name="photodetail_view_count">Kyke</string>
+    <string name="photodetail_comment">Kommentaar</string>
+    <string name="photodetail_comments_count">%d kommentaar</string>
+    <string name="photoedit_title">Redigeer Foto</string>
+    <string name="photoedit_back">Terug</string>
+    <string name="photoedit_save">Stoor</string>
+    <string name="photoedit_content_description">Foto om te redigeer</string>
+    <string name="photoedit_title_label">Titel</string>
+    <string name="photoedit_note_label">Nota</string>
+
+    <!-- PhotoCard specific -->
+    <string name="photocard_anonymous">Anoniem</string>
+    <string name="photocard_photo_description">Foto: %1$s</string>
+    <string name="photocard_view_count">Kyke</string>
+    <string name="photocard_comment_count">Kommentaar Aantal</string>
+
+    <!-- PhotoComments specific -->
+    <string name="photocomments_title">Kommentaar</string>
+    <string name="photocomments_replying_to">Antwoord op %1$s</string>
+    <string name="photocomments_error_loading">Kon nie kommentaar laai nie.</string>
+    <string name="photocomments_error_sending">Kon nie kommentaar stuur nie.</string>
+    <string name="photocomments_error_auth_required">Teken asseblief in.</string>
+    <string name="photocomments_error_delete">Kon nie kommentaar verwyder nie.</string>
+    <string name="photocomments_error_no_permission">Jy het nie toestemming om hierdie kommentaar te verwyder nie.</string>
+    <string name="photocomments_comment_placeholder">Skryf \'n kommentaar&#8230;</string>
+    <string name="photocomments_reply">Antwoord</string>
+    <string name="photocomments_delete">Verwyder</string>
+    <string name="photocomments_back">Terug</string>
+    <string name="photocomments_home">Tuisblad</string>
+    <string name="photocomments_cancel_reply">Kanselleer Antwoord</string>
+    <string name="photocomments_send">Stuur</string>
+    <string name="photocomments_no_comments">Nog geen kommentaar nie.</string>
+    <string name="photocomments_profile_image">Profielfoto</string>
+    <string name="photocomments_like">Hou van</string>
+
+    <!-- Letter Module -->
+    <string name="letterhome_title">Briewe</string>
+    <string name="letterhome_back">Terug</string>
+    <string name="letterhome_home">Tuisblad</string>
+    <string name="letterhome_all_letters">Alle Briewe</string>
+    <string name="letterhome_no_letters">Nog geen briewe nie.</string>
+    <string name="lettercreate_title">Nuwe Brief</string>
+    <string name="lettercreate_back">Terug</string>
+    <string name="lettercreate_home">Tuisblad</string>
+    <string name="lettercreate_textfield_placeholder">Skryf \'n nuwe brief&#8230;</string>
+    <string name="lettercreate_discard">Sien af</string>
+    <string name="lettercreate_save">Stoor en Verseël</string>
+    <string name="lettercreate_draft_saved_toast">Konsep gestoor!</string>
+    <string name="lettercreate_draft_failed_toast">Konsep kon nie gestoor word nie.</string>
+    <string name="lettercreate_unlock_date">Datum van Oopmaak: %1$s</string>
+    <string name="lettercreate_time_capsule_option">Maak dit \'n Tydkapsule (Opsioneel)</string>
+    <string name="lettercreate_privacy_dialog_title">Brief-privaatheid</string>
+    <string name="lettercreate_privacy_dialog_text">Wie mag hierdie brief sien?</string>
+    <string name="lettercreate_privacy_dialog_public">Openbaar</string>
+    <string name="lettercreate_privacy_dialog_sealed">Verseël (Privaat)</string>
+    <string name="lettercreate_sealed_draft_saved_toast">Verseëlde konsep gestoor vir %1$s!</string>
+    <string name="lettercreate_recipient_dialog_title">Kies Ontvanger</string>
+    <string name="lettercreate_recipient_dialog_search">Soek Gebruiker</string>
+    <string name="lettercreate_recipient_dialog_cancel">Kanselleer</string>
+    <string name="lettercreate_time_capsule_make">Tydkapsule</string>
+    <string name="lettercreate_time_capsule_label">Tydkapsule</string>
+    <string name="lettercreate_share_public">Deel openbaar</string>
+    <string name="lettercreate_send_sealed">Stuur verseël (Privaat)</string>
+    <string name="lettercreate_datepicker_public">Openbaar</string>
+    <string name="lettercreate_datepicker_sealed">Verseël (Geselekteerde Persoon)</string>
+    <string name="lettercreate_select_date_error">Kies asseblief \'n datum</string>
+    <string name="lettercreate_cancel_action">Kanselleer</string>
+    <string name="letterdetail_title">Brief Besonderhede</string>
+    <string name="letterdetail_sender">Van: %1$s</string>
+    <string name="letterdetail_anonymous_sender">Anoniem</string>
+    <string name="letterdetail_comment">Kommentaar</string>
+    <string name="letterdetail_comments_count">%d kommentaar</string>
+    <string name="letterdetail_close_button">Sluit Brief</string>
+    <string name="letterdetail_video_title">Video: %1$s</string>
+    <string name="letteredit_title">Redigeer Brief</string>
+    <string name="letteredit_back">Terug</string>
+    <string name="letteredit_save">Stoor</string>
+    <string name="letteredit_content_label">Briefinhoud</string>
+    <string name="letteredit_title_label">Titel</string>
+    <string name="letteredit_personal_note_label">Nota</string>
+
+    <string name="letter_ask_anoba_label">Aan: Anoba-suster</string>
+    <string name="letter_ask_anoba_hidden_content">Hierdie briefinhoud is privaat,\nslegs Anoba-suster se antwoord is gepubliseer.</string>
+    <string name="letter_anoba_response_title">Anoba-suster se antwoord</string>
+
+    <string name="lettercreate_anoba_title">Skryf aan Anoba-suster</string>
+    <string name="lettercreate_anoba_desc">Deel jou probleme, laat Anoba vir jou \'n wyse antwoord skryf.</string>
+    <string name="lettercreate_pseudonym_label">Pseudoniem / Bynaam (Bv: Hartseer Voël)</string>
+    <string name="lettercreate_pseudonym_placeholder">Skryf \'n bynaam om jou identiteit te verberg&#8230;</string>
+    <string name="lettercreate_anoba_privacy_public">Almal sien die antwoord</string>
+    <string name="lettercreate_anoba_privacy_private">Slegs ek sien die antwoord</string>
+    <string name="lettercreate_anoba_send">Stuur aan Anoba-suster ✨</string>
+    <string name="lettercreate_pseudonym_error">Skryf asseblief eers \'n pseudoniem.</string>
+    <string name="lettercreate_mode_write">Skryf</string>
+    <string name="lettercreate_mode_speak">Praat</string>
+    <string name="lettercreate_audio_recorded">Klank opgeneem</string>
+    <string name="lettercreate_audio_record_hint">Druk op die knoppie om jou brief op te neem.</string>
+
+    <!-- Audio Edit -->
+    <string name="sesedit_title">Redigeer Klank</string>
+    <string name="sesedit_back">Terug</string>
+    <string name="sesedit_save">Stoor</string>
+    <string name="sesedit_trim_label">Knip Klank</string>
+    <string name="sesedit_title_label">Titel</string>
+    <string name="sesedit_note_label">Nota</string>
+    <string name="sesedit_success">Klank suksesvol opgedateer</string>
+    <string name="sesedit_player_error">Spelerfout: %1$s</string>
+
+    <!-- Letter Comments -->
+    <string name="lettercomments_title">Brief Kommentaar</string>
+    <string name="lettercomments_replying_to">Antwoord op %1$s</string>
+    <string name="lettercomments_comment_placeholder">Skryf \'n kommentaar&#8230;</string>
+    <string name="lettercomments_no_comments">Nog geen kommentaar nie.</string>
+    <string name="lettercomments_reply">Antwoord</string>
+    <string name="lettercomments_delete">Verwyder</string>
+
+    <!-- Letter Card -->
+    <string name="lettercard_sealed_error">Hierdie brief is verseël.</string>
+    <string name="lettercard_time_capsule_msg">Hierdie brief is nog nie oop nie.</string>
+    <string name="lettercard_sender">Van: %1$s</string>
+    <string name="lettercard_recipient">Aan: %1$s</string>
+    <string name="lettercard_time_capsule_label">Tydkapsule</string>
+    <string name="lettercard_sealed_label">Verseëlde Brief</string>
+
+    <!-- Audio Module -->
+    <string name="seshome_title">Klankopnames</string>
+    <string name="seshome_back">Terug</string>
+    <string name="seshome_home">Tuisblad</string>
+    <string name="seshome_no_ses">Nog geen klankopnames nie.</string>
+    <string name="audiorecording_permission_needed">🎙️ Mikrofoontoestemming word vereis</string>
+    <string name="audiorecording_status_loading">Laai tans opname&#8230;</string>
+    <string name="audiorecording_status_recording">Neem tans op&#8230;</string>
+    <string name="audiorecording_status_completed">Opname Voltooi</string>
+    <string name="audiorecording_status_create">Skep Klankopname</string>
+    <string name="audiorecording_start_prompt">Tik op die knoppie om opname te begin</string>
+    <string name="audiorecording_stop_prompt">Tik op die knoppie om opname te stop</string>
+    <string name="audiorecording_success_toast">Klankkonsep geskep!</string>
+    <string name="audiorecording_error_toast">Fout: Kon nie klankkonsep skep nie.</string>
+    <string name="audiorecording_add_to_drafts">Voeg by Konsepte</string>
+    <string name="audiorecording_cancel">Kanselleer</string>
+    <string name="sesdetail_share_chooser_title">Deel klank&#8230;</string>
+    <string name="sesdetail_share_preparing">Deel word voorberei&#8230;</string>
+    <string name="sesdetail_loading">⏳ Laai tans&#8230;</string>
+    <string name="sesdetail_back">Terug</string>
+    <string name="sesdetail_share">Deel</string>
+    <string name="sesdetail_home">Tuisblad</string>
+    <string name="sesdetail_anonymous">Anoniem</string>
+    <string name="sesdetail_stop">Stop</string>
+    <string name="sesdetail_play">Speel</string>
+    <string name="sesdetail_view_count">Aantal Luister</string>
+    <string name="sesdetail_comment">Kommentaar</string>
+    <string name="sesdetail_comments_count">%d kommentaar</string>
+    <string name="sesdetail_transcribe">Skakel om na teks</string>
+    <string name="sesdetail_close_button">Sluit Klank</string>
+    <string name="sescomments_title">Kommentaar</string>
+    <string name="sescomments_back">Terug</string>
+    <string name="sescomments_home">Tuisblad</string>
+    <string name="sescomments_replying_to">Antwoord op %1$s</string>
+    <string name="sescomments_cancel_reply">Kanselleer Antwoord</string>
+    <string name="sescomments_comment_placeholder">Tik jou kommentaar&#8230;</string>
+    <string name="sescomments_send">Stuur</string>
+    <string name="sescomments_no_comments">Nog geen kommentaar nie.</string>
+    <string name="sescomments_profile_image">Profielfoto</string>
+    <string name="sescomments_reply">Antwoord</string>
+    <string name="sescomments_delete">Verwyder</string>
+    <string name="sescomments_retry">Probeer weer</string>
+    <string name="sescomments_like">Hou van</string>
+
+    <!-- SesCard specific -->
+    <string name="sescard_user_profile_image">Gebruiker Profielfoto</string>
+    <string name="sescard_anonymous">Anoniem</string>
+    <string name="sescard_play_audio">Speel Klank</string>
+    <string name="sescard_view_count">Kyke</string>
+    <string name="sescard_comments">Kommentaar</string>
+
+    <string name="reactions_title">Reaksies</string>
+    <string name="reactions_all">Almal</string>
+    <string name="reactions_empty">Nog geen reaksies nie.</string>
+
+    <!-- Emojis -->
+    <string name="emoji_heart_desc">Hart</string>
+    <string name="emoji_laugh_desc">Lag</string>
+    <string name="emoji_thumbs_up_desc">Duim op</string>
+    <string name="emoji_sad_desc">Hartseer</string>
+    <string name="emoji_surprise_desc">Verras</string>
+    <string name="emoji_thinking_desc">Dink</string>
+    <string name="emoji_angry_desc">Kwaad</string>
+    <string name="emoji_fire_desc">Vuur / Legende</string>
+    <string name="emoji_love_desc">Glimlaggende gesig met harte</string>
+    <string name="emoji_neutral_desc">Neutraal / Gemiddeld</string>
+    <string name="emoji_report_desc">Onvanpaste Inhoud</string>
+    <string name="emoji_delete_desc">Versoek om inhoud te verwyder</string>
+    <string name="emoji_reaction_info">%1$s, %2$d reaksies</string>
+
+    <!-- Login UI -->
+    <string name="login_welcome_title">Welkom by Anoba</string>
+    <string name="login_title">Teken In</string>
+    <string name="login_email_label">E-pos</string>
+    <string name="login_password_label">Wagwoord</string>
+    <string name="login_remember_me">Onthou My</string>
+    <string name="login_forgot_password">Wagwoord Vergeet</string>
+    <string name="login_button">Teken In</string>
+    <string name="login_guest_button">Teken in as Gaste</string>
+    <string name="login_no_account">Het jy nie \'n rekening nie? Teken aan</string>
+    <string name="login_go_to_signup">Teken Aan</string>
+    <string name="forgot_password_success">Skakel gestuur.</string>
+    <string name="forgot_password_desc">Voer e-pos in.</string>
+    <string name="forgot_password_button">Stuur</string>
+    <string name="new_password_title">Nuwe Wagwoord</string>
+    <string name="new_password_label">Wagwoord</string>
+    <string name="new_password_button">Dateer op</string>
+    <string name="signup_title">Teken Aan</string>
+    <string name="signup_username_label">Gebruikersnaam</string>
+    <string name="signup_email_label">E-pos</string>
+    <string name="signup_password_label">Wagwoord</string>
+    <string name="signup_confirm_password">Bevestig Wagwoord</string>
+    <string name="signup_button">Voltooi Registrasie</string>
+    <string name="signup_already_have_account">Teken In</string>
+
+    <!-- Guide & Splash -->
+    <string name="guide_title">Anoba Gids</string>
+    <string name="guide_description">Jy kan gedeelde inhoud hier hersien.</string>
+    <string name="guide_empty_message">Nog geen gidsinhoud nie.</string>
+    <string name="splash_made_in_turkiye">Gemaak in Türkiye</string>
+
+    <!-- Update -->
+    <string name="update_downloaded">Opdatering afgelaai. Toepassing word opgedateer&#8230;</string>
+
+    <!-- Mete -->
+    <string name="mete_title">Mete</string>
+    <string name="mete_empty_content">Laai tans&#8230;</string>
+    <string name="mete_video_loading">Video word gelaai&#8230;</string>
+    <string name="mete_audio_loading">Oudio word gelaai&#8230;</string>
+    <string name="mete_game_listen">Luister</string>
+    <string name="mete_game_find_card">Watter een?</string>
+    <string name="mete_game_correct">Fantasties! 🎉</string>
+    <string name="mete_game_continue">GAAN VOORT</string>
+    <string name="mete_game_insufficient_content">Minstens 4 verskillende items word benodig vir die speletjie.\nVoeg asseblief inhoud by of verander taal.</string>
+    <string name="mete_search_placeholder">Soek afdelingsnaam of nommer… (bv. 1)</string>
+    <string name="mete_add_new_section">Voeg Nuwe Afdeling By</string>
+    <string name="mete_section_name_label">Afdelingsnaam of Nommer (bv. 1)</string>
+    <string name="mete_create">Skep</string>
+    <string name="mete_story_fallback_title">Storie / Spotprent</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_title_welcome">Welkom!</string>
+    <string name="tutorial_desc_welcome">Kom ons begin.</string>
+    <string name="tutorial_title_drawer">Spyskaart</string>
+    <string name="tutorial_desc_drawer">Jy kan vanaf hier toegang kry tot jou eie profiel, hulpgids en rekeninginstellings.</string>
+    <string name="tutorial_title_flower">Vir jou</string>
+    <string name="tutorial_desc_flower"> </string>
+    <string name="tutorial_title_special">Beamptes</string>
+    <string name="tutorial_desc_special">Kontroles.</string>
+    <string name="tutorial_title_more_menu">Meer opsies</string>
+    <string name="tutorial_desc_more_menu">⭐ 1000+ Gewild: Verken gewilde inhoud.\n🛡️ Kwarantynpoel: Bekyk inhoud wat hersien word.\n🇹🇷 Mete: Prettige en natuurlike leerervaring.</string>
+    <string name="tutorial_title_search">Gebruikersfilter</string>
+    <string name="tutorial_desc_search">Filtreer inhoud deur die gebruikersnaam of ID in te tik.</string>
+    <string name="tutorial_title_my_contents">My inhoud &amp; konsepte</string>
+    <string name="tutorial_desc_my_contents">Bestuur jou konsepte en gepubliseerde inhoud van hier af.</string>
+    <string name="tutorial_title_create_video">Video</string>
+    <string name="tutorial_desc_create_video">Neem op en Deel.</string>
+    <string name="tutorial_title_create_photo">Foto</string>
+    <string name="tutorial_desc_create_photo">Neem \'n foto.</string>
+    <string name="tutorial_title_create_audio">Oudio</string>
+    <string name="tutorial_desc_create_audio">Neem op.</string>
+    <string name="tutorial_title_create_letter">Skryf</string>
+    <string name="tutorial_desc_create_letter">Briewe.</string>
+    <string name="tutorial_title_gallery">Galery</string>
+    <string name="tutorial_desc_gallery">Laai op.</string>
+    <string name="tutorial_title_map">Anoba Wêreld</string>
+    <string name="tutorial_desc_map">Sien hoeveel inhoud uit elke land gedeel word en volg Anoba-bewegings regoor die wêreld.</string>
+    <string name="tutorial_title_mete">Mete</string>
+    <string name="tutorial_desc_mete">Natuurlike leerervaring met Mete.</string>
+    <string name="tutorial_title_mosaic">Mosaïek</string>
+    <string name="tutorial_desc_mosaic">Verken die kleurvolle wêreld van mosaïek waar verskeie inhoude bymekaar kom.</string>
+    <string name="tutorial_title_tab_videos">Video\'s</string>
+    <string name="tutorial_desc_tab_videos">Kyk.</string>
+    <string name="tutorial_title_tab_photos">Foto\'s</string>
+    <string name="tutorial_desc_tab_photos">Kyk.</string>
+    <string name="tutorial_title_tab_audios">Klanke</string>
+    <string name="tutorial_desc_tab_audios">Luister.</string>
+    <string name="tutorial_title_tab_letters">Briewe</string>
+    <string name="tutorial_desc_tab_letters">Lees geskrewe briewe of luister na stembriewe.</string>
+    <string name="tutorial_title_tab_chats">Gesprekke</string>
+    <string name="tutorial_desc_tab_chats">Stuur boodskappe, sosialiseer, en maak gratis stem-/video-oproepe.</string>
+    <string name="tutorial_title_notifications">Kennisgewings</string>
+    <string name="tutorial_desc_notifications">Volg jou kennisgewings hier.</string>
+
+    <string name="tutorial_next">Vorentoe</string>
+    <string name="tutorial_skip">Sluit</string>
+    <string name="tutorial_finish">Klaar</string>
+
+    <!-- Mosaic -->
+    <string name="mosaic_title">Mosaïek</string>
+    <string name="mosaic_close">Sluit</string>
+    <string name="mosaic_video_loading">Video sal binnekort speel&#8230;</string>
+    <string name="mosaic_audio_label">Oudio</string>
+    <string name="mosaic_video_label">Video</string>
+    <string name="mosaic_ad_label">ADVERTENSIE</string>
+    <string name="mosaic_title_caps">MOSAIC</string>
+    <string name="mosaic_ad_contains">Bevat Advertensies</string>
+    <string name="home_guide_dialog_title">Toepassing Toer</string>
+    <string name="home_guide_dialog_text">Wil jy \'n vinnige toer neem om Anoba te ontdek?</string>
+    <string name="home_guide_dialog_tour">Begin Toer</string>
+    <string name="map_title">Anoba Wêreldkaart</string>
+    <string name="map_content_count">%d Inhoude</string>
+    <string name="country_ae">Verenigde Arabiese Emirate</string>
+    <string name="country_dz">Algerië</string>
+    <string name="country_ma">Marokko</string>
+    <string name="country_za">Suid-Afrika</string>
+    <string name="country_qa">Katar</string>
+    <string name="country_ke">Kenia</string>
+    <string name="country_eg">Egipte</string>
+    <string name="country_ng">Nigerië</string>
+    <string name="country_tn">Tunisië</string>
+    <string name="country_tr">Turkye</string>
+    <string name="country_sa">Saoedi-Arabië</string>
+    <string name="country_om">Oman</string>
+    <string name="country_jo">Jordanië</string>
+    <string name="country_ca">Kanada</string>
+    <string name="country_au">Australië</string>
+    <string name="country_br">Brasilië</string>
+    <string name="country_ar">Argentinië</string>
+    <string name="country_in">Indië</string>
+    <string name="country_jp">Japan</string>
+    <string name="country_kr">Suid-Korea</string>
+    <string name="country_id">Indonesië</string>
+    <string name="country_gb">Verenigde Koninkryk</string>
+    <string name="country_fr">Frankryk</string>
+    <string name="country_es">Spanje</string>
+    <string name="country_nl">Nederland</string>
+    <string name="country_co">Colombia</string>
+    <string name="country_my">Maleisië</string>
+    <string name="country_tm">Turkmenistan</string>
+    <string name="country_other">Ander</string>
+    <string name="country_kg">Kirgistan</string>
+    <string name="country_pk">Pakistan</string>
+    <string name="country_az">Azerbeidjan</string>
+    <string name="country_kz">Kasakstan</string>
+    <string name="country_uz">Oesbekistan</string>
+    <string name="country_hu">Hongarye</string>
+    <string name="country_us">VSA</string>
+    <string name="country_ru">Rusland</string>
+    <string name="country_mx">Mexiko</string>
+    <string name="country_it">Italië</string>
+    <string name="country_de">Duitsland</string>
+
+    <!-- Chat Reply Previews -->
+    <string name="chat_reply_image">[Beeld]</string>
+    <string name="chat_reply_video">[Video]</string>
+    <string name="chat_reply_audio">[Stemboodskap]</string>
+
+    <!-- Amptelike Paneel -->
+    <string name="admin_panel_title">Animasie Paneel</string>
+    <string name="admin_panel_police">🔵 Polisieklopjag</string>
+    <string name="admin_panel_commando">🔴 Kommando-operasie</string>
+    <string name="admin_panel_bekci">🟤 Wagpatrollie</string>
+    <string name="admin_panel_close">Sluit</string>
+
+    <!-- Arama Sistemi -->
+    <string name="call_incoming">Inkomende oproep</string>
+    <string name="call_video_incoming">Inkomende video-oproep&#8230;</string>
+    <string name="call_voice_incoming">Inkomende stemoproep&#8230;</string>
+    <string name="call_accept">Antwoord</string>
+    <string name="call_accept_video">Aanvaar Video</string>
+    <string name="call_reject">Verwerp</string>
+    <string name="call_waiting">Bel tans&#8230;</string>
+    <string name="call_voice_ongoing">In gesprek</string>
+    <string name="call_rejected_by_partner">Oproep Verwerp</string>
+    <string name="call_ended">Oproep Beëindig</string>
+
+    <!-- Arama Erişilebilirlik -->
+    <string name="ax_mute">Demp Klank</string>
+    <string name="ax_end_call">Beëindig Oproep</string>
+    <string name="ax_camera">Kamera Aan/Af</string>
+    <string name="ax_speaker">Luidspreker Aan/Af</string>
+    <string name="ax_switch_camera">Verander Kamera</string>
+
+    <!-- Blokkeerstelsel -->
+    <string name="chat_block_user">Blokkeer Gebruiker</string>
+    <string name="chat_unblock_user">Deblokkeer</string>
+    <string name="chat_block_dialog_title">Blokkeer Gebruiker?</string>
+    <string name="chat_block_dialog_text">Is jy seker jy wil %1$s blokkeer? Julle sal nie vir mekaar boodskappe kan stuur of mekaar kan bel nie.</string>
+    <string name="chat_user_blocked_toast">Gebruiker geblokkeer.</string>
+    <string name="chat_user_unblocked_toast">Blokkering verwyder.</string>
+    <string name="chat_no_blocked_users">Nog geen geblokkeerde gebruikers nie.</string>
+    <string name="chat_request_title">Boodskapversoek</string>
+    <string name="chat_request_desc">%1$s het vir jou \'n boodskap gestuur. Aanvaar jy hierdie gesprek?</string>
+    <string name="chat_request_accept">Aanvaar</string>
+    <string name="chat_request_delete">Verwyder</string>
+    <string name="chat_media_message">Media boodskap</string>
+    <string name="chat_audio_recording">Stem word opgeneem&#8230;</string>
+    <string name="chat_attachment_description">Aanhangsel</string>
+    <string name="chat_recording_failed">Opname kon nie begin nie.</string>
+    <string name="chat_recording_failed_system">Opname kon nie begin nie. Stelsel mag dit blokkeer.</string>
+    <string name="chat_microphone_permission_required">Mikrofoontoestemming is nodig vir stemopname.</string>
+    <string name="chat_search_user_prompt">Soek vir iemand met wie jy wil gesels.</string>
+    <string name="chat_user_not_found">Persoon nie gevind nie.</string>
+    <string name="chat_group_user_added">Het %1$s by die groep gevoeg.</string>
+    <string name="chat_group_user_removed">Het %1$s uit die groep verwyder.</string>
+    <string name="chat_group_user_left">het die groep verlaat.</string>
+    <string name="chat_group_image_update_failed">Kon nie groepbeeld opdateer nie.</string>
+    <string name="chat_group_create_error">Fout tydens skep van groep: %1$s</string>
+    <string name="notification_someone">Iemand</string>
+    <string name="notification_calling_you">%1$s bel jou&#8230;</string>
+    <string name="notification_new_content">Jy het \'n nuwe kennisgewing.</string>
+    <string name="chat_media">Media</string>
+    <string name="chat_options_accessible_name">Gesprek opsies</string>
+
+    <string name="notification_anoba_response_title">Anoba-suster</string>
+    <string name="notification_anoba_response_body">Jou brief is beantwoord! Tik om te lees ✨</string>
+
+    <string name="admin_anoba_panel_button">Anoba-suster Paneel</string>
+
+    <!-- Kennisgewingsentrum (v120) -->
+    <string name="notif_hub_title">Kennisgewings</string>
+    <string name="notif_hub_mark_all_read">Lees Alles</string>
+    <string name="notif_hub_empty">Nog geen nuwe kennisgewings nie.</string>
+    <string name="notif_hub_close">Maak toe</string>
+    <string name="notif_type_popular_owner">Gelukwensing! Jou plasing is op die 1000+ bladsy 🏆</string>
+    <string name="notif_type_popular_reactor">Inhoud waarop jy gereageer het, is op die 1000+ bladsy ✨</string>
+    <string name="notif_type_quarantine_owner">Jou inhoud is vir hersiening geneem 🛡️</string>
+    <string name="notif_type_reporter_quarantine">Inhoud wat jy aangemeld het, is onder kwarentyn geplaas ✅</string>
+    <string name="notif_type_reporter_unflag">Inhoud wat jy aangemeld het, is goedgekeur 🛡️</string>
+    <string name="notif_type_reaction">Het op jou inhoud reageer.</string>
+    <string name="notif_type_comment">Het op jou inhoud kommentaar gelewer.</string>
+    <string name="notif_type_generic">Jy het \'n nuwe kennisgewing ontvang.</string>
+
+    <string name="letteradmin_title">Anoba-suster: Briefpoel</string>
+    <string name="letteradmin_tab_pending">Hangende</string>
+    <string name="letteradmin_tab_answered">Beantwoord</string>
+    <string name="letteradmin_response_label">Anoba-suster se Antwoord:</string>
+    <string name="letteradmin_empty_pending">Geen nuwe briewe wat op \'n antwoord wag nie ✨</string>
+    <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+</resources>

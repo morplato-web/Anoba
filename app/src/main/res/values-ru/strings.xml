@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anoba</string>
+
+    <!-- Roles -->
+    <string name="role_admin">Администратор</string>
+    <string name="role_muhtar">Мухтар</string>
+    <string name="role_moderator">Модератор</string>
+    <string name="role_member">Участник</string>
+    <string name="role_guest">Гость</string>
+
+    <!-- Error Messages -->
+    <string name="error_invalid_email">Неверный формат электронной почты.</string>
+    <string name="error_wrong_password">Неверный пароль.</string>
+    <string name="error_user_not_found">Пользователь не найден.</string>
+    <string name="error_user_disabled">Эта учетная запись отключена.</string>
+    <string name="error_too_many_requests">Слишком много попыток, пожалуйста, попробуйте позже.</string>
+    <string name="error_email_already_in_use">Этот адрес электронной почты уже используется.</string>
+    <string name="error_weak_password">Пароль слишком слабый.</string>
+    <string name="error_network_request_failed">Ошибка сетевого соединения.</string>
+    <string name="error_unknown">Произошла непредвиденная ошибка.</string>
+    <string name="error_password_too_short">Пароль должен содержать не менее 6 символов.</string>
+    <string name="error_username_short">Имя пользователя слишком короткое.</string>
+    <string name="error_passwords_mismatch">Пароли не совпадают.</string>
+    <string name="anonymous">Анонимно</string>
+    <string name="error_comments_loading">Ошибка при загрузке комментариев.</string>
+    <string name="error_comment_send">Не удалось отправить комментарий.</string>
+    <string name="error_login_required">Пожалуйста, войдите, чтобы продолжить.</string>
+    <string name="error_action_failed">Действие не удалось.</string>
+    <string name="error_delete_failed">Удаление не удалось.</string>
+    <string name="error_unauthorized">У вас нет прав на это действие.</string>
+    <string name="error_member_only_letter">Пожалуйста, зарегистрируйтесь, чтобы написать письмо.</string>
+    <string name="error_member_only_reaction">Пожалуйста, зарегистрируйтесь, чтобы взаимодействовать.</string>
+    <string name="error_letter_not_found">Письмо не найдено.</string>
+    <string name="error_letter_loading">Ошибка при загрузке письма.</string>
+    <string name="unknown_error">Неизвестная ошибка.</string>
+
+    <!-- UI State Common Texts -->
+    <string name="state_loading">Загрузка&#8230;</string>
+    <string name="state_error_loading">Произошла ошибка при загрузке данных.</string>
+    <string name="camera_permission_denied">В разрешении камеры отказано. Пожалуйста, разрешите ее в настройках.</string>
+    <string name="state_no_data">Сообщений пока нет.</string>
+    <string name="state_retry">Повторить</string>
+    <string name="state_transcribing">Транскрибация&#8230;</string>
+    <string name="state_loading_more">Загрузка еще&#8230;</string>
+    <string name="state_load_error">Ошибка загрузки. Попробуйте еще раз.</string>
+    <string name="chat_search_placeholder">Поиск сообщений&#8230;</string>
+    <string name="chat_input_placeholder">Введите сообщение&#8230;</string>
+    <string name="chat_search_group_placeholder">Поиск сообщений в группе&#8230;</string>
+    <string name="notification_channel_name">Сообщения Anoba</string>
+    <string name="notification_default_title">Новое сообщение</string>
+    <string name="notification_permission_denied_rationale">В разрешении на уведомления отказано. Вы можете включить их в настройках, чтобы не пропускать важные сообщения.</string>
+
+    <!-- Auth & AuthService -->
+    <string name="guest">Гость</string>
+    <string name="auth_generic_fail">Действие не удалось.</string>
+    <string name="auth_user_object_null">Ошибка сессии: объект пользователя пуст.</string>
+    <string name="auth_password_reset_success">Письмо для сброса пароля отправлено.</string>
+    <string name="auth_not_logged_in">Пожалуйста, сначала войдите в систему.</string>
+    <string name="auth_password_update_success">Пароль успешно обновлен.</string>
+    <string name="auth_user_not_found">Пользователь не найден.</string>
+    <string name="auth_username_update_success">Имя успешно обновлено.</string>
+    <string name="auth_image_upload_fail">Ошибка загрузки изображения.</string>
+    <string name="auth_profile_photo_update_success">Фото профиля обновлено.</string>
+    <string name="auth_account_deleted_success">Ваша учетная запись успешно удалена.</string>
+    <string name="auth_process_completed">Процесс успешно завершен.</string>
+
+    <!-- Common -->
+    <string name="cancel">Отмена</string>
+    <string name="common_cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+    <string name="common_back">Назад</string>
+    <string name="common_close">Закрыть</string>
+    <string name="common_confirm">ОК</string>
+    <string name="common_listen">Слушать</string>
+    <string name="common_stop">Стоп</string>
+    <string name="common_record">Сохранить</string>
+    <string name="common_hide">Скрыть</string>
+    <string name="common_just_now">только что</string>
+    <string name="common_minutes_ago">%d мин. назад</string>
+    <string name="common_hours_ago">%d ч. назад</string>
+    <string name="common_days_ago">%d дн. назад</string>
+    <string name="common_minutes_later">через %d мин.</string>
+    <string name="common_hours_later">через %d ч.</string>
+    <string name="common_days_later">через %d дн.</string>
+    <string name="common_unknown">Неизвестно</string>
+    <string name="transcription_ai_report">Это голосовое сообщение было проанализировано локальным ИИ-движком на вашем устройстве. Содержимое обработано на %1$s языке.</string>
+
+    <!-- Chat & MyContent -->
+    <string name="chathome_uploading_media">Загрузка медиа&#8230;</string>
+    <string name="mycontent_guest_warning">Пожалуйста, зарегистрируйтесь, чтобы делиться контентом.</string>
+    <string name="mycontent_guide_add">Добавить в руководство (Anoba)</string>
+    <string name="mycontent_guide_remove">Удалить из руководства</string>
+    <string name="mycontent_guide_updated">Статус руководства обновлен.</string>
+    <string name="mycontent_error_loading">Контент не удалось загрузить.</string>
+    <string name="mycontent_error_delete">Контент не удалось удалить.</string>
+    <string name="mycontent_error_timeout">Время ожидания соединения истекло.</string>
+    <string name="mycontent_published_tab">Опубликовано</string>
+    <string name="mycontent_drafts_tab">Черновики</string>
+    <string name="mycontent_back">Назад</string>
+    <string name="follow">Подписаться</string>
+    <string name="following">Вы подписаны</string>
+    <string name="feed_explore">Обзор</string>
+    <string name="feed_following">Подписки</string>
+    <string name="feed_following_empty">Вы еще ни на кого не подписаны или они еще ничего не опубликовали.</string>
+    <string name="feed_following_go_explore">Начать обзор</string>
+    <string name="followers">Подписчики</string>
+    <string name="following_label">Подписки</string>
+    <string name="mycontent_home">Главная</string>
+    <string name="mycontent_new_video">Новое видео</string>
+    <string name="mycontent_new_photo">Новое фото</string>
+    <string name="mycontent_new_audio">Новое аудио</string>
+    <string name="mycontent_new_letter">Новое письмо</string>
+    <string name="mycontent_from_gallery">Из галереи</string>
+    <string name="mycontent_upload_cancelled">Загрузка отменена.</string>
+    <string name="mycontent_video_preparing">Подготовка видео к редактированию&#8230;</string>
+    <string name="mycontent_content_loading">Загрузка контента&#8230;</string>
+    <string name="mycontent_publish_success">Контент успешно опубликован!</string>
+    <string name="mycontent_unpublish_success">Контент снят с публикации.</string>
+    <string name="mycontent_sheet_published">Опубликовано</string>
+    <string name="mycontent_sheet_draft">Черновик</string>
+    <string name="mycontent_sheet_views">Просмотры</string>
+    <string name="mycontent_sheet_reactions">Взаимодействия</string>
+    <string name="mycontent_sheet_comments">Комментарии</string>
+    <string name="mycontent_sheet_open">Открыть</string>
+    <string name="mycontent_sheet_unpublish">Снять с публикации</string>
+    <string name="mycontent_sheet_publish">Опубликовать</string>
+    <string name="mycontent_sheet_edit">Редактировать</string>
+    <string name="mycontent_sheet_delete">Удалить</string>
+    <string name="mycontent_card_video_thumb">Предпросмотр видео</string>
+    <string name="mycontent_card_play_video">Воспроизвести видео</string>
+    <string name="mycontent_card_user_photo">Фото пользователя</string>
+    <string name="mycontent_card_audio_waveform">Звуковая волна</string>
+    <string name="mycontent_delete_dialog_title">Удалить контент</string>
+    <string name="mycontent_delete_dialog_text">Вы уверены, что хотите навсегда удалить этот контент?</string>
+    <string name="mycontent_delete_dialog_confirm">Да, удалить</string>
+    <string name="mycontent_delete_dialog_cancel">Отмена</string>
+    <string name="mycontent_no_published_content">У вас пока нет опубликованного контента.</string>
+    <string name="mycontent_no_draft_content">У вас пока нет черновиков.</string>
+
+    <!-- Chat (ChatHome & PrivateChat) -->
+    <string name="chathome_messages_deleted_snackbar">Удалено %1$d сообщений</string>
+    <string name="chathome_undo">Отменить</string>
+    <string name="chathome_messages_copied">Сообщения скопированы</string>
+    <string name="chathome_file_downloading">Загрузка файла</string>
+    <string name="chathome_download_started">Загрузка началась&#8230;</string>
+    <string name="chathome_download_failed">Загрузка не удалась.</string>
+    <string name="chathome_edit_message">Редактировать сообщение</string>
+    <string name="chathome_back">Назад</string>
+    <string name="chathome_home">Главная</string>
+    <string name="chathome_today">Сегодня</string>
+    <string name="chathome_yesterday">Вчера</string>
+    <string name="chathome_delete_all_messages">Удалить все сообщения</string>
+    <string name="chathome_delete_all_dialog_title">Удалить все сообщения</string>
+    <string name="chathome_delete_all_dialog_text">Все сообщения в этой комнате будут удалены навсегда. Вы уверены?</string>
+    <string name="chathome_delete">Удалить</string>
+    <string name="chathome_cancel">Отмена</string>
+    <string name="chathome_gallery">Галерея</string>
+    <string name="chathome_select_from_gallery">Выбрать из галереи</string>
+    <string name="chathome_photo">Фото</string>
+    <string name="chathome_open_camera">Открыть камеру</string>
+    <string name="chathome_photo_description">Фото</string>
+    <string name="chathome_video">Видео</string>
+    <string name="chathome_open_video">Записать видео</string>
+    <string name="chathome_share_preparing">Подготовка к отправке&#8230;</string>
+    <string name="chathome_share_with">Поделиться с&#8230;</string>
+    <string name="chathome_share_failed">Не удалось поделиться.</string>
+    <string name="chathome_image_uri_error">Не удалось создать путь к изображению.</string>
+    <string name="chathome_video_uri_error">Не удалось создать путь к видео.</string>
+    <string name="chathome_anonymous">Анонимно</string>
+    <string name="chathome_background_image_description">Фон чата</string>
+    <string name="privatechat_title">Личный чат</string>
+    <string name="privatechat_no_messages">С %1$s пока нет сообщений.</string>
+    <string name="privatechat_no_messages_default_user">Выбранный пользователь</string>
+    <string name="privatechat_no_messages_default_user_with_name">%1$s</string>
+    <string name="privatechat_error">Ошибка: %1$s</string>
+    <string name="groupitem_private_group">Закрытая группа</string>
+    <string name="groupitem_public_group">Открытая группа</string>
+    <string name="groupitem_info_content_description">Информация о группе</string>
+    <string name="groupchatlist_add_group">Добавить группу</string>
+    <string name="groupchatlist_title">Групповой чат</string>
+    <string name="groupchatlist_back">Назад</string>
+    <string name="groupchatlist_home">Главная</string>
+    <string name="groupchatlist_hide_list">Скрыть список</string>
+    <string name="groupchatlist_show_list">Показать список</string>
+    <string name="groupchatlist_no_groups">Групп пока нет.</string>
+    <string name="groupchatlist_dialog_create_new_group">Создать новую группу</string>
+    <string name="groupchatlist_dialog_group_name">Название группы</string>
+    <string name="groupchatlist_dialog_group_description">Описание группы</string>
+    <string name="groupchatlist_dialog_private_group">Закрытая группа?</string>
+    <string name="groupchatlist_dialog_private_group_desc">Только приглашенные участники</string>
+    <string name="groupchatlist_dialog_create">Создать</string>
+    <string name="groupchatlist_dialog_cancel">Отмена</string>
+    <string name="groupchatlist_error_name_empty">Название группы не может быть пустым.</string>
+    <string name="groupchatlist_error_no_user">Пользователь не определен.</string>
+    <string name="groupchatlist_success_group_created">Группа успешно создана!</string>
+    <string name="groupchatlist_default_description">Создана новая группа.</string>
+
+    <string name="chat_profile_image">Фото профиля</string>
+    <string name="chat_sent_image">Отправленное изображение</string>
+    <string name="chat_play_video">Смотреть видео</string>
+    <string name="chat_pause">Пауза</string>
+    <string name="chat_play">Пуск</string>
+    <string name="chat_message_read">Прочитано</string>
+    <string name="chat_message_sent">Отправлено</string>
+    <string name="chat_today">Сегодня</string>
+    <string name="chat_me">Вы</string>
+    <string name="chat_typing">Пишет&#8230;</string>
+
+    <!-- Chat Selection Mode -->
+    <string name="chat_selection_title">Выбрано: %1$d</string>
+    <string name="chat_selection_close">Закрыть выбор</string>
+    <string name="chat_selection_save_to_gallery">Сохранить в галерею</string>
+    <string name="chat_selection_share">Поделиться</string>
+    <string name="chat_selection_copy">Копировать</string>
+    <string name="chat_selection_edit">Редактировать</string>
+    <string name="chat_selection_reply">Ответить</string>
+    <string name="chat_selection_transcribe">Транскрибировать</string>
+    <string name="chat_selection_delete">Удалить</string>
+
+    <!-- HomeScreen -->
+    <string name="home_menu">Меню</string>
+    <string name="home_my_contents">Мой контент</string>
+    <string name="home_learn_turkish">Учить турецкий</string>
+    <string name="home_videos">Видео</string>
+    <string name="home_photos">Фото</string>
+    <string name="home_audios">Аудио</string>
+    <string name="home_letters">Письма</string>
+    <string name="home_chat">Чат</string>
+    <string name="home_no_content">Контента пока нет.</string>
+    <string name="home_share_content">Поделиться</string>
+    <string name="home_pin_content">Закрепить</string>
+    <string name="home_pinned_filter">Мой выбор</string>
+    <string name="tutorial_title_pin">Мой выбор</string>
+    <string name="tutorial_desc_pin">Вы можете создать свою персональную ленту, закрепляя интересующий вас контент.</string>
+    <string name="tutorial_title_following">Подписки</string>
+    <string name="tutorial_desc_following">Используйте этот фильтр, чтобы видеть публикации только тех людей, на которых вы подписаны.</string>
+
+    <string name="tutorial_title_quarantine">Карантинный пул</string>
+    <string name="tutorial_desc_quarantine">Здесь вы можете отслеживать контент, который нежелателен для сообщества и находится на стадии рассмотрения.</string>
+
+    <string name="popular_sheet_title">1000+</string>
+    <string name="popular_sheet_subtitle">1000+ взаимодействий</string>
+    <string name="popular_sheet_empty">Контента 1000+ пока нет.</string>
+    <string name="popular_owner_title">Поздравляем! 🏆</string>
+    <string name="popular_owner_message">Ваш пост на странице 1000+</string>
+    <string name="popular_reactor_title">Вы разделяете успех! ✨</string>
+    <string name="popular_reactor_message">Контент, на который вы отреагировали, находится на странице 1000+</string>
+    <string name="status_in_review">На проверке</string>
+
+    <string name="quarantine_explanation_forbidden">Сообщество пометило этот контент как \'нежелательный / неподобающий\'.</string>
+    <string name="quarantine_explanation_delete">Сообщество запросило \'удаление\' этого контента.</string>
+    <string name="quarantine_explanation_generic">Контент находится на стадии проверки.</string>
+    <string name="quarantine_footer_note">Окончательная проверка будет проведена командой Anoba.</string>
+
+    <string name="tutorial_title_popular">1000+</string>
+    <string name="tutorial_desc_popular">Здесь отображаются публикации, набравшие более 1000 взаимодействий по любой эмоции.</string>
+    <string name="profilescreen_home">Главная</string>
+    <string name="profilescreen_email">Электронная почта</string>
+    <string name="profilescreen_user_number">Номер пользователя</string>
+    <string name="profilescreen_blocked_users">Заблокированные пользователи</string>
+    <string name="profilescreen_edit_profile">Редактировать профиль</string>
+
+    <!-- GroupChatScreen specific -->
+    <string name="groupchatscreen_not_logged_in">Вы должны войти в систему.</string>
+    <string name="groupchatscreen_downloading_file">Загрузка файла&#8230;</string>
+    <string name="groupchatscreen_download_started">Загрузка началась.</string>
+    <string name="groupchatscreen_download_failed">Загрузка не удалась.</string>
+    <string name="groupchatscreen_share_preparing">Подготовка к отправке&#8230;</string>
+    <string name="groupchatscreen_share_with">Поделиться с&#8230;</string>
+    <string name="groupchatscreen_share_failed">Не удалось поделиться.</string>
+    <string name="groupchatscreen_image_uri_error">Ошибка пути изображения.</string>
+    <string name="groupchatscreen_video_uri_error">Ошибка пути видео.</string>
+    <string name="groupchatscreen_title_default">Групповой чат</string>
+    <string name="groupchatscreen_back">Назад</string>
+    <string name="groupchatscreen_home">Главная</string>
+    <string name="groupchatscreen_typing_one">%1$s пишет&#8230;</string>
+    <string name="groupchatscreen_typing_two">%1$s и %2$s пишут&#8230;</string>
+    <string name="groupchatscreen_typing_many">%1$s и другие пишут&#8230;</string>
+    <string name="groupchatscreen_edit_mode">Режим редактирования</string>
+    <string name="groupchatscreen_cancel_edit">Отменить редактирование</string>
+    <string name="groupchatscreen_edit_message_title">Редактировать сообщение</string>
+
+    <!-- GroupInfo Screen -->
+    <string name="groupinfo_title">Инфо о группе</string>
+    <string name="groupinfo_back">Назад</string>
+    <string name="groupinfo_cancel_edit">Отменить редактирование</string>
+    <string name="groupinfo_save_changes">Сохранить изменения</string>
+    <string name="groupinfo_edit_group">Редактировать группу</string>
+    <string name="groupinfo_group_profile_image">Фото профиля группы</string>
+    <string name="groupinfo_change_image">Изменить фото</string>
+    <string name="groupinfo_group_name">Название группы</string>
+    <string name="groupinfo_group_description">Описание группы</string>
+    <string name="groupinfo_mute_group">Отключить звук группы</string>
+    <string name="groupinfo_is_private">Закрытая?</string>
+    <string name="groupinfo_member_management">Участники</string>
+    <string name="groupinfo_invite_member">Пригласить участника</string>
+    <string name="groupinfo_remove_member">Удалить участника</string>
+    <string name="groupinfo_group_settings">Настройки группы</string>
+    <string name="groupinfo_delete_group_permanently">Удалить группу навсегда</string>
+    <string name="groupinfo_leave_group">Выйти из группы</string>
+    <string name="groupinfo_leave_group_confirm">Вы уверены, что хотите выйти из этой группы?</string>
+    <string name="groupinfo_dialog_invite_member_title">Пригласить участника</string>
+    <string name="groupinfo_dialog_delete_group_title">Удалить группу</string>
+    <string name="groupinfo_dialog_delete_group_text">Вы уверены, что хотите удалить эту группу? Это действие нельзя отменить.</string>
+    <string name="groupinfo_dialog_confirm_delete">Да, удалить</string>
+    <string name="groupinfo_dialog_cancel">Отмена</string>
+    <string name="groupinfo_dialog_remove_member_title">Удалить участника</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_title">Удалить участника</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_text">Удалить %1$s из группы?</string>
+
+    <!-- User Selection Dialog -->
+    <string name="userselection_title">Начать чат</string>
+    <string name="userselection_search_placeholder">Поиск контактов&#8230;</string>
+    <string name="userselection_search_icon">Поиск</string>
+    <string name="userselection_start_chat_prompt">Нажмите, чтобы начать чат</string>
+    <string name="userselection_profile_image_description">Фото профиля %1$s</string>
+    <string name="userselection_dialog_search_placeholder">Поиск пользователя&#8230;</string>
+    <string name="userselection_dialog_search_icon">Иконка поиска</string>
+    <string name="userselection_dialog_clear_search">Очистить поиск</string>
+    <string name="userselection_dialog_no_results">Результатов не найдено.</string>
+    <string name="userselection_dialog_profile_image_description">Фото профиля %1$s</string>
+    <string name="userselection_dialog_close">Закрыть</string>
+
+    <!-- Profile & Drawer -->
+    <string name="drawer_my_profile">Мой профиль</string>
+    <string name="drawer_logout">Выход</string>
+    <string name="drawer_logout_dialog_title">Выход</string>
+    <string name="drawer_logout_dialog_text">Вы уверены, что хотите выйти?</string>
+    <string name="drawer_logout_dialog_confirm">Да</string>
+    <string name="drawer_logout_dialog_dismiss">Нет</string>
+    <string name="drawer_privacy_policy">Политика конфиденциальности</string>
+    <string name="profilescreen_info_not_available">Информация о профиле недоступна.</string>
+    <string name="profilescreen_try_again">Повторить попытку</string>
+    <string name="profilescreen_email_not_specified">Email не указан</string>
+    <string name="profilescreen_guest_user">Гость</string>
+    <string name="profilescreen_close_app">Закрыть приложение</string>
+    <string name="profilescreen_back">Назад</string>
+    <string name="profileedit_title">Редактировать профиль</string>
+    <string name="profileedit_display_name_label">Отображаемое имя</string>
+    <string name="profileedit_save_changes">Сохранить изменения</string>
+    <string name="profileedit_delete_account_and_data">Удалить аккаунт и данные</string>
+    <string name="profileedit_delete_account_confirm_title">Вы уверены?</string>
+    <string name="profileedit_delete_account_confirm_text">Ваш аккаунт будет удален навсегда.</string>
+    <string name="profileedit_delete_account_password_label">Пароль</string>
+    <string name="profileedit_deleting_process">Удаление&#8230;</string>
+    <string name="profileedit_delete_account_success_toast">Аккаунт удален.</string>
+    <string name="profileedit_delete_account_error_password">Неверный пароль.</string>
+    <string name="profileedit_enter_password_warning">Пожалуйста, введите пароль.</string>
+    <string name="profileedit_delete_permanently">УДАЛИТЬ</string>
+    <string name="profileedit_cancel">Отмена</string>
+    <string name="profileedit_profile_updated_toast">Профиль обновлен.</string>
+    <string name="profileedit_photo_updated_toast">Фото обновлено.</string>
+    <string name="profileedit_name_updated_toast">Имя обновлено.</string>
+
+    <!-- Video & Camera Module -->
+    <string name="video_upload_success">Видео успешно загружено ✅</string>
+    <string name="video_upload_error">Ошибка при загрузке видео ❌</string>
+    <string name="video_uploading">Загрузка видео&#8230;</string>
+    <string name="camera_back">Назад</string>
+    <string name="camera_stop_recording">Остановить запись</string>
+    <string name="camera_start_recording">Начать запись</string>
+    <string name="camera_preview_pause">Пауза</string>
+    <string name="camera_preview_play">Пуск</string>
+    <string name="camera_cancel">Отмена</string>
+    <string name="camera_save">Сохранить</string>
+    <string name="camera_permission_request_text">Требуются разрешения на использование камеры и микрофона.</string>
+    <string name="camera_permission_request_button">Запросить разрешения</string>
+    <string name="camera_video_title">Видео %1$s</string>
+
+    <!-- VideoCard specific -->
+    <string name="videocard_user_profile_image">Фото профиля пользователя</string>
+    <string name="videocard_play_video">Смотреть видео</string>
+    <string name="videocard_view_count">Количество просмотров</string>
+    <string name="videocard_video_title">Видео: %1$s</string>
+    <string name="videocard_comments">Комментарии</string>
+    <string name="videocard_delete_confirm_title">Удалить видео</string>
+    <string name="videocard_delete_confirm_text">Вы уверены, что хотите навсегда удалить это видео?</string>
+    <string name="videocard_delete_confirm_yes">Да, удалить</string>
+    <string name="videocard_delete_confirm_no">Отмена</string>
+
+    <!-- VideoDetailScreen specific -->
+    <string name="video_detail_share_chooser_title">Поделиться видео&#8230;</string>
+    <string name="video_detail_share_preparing">Подготовка к отправке&#8230;</string>
+    <string name="video_detail_back">Назад</string>
+    <string name="video_detail_share">Поделиться</string>
+    <string name="videohome_home">Главная</string>
+    <string name="videodetail_play_pause">Пуск/Пауза</string>
+    <string name="videodetail_rewind">Назад 10с</string>
+    <string name="videodetail_forward">Вперед 10с</string>
+    <string name="videodetail_unmute">Включить звук</string>
+    <string name="videodetail_mute">Выключить звук</string>
+    <string name="videodetail_comments_count">%d коммент.</string>
+    <string name="videodetail_restart">Начать сначала</string>
+    <string name="videodetail_playback_speed">Скорость воспроизведения</string>
+
+    <!-- VideoEditScreen specific -->
+    <string name="video_edit_title">Редактировать</string>
+    <string name="video_edit_back">Назад</string>
+    <string name="video_edit_error">Произошла ошибка: %1$s</string>
+    <string name="video_edit_success">Успешно сохранено.</string>
+    <string name="video_edit_loading">Загрузка&#8230;</string>
+    <string name="video_edit_mute_on">Без звука</string>
+    <string name="video_edit_mute_off">Включить звук</string>
+    <string name="video_edit_rotate">Повернуть</string>
+    <string name="video_edit_apply_and_save">Применить и сохранить</string>
+    <string name="video_edit_saving">Сохранение&#8230;</string>
+    <string name="video_edit_play">Пуск</string>
+    <string name="video_edit_processing">Обработка&#8230;</string>
+
+    <!-- VideoCommentsScreen specific -->
+    <string name="videocomments_title">Комментарии к видео</string>
+    <string name="videocomments_back">Назад</string>
+    <string name="videocomments_home">Главная</string>
+    <string name="videocomments_replying_to">Ответ пользователю %1$s</string>
+    <string name="videocomments_cancel_reply">Отменить ответ</string>
+    <string name="videocomments_comment_placeholder">Написать комментарий&#8230;</string>
+    <string name="videocomments_like">Нравится</string>
+    <string name="videocomments_reply">Ответить</string>
+    <string name="videocomments_delete">Удалить</string>
+    <string name="videocomments_no_comments">Комментариев пока нет.</string>
+    <string name="videocomments_profile_image">Фото профиля</string>
+    <string name="videocomments_send">Отправить</string>
+
+    <!-- VideoHomeScreen specific -->
+    <string name="videohome_title">Видео</string>
+    <string name="videohome_back">Назад</string>
+    <string name="videohome_no_videos">Видео пока нет.</string>
+    <string name="videohome_error_duration">Не удалось загрузить длительность.</string>
+
+    <!-- Photo Module -->
+    <string name="photohome_title">Фотографии</string>
+    <string name="photohome_back">Назад</string>
+    <string name="photohome_home">Главная</string>
+    <string name="photohome_no_photos">Фотографии пока не загружены.</string>
+    <string name="photocreate_title">Добавить новое фото</string>
+    <string name="photocreate_cancelled">Съемка отменена.</string>
+    <string name="photocreate_file_prepare_error">Не удалось подготовить файл фото.</string>
+    <string name="photocreate_permission_denied">В разрешении камеры отказано.</string>
+    <string name="photocreate_permission_requesting">Запрос разрешения камеры&#8230;</string>
+    <string name="photocreate_success_toast">Черновик фото создан ✅</string>
+    <string name="photocreate_failure_toast">Не удалось загрузить фото.</string>
+    <string name="photocreate_uploading_title">Загрузка&#8230;</string>
+    <string name="photocreate_upload_preview">Предпросмотр загруженного фото</string>
+    <string name="photocreate_creating_draft">Создание черновика фото&#8230;</string>
+    <string name="photodetail_title">Фото</string>
+    <string name="photodetail_back">Назад</string>
+    <string name="photodetail_share">Поделиться</string>
+    <string name="photodetail_home">Главная</string>
+    <string name="photodetail_share_chooser_title">Поделиться фото&#8230;</string>
+    <string name="photodetail_share_preparing">Подготовка к отправке&#8230;</string>
+    <string name="photodetail_anonymous">Анонимно</string>
+    <string name="photodetail_photo_description">Фото %1$s</string>
+    <string name="photodetail_view_count">Просмотры</string>
+    <string name="photodetail_comment">Комментарий</string>
+    <string name="photodetail_comments_count">%d коммент.</string>
+    <string name="photoedit_title">Редактировать фото</string>
+    <string name="photoedit_back">Назад</string>
+    <string name="photoedit_save">Сохранить</string>
+    <string name="photoedit_content_description">Фото для редактирования</string>
+    <string name="photoedit_title_label">Заголовок</string>
+    <string name="photoedit_note_label">Заметка</string>
+
+    <!-- PhotoCard specific -->
+    <string name="photocard_anonymous">Анонимно</string>
+    <string name="photocard_photo_description">Фото: %1$s</string>
+    <string name="photocard_view_count">Просмотры</string>
+    <string name="photocard_comment_count">Количество комментариев</string>
+
+    <!-- PhotoComments specific -->
+    <string name="photocomments_title">Комментарии</string>
+    <string name="photocomments_replying_to">Ответ пользователю %1$s</string>
+    <string name="photocomments_error_loading">Не удалось загрузить комментарии.</string>
+    <string name="photocomments_error_sending">Не удалось отправить комментарий.</string>
+    <string name="photocomments_error_auth_required">Пожалуйста, войдите.</string>
+    <string name="photocomments_error_delete">Не удалось удалить комментарий.</string>
+    <string name="photocomments_error_no_permission">У вас нет прав для удаления этого комментария.</string>
+    <string name="photocomments_comment_placeholder">Написать комментарий&#8230;</string>
+    <string name="photocomments_reply">Ответить</string>
+    <string name="photocomments_delete">Удалить</string>
+    <string name="photocomments_back">Назад</string>
+    <string name="photocomments_home">Главная</string>
+    <string name="photocomments_cancel_reply">Отменить ответ</string>
+    <string name="photocomments_send">Отправить</string>
+    <string name="photocomments_no_comments">Комментариев пока нет.</string>
+    <string name="photocomments_profile_image">Фото профиля</string>
+    <string name="photocomments_like">Нравится</string>
+
+    <!-- Letter Module -->
+    <string name="letterhome_title">Письма</string>
+    <string name="letterhome_back">Назад</string>
+    <string name="letterhome_home">Главная</string>
+    <string name="letterhome_all_letters">Все письма</string>
+    <string name="letterhome_no_letters">Писем пока нет.</string>
+    <string name="lettercreate_title">Новое письмо</string>
+    <string name="lettercreate_back">Назад</string>
+    <string name="lettercreate_home">Главная</string>
+    <string name="lettercreate_textfield_placeholder">Напишите новое письмо&#8230;</string>
+    <string name="lettercreate_discard">Сбросить</string>
+    <string name="lettercreate_save">Сохранить и запечатать</string>
+    <string name="lettercreate_draft_saved_toast">Черновик сохранен!</string>
+    <string name="lettercreate_draft_failed_toast">Не удалось сохранить черновик.</string>
+    <string name="lettercreate_unlock_date">Дата вскрытия: %1$s</string>
+    <string name="lettercreate_time_capsule_option">Сделать капсулой времени (опционально)</string>
+    <string name="lettercreate_privacy_dialog_title">Конфиденциальность письма</string>
+    <string name="lettercreate_privacy_dialog_text">Кто должен видеть это письмо?</string>
+    <string name="lettercreate_privacy_dialog_public">Публичное</string>
+    <string name="lettercreate_privacy_dialog_sealed">Запечатанное (личное)</string>
+    <string name="lettercreate_sealed_draft_saved_toast">Запечатанный черновик сохранен для %1$s!</string>
+    <string name="lettercreate_recipient_dialog_title">Выберите получателя</string>
+    <string name="lettercreate_recipient_dialog_search">Поиск пользователя</string>
+    <string name="lettercreate_recipient_dialog_cancel">Отмена</string>
+    <string name="lettercreate_time_capsule_make">Капсула времени</string>
+    <string name="lettercreate_time_capsule_label">Капсула времени</string>
+    <string name="lettercreate_share_public">Поделиться публично</string>
+    <string name="lettercreate_send_sealed">Отправить запечатанным (лично)</string>
+    <string name="lettercreate_datepicker_public">Публично</string>
+    <string name="lettercreate_datepicker_sealed">Запечатанное (выбранному лицу)</string>
+    <string name="lettercreate_select_date_error">Пожалуйста, выберите дату</string>
+    <string name="lettercreate_cancel_action">Отмена</string>
+    <string name="letterdetail_title">Детали письма</string>
+    <string name="letterdetail_sender">От: %1$s</string>
+    <string name="letterdetail_anonymous_sender">Анонимно</string>
+    <string name="letterdetail_comment">Комментарий</string>
+    <string name="letterdetail_comments_count">%d коммент.</string>
+    <string name="letterdetail_close_button">Закрыть письмо</string>
+    <string name="letterdetail_video_title">Видео: %1$s</string>
+    <string name="letteredit_title">Редактировать письмо</string>
+    <string name="letteredit_back">Назад</string>
+    <string name="letteredit_save">Сохранить</string>
+    <string name="letteredit_content_label">Текст письма</string>
+    <string name="letteredit_title_label">Заголовок</string>
+    <string name="letteredit_personal_note_label">Заметка</string>
+
+    <string name="letter_ask_anoba_label">Кому: Сестра Аноба</string>
+    <string name="letter_ask_anoba_hidden_content">Содержимое этого письма скрыто,\nопубликован только ответ Сестры Анобы.</string>
+    <string name="letter_anoba_response_title">Ответ Сестры Анобы</string>
+
+    <string name="lettercreate_anoba_title">Написать Сестре Анобе</string>
+    <string name="lettercreate_anoba_desc">Поделитесь своими проблемами, и Аноба напишет вам мудрый ответ.</string>
+    <string name="lettercreate_pseudonym_label">Псевдоним / Никнейм (Напр: Грустная Птица)</string>
+    <string name="lettercreate_pseudonym_placeholder">Введите псевдоним, чтобы скрыть свою личность&#8230;</string>
+    <string name="lettercreate_anoba_privacy_public">Каждый может видеть ответ</string>
+    <string name="lettercreate_anoba_privacy_private">Только я вижу ответ</string>
+    <string name="lettercreate_anoba_send">Отправить Сестре Анобе ✨</string>
+    <string name="lettercreate_pseudonym_error">Пожалуйста, сначала введите псевдоним.</string>
+    <string name="lettercreate_mode_write">Написать</string>
+    <string name="lettercreate_mode_speak">Говорить</string>
+    <string name="lettercreate_audio_recorded">Аудио записано</string>
+    <string name="lettercreate_audio_record_hint">Нажмите кнопку, чтобы записать письмо.</string>
+
+    <!-- Audio Edit -->
+    <string name="sesedit_title">Редактировать аудио</string>
+    <string name="sesedit_back">Назад</string>
+    <string name="sesedit_save">Сохранить</string>
+    <string name="sesedit_trim_label">Обрезать аудио</string>
+    <string name="sesedit_title_label">Заголовок</string>
+    <string name="sesedit_note_label">Заметка</string>
+    <string name="sesedit_success">Аудио успешно обновлено</string>
+    <string name="sesedit_player_error">Ошибка проигрывателя: %1$s</string>
+
+    <!-- Letter Comments -->
+    <string name="lettercomments_title">Комментарии к письму</string>
+    <string name="lettercomments_replying_to">Ответ пользователю %1$s</string>
+    <string name="lettercomments_comment_placeholder">Написать комментарий&#8230;</string>
+    <string name="lettercomments_no_comments">Комментариев пока нет.</string>
+    <string name="lettercomments_reply">Ответить</string>
+    <string name="lettercomments_delete">Удалить</string>
+
+    <!-- Letter Card -->
+    <string name="lettercard_sealed_error">Это письмо запечатано.</string>
+    <string name="lettercard_time_capsule_msg">Это письмо еще не открыто.</string>
+    <string name="lettercard_sender">От: %1$s</string>
+    <string name="lettercard_recipient">Кому: %1$s</string>
+    <string name="lettercard_time_capsule_label">Капсула времени</string>
+    <string name="lettercard_sealed_label">Запечатанное письмо</string>
+
+    <!-- Audio Module -->
+    <string name="seshome_title">Аудиозаписи</string>
+    <string name="seshome_back">Назад</string>
+    <string name="seshome_home">Главная</string>
+    <string name="seshome_no_ses">Аудиозаписей пока нет.</string>
+    <string name="audiorecording_permission_needed">🎙️ Требуется разрешение для микрофона</string>
+    <string name="audiorecording_status_loading">Загрузка записи&#8230;</string>
+    <string name="audiorecording_status_recording">Идет запись&#8230;</string>
+    <string name="audiorecording_status_completed">Запись завершена</string>
+    <string name="audiorecording_status_create">Создать аудиозапись</string>
+    <string name="audiorecording_start_prompt">Нажмите кнопку, чтобы начать запись</string>
+    <string name="audiorecording_stop_prompt">Нажмите кнопку, чтобы остановить запись</string>
+    <string name="audiorecording_success_toast">Черновик аудио создан!</string>
+    <string name="audiorecording_error_toast">Ошибка: не удалось создать черновик аудио.</string>
+    <string name="audiorecording_add_to_drafts">Добавить в черновики</string>
+    <string name="audiorecording_cancel">Отмена</string>
+    <string name="sesdetail_share_chooser_title">Поделиться аудио&#8230;</string>
+    <string name="sesdetail_share_preparing">Подготовка к отправке&#8230;</string>
+    <string name="sesdetail_loading">⏳ Загрузка&#8230;</string>
+    <string name="sesdetail_back">Назад</string>
+    <string name="sesdetail_share">Поделиться</string>
+    <string name="sesdetail_home">Главная</string>
+    <string name="sesdetail_anonymous">Анонимно</string>
+    <string name="sesdetail_stop">Стоп</string>
+    <string name="sesdetail_play">Пуск</string>
+    <string name="sesdetail_view_count">Прослушивания</string>
+    <string name="sesdetail_comment">Комментарий</string>
+    <string name="sesdetail_comments_count">%d коммент.</string>
+    <string name="sesdetail_transcribe">Преобразовать в текст</string>
+    <string name="sesdetail_close_button">Закрыть аудио</string>
+    <string name="sescomments_title">Комментарии</string>
+    <string name="sescomments_back">Назад</string>
+    <string name="sescomments_home">Главная</string>
+    <string name="sescomments_replying_to">Ответ пользователю %1$s</string>
+    <string name="sescomments_cancel_reply">Отменить ответ</string>
+    <string name="sescomments_comment_placeholder">Ваш комментарий&#8230;</string>
+    <string name="sescomments_send">Отправить</string>
+    <string name="sescomments_no_comments">Комментариев пока нет.</string>
+    <string name="sescomments_profile_image">Фото профиля</string>
+    <string name="sescomments_reply">Ответить</string>
+    <string name="sescomments_delete">Удалить</string>
+    <string name="sescomments_retry">Повторить</string>
+    <string name="sescomments_like">Нравится</string>
+
+    <!-- SesCard specific -->
+    <string name="sescard_user_profile_image">Фото профиля пользователя</string>
+    <string name="sescard_anonymous">Анонимно</string>
+    <string name="sescard_play_audio">Прослушать</string>
+    <string name="sescard_view_count">Просмотры</string>
+    <string name="sescard_comments">Комментарии</string>
+
+    <string name="reactions_title">Реакции</string>
+    <string name="reactions_all">Все</string>
+    <string name="reactions_empty">Реакций пока нет.</string>
+
+    <!-- Emojis -->
+    <string name="emoji_heart_desc">Сердце</string>
+    <string name="emoji_laugh_desc">Смех</string>
+    <string name="emoji_thumbs_up_desc">Большой палец вверх</string>
+    <string name="emoji_sad_desc">Грусть</string>
+    <string name="emoji_surprise_desc">Удивление</string>
+    <string name="emoji_thinking_desc">Раздумье</string>
+    <string name="emoji_angry_desc">Злость</string>
+    <string name="emoji_fire_desc">Огонь / Легенда</string>
+    <string name="emoji_love_desc">Влюбленный смайлик</string>
+    <string name="emoji_neutral_desc">Нейтрально / Средне</string>
+    <string name="emoji_report_desc">Неприемлемый контент</string>
+    <string name="emoji_delete_desc">Запрос на удаление</string>
+    <string name="emoji_reaction_info">%1$s, %2$d реакций</string>
+
+    <!-- Login UI -->
+    <string name="login_welcome_title">Добро пожаловать в Anoba</string>
+    <string name="login_title">Вход</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_password_label">Пароль</string>
+    <string name="login_remember_me">Запомнить меня</string>
+    <string name="login_forgot_password">Забыли пароль</string>
+    <string name="login_button">Войти</string>
+    <string name="login_guest_button">Войти как гость</string>
+    <string name="login_no_account">Нет аккаунта? Регистрация</string>
+    <string name="login_go_to_signup">Регистрация</string>
+    <string name="forgot_password_success">Ссылка отправлена.</string>
+    <string name="forgot_password_desc">Введите email.</string>
+    <string name="forgot_password_button">Отправить</string>
+    <string name="new_password_title">Новый пароль</string>
+    <string name="new_password_label">Пароль</string>
+    <string name="new_password_button">Обновить</string>
+    <string name="signup_title">Регистрация</string>
+    <string name="signup_username_label">Имя пользователя</string>
+    <string name="signup_email_label">Email</string>
+    <string name="signup_password_label">Пароль</string>
+    <string name="signup_confirm_password">Подтвердите пароль</string>
+    <string name="signup_button">Завершить регистрацию</string>
+    <string name="signup_already_have_account">Войти</string>
+
+    <!-- Guide & Splash -->
+    <string name="guide_title">Путеводитель Anoba</string>
+    <string name="guide_description">Здесь вы можете просмотреть общий контент.</string>
+    <string name="guide_empty_message">В путеводителе пока нет контента.</string>
+    <string name="splash_made_in_turkiye">Сделано в Турции</string>
+
+    <!-- Update -->
+    <string name="update_downloaded">Обновление загружено. Приложение обновляется&#8230;</string>
+
+    <!-- Mete -->
+    <string name="mete_title">Мете</string>
+    <string name="mete_empty_content">Загрузка&#8230;</string>
+    <string name="mete_video_loading">Видео загружается&#8230;</string>
+    <string name="mete_audio_loading">Аудио загружается&#8230;</string>
+    <string name="mete_game_listen">Слушать</string>
+    <string name="mete_game_find_card">Какой?</string>
+    <string name="mete_game_correct">Отлично! 🎉</string>
+    <string name="mete_game_continue">ПРОДОЛЖИТЬ</string>
+    <string name="mete_game_insufficient_content">Для игры необходимо как минимум 4 различных элемента.\nПожалуйста, добавьте контент или измените язык.</string>
+    <string name="mete_search_placeholder">Поиск по названию или номеру… (Напр: 1)</string>
+    <string name="mete_add_new_section">Создать новый раздел</string>
+    <string name="mete_section_name_label">Название или номер раздела (Напр: 1)</string>
+    <string name="mete_create">Создать</string>
+    <string name="mete_story_fallback_title">История / Мультфильм</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_title_welcome">Добро пожаловать!</string>
+    <string name="tutorial_desc_welcome">Давайте начнем.</string>
+    <string name="tutorial_title_drawer">Меню</string>
+    <string name="tutorial_desc_drawer">Здесь вы можете получить доступ к своему профилю, справочному руководству и настройкам учетной записи.</string>
+    <string name="tutorial_title_flower">Для вас</string>
+    <string name="tutorial_desc_flower"> </string>
+    <string name="tutorial_title_special">Официальные лица</string>
+    <string name="tutorial_desc_special">Управление.</string>
+    <string name="tutorial_title_more_menu">Дополнительные опции</string>
+    <string name="tutorial_desc_more_menu">⭐ 1000+ Популярное: Исследуйте популярный контент.\n🛡️ Карантинный пул: Просмотр контента на проверке.\n🇹🇷 Мете: Увлекательное и естественное обучение.</string>
+    <string name="tutorial_title_search">Фильтр пользователей</string>
+    <string name="tutorial_desc_search">Фильтруйте контент, введя имя пользователя или ID.</string>
+    <string name="tutorial_title_my_contents">Мой контент &amp; черновики</string>
+    <string name="tutorial_desc_my_contents">Управляйте своими черновиками и опубликованным контентом отсюда.</string>
+    <string name="tutorial_title_create_video">Видео</string>
+    <string name="tutorial_desc_create_video">Записывайте и делитесь.</string>
+    <string name="tutorial_title_create_photo">Фото</string>
+    <string name="tutorial_desc_create_photo">Сделайте снимок.</string>
+    <string name="tutorial_title_create_audio">Аудио</string>
+    <string name="tutorial_desc_create_audio">Записывайте.</string>
+    <string name="tutorial_title_create_letter">Пишите</string>
+    <string name="tutorial_desc_create_letter">Письма.</string>
+    <string name="tutorial_title_gallery">Галерея</string>
+    <string name="tutorial_desc_gallery">Загружайте.</string>
+    <string name="tutorial_title_map">Мир Anoba</string>
+    <string name="tutorial_desc_map">Узнайте, сколько контента отправлено из каждой страны, и следите за активностью Anoba по всему миру.</string>
+    <string name="tutorial_title_mete">Мете</string>
+    <string name="tutorial_desc_mete">Естественное обучение с Мете.</string>
+    <string name="tutorial_title_mosaic">Мозаика</string>
+    <string name="tutorial_desc_mosaic">Исследуйте красочный мир мозаики, где собраны самые разные материалы.</string>
+    <string name="tutorial_title_tab_videos">Видео</string>
+    <string name="tutorial_desc_tab_videos">Смотрите.</string>
+    <string name="tutorial_title_tab_photos">Фото</string>
+    <string name="tutorial_desc_tab_photos">Листайте.</string>
+    <string name="tutorial_title_tab_audios">Аудио</string>
+    <string name="tutorial_desc_tab_audios">Слушайте.</string>
+    <string name="tutorial_title_tab_letters">Письма</string>
+    <string name="tutorial_desc_tab_letters">Читайте письма или слушайте голосовые письма.</string>
+    <string name="tutorial_title_tab_chats">Чаты</string>
+    <string name="tutorial_desc_tab_chats">Общайтесь, заводите друзей и совершайте бесплатные голосовые и видеозвонки.</string>
+    <string name="tutorial_title_notifications">Уведомления</string>
+    <string name="tutorial_desc_notifications">Отслеживайте свои уведомления здесь.</string>
+
+    <string name="tutorial_next">Далее</string>
+    <string name="tutorial_skip">Закрыть</string>
+    <string name="tutorial_finish">Готово</string>
+
+    <!-- Mosaic -->
+    <string name="mosaic_title">Мозаика</string>
+    <string name="mosaic_close">Закрыть</string>
+    <string name="mosaic_video_loading">Видео скоро начнется&#8230;</string>
+    <string name="mosaic_audio_label">Аудио</string>
+    <string name="mosaic_video_label">Видео</string>
+    <string name="mosaic_ad_label">РЕКЛАМА</string>
+    <string name="mosaic_title_caps">MOSAIC</string>
+    <string name="mosaic_ad_contains">Содержит рекламу</string>
+    <string name="home_guide_dialog_title">Тур по приложению</string>
+    <string name="home_guide_dialog_text">Хотите совершить краткий тур, чтобы познакомиться с Anoba?</string>
+    <string name="home_guide_dialog_tour">Начать тур</string>
+    <string name="map_title">Карта мира Anoba</string>
+    <string name="map_content_count">%d контента</string>
+    <string name="country_ae">ОАЭ</string>
+    <string name="country_dz">Алжир</string>
+    <string name="country_ma">Марокко</string>
+    <string name="country_za">ЮАР</string>
+    <string name="country_qa">Катар</string>
+    <string name="country_ke">Кения</string>
+    <string name="country_eg">Египет</string>
+    <string name="country_ng">Нигерия</string>
+    <string name="country_tn">Тунис</string>
+    <string name="country_tr">Турция</string>
+    <string name="country_sa">Саудовская Аравия</string>
+    <string name="country_om">Оман</string>
+    <string name="country_jo">Иордания</string>
+    <string name="country_ca">Канада</string>
+    <string name="country_au">Австралия</string>
+    <string name="country_br">Бразилия</string>
+    <string name="country_ar">Аргентина</string>
+    <string name="country_in">Индия</string>
+    <string name="country_jp">Япония</string>
+    <string name="country_kr">Южная Корея</string>
+    <string name="country_id">Индонезия</string>
+    <string name="country_gb">Великобритания</string>
+    <string name="country_fr">Франция</string>
+    <string name="country_es">Испания</string>
+    <string name="country_nl">Нидерланды</string>
+    <string name="country_co">Колумбия</string>
+    <string name="country_my">Малайзия</string>
+    <string name="country_tm">Туркменистан</string>
+    <string name="country_other">Другие</string>
+    <string name="country_kg">Киргизия</string>
+    <string name="country_pk">Пакистан</string>
+    <string name="country_az">Азербайджан</string>
+    <string name="country_kz">Казахстан</string>
+    <string name="country_uz">Узбекистан</string>
+    <string name="country_hu">Венгрия</string>
+    <string name="country_us">США</string>
+    <string name="country_ru">Россия</string>
+    <string name="country_mx">Мексика</string>
+    <string name="country_it">Италия</string>
+    <string name="country_de">Германия</string>
+
+    <!-- Chat Reply Previews -->
+    <string name="chat_reply_image">[Изображение]</string>
+    <string name="chat_reply_video">[Видео]</string>
+    <string name="chat_reply_audio">[Голосовое сообщение]</string>
+
+    <!-- Official Panel -->
+    <string name="admin_panel_title">Панель анимации</string>
+    <string name="admin_panel_police">🔵 Полицейский рейд</string>
+    <string name="admin_panel_commando">🔴 Операция спецназа</string>
+    <string name="admin_panel_bekci">🟤 Патруль охраны</string>
+    <string name="admin_panel_close">Закрыть</string>
+
+    <!-- Arama Sistemi -->
+    <string name="call_incoming">Входящий вызов</string>
+    <string name="call_video_incoming">Входящий видеозвонок&#8230;</string>
+    <string name="call_voice_incoming">Входящий аудиозвонок&#8230;</string>
+    <string name="call_accept">Ответить</string>
+    <string name="call_accept_video">Принять видео</string>
+    <string name="call_reject">Отклонить</string>
+    <string name="call_waiting">Вызов&#8230;</string>
+    <string name="call_voice_ongoing">Разговор</string>
+    <string name="call_rejected_by_partner">Вызов отклонен</string>
+    <string name="call_ended">Звонок завершен</string>
+
+    <!-- Arama Erişilebilirlik -->
+    <string name="ax_mute">Выключить звук</string>
+    <string name="ax_end_call">Завершить звонок</string>
+    <string name="ax_camera">Вкл/Выкл камеру</string>
+    <string name="ax_speaker">Вкл/Выкл динамик</string>
+    <string name="ax_switch_camera">Сменить камеру</string>
+
+    <!-- engelleme sistemi -->
+    <string name="chat_block_user">Заблокировать</string>
+    <string name="chat_unblock_user">Разблокировать</string>
+    <string name="chat_block_dialog_title">Заблокировать пользователя?</string>
+    <string name="chat_block_dialog_text">Вы уверены, что хотите заблокировать %1$s? Вы не сможете переписываться и звонить друг другу.</string>
+    <string name="chat_user_blocked_toast">Пользователь заблокирован.</string>
+    <string name="chat_user_unblocked_toast">Блокировка снята.</string>
+    <string name="chat_no_blocked_users">Заблокированных пользователей пока нет.</string>
+    <string name="chat_request_title">Запрос на переписку</string>
+    <string name="chat_request_desc">%1$s отправил вам сообщение. Принять запрос?</string>
+    <string name="chat_request_accept">Принять</string>
+    <string name="chat_request_delete">Удалить</string>
+    <string name="chat_media_message">Медиасообщение</string>
+    <string name="chat_audio_recording">Запись голоса&#8230;</string>
+    <string name="chat_attachment_description">Вложение</string>
+    <string name="chat_recording_failed">Запись не удалась.</string>
+    <string name="chat_recording_failed_system">Запись не удалась. Система может блокировать ее.</string>
+    <string name="chat_microphone_permission_required">Для записи голоса требуется разрешение на микрофон.</string>
+    <string name="chat_search_user_prompt">Найдите того, с кем хотите пообщаться.</string>
+    <string name="chat_user_not_found">Человек не найден.</string>
+    <string name="chat_group_user_added">Добавил %1$s в группу.</string>
+    <string name="chat_group_user_removed">Удалил %1$s из группы.</string>
+    <string name="chat_group_user_left">покинул группу.</string>
+    <string name="chat_group_image_update_failed">Не удалось обновить изображение группы.</string>
+    <string name="chat_group_create_error">Ошибка при создании группы: %1$s</string>
+    <string name="notification_someone">Кто-то</string>
+    <string name="notification_calling_you">%1$s звонит вам&#8230;</string>
+    <string name="notification_new_content">У вас новое уведомление.</string>
+    <string name="chat_media">Медиа</string>
+    <string name="chat_options_accessible_name">Параметры чата</string>
+
+    <string name="notification_anoba_response_title">Сестра Аноба</string>
+    <string name="notification_anoba_response_body">На ваше письмо ответили! Нажмите, чтобы прочитать ✨</string>
+
+    <string name="admin_anoba_panel_button">Панель Сестры Анобы</string>
+
+    <!-- Центр уведомлений (v120) -->
+    <string name="notif_hub_title">Уведомления</string>
+    <string name="notif_hub_mark_all_read">Прочитать все</string>
+    <string name="notif_hub_empty">Новых уведомлений пока нет.</string>
+    <string name="notif_hub_close">Закрыть</string>
+    <string name="notif_type_popular_owner">Поздравляем! Ваш пост на странице 1000+ 🏆</string>
+    <string name="notif_type_popular_reactor">Контент, на который вы отреагировали, на странице 1000+ ✨</string>
+    <string name="notif_type_quarantine_owner">Ваш контент отправлен на проверку 🛡️</string>
+    <string name="notif_type_reporter_quarantine">Жалоба обработана: контент помещен в карантин ✅</string>
+    <string name="notif_type_reporter_unflag">Жалоба обработана: контент одобрен 🛡️</string>
+    <string name="notif_type_reaction">Отреагировал(а) на ваш контент.</string>
+    <string name="notif_type_comment">Прокомментировал(а) ваш контент.</string>
+    <string name="notif_type_generic">У вас новое уведомление.</string>
+
+    <string name="letteradmin_title">Сестра Аноба: Пул писем</string>
+    <string name="letteradmin_tab_pending">Ожидающие</string>
+    <string name="letteradmin_tab_answered">Отвеченные</string>
+    <string name="letteradmin_response_label">Ответ Сестры Анобы:</string>
+    <string name="letteradmin_empty_pending">Нет новых писем, ожидающих ответа ✨</string>
+    <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+</resources>

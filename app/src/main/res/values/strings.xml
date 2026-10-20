@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Anoba</string>
+
+    <!-- Roller -->
+    <string name="role_admin">Yönetici</string>
+    <string name="role_muhtar">Muhtar</string>
+    <string name="role_moderator">Moderatör</string>
+    <string name="role_member">Üye</string>
+    <string name="role_guest">Misafir</string>
+
+    <!-- Hata Mesajları -->
+    <string name="error_invalid_email">Geçersiz e-posta formatı.</string>
+    <string name="error_wrong_password">Hatalı şifre.</string>
+    <string name="error_user_not_found">Kullanıcı bulunamadı.</string>
+    <string name="error_user_disabled">Bu hesap devre dışı bırakıldı.</string>
+    <string name="error_too_many_requests">Çok fazla deneme, lütfen daha sonra tekrar deneyin.</string>
+    <string name="error_email_already_in_use">Bu e-posta adresi zaten kullanımda.</string>
+    <string name="error_weak_password">Şifre çok zayıf.</string>
+    <string name="error_network_request_failed">Ağ bağlantısı hatası.</string>
+    <string name="error_unknown">Beklenmedik bir hata oluştu.</string>
+    <string name="error_password_too_short">Şifre en az 6 karakter olmalıdır.</string>
+    <string name="error_username_short">Kullanıcı adı çok kısa.</string>
+    <string name="error_passwords_mismatch">Şifreler eşleşmiyor.</string>
+    <string name="anonymous">Anonim</string>
+    <string name="error_comments_loading">Yorumlar yüklenirken hata oluştu.</string>
+    <string name="error_comment_send">Yorum gönderilemedi.</string>
+    <string name="error_login_required">Devam etmek için lütfen giriş yapın.</string>
+    <string name="error_action_failed">İşlem başarısız.</string>
+    <string name="error_delete_failed">Silme işlemi başarısız.</string>
+    <string name="error_unauthorized">Bu işlem için yetkiniz yok.</string>
+    <string name="error_member_only_letter">Mektup yazmak için lütfen kayıt olun.</string>
+    <string name="error_member_only_reaction">Etkileşimde bulunmak için lütfen kayıt olun.</string>
+    <string name="error_letter_not_found">Mektup bulunamadı.</string>
+    <string name="error_letter_loading">Mektup yüklenirken hata oluştu.</string>
+    <string name="unknown_error">Bilinmeyen hata.</string>
+
+    <!-- UI State Ortak Metinler -->
+    <string name="state_loading">Yükleniyor&#8230;</string>
+    <string name="state_error_loading">Veriler yüklenirken bir hata oluştu.</string>
+    <string name="camera_permission_denied">Kamera izni reddedildi. Lütfen ayarlardan izin verin.</string>
+    <string name="state_no_data">Henüz mesaj yok.</string>
+    <string name="state_retry">Tekrar Dene</string>
+    <string name="state_transcribing">Yazıya dökülüyor&#8230;</string>
+    <string name="state_loading_more">Daha fazla yükleniyor&#8230;</string>
+    <string name="state_load_error">Yükleme hatası. Tekrar dene.</string>
+    <string name="chat_search_placeholder">Mesajlarda ara&#8230;</string>
+    <string name="chat_input_placeholder">Mesaj yazın&#8230;</string>
+    <string name="chat_search_group_placeholder">Grup mesajlarında ara&#8230;</string>
+    <string name="notification_channel_name">Anoba Mesajları</string>
+    <string name="notification_default_title">Yeni Mesaj</string>
+    <string name="notification_permission_denied_rationale">Bildirim izni reddedildi. Önemli mesajları kaçırmamak için ayarlardan açabilirsiniz.</string>
+
+    <!-- Auth & AuthService -->
+    <string name="guest">Misafir</string>
+    <string name="auth_generic_fail">İşlem gerçekleştirilemedi.</string>
+    <string name="auth_user_object_null">Oturum hatası: Kullanıcı nesnesi boş.</string>
+    <string name="auth_password_reset_success">Şifre sıfırlama e-postası gönderildi.</string>
+    <string name="auth_not_logged_in">Lütfen önce giriş yapın.</string>
+    <string name="auth_password_update_success">Şifre başarıyla güncellendi.</string>
+    <string name="auth_user_not_found">Kullanıcı bulunamadı.</string>
+    <string name="auth_username_update_success">İsim başarıyla güncellendi.</string>
+    <string name="auth_image_upload_fail">Görsel yüklenemedi.</string>
+    <string name="auth_profile_photo_update_success">Profil fotoğrafı güncellendi.</string>
+    <string name="auth_account_deleted_success">Hesabınız başarıyla silindi.</string>
+    <string name="auth_process_completed">İşlem başarıyla tamamlandı.</string>
+
+    <!-- Ortak -->
+    <string name="cancel">İptal</string>
+    <string name="common_cancel">İptal</string>
+    <string name="delete">Sil</string>
+    <string name="common_back">Geri Dön</string>
+    <string name="common_close">Kapat</string>
+    <string name="common_confirm">Tamam</string>
+    <string name="common_listen">Dinle</string>
+    <string name="common_stop">Durdur</string>
+    <string name="common_record">Kaydet</string>
+    <string name="common_hide">Gizle</string>
+    <string name="common_just_now">az önce</string>
+    <string name="common_minutes_ago">%d dakika önce</string>
+    <string name="common_hours_ago">%d saat önce</string>
+    <string name="common_days_ago">%d gün önce</string>
+    <string name="common_minutes_later">%d dakika sonra</string>
+    <string name="common_hours_later">%d saat sonra</string>
+    <string name="common_days_later">%d gün sonra</string>
+    <string name="common_unknown">Bilinmiyor</string>
+    <string name="transcription_ai_report">Bu sesli mesaj, telefonunuzdaki yerel AI motoru tarafından analiz edildi. İçerik %1$s dilinde işlendi.</string>
+
+    <!-- Chat & MyContent -->
+    <string name="chathome_uploading_media">Medya Yükleniyor&#8230;</string>
+    <string name="mycontent_guest_warning">İçerik paylaşmak için lütfen üye olun.</string>
+    <string name="mycontent_guide_add">Rehber\'e Ekle (Anoba)</string>
+    <string name="mycontent_guide_remove">Rehber\'den Kaldır</string>
+    <string name="mycontent_guide_updated">Rehber durumu güncellendi.</string>
+    <string name="mycontent_error_loading">İçerikler yüklenemedi.</string>
+    <string name="mycontent_error_delete">İçerik silinemedi.</string>
+    <string name="mycontent_error_timeout">Bağlantı zaman aşımına uğradı.</string>
+    <string name="mycontent_published_tab">Yayındakiler</string>
+    <string name="mycontent_drafts_tab">Taslaklar</string>
+    <string name="mycontent_back">Geri</string>
+    <string name="follow">Takip Et</string>
+    <string name="following">Takip Ediliyor</string>
+    <string name="feed_explore">Keşfet</string>
+    <string name="feed_following">Takip</string>
+    <string name="feed_following_empty">Henüz kimseyi takip etmiyorsun veya takip ettiklerin henüz bir şey paylaşmadı.</string>
+    <string name="feed_following_go_explore">Keşfetmeye Başla</string>
+    <string name="followers">Takipçi</string>
+    <string name="following_label">Takip</string>
+    <string name="mycontent_home">Ana Sayfa</string>
+    <string name="mycontent_new_video">Yeni Video</string>
+    <string name="mycontent_new_photo">Yeni Fotoğraf</string>
+    <string name="mycontent_new_audio">Yeni Ses</string>
+    <string name="mycontent_new_letter">Yeni Mektup</string>
+    <string name="mycontent_from_gallery">Galeriden</string>
+    <string name="mycontent_upload_cancelled">Yükleme iptal edildi.</string>
+    <string name="mycontent_video_preparing">Video düzenleme için hazırlanıyor&#8230;</string>
+    <string name="mycontent_content_loading">İçerik yükleniyor&#8230;</string>
+    <string name="mycontent_publish_success">İçerik başarıyla yayınlandı!</string>
+    <string name="mycontent_unpublish_success">İçerik yayından kaldırıldı.</string>
+    <string name="mycontent_sheet_published">Yayında</string>
+    <string name="mycontent_sheet_draft">Taslak</string>
+    <string name="mycontent_sheet_views">İzlenme</string>
+    <string name="mycontent_sheet_reactions">Etkileşim</string>
+    <string name="mycontent_sheet_comments">Yorumlar</string>
+    <string name="mycontent_sheet_open">Aç</string>
+    <string name="mycontent_sheet_unpublish">Yayından Kaldır</string>
+    <string name="mycontent_sheet_publish">Yayınla</string>
+    <string name="mycontent_sheet_edit">Düzenle</string>
+    <string name="mycontent_sheet_delete">Sil</string>
+    <string name="mycontent_card_video_thumb">Video Önizleme</string>
+    <string name="mycontent_card_play_video">Videoyu Oynat</string>
+    <string name="mycontent_card_user_photo">Kullanıcı Fotoğrafı</string>
+    <string name="mycontent_card_audio_waveform">Ses Dalgası</string>
+    <string name="mycontent_delete_dialog_title">İçeriği Sil</string>
+    <string name="mycontent_delete_dialog_text">Bu içeriği kalıcı olarak silmek istediğinizden emin misiniz?</string>
+    <string name="mycontent_delete_dialog_confirm">Evet, Sil</string>
+    <string name="mycontent_delete_dialog_cancel">İptal</string>
+    <string name="mycontent_no_published_content">Henüz yayında bir içeriğiniz yok.</string>
+    <string name="mycontent_no_draft_content">Henüz taslak içeriğiniz yok.</string>
+
+    <!-- Sohbet (ChatHome & PrivateChat) -->
+    <string name="chathome_messages_deleted_snackbar">%1$d mesaj silindi</string>
+    <string name="chathome_undo">Geri Al</string>
+    <string name="chathome_messages_copied">Mesajlar kopyalandı</string>
+    <string name="chathome_file_downloading">Dosya İndiriliyor</string>
+    <string name="chathome_download_started">İndirme başladı&#8230;</string>
+    <string name="chathome_download_failed">İndirme başarısız.</string>
+    <string name="chathome_edit_message">Mesajı Düzenle</string>
+    <string name="chathome_back">Geri</string>
+    <string name="chathome_home">Ana Sayfa</string>
+    <string name="chathome_today">Bugün</string>
+    <string name="chathome_yesterday">Dün</string>
+    <string name="chathome_delete_all_messages">Tüm mesajları sil</string>
+    <string name="chathome_delete_all_dialog_title">Tüm Mesajları Sil</string>
+    <string name="chathome_delete_all_dialog_text">Bu odadaki tüm mesajlar kalıcı olarak silinecek. Emin misiniz?</string>
+    <string name="chathome_delete">Sil</string>
+    <string name="chathome_cancel">İptal</string>
+    <string name="chathome_gallery">Galeri</string>
+    <string name="chathome_select_from_gallery">Galeriden Seç</string>
+    <string name="chathome_photo">Fotoğraf</string>
+    <string name="chathome_open_camera">Kamerayı Aç</string>
+    <string name="chathome_photo_description">Fotoğraf</string>
+    <string name="chathome_video">Video</string>
+    <string name="chathome_open_video">Video Çek</string>
+    <string name="chathome_share_preparing">Paylaşım hazırlanıyor&#8230;</string>
+    <string name="chathome_share_with">Şununla paylaş&#8230;</string>
+    <string name="chathome_share_failed">Paylaşım başarısız.</string>
+    <string name="chathome_image_uri_error">Görsel yolu oluşturulamadı.</string>
+    <string name="chathome_video_uri_error">Video yolu oluşturulamadı.</string>
+    <string name="chathome_anonymous">Anonim</string>
+    <string name="chathome_background_image_description">Sohbet arka planı</string>
+    <string name="privatechat_title">Özel Sohbet</string>
+    <string name="privatechat_no_messages">%1$s ile henüz mesajınız yok.</string>
+    <string name="privatechat_no_messages_default_user">Seçilen Kullanıcı</string>
+    <string name="privatechat_no_messages_default_user_with_name">%1$s</string>
+    <string name="privatechat_error">Hata: %1$s</string>
+    <string name="groupitem_private_group">Gizli Grup</string>
+    <string name="groupitem_public_group">Açık Grup</string>
+    <string name="groupitem_info_content_description">Grup Bilgisi</string>
+    <string name="groupchatlist_add_group">Grup Ekle</string>
+    <string name="groupchatlist_title">Grup Sohbeti</string>
+    <string name="groupchatlist_back">Geri</string>
+    <string name="groupchatlist_home">Ana Sayfa</string>
+    <string name="groupchatlist_hide_list">Listeyi Gizle</string>
+    <string name="groupchatlist_show_list">Listeyi Göster</string>
+    <string name="groupchatlist_no_groups">Henüz grup yok.</string>
+    <string name="groupchatlist_dialog_create_new_group">Yeni Grup Oluştur</string>
+    <string name="groupchatlist_dialog_group_name">Grup Adı</string>
+    <string name="groupchatlist_dialog_group_description">Grup Açıklaması</string>
+    <string name="groupchatlist_dialog_private_group">Gizli Grup mu?</string>
+    <string name="groupchatlist_dialog_private_group_desc">Sadece davetliler</string>
+    <string name="groupchatlist_dialog_create">Oluştur</string>
+    <string name="groupchatlist_dialog_cancel">İptal</string>
+    <string name="groupchatlist_error_name_empty">Grup adı boş olamaz.</string>
+    <string name="groupchatlist_error_no_user">Kullanıcı belirlenemedi.</string>
+    <string name="groupchatlist_success_group_created">Grup başarıyla oluşturuldu!</string>
+    <string name="groupchatlist_default_description">Yeni grup oluşturuldu.</string>
+
+    <string name="chat_profile_image">Profil Resmi</string>
+    <string name="chat_sent_image">Gönderilen Resim</string>
+    <string name="chat_play_video">Videoyu Oynat</string>
+    <string name="chat_pause">Duraklat</string>
+    <string name="chat_play">Oynat</string>
+    <string name="chat_message_read">Okundu</string>
+    <string name="chat_message_sent">Gönderildi</string>
+    <string name="chat_today">Bugün</string>
+    <string name="chat_me">Siz</string>
+    <string name="chat_typing">Yazıyor&#8230;</string>
+
+    <!-- Sohbet Seçim Modu -->
+    <string name="chat_selection_title">%1$d seçildi</string>
+    <string name="chat_selection_close">Seçimi Kapat</string>
+    <string name="chat_selection_save_to_gallery">Galeriye Kaydet</string>
+    <string name="chat_selection_share">Paylaş</string>
+    <string name="chat_selection_copy">Kopyala</string>
+    <string name="chat_selection_edit">Düzenle</string>
+    <string name="chat_selection_reply">Yanıtla</string>
+    <string name="chat_selection_transcribe">Yazıya Dök</string>
+    <string name="chat_selection_delete">Sil</string>
+
+    <!-- HomeScreen -->
+    <string name="home_menu">Menü</string>
+    <string name="home_my_contents">İçeriklerim</string>
+    <string name="home_learn_turkish">Türkçe Öğren</string>
+    <string name="home_videos">Videolar</string>
+    <string name="home_photos">Fotoğraflar</string>
+    <string name="home_audios">Sesler</string>
+    <string name="home_letters">Mektuplar</string>
+    <string name="home_chat">Sohbet</string>
+    <string name="home_no_content">Henüz içerik yok.</string>
+    <string name="home_share_content">Paylaş</string>
+    <string name="home_pin_content">İğnele</string>
+    <string name="home_pinned_filter">Seçtiklerim</string>
+    <string name="tutorial_title_pin">Seçtiklerim</string>
+    <string name="tutorial_desc_pin">İlginizi çeken içerikleri iğneleyerek kendinize özel bir akış oluşturabilirsiniz.</string>
+    <string name="tutorial_title_following">Takip Ettiklerim</string>
+    <string name="tutorial_desc_following">Sadece takip ettiğiniz kişilerin paylaşımlarını görmek için bu filtreyi kullanabilirsiniz.</string>
+
+    <string name="tutorial_title_quarantine">Karantina Havuzu</string>
+    <string name="tutorial_desc_quarantine">Topluluk tarafından istenmeyen ve inceleme sürecine alınan içerikleri buradan takip edebilirsiniz.</string>
+
+    <string name="tutorial_title_popular">1000+</string>
+    <string name="tutorial_desc_popular">Herhangi bir duyguda 1000 etkileşimi aşan paylaşımlar burada sergilenir.</string>
+
+    <string name="popular_sheet_title">1000+</string>
+    <string name="popular_sheet_subtitle">1000+ etkileşim</string>
+    <string name="popular_sheet_empty">Henüz 1000+ içerik yok.</string>
+    <string name="popular_owner_title">Tebrikler! 🏆</string>
+    <string name="popular_owner_message">Paylaşımınız 1000+ sayfasında</string>
+    <string name="popular_reactor_title">Başarıya ortaksınız! ✨</string>
+    <string name="popular_reactor_message">Tepki verdiğiniz içerik 1000+ sayfasında</string>
+    <string name="status_in_review">İncelemede</string>
+
+    <string name="quarantine_explanation_forbidden">Topluluk bu içeriği \'Sakıncalı / Uygunsuz\' olarak işaretledi.</string>
+    <string name="quarantine_explanation_delete">Topluluk bu içeriğin \'Kaldırılmasını\' talep etti.</string>
+    <string name="quarantine_explanation_generic">İçerik inceleme aşamasındadır.</string>
+    <string name="quarantine_footer_note">Anoba ekibi tarafından son inceleme yapılacaktır.</string>
+
+    <!-- ProfileScreen -->
+    <string name="profilescreen_home">Ana Sayfa</string>
+    <string name="profilescreen_email">E-posta</string>
+    <string name="profilescreen_user_number">Kullanıcı Numarası</string>
+    <string name="profilescreen_blocked_users">Engellenen Kullanıcılar</string>
+    <string name="profilescreen_edit_profile">Profili Düzenle</string>
+
+    <!-- GroupChatScreen -->
+    <string name="groupchatscreen_not_logged_in">Giriş yapmalısınız.</string>
+    <string name="groupchatscreen_downloading_file">Dosya indiriliyor&#8230;</string>
+    <string name="groupchatscreen_download_started">İndirme başladı.</string>
+    <string name="groupchatscreen_download_failed">İndirme başarısız.</string>
+    <string name="groupchatscreen_share_preparing">Paylaşım hazırlanıyor&#8230;</string>
+    <string name="groupchatscreen_share_with">Şununla paylaş&#8230;</string>
+    <string name="groupchatscreen_share_failed">Paylaşım başarısız.</string>
+    <string name="groupchatscreen_image_uri_error">Resim yolu hatası.</string>
+    <string name="groupchatscreen_video_uri_error">Video yolu hatası.</string>
+    <string name="groupchatscreen_title_default">Grup Sohbeti</string>
+    <string name="groupchatscreen_back">Geri</string>
+    <string name="groupchatscreen_home">Ana Sayfa</string>
+    <string name="groupchatscreen_typing_one">%1$s yazıyor&#8230;</string>
+    <string name="groupchatscreen_typing_two">%1$s ve %2$s yazıyor&#8230;</string>
+    <string name="groupchatscreen_typing_many">%1$s ve diğerleri yazıyor&#8230;</string>
+    <string name="groupchatscreen_edit_mode">Düzenleme Modu</string>
+    <string name="groupchatscreen_cancel_edit">Düzenlemeyi İptal Et</string>
+    <string name="groupchatscreen_edit_message_title">Mesajı Düzenle</string>
+
+    <!-- GroupInfo Screen -->
+    <string name="groupinfo_title">Grup Bilgisi</string>
+    <string name="groupinfo_back">Geri</string>
+    <string name="groupinfo_cancel_edit">İptal</string>
+    <string name="groupinfo_save_changes">Değişiklikleri Kaydet</string>
+    <string name="groupinfo_edit_group">Grubu Düzenle</string>
+    <string name="groupinfo_group_profile_image">Grup Profil Resmi</string>
+    <string name="groupinfo_change_image">Resmi Değiştir</string>
+    <string name="groupinfo_group_name">Grup Adı</string>
+    <string name="groupinfo_group_description">Grup Açıklaması</string>
+    <string name="groupinfo_mute_group">Grubu Sessize Al</string>
+    <string name="groupinfo_is_private">Gizli mi?</string>
+    <string name="groupinfo_member_management">Üyeler</string>
+    <string name="groupinfo_invite_member">Üye Davet Et</string>
+    <string name="groupinfo_remove_member">Üyeyi Çıkar</string>
+    <string name="groupinfo_group_settings">Grup Ayarları</string>
+    <string name="groupinfo_delete_group_permanently">Grubu Kalıcı Olarak Sil</string>
+    <string name="groupinfo_leave_group">Gruptan Ayrıl</string>
+    <string name="groupinfo_leave_group_confirm">Bu gruptan ayrılmak istediğinizden emin misiniz?</string>
+    <string name="groupinfo_dialog_invite_member_title">Üye Davet Et</string>
+    <string name="groupinfo_dialog_delete_group_title">Grubu Sil</string>
+    <string name="groupinfo_dialog_delete_group_text">Bu grubu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</string>
+    <string name="groupinfo_dialog_confirm_delete">Evet, Sil</string>
+    <string name="groupinfo_dialog_cancel">İptal</string>
+    <string name="groupinfo_dialog_remove_member_title">Üyeyi Çıkar</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_title">Üyeyi Çıkar</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_text">%1$s gruptan çıkarılsın mı?</string>
+
+    <!-- User Selection Dialog -->
+    <string name="userselection_title">Sohbet Başlat</string>
+    <string name="userselection_search_placeholder">Kişilerde ara&#8230;</string>
+    <string name="userselection_search_icon">Ara</string>
+    <string name="userselection_start_chat_prompt">Sohbet başlatmak için dokunun</string>
+    <string name="userselection_profile_image_description">%1$s profil resmi</string>
+    <string name="userselection_dialog_search_placeholder">Kullanıcı ara&#8230;</string>
+    <string name="userselection_dialog_search_icon">Arama İkonu</string>
+    <string name="userselection_dialog_clear_search">Aramayı Temizle</string>
+    <string name="userselection_dialog_no_results">Sonuç bulunamadı.</string>
+    <string name="userselection_dialog_profile_image_description">%1$s profil resmi</string>
+    <string name="userselection_dialog_close">Kapat</string>
+
+    <!-- Profil & Drawer -->
+    <string name="drawer_my_profile">Profilim</string>
+    <string name="drawer_logout">Çıkış Yap</string>
+    <string name="drawer_logout_dialog_title">Çıkış Yap</string>
+    <string name="drawer_logout_dialog_text">Çıkış yapmak istediğinizden emin misiniz?</string>
+    <string name="drawer_logout_dialog_confirm">Evet</string>
+    <string name="drawer_logout_dialog_dismiss">Hayır</string>
+    <string name="drawer_privacy_policy">Gizlilik Politikası</string>
+    <string name="profilescreen_info_not_available">Profil bilgisi mevcut değil.</string>
+    <string name="profilescreen_try_again">Tekrar Dene</string>
+    <string name="profilescreen_email_not_specified">E-posta belirtilmemiş</string>
+    <string name="profilescreen_guest_user">Misafir Kullanıcı</string>
+    <string name="profilescreen_close_app">Uygulamayı Kapat</string>
+    <string name="profilescreen_back">Geri</string>
+    <string name="profileedit_title">Profili Düzenle</string>
+    <string name="profileedit_display_name_label">Görünen Ad</string>
+    <string name="profileedit_save_changes">Değişiklikleri Kaydet</string>
+    <string name="profileedit_delete_account_and_data">Hesabı ve Verileri Sil</string>
+    <string name="profileedit_delete_account_confirm_title">Emin misiniz?</string>
+    <string name="profileedit_delete_account_confirm_text">Hesabınız tamamen silinecektir.</string>
+    <string name="profileedit_delete_account_password_label">Şifre</string>
+    <string name="profileedit_deleting_process">Siliniyor&#8230;</string>
+    <string name="profileedit_delete_account_success_toast">Hesap silindi.</string>
+    <string name="profileedit_delete_account_error_password">Hatalı şifre.</string>
+    <string name="profileedit_enter_password_warning">Lütfen şifrenizi girin.</string>
+    <string name="profileedit_delete_permanently">SİL</string>
+    <string name="profileedit_cancel">İptal</string>
+    <string name="profileedit_profile_updated_toast">Profil güncellendi.</string>
+    <string name="profileedit_photo_updated_toast">Fotoğraf güncellendi.</string>
+    <string name="profileedit_name_updated_toast">İsim güncellendi.</string>
+
+    <!-- Video & Kamera -->
+    <string name="video_upload_success">Video başarıyla yüklendi ✅</string>
+    <string name="video_upload_error">Video yüklenirken hata oluştu ❌</string>
+    <string name="video_uploading">Video yükleniyor&#8230;</string>
+    <string name="camera_back">Geri</string>
+    <string name="camera_stop_recording">Kaydı Durdur</string>
+    <string name="camera_start_recording">Kaydı Başlat</string>
+    <string name="camera_preview_pause">Duraklat</string>
+    <string name="camera_preview_play">Oynat</string>
+    <string name="camera_cancel">İptal</string>
+    <string name="camera_save">Kaydet</string>
+    <string name="camera_permission_request_text">Kamera ve ses izinleri gereklidir.</string>
+    <string name="camera_permission_request_button">İzin İste</string>
+    <string name="camera_video_title">Video %1$s</string>
+
+    <!-- VideoCard -->
+    <string name="videocard_user_profile_image">Kullanıcı Profil Resmi</string>
+    <string name="videocard_play_video">Videoyu Oynat</string>
+    <string name="videocard_view_count">İzlenme Sayısı</string>
+    <string name="videocard_video_title">Video: %1$s</string>
+    <string name="videocard_comments">Yorumlar</string>
+    <string name="videocard_delete_confirm_title">Videoyu Sil</string>
+    <string name="videocard_delete_confirm_text">Bu videoyu kalıcı olarak silmek istediğinizden emin misiniz?</string>
+    <string name="videocard_delete_confirm_yes">Evet, Sil</string>
+    <string name="videocard_delete_confirm_no">İptal</string>
+
+    <!-- VideoDetailScreen -->
+    <string name="video_detail_share_chooser_title">Videoyu paylaş&#8230;</string>
+    <string name="video_detail_share_preparing">Paylaşım hazırlanıyor&#8230;</string>
+    <string name="video_detail_back">Geri</string>
+    <string name="video_detail_share">Paylaş</string>
+    <string name="videohome_home">Ana Sayfa</string>
+    <string name="videodetail_play_pause">Oynat/Duraklat</string>
+    <string name="videodetail_rewind">10sn Geri</string>
+    <string name="videodetail_forward">10sn İleri</string>
+    <string name="videodetail_unmute">Sesi Aç</string>
+    <string name="videodetail_mute">Sesi Kapat</string>
+    <string name="videodetail_comments_count">%d yorum</string>
+    <string name="videodetail_restart">Yeniden Başlat</string>
+    <string name="videodetail_playback_speed">Oynatma Hızı</string>
+
+    <!-- VideoEditScreen -->
+    <string name="video_edit_title">Düzenle</string>
+    <string name="video_edit_back">Geri</string>
+    <string name="video_edit_error">Hata oluştu: %1$s</string>
+    <string name="video_edit_success">Başarıyla kaydedildi.</string>
+    <string name="video_edit_loading">Yükleniyor&#8230;</string>
+    <string name="video_edit_mute_on">Sesi Kapat</string>
+    <string name="video_edit_mute_off">Sesi Aç</string>
+    <string name="video_edit_rotate">Döndür</string>
+    <string name="video_edit_apply_and_save">Uygula ve Kaydet</string>
+    <string name="video_edit_saving">Kaydediliyor&#8230;</string>
+    <string name="video_edit_play">Oynat</string>
+    <string name="video_edit_processing">İşleniyor&#8230;</string>
+
+    <!-- VideoCommentsScreen -->
+    <string name="videocomments_title">Video Yorumları</string>
+    <string name="videocomments_back">Geri</string>
+    <string name="videocomments_home">Ana Sayfa</string>
+    <string name="videocomments_replying_to">%1$s kullanıcısına yanıt veriliyor</string>
+    <string name="videocomments_cancel_reply">Yanıtı İptal Et</string>
+    <string name="videocomments_comment_placeholder">Bir yorum yaz&#8230;</string>
+    <string name="videocomments_like">Beğen</string>
+    <string name="videocomments_reply">Yanıtla</string>
+    <string name="videocomments_delete">Sil</string>
+    <string name="videocomments_no_comments">Henüz yorum yok.</string>
+    <string name="videocomments_profile_image">Profil Resmi</string>
+    <string name="videocomments_send">Gönder</string>
+
+    <!-- VideoHomeScreen -->
+    <string name="videohome_title">Videolar</string>
+    <string name="videohome_back">Geri</string>
+    <string name="videohome_no_videos">Henüz video yok.</string>
+    <string name="videohome_error_duration">Süre yüklenemedi.</string>
+
+    <!-- Fotoğraf Modülü -->
+    <string name="photohome_title">Fotoğraflar</string>
+    <string name="photohome_back">Geri</string>
+    <string name="photohome_home">Ana Sayfa</string>
+    <string name="photohome_no_photos">Henüz fotoğraf yüklenmemiş.</string>
+    <string name="photocreate_title">Yeni Fotoğraf Ekle</string>
+    <string name="photocreate_cancelled">Fotoğraf çekimi iptal edildi.</string>
+    <string name="photocreate_file_prepare_error">Fotoğraf dosyası hazırlanamadı.</string>
+    <string name="photocreate_permission_denied">Kamera izni reddedildi.</string>
+    <string name="photocreate_permission_requesting">Kamera izni isteniyor&#8230;</string>
+    <string name="photocreate_success_toast">Fotoğraf taslağı oluşturuldu ✅</string>
+    <string name="photocreate_failure_toast">Fotoğraf yüklenemedi.</string>
+    <string name="photocreate_uploading_title">Yükleniyor&#8230;</string>
+    <string name="photocreate_upload_preview">Yüklenen fotoğraf önizlemesi</string>
+    <string name="photocreate_creating_draft">Fotoğraf taslağı oluşturuluyor&#8230;</string>
+    <string name="photodetail_title">Fotoğraf</string>
+    <string name="photodetail_back">Geri</string>
+    <string name="photodetail_share">Paylaş</string>
+    <string name="photodetail_home">Ana Sayfa</string>
+    <string name="photodetail_share_chooser_title">Fotoğrafı paylaş&#8230;</string>
+    <string name="photodetail_share_preparing">Paylaşım hazırlanıyor&#8230;</string>
+    <string name="photodetail_anonymous">Anonim</string>
+    <string name="photodetail_photo_description">Fotoğraf %1$s</string>
+    <string name="photodetail_view_count">Görüntülenme</string>
+    <string name="photodetail_comment">Yorum</string>
+    <string name="photodetail_comments_count">%d yorum</string>
+    <string name="photoedit_title">Fotoğrafı Düzenle</string>
+    <string name="photoedit_back">Geri</string>
+    <string name="photoedit_save">Kaydet</string>
+    <string name="photoedit_content_description">Düzenlenecek fotoğraf</string>
+    <string name="photoedit_title_label">Başlık</string>
+    <string name="photoedit_note_label">Not</string>
+
+    <!-- PhotoCard -->
+    <string name="photocard_anonymous">Anonim</string>
+    <string name="photocard_photo_description">Fotoğraf: %1$s</string>
+    <string name="photocard_view_count">İzlenme</string>
+    <string name="photocard_comment_count">Yorum Sayısı</string>
+
+    <!-- PhotoComments -->
+    <string name="photocomments_title">Yorumlar</string>
+    <string name="photocomments_replying_to">%1$s kullanıcısına yanıt veriliyor</string>
+    <string name="photocomments_error_loading">Yorumlar yüklenemedi.</string>
+    <string name="photocomments_error_sending">Yorum gönderilemedi.</string>
+    <string name="photocomments_error_auth_required">Lütfen giriş yapın.</string>
+    <string name="photocomments_error_delete">Yorum silinemedi.</string>
+    <string name="photocomments_error_no_permission">Bu yorumu silme yetkiniz yok.</string>
+    <string name="photocomments_comment_placeholder">Yorum yaz&#8230;</string>
+    <string name="photocomments_reply">Yanıtla</string>
+    <string name="photocomments_delete">Sil</string>
+    <string name="photocomments_back">Geri</string>
+    <string name="photocomments_home">Ana Sayfa</string>
+    <string name="photocomments_cancel_reply">Yanıtı İptal Et</string>
+    <string name="photocomments_send">Gönder</string>
+    <string name="photocomments_no_comments">Henüz yorum yok.</string>
+    <string name="photocomments_profile_image">Profil Resmi</string>
+    <string name="photocomments_like">Beğen</string>
+
+    <!-- Mektup Modülü -->
+    <string name="letterhome_title">Mektuplar</string>
+    <string name="letterhome_back">Geri</string>
+    <string name="letterhome_home">Ana Sayfa</string>
+    <string name="letterhome_all_letters">Tüm Mektuplar</string>
+    <string name="letterhome_no_letters">Henüz mektup yok.</string>
+    <string name="lettercreate_title">Yeni Mektup</string>
+    <string name="lettercreate_back">Geri</string>
+    <string name="lettercreate_home">Ana Sayfa</string>
+    <string name="lettercreate_textfield_placeholder">Yeni bir mektup yazın&#8230;</string>
+    <string name="lettercreate_discard">Vazgeç</string>
+    <string name="lettercreate_save">Kaydet ve Mühürle</string>
+    <string name="lettercreate_draft_saved_toast">Taslak kaydedildi!</string>
+    <string name="lettercreate_draft_failed_toast">Taslak kaydedilemedi.</string>
+    <string name="lettercreate_unlock_date">Açılma Tarihi: %1$s</string>
+    <string name="lettercreate_time_capsule_option">Zaman Kapsülü Yap (Opsiyonel)</string>
+    <string name="lettercreate_privacy_dialog_title">Mektup Gizliliği</string>
+    <string name="lettercreate_privacy_dialog_text">Bu mektubu kim görebilmeli?</string>
+    <string name="lettercreate_privacy_dialog_public">Herkese Açık</string>
+    <string name="lettercreate_privacy_dialog_sealed">Mühürlü (Özel)</string>
+    <string name="lettercreate_sealed_draft_saved_toast">%1$s için mühürlü taslak kaydedildi!</string>
+    <string name="lettercreate_recipient_dialog_title">Alıcı Seçin</string>
+    <string name="lettercreate_recipient_dialog_search">Kullanıcı Ara</string>
+    <string name="lettercreate_recipient_dialog_cancel">İptal</string>
+    <string name="lettercreate_time_capsule_make">Zaman Kapsülü</string>
+    <string name="lettercreate_time_capsule_label">Zaman Kapsülü</string>
+    <string name="lettercreate_share_public">Herkese Açık</string>
+    <string name="lettercreate_send_sealed">Mühürlü (Kişiye Özel)</string>
+    <string name="lettercreate_datepicker_public">Herkese Açık</string>
+    <string name="lettercreate_datepicker_sealed">Mühürlü (Seçilen Kişi)</string>
+    <string name="lettercreate_select_date_error">Lütfen bir tarih seçin</string>
+    <string name="lettercreate_cancel_action">İptal</string>
+    <string name="letterdetail_title">Mektup Detayı</string>
+    <string name="letterdetail_sender">Kimden: %1$s</string>
+    <string name="letterdetail_anonymous_sender">Anonim</string>
+    <string name="letterdetail_comment">Yorum</string>
+    <string name="letterdetail_comments_count">%d yorum</string>
+    <string name="letterdetail_close_button">Mektubu Kapat</string>
+    <string name="letterdetail_video_title">Video: %1$s</string>
+    <string name="letteredit_title">Mektubu Düzenle</string>
+    <string name="letteredit_back">Geri</string>
+    <string name="letteredit_save">Kaydet</string>
+    <string name="letteredit_content_label">Mektup İçeriği</string>
+    <string name="letteredit_title_label">Başlık</string>
+    <string name="letteredit_personal_note_label">Not</string>
+
+    <string name="letter_ask_anoba_label">Kime: Anoba Ablası</string>
+    <string name="letter_ask_anoba_hidden_content">Bu mektup içeriği gizlidir,\nsadece Anoba Ablası\'nın yanıtı yayınlanmıştır.</string>
+    <string name="letter_anoba_response_title">Anoba Ablası\'nın cevabı</string>
+
+    <string name="lettercreate_anoba_title">Anoba Ablası\'na Yaz</string>
+    <string name="lettercreate_anoba_desc">Derdini paylaş, Anoba sana özel ve bilge bir yanıt yazsın.</string>
+    <string name="lettercreate_pseudonym_label">Mahlas / Rumuz (Örn: Dertli Kuş)</string>
+    <string name="lettercreate_pseudonym_placeholder">Kimliğini gizlemek için bir rumuz yaz&#8230;</string>
+    <string name="lettercreate_anoba_privacy_public">Cevabı herkes görsün</string>
+    <string name="lettercreate_anoba_privacy_private">Sadece ben göreyim</string>
+    <string name="lettercreate_anoba_send">Anoba Ablası\'na Gönder ✨</string>
+    <string name="lettercreate_pseudonym_error">Lütfen önce bir mahlas yazın.</string>
+    <string name="lettercreate_mode_write">Yaz</string>
+    <string name="lettercreate_mode_speak">Konuş</string>
+    <string name="lettercreate_audio_recorded">Ses Kaydedildi</string>
+    <string name="lettercreate_audio_record_hint">Mektubunu sesli söylemek için butona bas.</string>
+
+    <!-- Ses Düzenleme -->
+    <string name="sesedit_title">Sesi Düzenle</string>
+    <string name="sesedit_back">Geri</string>
+    <string name="sesedit_save">Kaydet</string>
+    <string name="sesedit_trim_label">Sesi Kırp</string>
+    <string name="sesedit_title_label">Başlık</string>
+    <string name="sesedit_note_label">Not</string>
+    <string name="sesedit_success">Ses başarıyla güncellendi</string>
+    <string name="sesedit_player_error">Medya oynatıcısı hatası: %1$s</string>
+
+    <!-- Mektup Yorumları -->
+    <string name="lettercomments_title">Mektup Yorumları</string>
+    <string name="lettercomments_replying_to">%1$s kullanıcısına yanıt veriliyor</string>
+    <string name="lettercomments_comment_placeholder">Bir yorum yaz&#8230;</string>
+    <string name="lettercomments_no_comments">Henüz yorum yok.</string>
+    <string name="lettercomments_reply">Yanıtla</string>
+    <string name="lettercomments_delete">Sil</string>
+
+    <!-- Mektup Kartı -->
+    <string name="lettercard_sealed_error">Bu mektup mühürlüdür.</string>
+    <string name="lettercard_time_capsule_msg">Bu mektup henüz açılmadı.</string>
+    <string name="lettercard_sender">Kimden: %1$s</string>
+    <string name="lettercard_recipient">Kime: %1$s</string>
+    <string name="lettercard_time_capsule_label">Zaman Kapsülü</string>
+    <string name="lettercard_sealed_label">Mühürlü Mektup</string>
+
+    <!-- Ses Modülü -->
+    <string name="seshome_title">Ses Kayıtları</string>
+    <string name="seshome_back">Geri</string>
+    <string name="seshome_home">Ana Sayfa</string>
+    <string name="seshome_no_ses">Henüz ses kaydı yok.</string>
+    <string name="audiorecording_permission_needed">🎙️ Mikrofon izni gereklidir</string>
+    <string name="audiorecording_status_loading">Kayıt Yükleniyor&#8230;</string>
+    <string name="audiorecording_status_recording">Kaydediliyor&#8230;</string>
+    <string name="audiorecording_status_completed">Kayıt Tamamlandı</string>
+    <string name="audiorecording_status_create">Ses Kaydı Oluştur</string>
+    <string name="audiorecording_start_prompt">Kayda başlamak için butona dokunun</string>
+    <string name="audiorecording_stop_prompt">Kaydı durdurmak için butona dokunun</string>
+    <string name="audiorecording_success_toast">Ses taslağı oluşturuldu!</string>
+    <string name="audiorecording_error_toast">Hata: Ses taslağı oluşturulamadı.</string>
+    <string name="audiorecording_add_to_drafts">Taslaklara Ekle</string>
+    <string name="audiorecording_cancel">İptal</string>
+    <string name="sesdetail_share_chooser_title">Sesi paylaş&#8230;</string>
+    <string name="sesdetail_share_preparing">Paylaşım hazırlanıyor&#8230;</string>
+    <string name="sesdetail_loading">⏳ Yükleniyor&#8230;</string>
+    <string name="sesdetail_back">Geri</string>
+    <string name="sesdetail_share">Paylaş</string>
+    <string name="sesdetail_home">Ana Sayfa</string>
+    <string name="sesdetail_anonymous">Anonim</string>
+    <string name="sesdetail_stop">Durdur</string>
+    <string name="sesdetail_play">Oynat</string>
+    <string name="sesdetail_view_count">Dinlenme</string>
+    <string name="sesdetail_comment">Yorum</string>
+    <string name="sesdetail_comments_count">%d yorum</string>
+    <string name="sesdetail_transcribe">Metne Dönüştür</string>
+    <string name="sesdetail_close_button">Sesi Kapat</string>
+    <string name="sescomments_title">Yorumlar</string>
+    <string name="sescomments_back">Geri</string>
+    <string name="sescomments_home">Ana Sayfa</string>
+    <string name="sescomments_replying_to">%1$s kullanıcısına yanıt veriliyor</string>
+    <string name="sescomments_cancel_reply">Yanıtı İptal Et</string>
+    <string name="sescomments_comment_placeholder">Yorumunuzu yazın&#8230;</string>
+    <string name="sescomments_send">Gönder</string>
+    <string name="sescomments_no_comments">Henüz yorum yok.</string>
+    <string name="sescomments_profile_image">Profil Resmi</string>
+    <string name="sescomments_reply">Yanıtla</string>
+    <string name="sescomments_delete">Sil</string>
+    <string name="sescomments_retry">Tekrar Dene</string>
+    <string name="sescomments_like">Beğen</string>
+
+    <!-- Ses Kartı -->
+    <string name="sescard_user_profile_image">Kullanıcı Profil Resmi</string>
+    <string name="sescard_anonymous">Anonim</string>
+    <string name="sescard_play_audio">Sesi Çal</string>
+    <string name="sescard_view_count">Dinlenme</string>
+    <string name="sescard_comments">Yorumlar</string>
+
+    <string name="reactions_title">Reaksiyonlar</string>
+    <string name="reactions_all">Tümü</string>
+    <string name="reactions_empty">Henüz bir reaksiyon bulunmuyor.</string>
+
+    <!-- Emojiler -->
+    <string name="emoji_heart_desc">Kalp</string>
+    <string name="emoji_laugh_desc">Kahkaha</string>
+    <string name="emoji_thumbs_up_desc">Beğen</string>
+    <string name="emoji_sad_desc">Üzgün</string>
+    <string name="emoji_surprise_desc">Şaşırmış</string>
+    <string name="emoji_thinking_desc">Düşünen</string>
+    <string name="emoji_angry_desc">Kızgın</string>
+    <string name="emoji_fire_desc">Ateş / Efsane</string>
+    <string name="emoji_love_desc">Kalpli Gülen Yüz</string>
+    <string name="emoji_neutral_desc">Kararsız / Vasat</string>
+    <string name="emoji_report_desc">Sakıncalı İçerik</string>
+    <string name="emoji_delete_desc">Bu İçerik Silinsin</string>
+    <string name="emoji_reaction_info">%1$s, %2$d reaksiyon</string>
+
+    <!-- Giriş Yap & Kayıt Ol UI -->
+    <string name="login_welcome_title">Anoba\'ya Hoş Geldiniz</string>
+    <string name="login_title">Giriş Yap</string>
+    <string name="login_email_label">E-posta</string>
+    <string name="login_password_label">Şifre</string>
+    <string name="login_remember_me">Beni Hatırla</string>
+    <string name="login_forgot_password">Şifremi Unuttum</string>
+    <string name="login_button">Giriş</string>
+    <string name="login_guest_button">Misafir Girişi</string>
+    <string name="login_no_account">Hesabınız yok mu? Kaydolun</string>
+    <string name="login_go_to_signup">Kayıt Ol</string>
+    <string name="forgot_password_success">Bağlantı gönderildi.</string>
+    <string name="forgot_password_desc">E-postanızı girin.</string>
+    <string name="forgot_password_button">Gönder</string>
+    <string name="new_password_title">Yeni Şifre</string>
+    <string name="new_password_label">Şifre</string>
+    <string name="new_password_button">Güncelle</string>
+    <string name="signup_title">Kayıt Ol</string>
+    <string name="signup_username_label">Kullanıcı Adı</string>
+    <string name="signup_email_label">E-posta</string>
+    <string name="signup_password_label">Şifre</string>
+    <string name="signup_confirm_password">Şifreyi Onayla</string>
+    <string name="signup_button">Kaydı Tamamla</string>
+    <string name="signup_already_have_account">Giriş Yap</string>
+
+    <!-- Rehber & Splash -->
+    <string name="guide_title">Anoba Rehberi</string>
+    <string name="guide_description">Paylaşılan içerikleri buradan inceleyebilirsiniz.</string>
+    <string name="guide_empty_message">Henüz rehber içerik yok.</string>
+    <string name="splash_made_in_turkiye">Türkiye\'de yapıldı</string>
+
+    <!-- Güncelleme -->
+    <string name="update_downloaded">Güncelleme indirildi. Uygulama güncelleniyor&#8230;</string>
+
+    <!-- Mete -->
+    <string name="mete_title">Mete</string>
+    <string name="mete_empty_content">Yükleniyor&#8230;</string>
+    <string name="mete_video_loading">Video yükleniyor&#8230;</string>
+    <string name="mete_audio_loading">Ses yükleniyor&#8230;</string>
+    <string name="mete_game_listen">Dinle</string>
+    <string name="mete_game_find_card">Hangisi?</string>
+    <string name="mete_game_correct">Harika! 🎉</string>
+    <string name="mete_game_continue">DEVAM ET</string>
+    <string name="mete_game_insufficient_content">Oyun için en az 4 farklı içerik gerekiyor.\nLütfen içerik ekleyin veya dili değiştirin.</string>
+    <string name="mete_search_placeholder">Bölüm adı veya numarası ara… (Örn: 1)</string>
+    <string name="mete_add_new_section">Yeni Bölüm Aç</string>
+    <string name="mete_section_name_label">Bölüm Adı veya Numarası (Örn: 1)</string>
+    <string name="mete_create">Oluştur</string>
+    <string name="mete_story_fallback_title">Hikaye / Çizgi Film</string>
+
+    <!-- Tutorial (Uygulama Gezisi) -->
+    <string name="tutorial_title_welcome">Hoş Geldiniz!</string>
+    <string name="tutorial_desc_welcome">Hadi başlayalım.</string>
+    <string name="tutorial_title_drawer">Menü</string>
+    <string name="tutorial_desc_drawer">Kendi profilinize, yardım rehberine ve hesap ayarlarına buradan erişebilirsiniz.</string>
+    <string name="tutorial_title_flower">Sizin için</string>
+    <string name="tutorial_desc_flower"> </string>
+    <string name="tutorial_title_special">Yetkililer</string>
+    <string name="tutorial_desc_special">Özel animasyonlar ve kontroller.</string>
+    <string name="tutorial_title_more_menu" tools:ignore="MissingTranslation">Diğer Seçenekler</string>
+    <string name="tutorial_desc_more_menu" tools:ignore="MissingTranslation">⭐ 1000+ Popüler: En çok etkileşim alan içerikleri keşfedin.\n🛡️ Karantina Havuzu: İnceleme havuzundaki içerikleri görün.\n🇹🇷 Mete: Eğlenceli ve doğal öğrenme deneyimi.</string>
+    <string name="tutorial_title_search" tools:ignore="MissingTranslation">Kullanıcı Filtresi</string>
+    <string name="tutorial_desc_search" tools:ignore="MissingTranslation">Görmek istediğiniz kullanıcının adını veya ID\'sini yazarak içeriklerini filtreleyin.</string>
+    <string name="tutorial_title_my_contents">İçeriklerim &amp; Taslaklar</string>
+    <string name="tutorial_desc_my_contents">Taslaklarınızı ve yayınlanan tüm içeriklerinizi buradan yönetin.</string>
+    <string name="tutorial_title_create_video">Video</string>
+    <string name="tutorial_desc_create_video">Kaydet ve Paylaş.</string>
+    <string name="tutorial_title_create_photo">Fotoğraf</string>
+    <string name="tutorial_desc_create_photo">Anı yakala.</string>
+    <string name="tutorial_title_create_audio">Ses</string>
+    <string name="tutorial_desc_create_audio">Sesini duyur.</string>
+    <string name="tutorial_title_create_letter">Yaz</string>
+    <string name="tutorial_desc_create_letter">Mektuplar.</string>
+    <string name="tutorial_title_gallery">Galeri</string>
+    <string name="tutorial_desc_gallery">Galeriden yükleme yapın.</string>
+    <string name="tutorial_title_map">Anoba Dünya</string>
+    <string name="tutorial_desc_map">Hangi ülkeden ne kadar içerik paylaşıldığını görün ve dünyadaki Anoba hareketliliğini takip edin.</string>
+    <string name="tutorial_title_mete">Mete</string>
+    <string name="tutorial_desc_mete">Mete ile doğal öğrenme deneyimi.</string>
+    <string name="tutorial_title_mosaic">Mozaik</string>
+    <string name="tutorial_desc_mosaic">Farklı içeriklerin bir araya geldiği renkli mozaik dünyasını keşfedin.</string>
+    <string name="tutorial_title_tab_videos">Kamera (Çek)</string>
+    <string name="tutorial_desc_tab_videos">Hızlıca fotoğraf çekin veya video kaydedin.</string>
+    <string name="tutorial_title_tab_photos">Galeri (Seç)</string>
+    <string name="tutorial_desc_tab_photos">Galerinizden hazır fotoğraf veya video seçin.</string>
+    <string name="tutorial_title_tab_audios">Sesler</string>
+    <string name="tutorial_desc_tab_audios">Sesli içerikleri dinleyin.</string>
+    <string name="tutorial_title_tab_letters">Mektup (Yaz)</string>
+    <string name="tutorial_desc_tab_letters">Yazılı mektup yazın veya sesli mektup kaydedin.</string>
+    <string name="tutorial_title_tab_chats">Sohbetler</string>
+    <string name="tutorial_desc_tab_chats">Mesajlaşın, sosyalleşin ve ücretsiz sesli/görüntülü aramalar yapın.</string>
+    <string name="tutorial_title_notifications">Bildirimler</string>
+    <string name="tutorial_desc_notifications">Bildirimlerinizi buradan takip edebilirsiniz.</string>
+
+    <string name="tutorial_next">İleri</string>
+    <string name="tutorial_skip">Geç</string>
+    <string name="tutorial_finish">Bitti</string>
+
+    <!-- Mozaik -->
+    <string name="mosaic_title">Mozaik</string>
+    <string name="mosaic_close">Kapat</string>
+    <string name="mosaic_video_loading">Video yakında oynatılacak&#8230;</string>
+    <string name="mosaic_audio_label">Ses</string>
+    <string name="mosaic_video_label">Video</string>
+    <string name="mosaic_ad_label">Reklam</string>
+    <string name="mosaic_title_caps">MOZAİK</string>
+    <string name="mosaic_ad_contains">Reklam İçerir</string>
+    <string name="home_guide_dialog_title">Uygulama Turu</string>
+    <string name="home_guide_dialog_text">Anoba\'yı keşfetmek için kısa bir tura ne dersiniz?</string>
+    <string name="home_guide_dialog_tour">Tura Başla</string>
+    <string name="map_title">Anoba Dünya</string>
+    <string name="map_content_count">%d İçerik</string>
+    <string name="country_ae">Birleşik Arap Emirlikleri</string>
+    <string name="country_dz">Cezayir</string>
+    <string name="country_ma">Fas</string>
+    <string name="country_za">Güney Afrika</string>
+    <string name="country_qa">Katar</string>
+    <string name="country_ke">Kenya</string>
+    <string name="country_eg">Mısır</string>
+    <string name="country_ng">Nijerya</string>
+    <string name="country_tn">Tunus</string>
+    <string name="country_tr">Türkiye</string>
+    <string name="country_sa">Suudi Arabistan</string>
+    <string name="country_om">Umman</string>
+    <string name="country_jo">Ürdün</string>
+    <string name="country_ca">Kanada</string>
+    <string name="country_au">Avustralya</string>
+    <string name="country_br">Brezilya</string>
+    <string name="country_ar">Arjantin</string>
+    <string name="country_in">Hindistan</string>
+    <string name="country_jp">Japonya</string>
+    <string name="country_kr">Güney Kore</string>
+    <string name="country_id">Endonezya</string>
+    <string name="country_gb">İngiltere</string>
+    <string name="country_fr">Fransa</string>
+    <string name="country_es">İspanya</string>
+    <string name="country_nl">Hollanda</string>
+    <string name="country_co">Kolombiya</string>
+    <string name="country_my">Malezya</string>
+    <string name="country_tm">Türkmenistan</string>
+    <string name="country_other">Diğer</string>
+    <string name="country_kg">Kırgızistan</string>
+    <string name="country_az">Azerbaycan</string>
+    <string name="country_kz">Kazakistan</string>
+    <string name="country_uz">Özbekistan</string>
+    <string name="country_hu">Macaristan</string>
+    <string name="country_us">ABD</string>
+    <string name="country_ru">Rusya</string>
+    <string name="country_pk">Pakistan</string>
+    <string name="country_mx">Meksika</string>
+    <string name="country_it">İtalya</string>
+    <string name="country_de">Almanya</string>
+
+    <!-- Sohbet Yanıt Önizlemeleri -->
+    <string name="chat_reply_image">[Görsel]</string>
+    <string name="chat_reply_video">[Video]</string>
+    <string name="chat_reply_audio">[Sesli Mesaj]</string>
+
+    <!-- Yetkili Paneli -->
+    <string name="admin_panel_title">Animasyon Paneli</string>
+    <string name="admin_panel_police">🔵 Polis Baskını</string>
+    <string name="admin_panel_commando" tools:ignore="Spelling">🔴 Komando Operasyonu</string>
+    <string name="admin_panel_bekci">🟤 Bekçi Devriyesi</string>
+    <string name="admin_panel_close">Kapat</string>
+
+    <!-- Arama Sistemi -->
+    <string name="call_incoming">Gelen Arama</string>
+    <string name="call_video_incoming">Görüntülü arama geliyor&#8230;</string>
+    <string name="call_voice_incoming">Sesli arama geliyor&#8230;</string>
+    <string name="call_accept">Cevapla</string>
+    <string name="call_accept_video">Görüntülü Cevapla</string>
+    <string name="call_reject">Reddet</string>
+    <string name="call_waiting">Aranıyor&#8230;</string>
+    <string name="call_voice_ongoing">Görüşülüyor</string>
+    <string name="call_rejected_by_partner">Arama Reddedildi</string>
+    <string name="call_ended">Arama Sonlandırıldı</string>
+
+    <!-- Arama Erişilebilirlik -->
+    <string name="ax_mute">Sesi Kapat</string>
+    <string name="ax_end_call">Aramayı Bitir</string>
+    <string name="ax_camera">Kamerayı Aç/Kapat</string>
+    <string name="ax_speaker">Hoparlörü Aç/Kapat</string>
+    <string name="ax_switch_camera">Kamerayı Değiştir</string>
+
+    <!-- Engelleme Sistemi -->
+    <string name="chat_block_user">Kullanıcıyı Engelle</string>
+    <string name="chat_unblock_user">Engeli Kaldır</string>
+    <string name="chat_block_dialog_title">Kullanıcı Engellensin mi?</string>
+    <string name="chat_block_dialog_text">%1$s kullanıcısını engellemek istediğinizden emin misiniz? Birbirinize mesaj gönderemez ve arama yapamazınız.</string>
+    <string name="chat_user_blocked_toast">Kullanıcı engellendi.</string>
+    <string name="chat_user_unblocked_toast">Engel kaldırıldı.</string>
+    <string name="chat_no_blocked_users">Henüz engellenen kullanıcı yok.</string>
+    <string name="chat_request_title">Mesaj İsteği</string>
+    <string name="chat_request_desc">%1$s size bir mesaj gönderdi. Sohbeti kabul ediyor musunuz?</string>
+    <string name="chat_request_accept">Kabul Et</string>
+    <string name="chat_request_delete">Sil</string>
+    <string name="chat_media_message">Medya mesajı</string>
+    <string name="chat_audio_recording">Ses kaydediliyor&#8230;</string>
+    <string name="chat_attachment_description">Eklenti</string>
+    <string name="chat_recording_failed">Kayıt başlatılamadı.</string>
+    <string name="chat_recording_failed_system">Kayıt başlatılamadı. Sistem engelliyor olabilir.</string>
+    <string name="chat_microphone_permission_required">Ses kaydı için mikrofon izni gerekli.</string>
+    <string name="chat_search_user_prompt">Sohbet etmek istediğiniz kişiyi arayın.</string>
+    <string name="chat_user_not_found">Kişi bulunamadı.</string>
+    <string name="chat_group_user_added">%1$s adlı kullanıcıyı gruba ekledi.</string>
+    <string name="chat_group_user_removed">%1$s adlı kullanıcıyı gruptan çıkardı.</string>
+    <string name="chat_group_user_left">gruptan ayrıldı.</string>
+    <string name="chat_group_image_update_failed">Grup resmi güncellenemedi.</string>
+    <string name="chat_group_create_error">Grup oluşturulurken hata: %1$s</string>
+    <string name="notification_someone">Birisi</string>
+    <string name="notification_calling_you">%1$s sizi arıyor&#8230;</string>
+    <string name="notification_new_content">Yeni bir bildiriminiz var.</string>
+    <string name="chat_media">Medya</string>
+    <string name="chat_options_accessible_name">Sohbet Seçenekleri</string>
+
+    <string name="notification_anoba_response_title">Anoba Ablası</string>
+    <string name="notification_anoba_response_body">Mektubun yanıtlandı! Cevabı okumak için dokun ✨</string>
+    <string name="admin_anoba_panel_button">Anoba Ablası Paneli</string>
+
+    <!-- Bildirim Merkezi (v120) -->
+    <string name="notif_hub_title">Bildirimler</string>
+    <string name="notif_hub_mark_all_read">Oku</string>
+    <string name="notif_hub_empty">Henüz yeni bir bildiriminiz yok.</string>
+    <string name="notif_hub_close">Kapat</string>
+    <string name="notif_type_popular_owner">Tebrikler! Paylaşımınız 1000+ sayfasında 🏆</string>
+    <string name="notif_type_popular_reactor">Tepki verdiğiniz içerik 1000+ sayfasında ✨</string>
+    <string name="notif_type_quarantine_owner">İçeriğiniz topluluk incelemesine alındı 🛡️</string>
+    <string name="notif_type_reporter_quarantine">Raporladığınız içerik karantinaya alındı ✅</string>
+    <string name="notif_type_reporter_unflag">Raporladığınız içerik inceleme sonucu aklandı 🛡️</string>
+    <string name="notif_type_reaction">İçeriğinize tepki verdi.</string>
+    <string name="notif_type_comment">İçeriğinize yorum yaptı.</string>
+    <string name="notif_type_generic">Yeni bir bildirim aldınız.</string>
+
+    <string name="letteradmin_title">Anoba Ablası: Mektup Havuzu</string>
+    <string name="letteradmin_tab_pending">Bekleyenler</string>
+    <string name="letteradmin_tab_answered">Cevaplananlar</string>
+    <string name="letteradmin_response_label">Anoba Ablası\'nın Cevabı:</string>
+    <string name="letteradmin_empty_pending">Cevap bekleyen yeni bir mektup yok ✨</string>
+    <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+</resources>

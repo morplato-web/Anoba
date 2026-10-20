@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">أنوبا</string>
+
+    <!-- Roles -->
+    <string name="role_admin">مسؤول</string>
+    <string name="role_muhtar">مختار</string>
+    <string name="role_moderator">مشرف</string>
+    <string name="role_member">عضو</string>
+    <string name="role_guest">ضيف</string>
+
+    <!-- Error Messages -->
+    <string name="error_invalid_email">تنسيق البريد الإلكتروني غير صالح.</string>
+    <string name="error_wrong_password">كلمة المرور غير صحيحة.</string>
+    <string name="error_user_not_found">المستخدم غير موجود.</string>
+    <string name="error_user_disabled">تم تعطيل هذا الحساب.</string>
+    <string name="error_too_many_requests">محاولات كثيرة جداً، يرجى المحاولة مرة أخرى لاحقاً.</string>
+    <string name="error_email_already_in_use">عنوان البريد الإلكتروني هذا مستخدم بالفعل.</string>
+    <string name="error_weak_password">كلمة المرور ضعيفة جداً.</string>
+    <string name="error_network_request_failed">خطأ في الاتصال بالشبكة.</string>
+    <string name="error_unknown">حدث خطأ غير متوقع.</string>
+    <string name="error_password_too_short">يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.</string>
+    <string name="error_username_short">اسم المستخدم قصير جداً.</string>
+    <string name="error_passwords_mismatch">كلمات المرور غير متطابقة.</string>
+    <string name="anonymous">مجهول</string>
+    <string name="error_comments_loading">خطأ في تحميل التعليقات.</string>
+    <string name="error_comment_send">فشل في إرسال التعليق.</string>
+    <string name="error_login_required">يرجى تسجيل الدخول للمتابعة.</string>
+    <string name="error_action_failed">فشلت العملية.</string>
+    <string name="error_delete_failed">فشل الحذف.</string>
+    <string name="error_unauthorized">ليس لديك صلاحية لهذا الإجراء.</string>
+    <string name="error_member_only_letter">يرجى التسجيل لكتابة رسالة.</string>
+    <string name="error_member_only_reaction">يرجى التسجيل للتفاعل.</string>
+    <string name="error_letter_not_found">الرسالة غير موجودة.</string>
+    <string name="error_letter_loading">خطأ في تحميل الرسالة.</string>
+    <string name="unknown_error">خطأ غير معروف.</string>
+
+    <!-- UI State Common Texts -->
+    <string name="state_loading">جاري التحميل&#8230;</string>
+    <string name="state_error_loading">حدث خطأ أثناء تحميل البيانات.</string>
+    <string name="camera_permission_denied">تم رفض إذن الكاميرا. يرجى السماح به في الإعدادات.</string>
+    <string name="state_no_data">لا توجد رسائل بعد.</string>
+    <string name="state_retry">إعادة المحاولة</string>
+    <string name="state_transcribing">جاري النسخ&#8230;</string>
+    <string name="state_loading_more">جاري تحميل المزيد&#8230;</string>
+    <string name="state_load_error">خطأ في التحميل. حاول ثانية.</string>
+    <string name="chat_search_placeholder">البحث في الرسائل&#8230;</string>
+    <string name="chat_input_placeholder">اكتب رسالة&#8230;</string>
+    <string name="chat_search_group_placeholder">البحث في رسائل المجموعة&#8230;</string>
+    <string name="notification_channel_name">رسائل أنوبا</string>
+    <string name="notification_default_title">رسالة جديدة</string>
+    <string name="notification_permission_denied_rationale">تم رفض إذن الإشعارات. يمكنك تفعيله من الإعدادات لتجنب فوات الرسائل الهامة.</string>
+
+    <!-- Auth & AuthService -->
+    <string name="guest">ضيف</string>
+    <string name="auth_generic_fail">فشلت العملية.</string>
+    <string name="auth_user_object_null">خطأ في الجلسة: كائن المستخدم فارغ.</string>
+    <string name="auth_password_reset_success">تم إرسال بريد إعادة تعيين كلمة المرور.</string>
+    <string name="auth_not_logged_in">يرجى تسجيل الدخول أولاً.</string>
+    <string name="auth_password_update_success">تم تحديث كلمة المرور بنجاح.</string>
+    <string name="auth_user_not_found">المستخدم غير موجود.</string>
+    <string name="auth_username_update_success">تم تحديث الاسم بنجاح.</string>
+    <string name="auth_image_upload_fail">فشل تحميل الصورة.</string>
+    <string name="auth_profile_photo_update_success">تم تحديث صورة الملف الشخصي.</string>
+    <string name="auth_account_deleted_success">تم حذف حسابك بنجاح.</string>
+    <string name="auth_process_completed">اكتملت العملية بنجاح.</string>
+
+    <!-- Common -->
+    <string name="cancel">إلغاء</string>
+    <string name="common_cancel">إلغاء</string>
+    <string name="delete">حذف</string>
+    <string name="common_back">رجوع</string>
+    <string name="common_close">إغلاق</string>
+    <string name="common_confirm">تم</string>
+    <string name="common_listen">استماع</string>
+    <string name="common_stop">إيقاف</string>
+    <string name="common_record">تسجيل</string>
+    <string name="common_hide">إخفاء</string>
+    <string name="common_just_now">الآن</string>
+    <string name="common_minutes_ago">منذ %d دقيقة</string>
+    <string name="common_hours_ago">منذ %d ساعة</string>
+    <string name="common_days_ago">منذ %d يوم</string>
+    <string name="common_minutes_later">بعد %d دقيقة</string>
+    <string name="common_hours_later">بعد %d ساعة</string>
+    <string name="common_days_later">بعد %d يوم</string>
+    <string name="common_unknown">غير معروف</string>
+    <string name="transcription_ai_report">تم تحليل هذه الرسالة الصوتية بواسطة محرك الذكاء الاصطناعي المحلي على جهازك. تمت المعالجة بـ %1$s.</string>
+
+    <!-- Chat & MyContent -->
+    <string name="chathome_uploading_media">جاري تحميل الوسائط&#8230;</string>
+    <string name="mycontent_guest_warning">يرجى التسجيل لمشاركة المحتوى.</string>
+    <string name="mycontent_guide_add">إضافة إلى الدليل (أنوبا)</string>
+    <string name="mycontent_guide_remove">إزالة من الدليل</string>
+    <string name="mycontent_guide_updated">تم تحديث حالة الدليل.</string>
+    <string name="mycontent_error_loading">تعذر تحميل المحتوى.</string>
+    <string name="mycontent_error_delete">تعذر حذف المحتوى.</string>
+    <string name="mycontent_error_timeout">انتهت مهلة الاتصال.</string>
+    <string name="mycontent_published_tab">المنشورات</string>
+    <string name="mycontent_drafts_tab">المسودات</string>
+    <string name="mycontent_back">رجوع</string>
+    <string name="follow">متابعة</string>
+    <string name="following">متابع</string>
+    <string name="feed_explore">استكشاف</string>
+    <string name="feed_following">متابعة</string>
+    <string name="feed_following_empty">أنت لا تتابع أحداً بعد، أو لم يشاركوا أي شيء بعد.</string>
+    <string name="feed_following_go_explore">ابدأ الاستكشاف</string>
+    <string name="followers">متابعون</string>
+    <string name="following_label">متابعة</string>
+    <string name="mycontent_home">الرئيسية</string>
+    <string name="mycontent_new_video">فيديو جديد</string>
+    <string name="mycontent_new_photo">صورة جديدة</string>
+    <string name="mycontent_new_audio">صوت جديد</string>
+    <string name="mycontent_new_letter">رسالة جديدة</string>
+    <string name="mycontent_from_gallery">من المعرض</string>
+    <string name="mycontent_upload_cancelled">تم إلغاء التحميل.</string>
+    <string name="mycontent_video_preparing">جاري تجهيز الفيديو للتحرير&#8230;</string>
+    <string name="mycontent_content_loading">جاري تحميل المحتوى&#8230;</string>
+    <string name="mycontent_publish_success">تم نشر المحتوى بنجاح!</string>
+    <string name="mycontent_unpublish_success">تم إلغاء نشر المحتوى.</string>
+    <string name="mycontent_sheet_published">منشور</string>
+    <string name="mycontent_sheet_draft">مسودة</string>
+    <string name="mycontent_sheet_views">المشاهدات</string>
+    <string name="mycontent_sheet_reactions">التفاعلات</string>
+    <string name="mycontent_sheet_comments">التعليقات</string>
+    <string name="mycontent_sheet_open">فتح</string>
+    <string name="mycontent_sheet_unpublish">إلغاء النشر</string>
+    <string name="mycontent_sheet_publish">نشر</string>
+    <string name="mycontent_sheet_edit">تعديل</string>
+    <string name="mycontent_sheet_delete">حذف</string>
+    <string name="mycontent_card_video_thumb">معاينة الفيديو</string>
+    <string name="mycontent_card_play_video">تشغيل الفيديو</string>
+    <string name="mycontent_card_user_photo">صورة المستخدم</string>
+    <string name="mycontent_card_audio_waveform">مخطط الصوت</string>
+    <string name="mycontent_delete_dialog_title">حذف المحتوى</string>
+    <string name="mycontent_delete_dialog_text">هل أنت متأكد أنك تريد حذف هذا المحتوى نهائياً؟</string>
+    <string name="mycontent_delete_dialog_confirm">نعم، حذف</string>
+    <string name="mycontent_delete_dialog_cancel">إلغاء</string>
+    <string name="mycontent_no_published_content">ليس لديك أي محتوى منشور بعد.</string>
+    <string name="mycontent_no_draft_content">ليس لديك أي مسودات بعد.</string>
+
+    <!-- Chat (ChatHome & PrivateChat) -->
+    <string name="chathome_messages_deleted_snackbar">تم حذف %1$d رسالة</string>
+    <string name="chathome_undo">تراجع</string>
+    <string name="chathome_messages_copied">تم نسخ الرسائل</string>
+    <string name="chathome_file_downloading">جاري تحميل الملف</string>
+    <string name="chathome_download_started">بدأ التحميل&#8230;</string>
+    <string name="chathome_download_failed">فشل التحميل.</string>
+    <string name="chathome_edit_message">تعديل الرسالة</string>
+    <string name="chathome_back">رجوع</string>
+    <string name="chathome_home">الرئيسية</string>
+    <string name="chathome_today">اليوم</string>
+    <string name="chathome_yesterday">أمس</string>
+    <string name="chathome_delete_all_messages">حذف جميع الرسائل</string>
+    <string name="chathome_delete_all_dialog_title">حذف جميع الرسائل</string>
+    <string name="chathome_delete_all_dialog_text">سيتم حذف جميع الرسائل في هذه الغرفة نهائياً. هل أنت متأكد؟</string>
+    <string name="chathome_delete">حذف</string>
+    <string name="chathome_cancel">إلغاء</string>
+    <string name="chathome_gallery">المعرض</string>
+    <string name="chathome_select_from_gallery">اختر من المعرض</string>
+    <string name="chathome_photo">صورة</string>
+    <string name="chathome_open_camera">فتح الكاميرا</string>
+    <string name="chathome_photo_description">صورة</string>
+    <string name="chathome_video">فيديو</string>
+    <string name="chathome_open_video">تسجيل فيديو</string>
+    <string name="chathome_share_preparing">جاري التجهيز للمشاركة&#8230;</string>
+    <string name="chathome_share_with">مشاركة مع&#8230;</string>
+    <string name="chathome_share_failed">فشلت المشاركة.</string>
+    <string name="chathome_image_uri_error">تعذر إنشاء مسار الصورة.</string>
+    <string name="chathome_video_uri_error">تعذر إنشاء مسار الفيديو.</string>
+    <string name="chathome_anonymous">مجهول</string>
+    <string name="chathome_background_image_description">خلفية الدردشة</string>
+    <string name="privatechat_title">دردشة خاصة</string>
+    <string name="privatechat_no_messages">لا توجد رسائل مع %1$s بعد.</string>
+    <string name="privatechat_no_messages_default_user">المستخدم المحدد</string>
+    <string name="privatechat_no_messages_default_user_with_name">%1$s</string>
+    <string name="privatechat_error">خطأ: %1$s</string>
+    <string name="groupitem_private_group">مجموعة خاصة</string>
+    <string name="groupitem_public_group">مجموعة عامة</string>
+    <string name="groupitem_info_content_description">معلومات المجموعة</string>
+    <string name="groupchatlist_add_group">إضافة مجموعة</string>
+    <string name="groupchatlist_title">دردشة المجموعة</string>
+    <string name="groupchatlist_back">رجوع</string>
+    <string name="groupchatlist_home">الرئيسية</string>
+    <string name="groupchatlist_hide_list">إخفاء القائمة</string>
+    <string name="groupchatlist_show_list">إظهار القائمة</string>
+    <string name="groupchatlist_no_groups">لا توجد مجموعات بعد.</string>
+    <string name="groupchatlist_dialog_create_new_group">إنشاء مجموعة جديدة</string>
+    <string name="groupchatlist_dialog_group_name">اسم المجموعة</string>
+    <string name="groupchatlist_dialog_group_description">وصف المجموعة</string>
+    <string name="groupchatlist_dialog_private_group">مجموعة خاصة؟</string>
+    <string name="groupchatlist_dialog_private_group_desc">للأعضاء المدعوين فقط</string>
+    <string name="groupchatlist_dialog_create">إنشاء</string>
+    <string name="groupchatlist_dialog_cancel">إلغاء</string>
+    <string name="groupchatlist_error_name_empty">اسم المجموعة لا يمكن أن يكون فارغاً.</string>
+    <string name="groupchatlist_error_no_user">تعذر تحديد المستخدم.</string>
+    <string name="groupchatlist_success_group_created">تم إنشاء المجموعة بنجاح!</string>
+    <string name="groupchatlist_default_description">تم إنشاء مجموعة جديدة.</string>
+
+    <string name="chat_profile_image">صورة الملف الشخصي</string>
+    <string name="chat_sent_image">الصورة المرسلة</string>
+    <string name="chat_play_video">تشغيل الفيديو</string>
+    <string name="chat_pause">إيقاف مؤقت</string>
+    <string name="chat_play">تشغيل</string>
+    <string name="chat_message_read">مقروء</string>
+    <string name="chat_message_sent">مرسل</string>
+    <string name="chat_today">اليوم</string>
+    <string name="chat_me">أنت</string>
+    <string name="chat_typing">يكتب الآن&#8230;</string>
+
+    <!-- Chat Selection Mode -->
+    <string name="chat_selection_title">تم اختيار %1$d</string>
+    <string name="chat_selection_close">إغلاق الاختيار</string>
+    <string name="chat_selection_save_to_gallery">حفظ في المعرض</string>
+    <string name="chat_selection_share">مشاركة</string>
+    <string name="chat_selection_copy">نسخ</string>
+    <string name="chat_selection_edit">تعديل</string>
+    <string name="chat_selection_reply">رد</string>
+    <string name="chat_selection_transcribe">نسخ نصي</string>
+    <string name="chat_selection_delete">حذف</string>
+
+    <!-- HomeScreen -->
+    <string name="home_menu">القائمة</string>
+    <string name="home_my_contents">محتوياتي</string>
+    <string name="home_learn_turkish">تعلم التركية</string>
+    <string name="home_videos">فيديوهات</string>
+    <string name="home_photos">صور</string>
+    <string name="home_audios">أصوات</string>
+    <string name="home_letters">رسائل</string>
+    <string name="home_chat">دردشة</string>
+    <string name="home_no_content">لا يوجد محتوى بعد.</string>
+    <string name="home_share_content">مشاركة</string>
+    <string name="home_pin_content">تثبيت</string>
+    <string name="home_pinned_filter">مختاراتي</string>
+    <string name="tutorial_title_pin">مختاراتي</string>
+    <string name="tutorial_desc_pin">يمكنك إنشاء موجزك الشخصي عن طريق تثبيت المحتوى الذي يهمك.</string>
+    <string name="tutorial_title_following">من أتابعهم</string>
+    <string name="tutorial_desc_following">استخدم هذا الفلتر لرؤية منشورات من تتابعهم فقط.</string>
+
+    <string name="tutorial_title_quarantine">مجمع الحجر الصحي</string>
+    <string name="tutorial_desc_quarantine">يمكنك متابعة المحتويات غير المرغوب فيها من قبل المجتمع والتي تم نقلها إلى عملية المراجعة من هنا.</string>
+
+    <string name="popular_sheet_title">1000+</string>
+    <string name="popular_sheet_subtitle">1000+ تفاعل</string>
+    <string name="popular_sheet_empty">لا يوجد محتوى 1000+ بعد.</string>
+    <string name="popular_owner_title">تهانينا! 🏆</string>
+    <string name="popular_owner_message">منشورك في صفحة 1000+</string>
+    <string name="popular_reactor_title">أنت شريك في النجاح! ✨</string>
+    <string name="popular_reactor_message">المحتوى الذي تفاعلت معه موجود في صفحة 1000+</string>
+    <string name="status_in_review">قيد المراجعة</string>
+
+    <string name="quarantine_explanation_forbidden">لقد وضع المجتمع علامة على هذا المحتوى على أنه \'غير لائق / غير مناسب\'.</string>
+    <string name="quarantine_explanation_delete">طلب المجتمع \'حذف\' هذا المحتوى.</string>
+    <string name="quarantine_explanation_generic">المحتوى قيد المراجعة.</string>
+    <string name="quarantine_footer_note">سيتم إجراء المراجعة النهائية من قبل فريق Anoba.</string>
+
+    <string name="tutorial_title_popular">1000+</string>
+    <string name="tutorial_desc_popular">يتم عرض المنشورات التي تتجاوز 1000 تفاعل في أي شعور هنا.</string>
+    <string name="profilescreen_home">الرئيسية</string>
+    <string name="profilescreen_email">البريد الإلكتروني</string>
+    <string name="profilescreen_user_number">رقم المستخدم</string>
+    <string name="profilescreen_blocked_users">المستخدمون المحظورون</string>
+    <string name="profilescreen_edit_profile">تعديل الملف الشخصي</string>
+
+    <!-- GroupChatScreen specific -->
+    <string name="groupchatscreen_not_logged_in">يجب عليك تسجيل الدخول.</string>
+    <string name="groupchatscreen_downloading_file">جاري تحميل الملف&#8230;</string>
+    <string name="groupchatscreen_download_started">بدأ التحميل.</string>
+    <string name="groupchatscreen_download_failed">فشل التحميل.</string>
+    <string name="groupchatscreen_share_preparing">جاري التجهيز للمشاركة&#8230;</string>
+    <string name="groupchatscreen_share_with">مشاركة مع&#8230;</string>
+    <string name="groupchatscreen_share_failed">فشلت المشاركة.</string>
+    <string name="groupchatscreen_image_uri_error">خطأ في مسار الصورة.</string>
+    <string name="groupchatscreen_video_uri_error">خطأ في مسار الفيديو.</string>
+    <string name="groupchatscreen_title_default">دردشة المجموعة</string>
+    <string name="groupchatscreen_back">رجوع</string>
+    <string name="groupchatscreen_home">الرئيسية</string>
+    <string name="groupchatscreen_typing_one">%1$s يكتب الآن&#8230;</string>
+    <string name="groupchatscreen_typing_two">%1$s و %2$s يكتبان الآن&#8230;</string>
+    <string name="groupchatscreen_typing_many">%1$s وآخرون يكتبون الآن&#8230;</string>
+    <string name="groupchatscreen_edit_mode">وضع التعديل</string>
+    <string name="groupchatscreen_cancel_edit">إلغاء التعديل</string>
+    <string name="groupchatscreen_edit_message_title">تعديل الرسالة</string>
+
+    <!-- GroupInfo Screen -->
+    <string name="groupinfo_title">معلومات المجموعة</string>
+    <string name="groupinfo_back">رجوع</string>
+    <string name="groupinfo_cancel_edit">إلغاء التعديل</string>
+    <string name="groupinfo_save_changes">حفظ التغييرات</string>
+    <string name="groupinfo_edit_group">تعديل المجموعة</string>
+    <string name="groupinfo_group_profile_image">صورة الملف الشخصي للمجموعة</string>
+    <string name="groupinfo_change_image">تغيير الصورة</string>
+    <string name="groupinfo_group_name">اسم المجموعة</string>
+    <string name="groupinfo_group_description">معلومات المجموعة</string>
+    <string name="groupinfo_mute_group">كتم المجموعة</string>
+    <string name="groupinfo_is_private">هل هي خاصة؟</string>
+    <string name="groupinfo_member_management">الأعضاء</string>
+    <string name="groupinfo_invite_member">دعوة عضو</string>
+    <string name="groupinfo_remove_member">إزالة عضو</string>
+    <string name="groupinfo_group_settings">إعدادات المجموعة</string>
+    <string name="groupinfo_delete_group_permanently">حذف المجموعة نهائياً</string>
+    <string name="groupinfo_leave_group">مغادرة المجموعة</string>
+    <string name="groupinfo_leave_group_confirm">هل أنت متأكد أنك تريد مغادرة هذه المجموعة؟</string>
+    <string name="groupinfo_dialog_invite_member_title">دعوة عضو</string>
+    <string name="groupinfo_dialog_delete_group_title">حذف المجموعة</string>
+    <string name="groupinfo_dialog_delete_group_text">هل أنت متأكد أنك تريد حذف هذه المجموعة؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="groupinfo_dialog_confirm_delete">نعم، حذف</string>
+    <string name="groupinfo_dialog_cancel">إلغاء</string>
+    <string name="groupinfo_dialog_remove_member_title">إزالة عضو</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_title">إزالة عضو</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_text">إزالة %1$s من المجموعة؟</string>
+
+    <!-- User Selection Dialog -->
+    <string name="userselection_title">بدء دردشة</string>
+    <string name="userselection_search_placeholder">البحث في جهات الاتصال&#8230;</string>
+    <string name="userselection_search_icon">بحث</string>
+    <string name="userselection_start_chat_prompt">انقر لبدء الدردشة</string>
+    <string name="userselection_profile_image_description">صورة الملف الشخصي لـ %1$s</string>
+    <string name="userselection_dialog_search_placeholder">البحث عن مستخدم&#8230;</string>
+    <string name="userselection_dialog_search_icon">أيقونة البحث</string>
+    <string name="userselection_dialog_clear_search">مسح البحث</string>
+    <string name="userselection_dialog_no_results">لم يتم العثور على نتائج.</string>
+    <string name="userselection_dialog_profile_image_description">صورة الملف الشخصي لـ %1$s</string>
+    <string name="userselection_dialog_close">إغلاق</string>
+
+    <!-- Profile & Drawer -->
+    <string name="drawer_my_profile">ملفي الشخصي</string>
+    <string name="drawer_logout">تسجيل الخروج</string>
+    <string name="drawer_logout_dialog_title">تسجيل الخروج</string>
+    <string name="drawer_logout_dialog_text">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
+    <string name="drawer_logout_dialog_confirm">نعم</string>
+    <string name="drawer_logout_dialog_dismiss">لا</string>
+    <string name="drawer_privacy_policy">سياسة الخصوصية</string>
+    <string name="profilescreen_info_not_available">معلومات الملف الشخصي غير متوفرة.</string>
+    <string name="profilescreen_try_again">حاول مرة أخرى</string>
+    <string name="profilescreen_email_not_specified">البريد الإلكتروني غير محدد</string>
+    <string name="profilescreen_guest_user">مستخدم ضيف</string>
+    <string name="profilescreen_close_app">إغلاق التطبيق</string>
+    <string name="profilescreen_back">رجوع</string>
+    <string name="profileedit_title">تعديل الملف الشخصي</string>
+    <string name="profileedit_display_name_label">الاسم المعروض</string>
+    <string name="profileedit_save_changes">حفظ التغييرات</string>
+    <string name="profileedit_delete_account_and_data">حذف الحساب والبيانات</string>
+    <string name="profileedit_delete_account_confirm_title">هل أنت متأكد؟</string>
+    <string name="profileedit_delete_account_confirm_text">سيتم حذف حسابك نهائياً.</string>
+    <string name="profileedit_delete_account_password_label">كلمة المرور</string>
+    <string name="profileedit_deleting_process">جاري الحذف&#8230;</string>
+    <string name="profileedit_delete_account_success_toast">تم حذف الحساب.</string>
+    <string name="profileedit_delete_account_error_password">كلمة المرور غير صحيحة.</string>
+    <string name="profileedit_enter_password_warning">يرجى إدخال كلمة المرور الخاصة بك.</string>
+    <string name="profileedit_delete_permanently">حذف</string>
+    <string name="profileedit_cancel">إلغاء</string>
+    <string name="profileedit_profile_updated_toast">تم تحديث الملف الشخصي.</string>
+    <string name="profileedit_photo_updated_toast">تم تحديث الصورة.</string>
+    <string name="profileedit_name_updated_toast">تم تحديث الاسم.</string>
+
+    <!-- Video & Camera Module -->
+    <string name="video_upload_success">تم تحميل الفيديو بنجاح ✅</string>
+    <string name="video_upload_error">خطأ أثناء تحميل الفيديو ❌</string>
+    <string name="video_uploading">جاري تحميل الفيديو&#8230;</string>
+    <string name="camera_back">رجوع</string>
+    <string name="camera_stop_recording">إيقاف التسجيل</string>
+    <string name="camera_start_recording">بدء التسجيل</string>
+    <string name="camera_preview_pause">إيقاف مؤقت</string>
+    <string name="camera_preview_play">تشغيل</string>
+    <string name="camera_cancel">إلغاء</string>
+    <string name="camera_save">حفظ</string>
+    <string name="camera_permission_request_text">أذونات الكاميرا والصوت مطلوبة.</string>
+    <string name="camera_permission_request_button">طلب إذن</string>
+    <string name="camera_video_title">فيديو %1$s</string>
+
+    <!-- VideoCard specific -->
+    <string name="videocard_user_profile_image">صورة الملف الشخصي للمستخدم</string>
+    <string name="videocard_play_video">تشغيل الفيديو</string>
+    <string name="videocard_view_count">عدد المشاهدات</string>
+    <string name="videocard_video_title">فيديو: %1$s</string>
+    <string name="videocard_comments">التعليقات</string>
+    <string name="videocard_delete_confirm_title">حذف الفيديو</string>
+    <string name="videocard_delete_confirm_text">هل أنت متأكد أنك تريد حذف هذا الفيديو نهائياً؟</string>
+    <string name="videocard_delete_confirm_yes">نعم، حذف</string>
+    <string name="videocard_delete_confirm_no">إلغاء</string>
+
+    <!-- VideoDetailScreen specific -->
+    <string name="video_detail_share_chooser_title">مشاركة الفيديو&#8230;</string>
+    <string name="video_detail_share_preparing">جاري التجهيز للمشاركة&#8230;</string>
+    <string name="video_detail_back">رجوع</string>
+    <string name="video_detail_share">مشاركة</string>
+    <string name="videohome_home">الرئيسية</string>
+    <string name="videodetail_play_pause">تشغيل/إيقاف مؤقت</string>
+    <string name="videodetail_rewind">إرجاع 10 ثواني</string>
+    <string name="videodetail_forward">تقديم 10 ثواني</string>
+    <string name="videodetail_unmute">تشغيل الصوت</string>
+    <string name="videodetail_mute">كتم الصوت</string>
+    <string name="videodetail_comments_count">%d تعليق</string>
+    <string name="videodetail_restart">إعادة التشغيل</string>
+    <string name="videodetail_playback_speed">سرعة التشغيل</string>
+
+    <!-- VideoEditScreen specific -->
+    <string name="video_edit_title">تعديل</string>
+    <string name="video_edit_back">رجوع</string>
+    <string name="video_edit_error">حدث خطأ: %1$s</string>
+    <string name="video_edit_success">تم الحفظ بنجاح.</string>
+    <string name="video_edit_loading">جاري التحميل&#8230;</string>
+    <string name="video_edit_mute_on">كتم</string>
+    <string name="video_edit_mute_off">تشغيل الصوت</string>
+    <string name="video_edit_rotate">تدوير</string>
+    <string name="video_edit_apply_and_save">تطبيق وحفظ</string>
+    <string name="video_edit_saving">جاري الحفظ&#8230;</string>
+    <string name="video_edit_play">تشغيل</string>
+    <string name="video_edit_processing">جاري المعالجة&#8230;</string>
+
+    <!-- VideoCommentsScreen specific -->
+    <string name="videocomments_title">تعليقات الفيديو</string>
+    <string name="videocomments_back">رجوع</string>
+    <string name="videocomments_home">الرئيسية</string>
+    <string name="videocomments_replying_to">الرد على %1$s</string>
+    <string name="videocomments_cancel_reply">إلغاء الرد</string>
+    <string name="videocomments_comment_placeholder">اكتب تعليقاً&#8230;</string>
+    <string name="videocomments_like">إعجاب</string>
+    <string name="videocomments_reply">رد</string>
+    <string name="videocomments_delete">حذف</string>
+    <string name="videocomments_no_comments">لا توجد تعليقات بعد.</string>
+    <string name="videocomments_profile_image">صورة الملف الشخصي</string>
+    <string name="videocomments_send">إرسال</string>
+
+    <!-- VideoHomeScreen specific -->
+    <string name="videohome_title">فيديوهات</string>
+    <string name="videohome_back">رجوع</string>
+    <string name="videohome_no_videos">لا توجد فيديوهات بعد.</string>
+    <string name="videohome_error_duration">تعذر تحميل المدة.</string>
+
+    <!-- Photo Module -->
+    <string name="photohome_title">صور</string>
+    <string name="photohome_back">رجوع</string>
+    <string name="photohome_home">الرئيسية</string>
+    <string name="photohome_no_photos">لم يتم تحميل صور بعد.</string>
+    <string name="photocreate_title">إضافة صورة جديدة</string>
+    <string name="photocreate_cancelled">تم إلغاء التقاط الصورة.</string>
+    <string name="photocreate_file_prepare_error">تعذر تجهيز ملف الصورة.</string>
+    <string name="photocreate_permission_denied">تم رفض إذن الكاميرا.</string>
+    <string name="photocreate_permission_requesting">جاري طلب إذن الكاميرا&#8230;</string>
+    <string name="photocreate_success_toast">تم إنشاء مسودة الصورة ✅</string>
+    <string name="photocreate_failure_toast">تعذر تحميل الصورة.</string>
+    <string name="photocreate_uploading_title">جاري التحميل&#8230;</string>
+    <string name="photocreate_upload_preview">معاينة الصورة المحملة</string>
+    <string name="photocreate_creating_draft">جاري إنشاء مسودة الصورة&#8230;</string>
+    <string name="photodetail_title">صورة</string>
+    <string name="photodetail_back">رجوع</string>
+    <string name="photodetail_share">مشاركة</string>
+    <string name="photodetail_home">الرئيسية</string>
+    <string name="photodetail_share_chooser_title">مشاركة الصورة&#8230;</string>
+    <string name="photodetail_share_preparing">جاري التجهيز للمشاركة&#8230;</string>
+    <string name="photodetail_anonymous">مجهول</string>
+    <string name="photodetail_photo_description">صورة %1$s</string>
+    <string name="photodetail_view_count">عدد المشاهدات</string>
+    <string name="photodetail_comment">تعليق</string>
+    <string name="photodetail_comments_count">%d تعليق</string>
+    <string name="photoedit_title">تعديل الصورة</string>
+    <string name="photoedit_back">رجوع</string>
+    <string name="photoedit_save">حفظ</string>
+    <string name="photoedit_content_description">صورة للتعديل</string>
+    <string name="photoedit_title_label">العنوان</string>
+    <string name="photoedit_note_label">ملاحظة</string>
+
+    <!-- PhotoCard specific -->
+    <string name="photocard_anonymous">مجهول</string>
+    <string name="photocard_photo_description">صورة: %1$s</string>
+    <string name="photocard_view_count">المشاهدات</string>
+    <string name="photocard_comment_count">عدد التعليقات</string>
+
+    <!-- PhotoComments specific -->
+    <string name="photocomments_title">تعليقات</string>
+    <string name="photocomments_replying_to">الرد على %1$s</string>
+    <string name="photocomments_error_loading">تعذر تحميل التعليقات.</string>
+    <string name="photocomments_error_sending">فشل إرسال التعليق.</string>
+    <string name="photocomments_error_auth_required">يرجى تسجيل الدخول.</string>
+    <string name="photocomments_error_delete">تعذر حذف التعليق.</string>
+    <string name="photocomments_error_no_permission">ليس لديك صلاحية لحذف هذا التعليق.</string>
+    <string name="photocomments_comment_placeholder">اكتب تعليقاً&#8230;</string>
+    <string name="photocomments_reply">رد</string>
+    <string name="photocomments_delete">حذف</string>
+    <string name="photocomments_back">رجوع</string>
+    <string name="photocomments_home">الرئيسية</string>
+    <string name="photocomments_cancel_reply">إلغاء الرد</string>
+    <string name="photocomments_send">إرسال</string>
+    <string name="photocomments_no_comments">لا توجد تعليقات بعد.</string>
+    <string name="photocomments_profile_image">صورة الملف الشخصي</string>
+    <string name="photocomments_like">إعجاب</string>
+
+    <!-- Letter Module -->
+    <string name="letterhome_title">رسائل</string>
+    <string name="letterhome_back">رجوع</string>
+    <string name="letterhome_home">الرئيسية</string>
+    <string name="letterhome_all_letters">جميع الرسائل</string>
+    <string name="letterhome_no_letters">لا توجد رسائل بعد.</string>
+    <string name="lettercreate_title">رسالة جديدة</string>
+    <string name="lettercreate_back">رجوع</string>
+    <string name="lettercreate_home">الرئيسية</string>
+    <string name="lettercreate_textfield_placeholder">اكتب رسالة جديدة&#8230;</string>
+    <string name="lettercreate_discard">تجاهل</string>
+    <string name="lettercreate_save">حفظ وختم</string>
+    <string name="lettercreate_draft_saved_toast">تم حفظ المسودة!</string>
+    <string name="lettercreate_draft_failed_toast">تعذر حفظ المسودة.</string>
+    <string name="lettercreate_unlock_date">تاريخ الفتح: %1$s</string>
+    <string name="lettercreate_time_capsule_option">اجعلها كبسولة زمنية (اختياري)</string>
+    <string name="lettercreate_privacy_dialog_title">خصوصية الرسالة</string>
+    <string name="lettercreate_privacy_dialog_text">من يجب أن يرى هذه الرسالة؟</string>
+    <string name="lettercreate_privacy_dialog_public">عام</string>
+    <string name="lettercreate_privacy_dialog_sealed">مختوم (خاص)</string>
+    <string name="lettercreate_sealed_draft_saved_toast">تم حفظ مسودة مختومة لـ %1$s!</string>
+    <string name="lettercreate_recipient_dialog_title">اختر المستلم</string>
+    <string name="lettercreate_recipient_dialog_search">البحث عن مستخدم</string>
+    <string name="lettercreate_recipient_dialog_cancel">إلغاء</string>
+    <string name="lettercreate_time_capsule_make">كبسولة زمنية</string>
+    <string name="lettercreate_time_capsule_label">كبسولة زمنية</string>
+    <string name="lettercreate_share_public">مشاركة عامة</string>
+    <string name="lettercreate_send_sealed">إرسال مختوم (خاص)</string>
+    <string name="lettercreate_datepicker_public">عام</string>
+    <string name="lettercreate_datepicker_sealed">مختوم (شخص محدد)</string>
+    <string name="lettercreate_select_date_error">يرجى اختيار تاريخ</string>
+    <string name="lettercreate_cancel_action">إلغاء</string>
+    <string name="letterdetail_title">تفاصيل الرسالة</string>
+    <string name="letterdetail_sender">من: %1$s</string>
+    <string name="letterdetail_anonymous_sender">مجهول</string>
+    <string name="letterdetail_comment">تعليق</string>
+    <string name="letterdetail_comments_count">%d تعليق</string>
+    <string name="letterdetail_close_button">إغلاق الرسالة</string>
+    <string name="letterdetail_video_title">فيديو: %1$s</string>
+    <string name="letteredit_title">تعديل الرسالة</string>
+    <string name="letteredit_back">رجوع</string>
+    <string name="letteredit_save">حفظ</string>
+    <string name="letteredit_content_label">محتوى الرسالة</string>
+    <string name="letteredit_title_label">العنوان</string>
+    <string name="letteredit_personal_note_label">ملاحظة</string>
+
+    <string name="letter_ask_anoba_label">إلى: الأخت أنوبا</string>
+    <string name="letter_ask_anoba_hidden_content">محتوى هذه الرسالة خاص،\nفقط رد الأخت أنوبا هو المنشور.</string>
+    <string name="letter_anoba_response_title">رد الأخت أنوبا</string>
+
+    <string name="lettercreate_anoba_title">اكتب للأخت أنوبا</string>
+    <string name="lettercreate_anoba_desc">شارك مشاكلك، دع أنوبا تكتب لك رداً حكيماً.</string>
+    <string name="lettercreate_pseudonym_label">اسم مستعار / لقب (مثال: طائر حزين)</string>
+    <string name="lettercreate_pseudonym_placeholder">اكتب لقباً لإخفاء هويتك&#8230;</string>
+    <string name="lettercreate_anoba_privacy_public">الجميع يرى الرد</string>
+    <string name="lettercreate_anoba_privacy_private">أنا فقط أرى الرد</string>
+    <string name="lettercreate_anoba_send">إرسال إلى الأخت أنوبا ✨</string>
+    <string name="lettercreate_pseudonym_error">يرجى كتابة اسم مستعار أولاً.</string>
+    <string name="lettercreate_mode_write">اكتب</string>
+    <string name="lettercreate_mode_speak">تحدث</string>
+    <string name="lettercreate_audio_recorded">تم تسجيل الصوت</string>
+    <string name="lettercreate_audio_record_hint">اضغط على الزر لتسجيل رسالتك.</string>
+
+    <!-- Audio Edit -->
+    <string name="sesedit_title">تعديل الصوت</string>
+    <string name="sesedit_back">رجوع</string>
+    <string name="sesedit_save">حفظ</string>
+    <string name="sesedit_trim_label">قص الصوت</string>
+    <string name="sesedit_title_label">العنوان</string>
+    <string name="sesedit_note_label">ملاحظة</string>
+    <string name="sesedit_success">تم تحديث الصوت بنجاح</string>
+    <string name="sesedit_player_error">خطأ في المشغل: %1$s</string>
+
+    <!-- Letter Comments -->
+    <string name="lettercomments_title">تعليقات الرسالة</string>
+    <string name="lettercomments_replying_to">الرد على %1$s</string>
+    <string name="lettercomments_comment_placeholder">اكتب تعليقاً&#8230;</string>
+    <string name="lettercomments_no_comments">لا توجد تعليقات بعد.</string>
+    <string name="lettercomments_reply">رد</string>
+    <string name="lettercomments_delete">حذف</string>
+
+    <!-- Letter Card -->
+    <string name="lettercard_sealed_error">هذه الرسالة مختومة.</string>
+    <string name="lettercard_time_capsule_msg">هذه الرسالة لم تفتح بعد.</string>
+    <string name="lettercard_sender">من: %1$s</string>
+    <string name="lettercard_recipient">إلى: %1$s</string>
+    <string name="lettercard_time_capsule_label">كبسولة زمنية</string>
+    <string name="lettercard_sealed_label">رسالة مختومة</string>
+
+    <!-- Audio Module -->
+    <string name="seshome_title">تسجيلات صوتية</string>
+    <string name="seshome_back">رجوع</string>
+    <string name="seshome_home">الرئيسية</string>
+    <string name="seshome_no_ses">لا توجد تسجيلات صوتية بعد.</string>
+    <string name="audiorecording_permission_needed">🎙️ إذن الميكروفون مطلوب</string>
+    <string name="audiorecording_status_loading">جاري تحميل التسجيل&#8230;</string>
+    <string name="audiorecording_status_recording">جاري التسجيل&#8230;</string>
+    <string name="audiorecording_status_completed">اكتمل التسجيل</string>
+    <string name="audiorecording_status_create">إنشاء تسجيل صوتي</string>
+    <string name="audiorecording_start_prompt">انقر على الزر لبدء التسجيل</string>
+    <string name="audiorecording_stop_prompt">انقر على الزر لإيقاف التسجيل</string>
+    <string name="audiorecording_success_toast">تم إنشاء مسودة الصوت!</string>
+    <string name="audiorecording_error_toast">خطأ: تعذر إنشاء مسودة الصوت.</string>
+    <string name="audiorecording_add_to_drafts">إضافة إلى المسودات</string>
+    <string name="audiorecording_cancel">إلغاء</string>
+    <string name="sesdetail_share_chooser_title">مشاركة الصوت&#8230;</string>
+    <string name="sesdetail_share_preparing">جاري التجهيز للمشاركة&#8230;</string>
+    <string name="sesdetail_loading">⏳ جاري التحميل&#8230;</string>
+    <string name="sesdetail_back">رجوع</string>
+    <string name="sesdetail_share">مشاركة</string>
+    <string name="sesdetail_home">الرئيسية</string>
+    <string name="sesdetail_anonymous">مجهول</string>
+    <string name="sesdetail_stop">إيقاف</string>
+    <string name="sesdetail_play">تشغيل</string>
+    <string name="sesdetail_view_count">عدد الاستماع</string>
+    <string name="sesdetail_comment">تعليق</string>
+    <string name="sesdetail_comments_count">%d تعليق</string>
+    <string name="sesdetail_transcribe">تحويل إلى نص</string>
+    <string name="sesdetail_close_button">إغلاق الصوت</string>
+    <string name="sescomments_title">تعليقات</string>
+    <string name="sescomments_back">رجوع</string>
+    <string name="sescomments_home">الرئيسية</string>
+    <string name="sescomments_replying_to">الرد على %1$s</string>
+    <string name="sescomments_cancel_reply">إلغاء الرد</string>
+    <string name="sescomments_comment_placeholder">اكتب تعليقك&#8230;</string>
+    <string name="sescomments_send">إرسال</string>
+    <string name="sescomments_no_comments">لا توجد تعليقات بعد.</string>
+    <string name="sescomments_profile_image">صورة الملف الشخصي</string>
+    <string name="sescomments_reply">رد</string>
+    <string name="sescomments_delete">حذف</string>
+    <string name="sescomments_retry">إعادة المحاولة</string>
+    <string name="sescomments_like">إعجاب</string>
+
+    <!-- SesCard specific -->
+    <string name="sescard_user_profile_image">صورة الملف الشخصي للمستخدم</string>
+    <string name="sescard_anonymous">مجهول</string>
+    <string name="sescard_play_audio">تشغيل الصوت</string>
+    <string name="sescard_view_count">المشاهدات</string>
+    <string name="sescard_comments">التعليقات</string>
+
+    <string name="reactions_title">تفاعلات</string>
+    <string name="reactions_all">الكل</string>
+    <string name="reactions_empty">لا توجد تفاعلات بعد.</string>
+
+    <!-- Emojis -->
+    <string name="emoji_heart_desc">قلب</string>
+    <string name="emoji_laugh_desc">ضحك</string>
+    <string name="emoji_thumbs_up_desc">أعجبني</string>
+    <string name="emoji_sad_desc">حزين</string>
+    <string name="emoji_surprise_desc">متفاجئ</string>
+    <string name="emoji_thinking_desc">تفكير</string>
+    <string name="emoji_angry_desc">غاضب</string>
+    <string name="emoji_fire_desc">نار / أسطورة</string>
+    <string name="emoji_love_desc">وجه مبتسم مع قلوب</string>
+    <string name="emoji_neutral_desc">محايد / متوسط</string>
+    <string name="emoji_report_desc">محتوى غير لائق</string>
+    <string name="emoji_delete_desc">طلب حذف المحتوى</string>
+    <string name="emoji_reaction_info">%1$s، %2$d تفاعل</string>
+
+    <!-- Login UI -->
+    <string name="login_welcome_title">مرحباً بكم في أنوبا</string>
+    <string name="login_title">تسجيل الدخول</string>
+    <string name="login_email_label">البريد الإلكتروني</string>
+    <string name="login_password_label">كلمة المرور</string>
+    <string name="login_remember_me">تذكرني</string>
+    <string name="login_forgot_password">نسيت كلمة المرور</string>
+    <string name="login_button">تسجيل الدخول</string>
+    <string name="login_guest_button">دخول كضيف</string>
+    <string name="login_no_account">ليس لديك حساب؟ سجل الآن</string>
+    <string name="login_go_to_signup">تسجيل جديد</string>
+    <string name="forgot_password_success">تم إرسال الرابط.</string>
+    <string name="forgot_password_desc">أدخل البريد الإلكتروني.</string>
+    <string name="forgot_password_button">إرسال</string>
+    <string name="new_password_title">كلمة مرور جديدة</string>
+    <string name="new_password_label">كلمة المرور</string>
+    <string name="new_password_button">تحديث</string>
+    <string name="signup_title">تسجيل جديد</string>
+    <string name="signup_username_label">اسم المستخدم</string>
+    <string name="signup_email_label">البريد الإلكتروني</string>
+    <string name="signup_password_label">كلمة المرور</string>
+    <string name="signup_confirm_password">تأكيد كلمة المرور</string>
+    <string name="signup_button">إكمال التسجيل</string>
+    <string name="signup_already_have_account">تسجيل الدخول</string>
+
+    <!-- Guide & Splash -->
+    <string name="guide_title">دليل أنوبا</string>
+    <string name="guide_description">يمكنك مراجعة المحتوى المشترك هنا.</string>
+    <string name="guide_empty_message">لا يوجد محتوى في الدليل بعد.</string>
+    <string name="splash_made_in_turkiye">صنع في تركيا</string>
+
+    <!-- Update -->
+    <string name="update_downloaded">تم تحميل التحديث. جاري تحديث التطبيق&#8230;</string>
+
+    <!-- Mete -->
+    <string name="mete_title">ميتي</string>
+    <string name="mete_empty_content">جاري التحميل&#8230;</string>
+    <string name="mete_video_loading">جاري تحميل الفيديو&#8230;</string>
+    <string name="mete_audio_loading">جاري تحميل الصوت&#8230;</string>
+    <string name="mete_game_listen">استماع</string>
+    <string name="mete_game_find_card">أي واحدة؟</string>
+    <string name="mete_game_correct">رائع! 🎉</string>
+    <string name="mete_game_continue">استمرار</string>
+    <string name="mete_game_insufficient_content">مطلوب 4 عناصر مختلفة على الأقل للعبة.\nيرجى إضافة محتوى أو تغيير اللغة.</string>
+    <string name="mete_search_placeholder">البحث عن اسم أو رقم القسم… (مثال: 1)</string>
+    <string name="mete_add_new_section">فتح قسم جديد</string>
+    <string name="mete_section_name_label">اسم القسم أو رقمه (مثال: 1)</string>
+    <string name="mete_create">إنشاء</string>
+    <string name="mete_story_fallback_title">قصة / رسوم متحركة</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_title_welcome">مرحباً!</string>
+    <string name="tutorial_desc_welcome">دعنا نبدأ.</string>
+    <string name="tutorial_title_drawer">القائمة</string>
+    <string name="tutorial_desc_drawer">يمكنك الوصول إلى ملفك الشخصي ودليل المساعدة وإعدادات الحساب من هنا.</string>
+    <string name="tutorial_title_flower">من أجلك</string>
+    <string name="tutorial_desc_flower"> </string>
+    <string name="tutorial_title_special">المسؤولون</string>
+    <string name="tutorial_desc_special">التحكم.</string>
+    <string name="tutorial_title_more_menu">خيارات إضافية</string>
+    <string name="tutorial_desc_more_menu">⭐ 1000+ شائع: استكشف المحتوى الأكثر تفاعلاً.\n🛡️ مجمع الحجر الصحي: عرض المحتوى تحت المراجعة.\n🇹🇷 ميتي: تجربة تعلم ممتعة وطبيعية.</string>
+    <string name="tutorial_title_search">تصفية المستخدمين</string>
+    <string name="tutorial_desc_search">قم بتصفية المحتوى عن طريق كتابة اسم المستخدم أو المعرف.</string>
+    <string name="tutorial_title_my_contents">محتوايا والمسودات</string>
+    <string name="tutorial_desc_my_contents">إدارة المسودات والمحتوى المنشور من هنا.</string>
+    <string name="tutorial_title_create_video">فيديو</string>
+    <string name="tutorial_desc_create_video">تسجيل ومشاركة.</string>
+    <string name="tutorial_title_create_photo">صورة</string>
+    <string name="tutorial_desc_create_photo">التقاط صورة.</string>
+    <string name="tutorial_title_create_audio">صوت</string>
+    <string name="tutorial_desc_create_audio">تسجيل.</string>
+    <string name="tutorial_title_create_letter">كتابة</string>
+    <string name="tutorial_desc_create_letter">رسائل.</string>
+    <string name="tutorial_title_gallery">المعرض</string>
+    <string name="tutorial_desc_gallery">تحميل.</string>
+    <string name="tutorial_title_map">عالم أنوبا</string>
+    <string name="tutorial_desc_map">شاهد كمية المحتوى المشترك من كل دولة وتتبع تحركات أنوبا حول العالم.</string>
+    <string name="tutorial_title_mete">ميتي</string>
+    <string name="tutorial_desc_mete">تجربة تعلم طبيعية مع ميتي.</string>
+    <string name="tutorial_title_mosaic">فسيفساء</string>
+    <string name="tutorial_desc_mosaic">استكشف عالم الفسيفساء الملون حيث تجتمع المحتويات المتنوعة.</string>
+    <string name="tutorial_title_tab_videos">فيديوهات</string>
+    <string name="tutorial_desc_tab_videos">مشاهدة.</string>
+    <string name="tutorial_title_tab_photos">صور</string>
+    <string name="tutorial_desc_tab_photos">نظرة.</string>
+    <string name="tutorial_title_tab_audios">أصوات</string>
+    <string name="tutorial_desc_tab_audios">استماع.</string>
+    <string name="tutorial_title_tab_letters">رسائل</string>
+    <string name="tutorial_desc_tab_letters">اقرأ الرسائل المكتوبة أو استمع إلى الرسائل الصوتية.</string>
+    <string name="tutorial_title_tab_chats">دردشات</string>
+    <string name="tutorial_desc_tab_chats">أرسل رسائل، تواصل، وقم بإجراء مكالمات صوتية ومرئية مجانية.</string>
+    <string name="tutorial_title_notifications">إشعارات</string>
+    <string name="tutorial_desc_notifications">تتبع إشعاراتك هنا.</string>
+
+    <string name="tutorial_next">التالي</string>
+    <string name="tutorial_skip">إغلاق</string>
+    <string name="tutorial_finish">إنهاء</string>
+
+    <!-- Mosaic -->
+    <string name="mosaic_title">فسيفساء</string>
+    <string name="mosaic_close">إغلاق</string>
+    <string name="mosaic_video_loading">سيعمل الفيديو قريباً&#8230;</string>
+    <string name="mosaic_audio_label">صوت</string>
+    <string name="mosaic_video_label">فيديو</string>
+    <string name="mosaic_ad_label">إعلان</string>
+    <string name="mosaic_title_caps">MOSAIC</string>
+    <string name="mosaic_ad_contains">يحتوي على إعلانات</string>
+    <string name="home_guide_dialog_title">جولة في التطبيق</string>
+    <string name="home_guide_dialog_text">هل ترغب في القيام بجولة سريعة لاكتشاف أنوبا؟</string>
+    <string name="home_guide_dialog_tour">بدء الجولة</string>
+    <string name="map_title">خريطة عالم أنوبا</string>
+    <string name="map_content_count">%d محتوى</string>
+    <string name="country_ae">الإمارات العربية المتحدة</string>
+    <string name="country_dz">الجزائر</string>
+    <string name="country_ma">المغرب</string>
+    <string name="country_za">جنوب أفريقيا</string>
+    <string name="country_qa">قطر</string>
+    <string name="country_ke">كينيا</string>
+    <string name="country_eg">مصر</string>
+    <string name="country_ng">نيجيريا</string>
+    <string name="country_tn">تونس</string>
+    <string name="country_tr">تركيا</string>
+    <string name="country_sa">المملكة العربية السعودية</string>
+    <string name="country_om">عمان</string>
+    <string name="country_jo">الأردن</string>
+    <string name="country_ca">كندا</string>
+    <string name="country_au">أستراليا</string>
+    <string name="country_br">البرازيل</string>
+    <string name="country_ar">الأرجنتين</string>
+    <string name="country_in">الهند</string>
+    <string name="country_jp">اليابان</string>
+    <string name="country_kr">كوريا الجنوبية</string>
+    <string name="country_id">إندونيسيا</string>
+    <string name="country_gb">المملكة المتحدة</string>
+    <string name="country_fr">فرنسا</string>
+    <string name="country_es">إسبانيا</string>
+    <string name="country_nl">هولندا</string>
+    <string name="country_co">كولومبيا</string>
+    <string name="country_my">ماليزيا</string>
+    <string name="country_tm">تركمانستان</string>
+    <string name="country_other">أخرى</string>
+    <string name="country_kg">قيرغيزستان</string>
+    <string name="country_pk">باكستان</string>
+    <string name="country_az">أذربيجان</string>
+    <string name="country_kz">كازاخستان</string>
+    <string name="country_uz">أوزبكستان</string>
+    <string name="country_hu">المجر</string>
+    <string name="country_us">الولايات المتحدة</string>
+    <string name="country_ru">روسيا</string>
+    <string name="country_mx">المكسيك</string>
+    <string name="country_it">إيطاليا</string>
+    <string name="country_de">ألمانيا</string>
+
+    <!-- Chat Reply Previews -->
+    <string name="chat_reply_image">[صورة]</string>
+    <string name="chat_reply_video">[فيديو]</string>
+    <string name="chat_reply_audio">[رسالة صوتية]</string>
+
+    <!-- Official Panel -->
+    <string name="admin_panel_title">لوحة الرسوم المتحركة</string>
+    <string name="admin_panel_police">🔵 مداهمة الشرطة</string>
+    <string name="admin_panel_commando">🔴 عملية كوماندوز</string>
+    <string name="admin_panel_bekci">🟤 دورية الحارس</string>
+    <string name="admin_panel_close">إغلاق</string>
+
+    <!-- Arama Sistemi -->
+    <string name="call_incoming">مكالمة واردة</string>
+    <string name="call_video_incoming">مكالمة فيديو واردة&#8230;</string>
+    <string name="call_voice_incoming">مكالمة صوتية واردة&#8230;</string>
+    <string name="call_accept">رد</string>
+    <string name="call_accept_video">قبول الفيديو</string>
+    <string name="call_reject">رفض</string>
+    <string name="call_waiting">جاري الاتصال&#8230;</string>
+    <string name="call_voice_ongoing">في مكالمة</string>
+    <string name="call_rejected_by_partner">تم رفض المكالمة</string>
+    <string name="call_ended">انتهت المكالمة</string>
+
+    <!-- Arama Erişilebilirlik -->
+    <string name="ax_mute">كتم الصوت</string>
+    <string name="ax_end_call">إنهاء المكالمة</string>
+    <string name="ax_camera">تشغيل/إيقاف الكاميرا</string>
+    <string name="ax_speaker">تشغيل/إيقاف مكبر الصوت</string>
+    <string name="ax_switch_camera">تبديل الكاميرا</string>
+
+    <!-- Engelleme Sistemi -->
+    <string name="chat_block_user">حظر المستخدم</string>
+    <string name="chat_unblock_user">إلغاء الحظر</string>
+    <string name="chat_block_dialog_title">حظر المستخدم؟</string>
+    <string name="chat_block_dialog_text">هل أنت متأكد أنك تريد حظر %1$s؟ لن تتمكنا من مراسلة أو الاتصال ببعضكما البعض.</string>
+    <string name="chat_user_blocked_toast">تم حظر المستخدم.</string>
+    <string name="chat_user_unblocked_toast">تم إلغاء الحظر.</string>
+    <string name="chat_no_blocked_users">لا يوجد مستخدمون محظورون بعد.</string>
+    <string name="chat_request_title">طلب رسالة</string>
+    <string name="chat_request_desc">أرسل لك %1$s رسالة. هل تقبل هذه الدردشة؟</string>
+    <string name="chat_request_accept">قبول</string>
+    <string name="chat_request_delete">حذف</string>
+    <string name="chat_media_message">رسالة وسائط</string>
+    <string name="chat_audio_recording">جاري تسجيل الصوت&#8230;</string>
+    <string name="chat_attachment_description">مرفق</string>
+    <string name="chat_recording_failed">فشل التسجيل.</string>
+    <string name="chat_recording_failed_system">فشل التسجيل. قد يكون النظام يمنعه.</string>
+    <string name="chat_microphone_permission_required">إذن الميكروفون مطلوب لتسجيل الصوت.</string>
+    <string name="chat_search_user_prompt">ابحث عن شخص تريد الدردشة معه.</string>
+    <string name="chat_user_not_found">لم يتم العثور على الشخص.</string>
+    <string name="chat_group_user_added">أضاف %1$s إلى المجموعة.</string>
+    <string name="chat_group_user_removed">أزال %1$s من المجموعة.</string>
+    <string name="chat_group_user_left">غادر المجموعة.</string>
+    <string name="chat_group_image_update_failed">فشل تحديث صورة المجموعة.</string>
+    <string name="chat_group_create_error">خطأ أثناء إنشاء المجموعة: %1$s</string>
+    <string name="notification_someone">شخص ما</string>
+    <string name="notification_calling_you">%1$s يتصل بك&#8230;</string>
+    <string name="notification_new_content">لديك إشعار جديد.</string>
+    <string name="chat_media">وسائط</string>
+    <string name="chat_options_accessible_name">خيارات الدردشة</string>
+
+    <string name="notification_anoba_response_title">الأخت أنوبا</string>
+    <string name="notification_anoba_response_body">تم الرد على رسالتك! انقر للقراءة ✨</string>
+
+    <string name="admin_anoba_panel_button">لوحة الأخت أنوبا</string>
+
+    <!-- مركز الإشعارات (v120) -->
+    <string name="notif_hub_title">الإشعارات</string>
+    <string name="notif_hub_mark_all_read">قراءة الكل</string>
+    <string name="notif_hub_empty">لا توجد إشعارات جديدة بعد.</string>
+    <string name="notif_hub_close">إغلاق</string>
+    <string name="notif_type_popular_owner">تهانينا! منشورك في صفحة 1000+ 🏆</string>
+    <string name="notif_type_popular_reactor">المحتوى الذي تفاعلت معه موجود في صفحة 1000+ ✨</string>
+    <string name="notif_type_quarantine_owner">تم نقل محتواك للمراجعة 🛡️</string>
+    <string name="notif_type_reporter_quarantine">تم وضع المحتوى المُبلغ عنه في الحجر الصحي ✅</string>
+    <string name="notif_type_reporter_unflag">تمت الموافقة على المحتوى المُبلغ عنه 🛡️</string>
+    <string name="notif_type_reaction">تفاعل مع محتواك.</string>
+    <string name="notif_type_comment">علق على محتواك.</string>
+    <string name="notif_type_generic">لديك إشعار جديد.</string>
+
+    <string name="letteradmin_title">الأخت أنوبا: مجمع الرسائل</string>
+    <string name="letteradmin_tab_pending">قيد الانتظار</string>
+    <string name="letteradmin_tab_answered">تم الرد عليها</string>
+    <string name="letteradmin_response_label">رد الأخت أنوبا:</string>
+    <string name="letteradmin_empty_pending">لا توجد رسائل جديدة تنتظر الرد ✨</string>
+    <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+</resources>

@@ -1,0 +1,234 @@
+# Anoba Proje Özeti & Mimarî Protokol (Sürüm 9.1.6 - v136)
+
+⚠️ **GELİŞTİRİCİ İÇİN KRİTİK KURALLAR (ASLA BOZMA)** ⚠️
+1. **Listing Tasarımı:** Ana akıştaki kartlar (Listing) daima SADE kalmalıdır. Sadece "En Çok Beğenilen Emoji + Sayı" görünür. Emoji seçim barı ASLA listing kartlarına eklenmez, sadece Detay sayfalarında olur.
+2. **Zoom Mantığı:** Listing kartlarında (HomeScreen) iki parmakla zoom ASLA olmayacak. Zoom sadece Detay sayfalarına özeldir.
+3. **Veri Akışı (Local-First):** Uygulama her zaman önce Room'dan (Offline) okumalıdır. Reaksiyonlarda dahi ağ cevabı beklenmeden önce Room güncellenir (Optimistic Update).
+4. **Zil Sesi Durdurma:** Zil sesini durdurmak için `startService` kullanılmaz, daima `stopService` kullanılır (Arka plan çökmelerini önlemek için).
+5. **Görsel Yükleme:** Yeni yüklenen fotoğraflar mutlaka `compressImage` (1080px, %80 kalite) filtresinden geçerek Firebase'e gönderilmelidir.
+6. **Chat Tasarımı:** Sohbet giriş kutuları (ChatInput) daima `Scaffold`'un `bottomBar` parametresine yazılmalıdır. `content` içine yazıldığında klavye ve sistem barı boşlukları (`innerPadding`) ile çakışma yaşanmaktadır.
+7. **Reaksiyon Listeleri & Koleksiyon Grubu Kuralları:** `collectionGroup` sorgularının normal kullanıcılara engel oluşturmaması için `firestore.rules` içinde her zaman `match /{path=**}/[koleksiyon_adi]/{reactionId}` kuralı açık olmalı, `firestore.indexes.json` içinde `fieldOverrides` altında `COLLECTION_GROUP` tanımı bulunmalı ve veriler `DocumentSnapshot` üzerinden güvenli okunmalıdır.
+
+---
+
+## 1. Mimarî Yapı (v111 Güncellemeleri)
+- **Generic UiState Safety:** `UiState<out T>` yapısı tüm projede standartlaştırıldı. Başarılı veri durumları artık `UiState.Success<T>` şeklinde açıkça tanımlanarak "type casting" hataları ve "always null" uyarıları giderildi.
+- **Paging 3 Stabilization:** `GeneralChat` ve `PrivateChat` ekranlarındaki Paging 3 akışı, ViewModel başlatıldığında (`init`) otomatik tetiklenecek şekilde optimize edildi.
+
+## 2. Görsel Standartlar & UX
+- **HomeScreen Feed Fix:** Ana sayfadaki içerik akışının (Feed) yüksekliği, alt panel (Mete) kapalıyken tüm ekranı kaplayacak şekilde düzeltildi. `innerPadding` çakışmaları temizlendi.
+- **Navigation Cleanup:** Yanlışlıkla eklenen global alt menü (Bottom Bar) kaldırılarak uygulamanın özgün ve sade tasarımı korundu.
+- **TopAppBar Premium:** Sohbet ekranlarındaki üst barlar; gölge, yuvarlatılmış alt köşeler ve `AnobaNavy` renk uyumuyla modernize edildi.
+- **Chat Balloons:** Mesaj balonlarına yönlü kavis (corner radius) ve hafif gölge eklenerek WhatsApp stili premium görünüm sağlandı.
+
+## 3. Sohbet Modülü & Yetkili (Official) Mesaj Mimarisi (v128)
+- **Official Message Masking:** Yetkili (`OFFICIAL` / `ADMIN`) hesapların attığı mesajlar, kullanıcının kişisel profil adı ne olursa olsun veritabanına ve ekrana her zaman **"Anoba"** adıyla ve altın rozetiyle yazılır.
+- **Floating Pill Tasarımı:** Mesaj yazma alanı "havada süzülen hap" tasarımına geçirildi.
+- **Real-time Sync Fix:** `GeneralChatViewModel` içinde mesajların gönderilmesine rağmen görünmemesi sorunu, `init` bloğunda `loadChatMessages` çağrısı yapılarak çözüldü.
+
+## 4. Performans & Güvenlik
+- **Privacy First (Kişi Arama):** Özel sohbet başlatırken kişi arama ekranı artık boşken kimseyi listelemiyor. Veritabanı yükünü azaltmak için kullanıcı arama yaptıkça sonuçlar geliyor.
+- **CallScreen Optimization:** Sesli ve görüntülü aramalarda `FLAG_KEEP_SCREEN_ON` ile ekranın kapanması önlendi. Arka plana aranan kişinin profil fotoğrafının bulanık hali (blur) yerleştirildi.
+
+---
+
+## 5. Küresel Erişim & Kayıt Devrimi (v118 Güncellemeleri)
+- **Google Sign-In (Credential Manager):** Uygulamaya "Tek Tıkla Giriş" özelliği eklendi. Android'in en güncel `Credential Manager` altyapısı kullanılarak `Login` ve `SignUp` ekranlarına marka kurallarına uygun, renkli logolu Google butonları yerleştirildi.
+- **MainActivity Stability Fix:** Android 11, 12 ve 13 yüklü cihazlarda açılışta yaşanan `UnsupportedOperationException: Unknown windowLayoutInDisplayCutoutMode: 3` hatası, güvenli versiyon kontrolleri ve `try-catch` blokları ile giderildi.
+- **Session-Based Hybrid Feed:** Ana sayfa (HomeScreen) akışı optimize edildi:
+    - İlk 10 içerik daima en yeni (kronolojik) sırada kalır.
+    - Kalan içerikler oturum başında bir kez karıştırılır (`_sessionShuffledOldMap`) ve kullanıcı detaydan geri döndüğünde liste sırası bozulmaz.
+- **Real-time Stats Sync:** İzlenme sayıları (`viewCount`) artık hem Firebase hem de yerel Room veritabanına aynı anda yazılıyor.
+
+---
+
+## 6. UI & Detay İyileştirmeleri (v118)
+- **VideoCard Header:** Kullanıcı adı ve zaman damgasının (`9.sp`) üst üste binme/kırılma sorunu `weight(1f)` ve `maxLines=1` ile çözüldü.
+- **VideoDetail Navigation:** Zaman damgası alt istatistiklerden alınarak üst başlığa (Kullanıcı adının yanına) taşındı.
+- **PhotoDetail Layout:** Yatay fotoğrafların çok tepede kalmaması için üst boşluk `100.dp`'ye çıkarılarak daha dengeli bir görünüm sağlandı.
+
+---
+
+## 7. Merkezi Bildirim Sistemi & UX Devrimi (v128 Güncellemeleri)
+- **Notification Hub (Bildirim Merkezi):** Uygulamadaki tüm sosyal etkileşimler ana ekrandaki **`NotificationHubCard`** içinde toplanır.
+- **Sadeleştirilmiş Dil (11 Dil):** "Etkileşim" kelimesi çıkarıldı. Başlık mektup ve bildirim metinleri 11 dilde yerelleştirildi.
+- **Temiz Avatar Gösterimi:** Reaksiyon/Tepki bildirimlerinde avatarın köşesindeki çelişkili kırmızı kalp rozeti kaldırıldı. Sadece temiz profil fotoğrafı gösterilmekte, verilen asıl emoji (❤️, 🚫, ❌ vb.) metinde vurgulanmaktadır.
+- **Esnek Okuma (maxLines = 3):** Uzun yorumlar ve bildirim mesajları artık yarım kalmadan 3 satıra kadar rahatça esneyebilmektedir.
+- **Sessiz Bildirim Filtresi (FCM Logic):** Sadece `CHAT` ve `CALL` tipleri kilit ekranında sesli bildirim gösterir, diğerleri sessizce hub'a aktarılır.
+
+---
+
+## 8. Gelişmiş Medya, Reaksiyon Mimarisi & Emoji Kullanıcı Listesi Çözümü (v128_emojisonhali)
+- **Salise Hızında Tepki Güncellemesi (Local-First):** Reaksiyon verildiğinde (`toggleReaction`) ağ yanıtı beklenmeden önce yerel Room veritabanı (`videoDao.insertAll`) güncellenir. Ana sayfa akışı anında güncel skorları ekrana basar.
+- **Şeffaf Video Animasyon Desteği (Alpha WebM):** `Mete` ve `Mozaik` sayfalarında arka plansız video oynatma altyapısı (`TextureView`) kuruldu.
+- **Emoji Sayaç Standardizasyonu:** Tüm içerik türlerinde kartlar ve detay sayfaları **"Lider Tekil Emoji + Skor"** gösterecek şekilde eşitlendi.
+- **🔥 Emoji Kullanıcı Listesi Çözümü (ÇOK KRİTİK):**
+    1. **Firestore Kuralları (`firestore.rules`):** `collectionGroup` sorgularının tüm kullanıcılar için çalışabilmesi amacıyla `match /{path=**}/video_reactions/{reactionId}` vb. koleksiyon grubu wildcard kuralları eklendi.
+    2. **Firestore İndeksleri (`firestore.indexes.json`):** `video_reactions`, `photo_reactions`, `ses_reactions` ve `letter_reactions` koleksiyon grupları için `fieldOverrides` altında `COLLECTION_GROUP` indeks tanımları eklendi ve `firebase deploy` ile buluta yayınlandı.
+    3. **Crash-Proof Veri Okuma:** Repository katmanlarında (`VideoEmojiReactionRepository`, `PhotoEmojiReactionRepository`, `SesEmojiReactionRepository`, `LetterEmojiReactionRepository`) veriler `toObject()` bağımlılığı olmadan doğrudan `DocumentSnapshot` üzerinden okundu (`isOfficial` / `official` anahtar çakışmaları ve `timestamp` null durumları izole edildi).
+
+---
+
+## 9. Takip Sistemi & Akış Kişiselleştirme (v123 Güncellemeleri)
+- **Hafif Takip Mekanizması (Following):** Takip butonu sadece detay sayfalarında ve profil ekranında yer alır.
+- **Hibrit Senkronizasyon (SQLite Optimization):** Room (VideoDao) seviyesinde `SELECT * FROM video_table WHERE ownerId IN (SELECT followingId FROM followed_users)` sorgusu kullanılır.
+- **Takipçi Listeleri:** `UserListSheet` listeleri 30'arlı paketler (chunking) halinde çeker.
+
+---
+
+## 10. Kamera ve Medya Optimizasyonu (v126 Güncellemeleri)
+- **Kristal Netlik (Photo Quality):** `CameraScreen` çekim modu `CAPTURE_MODE_MAXIMIZE_QUALITY` olarak güncellendi.
+- **Hafıza Koruması (OOM):** `PhotoRepository` içinde `inSampleSize` ve `RGB_565` ile hafıza sızıntıları önlendi.
+- **Yön ve EXIF Desteği:** `AndroidX ExifInterface` ile yan çıkan fotoğraflar Matrix ile otomatik döndürülüyor.
+
+---
+
+## 11. Küresel Genişleme & 6 Kıta Kapsayıcılığı (v128 Güncellemeleri)
+- **39+ Ülke Desteği & Tüm Dünya Kapsaması (OTHER / Diğer 🌍):** Haritaya Japonya (🇯🇵), Güney Kore (🇰🇷), Endonezya (🇮🇩), İngiltere (🇬🇧), Fransa (🇫🇷), İspanya (🇪🇸), Hollanda (🇳🇱), Kolombiya (🇨🇴), Malezya (🇲🇾), Türkmenistan (🇹🇲) ve **"Diğer 🌍"** kategorisi eklendi. Listede adı geçmeyen dünyadaki tüm ülkelerden gelen içerikler otomatik olarak **"Diğer 🌍"** filtresinde toplanır.
+- **11 Dünya Dili:** Türkçe, İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Rusça, Arapça, Svahili, Afrikaans ve **Portekizce (`values-pt`)** ile tüm arayüz yerelleştirildi.
+
+---
+
+## 12. Instagram & Kurumsal Web Yönlendirme (GitHub Pages)
+- **Sınırsız Akıllı Yönlendirme:** Onelink limitlerini ve Instagram WebView engelini aşmak için **`https://anobaapp.github.io/-indir/`** adresi kuruldu.
+- **Android Intent Protokolü:** Instagram içi tarayıcıdan tıklandığı an Android `intent://` protokolü tetiklenir ve doğrudan cihazdaki **Google Play Store uygulaması** ayağa kaldırılır.
+
+---
+
+## 13. Servis Sağlayıcılar & Kritik Hesap Bilgileri
+
+### 📞 Agora (Sesli & Görüntülü Arama)
+- **Servis Sağlayıcı:** [Agora.io](https://console.agora.io/)
+- **Yönetim Hesabı:** `morplato@gmail.com` (Google Login).
+- **Maliyet & Kota Yönetimi:** Aylık 10.000 Dakika ücretsiz. Güvenlik freni olarak tüm aramalar **45. dakikada** otomatik kapatılır.
+
+### 🌐 Diğer Servisler & Web Köprüsü
+- **Firebase Console:** `Anoba` Projesi.
+- **Google Play Console:** Geliştirici Hesabı (`tarikdeveloper25@gmail.com`).
+- **GitHub Pages Yönlendirme:** `https://anobaapp.github.io/-indir/` (Instagram Biyografi ve Reklam Linki).
+- **ManyChat (Instagram Otomasyonu):** Essential Paketi ($17/ay - Sınırsız Yorum/DM Otomasyonu, 250 Contact Kapasiteli).
+
+---
+
+## 14. Bulut Yedekleri & Yayın Anahtarı (Google Drive)
+Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` hesabına bağlı Google Drive'da saklanmaktadır.
+
+### 💾 Önemli Yedek Dosyaları
+- **`Anoba_v8.9.8_Global_v139_Media3_GroupSync.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v8.9.8_Global_v139_Media3_GroupSync.zip`) Media3 Transformer 1080p + 3.5 Mbps otomatik video sıkıştırma, AuthService canlı yetki/rozet (PIONEER/Yeşil Tik) senkronizasyonu, Herkese Açık Grup Canlı Akışı (`combine`), R8/ProGuard güvenliği ve yarış durumu (race condition) koruması içeren en güncel ve eksiksiz sürüm yedeği.
+- **`Anoba_v8.9.8_Global_v128_emojisonhali.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v8.9.8_Global_v128_emojisonhali.zip`) Emojiye basınca reaksiyon veren kullanıcılar listesinin tüm kullanıcılara açıldığı (Firestore koleksiyon grubu kuralları, buluta deploy edilmiş indeksler ve çökmez DocumentSnapshot parsing), 11 Dil Desteği, Local-First Reaksiyon Hızı ve Instagram Akıllı Linkini içeren sürüm yedeği.
+- **`Anoba_v8.9.8_Global_v128_Final.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v8.9.8_Global_v128_Final.zip`) Önceki final yedek dosyası.
+
+### 🔑 Uygulama İmza Anahtarı (Keystore)
+- **Dosya Adı:** `anoba_key.jks`
+- **Önemi:** Google Play Store'a güncelleme göndermek için şarttır.
+- **Drive Konumu:** Ana dizin (Drive'ım).
+
+---
+
+## 15. Anoba Proje Hesap Listesi (Yedek Hesaplar)
+
+| E-Posta | Kullanıcı Adı / Unvan | Şifre | Ülke / Not |
+| :--- | :--- | :--- | :--- |
+| `morplato@gmail.com` | Anoba (Admin) | `59123456` | Yönetici Hesabı |
+| `anobaimalat@gmail.com` | Anoba İmalat | `70123456` | Kurumsal |
+| `anobaheyet@gmail.com` | anoba_heyet | `70123456` | Kurumsal |
+| `anobamuhtar@gmail.com` | anoba_muhtar | `70123456` | Muhtar |
+| `anobaguide@gmail.com` | anoba_guide | `70123456` | Rehber |
+| `anobapolis@gmail.com` | Anoba Polis | `70123456` | Polis |
+| `anobaaslan@gmail.com` | Global Aslan | `70123456` | Öncü Hesap |
+| `nevalcicek@hotmail.com` | esma | `70123456` | Öncü Hesap |
+| `nevalcicek2026@gmail.com` | beyaz | `70123456` | Öncü Hesap |
+| `nevalcicek2025@gmail.com` | emine | `70123456` | Öncü Hesap |
+| `oneturkdeveloper@gmail.com` | emre | `70123456` | Öncü Hesap |
+| `oneturkdeveloper25@gmail.com` | demir | `70123456` | Öncü Hesap |
+| `ozgurcicek250@hotmail.com` | ozgur | `ozgur250` | Öncü Hesap |
+| `gm.sibel.un@gmail.com` | Sblnntly | `sibel70` | Öncü Hesap |
+| `cerencicek497@gmail.com` | cico | `ceren497` | Öncü Hesap |
+| `cylncck20@gmail.com` | cylncck | `ceylan20` | Öncü Hesap |
+| `anoba_ethanus@gmail.com` | ethan_m | `70123456` | ABD 🇺🇸 |
+| `anoba_amira@gmail.com` | amira | `70123456` | Mısır 🇪🇬 |
+| `anoba_kamel@gmail.com` | kamel_mansouri | `70123456` | Tunus 🇹🇳 |
+
+---
+
+## 16. Instagram Büyüme, Sosyal Medya Otomasyonu & Endonezya Pazarı (v135 Güncellemeleri)
+- **12. Dünya Dili - Endonezce (`values-in` & `values-id`):** Dünyanın en büyük mobil pazarlarından Endonezya için tüm arayüz metinleri Bahasa Indonesia diline çevrildi ve Android uyumluluğu için hem `values-in` hem de `values-id` klasörlerine eklendi.
+- **ManyChat Yorum Otomasyonu (Meta API 24/7 - Essential Paket $17/ay):**
+  - **Tetikleyici Kelimeler:** `ANOBA`, `INDIR`, `LINK`, `DOWNLOAD`
+  - **Çalışma Mantığı:** Kullanıcı herhangi bir Reels veya gönderinin altına bu kelimeleri yazdığında sistem salisesinde kullanıcının DM kutusuna indirme bağlantısını (`https://anobaapp.github.io/-indir`) ve butonunu otomatik gönderir.
+  - **Keşfet Etkisi:** Otomatik yorumlar sayesinde Reels videolarının etkileşimi artarak Instagram Keşfet (Explore) algoritmasında öne çıkar.
+- **Instagram Profil Standartları (`@anobaapp`):**
+  - **Resmi Logo:** Arka planı düz beyaz zeminli net Anoba amblemi.
+  - **Kurumsal Bio:**  
+    🌐 *Anoba: Connect, Chat & Time Capsule*  
+    ✉️ *Send letters to the future & chat freely!*  
+    📲 *Available on Google Play ⬇️*  
+    🔗 `anobaapp.github.io/-indir`
+  - **Öne Çıkanlar (Highlights):** `ANOBA` (Tanıtım), `METE` (Çocuk/Öğrenim), `LETTERS` (Zaman Kapsülü), `WORLD` (Dünya Haritası ve Ülkeler).
+- **GÜVENLİ MANUEL DM KURALI (SPAM ENGELİ KORUMASI):**
+  - Günde maksimum **20-30 kişiye**, mesajlar arasında **5-10 dakika ara vererek**, kullanıcının adıyla ve kendi ana diliyle samimi davet mesajı atılır.
+  - Asla toplu/bütün gün peş peşe mesaj atılmaz.
+- **Instagram Usulü Profil & Yayınlanan İçerik Yönlendirmesi:**  
+  - Ana akış kartlarında (Video, Fotoğraf, Mektup, Ses) kullanıcının profil resmine veya adına tıklandığında o kullanıcının yayınlanan tüm içeriklerinin listelendiği sayfaya yönlendirilir.
+  - Profil ekranında fotoğraf/isim üzerine veya "Yayınlanan İçeriklerim 🎬" butonuna tıklandığında doğrudan yayınlanan içerikler sayfası açılır.
+
+---
+
+## 17. Reaksiyon Sayaç Senkronizasyonu & Sekme Durum Saklama (v136 Güncellemeleri)
+- **4 Modülde Akıllı Emoji Sayacı (Toggle OFF/ON):**
+  - `Video`, `Photo`, `Letter` ve `Ses` repository sınıflarında yerel Room güncellemesinden önce kullanıcının mevcut emojisi kontrol edilir.
+  - Aynı emojiye tekrar basıldığında sayaç **`-1` düşürülür (Geri alma / Toggle OFF)**.
+  - Başka emojiye geçilirse eski emoji **`-1` düşürülüp** yeni emoji **`+1` artırılır**.
+  - Firestore işleminde hata olursa Room verisi `backupEntity` ile orijinal haline **Rollback** edilir.
+- **Firestore Kuralları Tam Eşleme (`firestore.rules`):**
+  - Normal kullanıcıların `is_popular`, `is_flagged`, `flag_reason`, `flagged_at` alanlarını güncelleyebilmesi için izinler eklendi ve buluta deploy edildi.
+- **MyContentScreen Sekme Düzeni & Varsayılan Açılış (`Taslaklar`):**
+  - Sekme dizilimi **Yayınlananlar / Taslaklar** olarak düzenlendi. Sayfa açıldığında varsayılan olarak **Taslaklar** sekmesi (`selectedTabIndex = 1`) aktif ve seçili olarak gelir. Sekme koruması `rememberSaveable` ile güvence altındadır.
+
+---
+
+## 18. Grup Sohbeti Gizlilik & Sistem Mesajları İyileştirmeleri (v137 Güncellemeleri)
+- **Grup Üye Ekleme Gizliliği (E-Posta Gizleme):** Grup üye ekleme diyaloğunda kişisel e-posta adreslerinin görünmesi engellendi, yerini profesyonel kullanıcı adı (`@kullaniciadi`) aldı.
+- **Mükerrer Üye Ekleme Engeli:** Bir kullanıcı gruba eklendiğinde hem yerel grupta hem de davet listesinde filtresi anında güncellenerek "Üye Ekle" listesinden düşürülür. Çift tıklama veya listede tekrar çıkma sorunu giderildi.
+- **Ortalanmış Sistem Rozetleri (Center Capsule Badge):** *"x kişiyi gruba ekledi"*, *"gruptan çıktı"* gibi sistem bildirimleri kişisel mesaj balonu yerine ekranın tam ortasında zarif ve ortalanmış gri bir kapsül içinde gösterilecek şekilde modernize edildi.
+- **Herkese Açık Grupların Listelenmesi (`GroupChatRepository`):** Grup listesi akışı (`getGroupsStreamForUser`), kullanıcının üye olduğu gruplar ile herkese açık grupları (`isPrivate == false`) `combine` operasyonuyla birleştirerek tüm kullanıcılara canlı göstermektedir. Ayrıca mesaj gönderildiğinde kullanıcı üyeliği otomatik güncellenmektedir.
+
+---
+
+## 19. Otomatik Video Sıkıştırma Pipeline (v138 Güncellemeleri)
+- **Media3 Transformer İstemci Tarafı Optimizasyonu:** `VideoRepository.uploadVideo()` ve `VideoEditViewModel.trimVideo()` akışlarına `AndroidX Media3 Transformer` sıkıştırma katmanı entegre edildi.
+- **Video Standartları & Bitrate Koruması:** Tüm videolar Firebase Storage'a yüklenmeden önce istemci tarafında **1080p Dikey (1080x1920)**, **H.264 video codec**, **~3.5 Mbps Hedef Bitrate (`DefaultEncoderFactory` + `VideoEncoderSettings`)**, **128 kbps AAC ses** ve **Faststart (moov atom başta)** formatına otomatik dönüştürülür.
+- **Release (R8/ProGuard) Güvenliği:** `proguard-rules.pro` dosyasına `androidx.media3.transformer.**`, `androidx.media3.effect.**` ve `androidx.media3.common.**` keep kuralları eklenerek Release APK/AAB derlemelerinde çökme engellendi.
+- **Senkronize Çağrılar:** `VideoViewModel`, `MyContentViewModel` ve `CameraScreen` sınıflarındaki video yükleme çağrılarına `context` parametresi eklendi ve `media3-muxer:1.4.1` modülü Gradle'a eklenerek derleme senkronizasyonu tamamlandı.
+
+---
+
+## 20. Canlı Yetki & Herkese Açık Grup Senkronizasyonu (v139 Güncellemeleri)
+- **Canlı Yetki & Rozet Senkronizasyonu (`AuthService`):** `firestore.collection("users").document(uid).addSnapshotListener` entegre edilerek Firebase Console üzerinden kullanıcının `badgeType` alanı (`PIONEER`, `OFFICIAL`, `ELITE`) değiştirildiği salise uygulamanın canlı hafızada güncellenmesi sağlandı.
+- **Herkese Açık Grup Canlı Akışı (`GroupChatRepository`):** `getGroupsStreamForUser` metodu `combine` operasyonuyla kullanıcının kendi grupları ile herkese açık (`isPrivate == false`) grupları canlı birleştirip listelemektedir.
+- **Race Condition (Yarış Durumu) Güvenliği:** `addMessageToGroup` metodunda kullanıcı önce `members` dizisine `FieldValue.arrayUnion` ile eklenmekte, ardından mesaj subcollection'a yazılmaktadır. Firestore güvenlik kuralları uyumluluğu %100 sağlandı.
+
+---
+
+## 21. Hızlı Üretim & Paylaşım Üst Bar UX Dönüşümü (v140 Güncellemeleri)
+- **Ana Sayfa Hızlı Üretim Butonları (`HomeScreen`):** Eski kafa karışıklığı yaratan liste filtre ikonları üst bardan kaldırılarak yerlerini doğrudan aksiyon alan **Hızlı Üretim / Paylaşım Butonları** aldı:
+  - 🎥 **Kamera (`CameraAlt`):** Doğrudan `Constants.VIDEO_CAMERA_SCREEN` (`CameraScreen`) tam ekranını açar (Fotoğraf çekme + Video kaydetme).
+  - 🖼️ **Galeri (`PhotoLibrary`):** `PickMultipleVisualMedia` sistem galeri seçicisini açarak seçilen fotoğrafları/videoları `MyContentScreen` taslaklarına doğrudan aktarır.
+  - ✍️ **Kalem (`Edit`):** Doğrudan `Constants.LETTER_CREATE_SCREEN` (`LetterCreateScreen`) ekranını açarak yazılı ve sesli mektup oluşturmayı sağlar.
+  - 📑 **İçeriklerim (`DynamicFeed`):** 2. sıradaki 4. kart olarak doğrudan `MyContentScreen` (Taslaklar/İçeriklerim) ekranını açar.
+- **Üst Bar İkon Sıralaması & Boyut Hizalaması (`HomeScreen` 2. Sıra):** 2. sıradaki aksiyon barı **1. Zil (Bildirim) ➔ 2. Kamera (Çek) ➔ 3. Kalem (Yaz) ➔ 4. Galeri (Seç) ➔ 5. Üretim / İçeriklerim (Yönet)** olarak sıralandı. Kart boyutları bir tık küçültülüp (`cardWidth = 32.dp`, `cardHeight = 30.dp`, `iconSize = 18.dp`) sağa doğru tam hizalandı (`Arrangement.End` + `spacedBy(6.dp)`).
+- **Mete Ay-Yıldız Tam Ekran & 3 Nokta Menü Entegrasyonu (`MeteScreen`):**
+  - Ay-Yıldız (Mete) ikonu 1. sıradan kaldırılarak sol üstteki 3 Nokta (`MoreVert`) açılır menüsünün içine (Karantina Havuzu'ndan sonra) `Mete` ismiyle taşındı.
+  - HomeScreen üzerindeki alttan açılır sheet (`BottomSheetScaffold`) kaldırılarak `HomeScreen` hafıza ve performans açısından hafifletildi.
+  - Tıklandığında bağımsız tam ekran **`MeteScreen`** (`Constants.METE_SCREEN`) açılmaktadır.
+  - Üst barı standartlaştırıldı: Solda **Geri Dön Oku**, ortada sade **"Mete"** başlığı, sağda uygulamanın tüm sayfalarında bulunan **Home İkonu** yer almaktadır. Dil değişimlerinde üst bar sade yapısını korur.
+- **Uygulama Turu Rehberi İnce Ayarları (`HomeTutorial`):**
+  - **3 Nokta Işık Odağı Sınırlandırıldı:** `moreMenuIconRect` ışık odağı doğrudan 3 Nokta ikonuna çekildi, yanındaki pembe çiçek yuvarlağının ışık çemberine girmesi engellendi.
+  - **Menü İçi Özellik Açıklamaları:** 3 Nokta adımı açıklaması alt alta 3 maddenin orijinal metinleriyle zenginleştirildi (`1000+ Popüler`, `Karantina Havuzu`, `Mete`).
+  - **Kullanıcı Filtresi (Arama İkonu) Tura Eklendi:** `SEARCH_FILTER` adımı tura dahil edilerek Büyüteç ikonuna ışık odağı bağlandı.
+  - **"Bitti" Butonu Düzeltmesi:** Sohbetler adımında erken çıkan "Bitti" yazısı kaldırıldı. "Bitti" butonu artık turun tam son adımı olan `MY_CONTENTS` (İçeriklerim & Taslaklar) üzerinde görünmektedir.
+
+
+
+
+

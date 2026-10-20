@@ -1,0 +1,8 @@
+.gradle/
+build/
+app/build/
+captures/
+*.apk
+*.jks
+**/res/raw/
+**/res/drawable/

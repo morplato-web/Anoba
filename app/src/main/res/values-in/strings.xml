@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Anoba</string>
+
+    <!-- Roller (Peran) -->
+    <string name="role_admin">Admin</string>
+    <string name="role_muhtar">Kepala Desa</string>
+    <string name="role_moderator">Moderator</string>
+    <string name="role_member">Anggota</string>
+    <string name="role_guest">Tamu</string>
+
+    <!-- Hata Mesajları (Pesan Kesalahan) -->
+    <string name="error_invalid_email">Format email tidak valid.</string>
+    <string name="error_wrong_password">Kata sandi salah.</string>
+    <string name="error_user_not_found">Pengguna tidak ditemukan.</string>
+    <string name="error_user_disabled">Akun ini telah dinonaktifkan.</string>
+    <string name="error_too_many_requests">Terlalu banyak percobaan, silakan coba lagi nanti.</string>
+    <string name="error_email_already_in_use">Alamat email ini sudah digunakan.</string>
+    <string name="error_weak_password">Kata sandi terlalu lemah.</string>
+    <string name="error_network_request_failed">Kesalahan koneksi jaringan.</string>
+    <string name="error_unknown">Terjadi kesalahan tak terduga.</string>
+    <string name="error_password_too_short">Kata sandi minimal harus 6 karakter.</string>
+    <string name="error_username_short">Nama pengguna terlalu pendek.</string>
+    <string name="error_passwords_mismatch">Kata sandi tidak cocok.</string>
+    <string name="anonymous">Anonim</string>
+    <string name="error_comments_loading">Gagal memuat komentar.</string>
+    <string name="error_comment_send">Gagal mengirim komentar.</string>
+    <string name="error_login_required">Silakan masuk untuk melanjutkan.</string>
+    <string name="error_action_failed">Operasi gagal.</string>
+    <string name="error_delete_failed">Gagal menghapus.</string>
+    <string name="error_unauthorized">Anda tidak memiliki izin untuk tindakan ini.</string>
+    <string name="error_member_only_letter">Silakan mendaftar untuk menulis surat.</string>
+    <string name="error_member_only_reaction">Silakan mendaftar untuk berinteraksi.</string>
+    <string name="error_letter_not_found">Surat tidak ditemukan.</string>
+    <string name="error_letter_loading">Gagal memuat surat.</string>
+    <string name="unknown_error">Kesalahan tidak diketahui.</string>
+
+    <!-- UI State Ortak Metinler (Teks Status UI Umum) -->
+    <string name="state_loading">Memuat&#8230;</string>
+    <string name="state_error_loading">Terjadi kesalahan saat memuat data.</string>
+    <string name="camera_permission_denied">Izin kamera ditolak. Silakan berikan izin dari pengaturan.</string>
+    <string name="state_no_data">Belum ada pesan.</string>
+    <string name="state_retry">Coba Lagi</string>
+    <string name="state_transcribing">Mentranskripsikan&#8230;</string>
+    <string name="state_loading_more">Memuat lebih banyak&#8230;</string>
+    <string name="state_load_error">Gagal memuat. Coba lagi.</string>
+    <string name="chat_search_placeholder">Cari di pesan&#8230;</string>
+    <string name="chat_input_placeholder">Ketik pesan&#8230;</string>
+    <string name="chat_search_group_placeholder">Cari di pesan grup&#8230;</string>
+    <string name="notification_channel_name">Pesan Anoba</string>
+    <string name="notification_default_title">Pesan Baru</string>
+    <string name="notification_permission_denied_rationale">Izin notifikasi ditolak. Anda dapat mengaktifkannya di pengaturan agar tidak ketinggalan pesan penting.</string>
+
+    <!-- Auth & AuthService -->
+    <string name="guest">Tamu</string>
+    <string name="auth_generic_fail">Tindakan tidak dapat dilakukan.</string>
+    <string name="auth_user_object_null">Kesalahan sesi: Objek pengguna kosong.</string>
+    <string name="auth_password_reset_success">Email pengaturan ulang kata sandi telah dikirim.</string>
+    <string name="auth_not_logged_in">Silakan masuk terlebih dahulu.</string>
+    <string name="auth_password_update_success">Kata sandi berhasil diperbarui.</string>
+    <string name="auth_user_not_found">Pengguna tidak ditemukan.</string>
+    <string name="auth_username_update_success">Nama berhasil diperbarui.</string>
+    <string name="auth_image_upload_fail">Gagal mengunggah gambar.</string>
+    <string name="auth_profile_photo_update_success">Foto profil berhasil diperbarui.</string>
+    <string name="auth_account_deleted_success">Akun Anda berhasil dihapus.</string>
+    <string name="auth_process_completed">Proses berhasil diselesaikan.</string>
+
+    <!-- Ortak (Umum) -->
+    <string name="cancel">Batal</string>
+    <string name="common_cancel">Batal</string>
+    <string name="delete">Hapus</string>
+    <string name="common_back">Kembali</string>
+    <string name="common_close">Tutup</string>
+    <string name="common_confirm">Oke</string>
+    <string name="common_listen">Dengarkan</string>
+    <string name="common_stop">Berhenti</string>
+    <string name="common_record">Rekam</string>
+    <string name="common_hide">Sembunyikan</string>
+    <string name="common_just_now">baru saja</string>
+    <string name="common_minutes_ago">%d menit yang lalu</string>
+    <string name="common_hours_ago">%d jam yang lalu</string>
+    <string name="common_days_ago">%d hari yang lalu</string>
+    <string name="common_minutes_later">%d menit lagi</string>
+    <string name="common_hours_later">%d jam lagi</string>
+    <string name="common_days_later">%d hari lagi</string>
+    <string name="common_unknown">Tidak diketahui</string>
+    <string name="transcription_ai_report">Pesan suara ini dianalisis oleh mesin AI lokal di ponsel Anda. Konten diproses dalam bahasa %1$s.</string>
+
+    <!-- Chat & MyContent -->
+    <string name="chathome_uploading_media">Mengunggah Media&#8230;</string>
+    <string name="mycontent_guest_warning">Silakan mendaftar untuk membagikan konten.</string>
+    <string name="mycontent_guide_add">Tambahkan ke Panduan (Anoba)</string>
+    <string name="mycontent_guide_remove">Hapus dari Panduan</string>
+    <string name="mycontent_guide_updated">Status panduan diperbarui.</string>
+    <string name="mycontent_error_loading">Gagal memuat konten.</string>
+    <string name="mycontent_error_delete">Gagal menghapus konten.</string>
+    <string name="mycontent_error_timeout">Koneksi batas waktu berakhir.</string>
+    <string name="mycontent_published_tab">Diterbitkan</string>
+    <string name="mycontent_drafts_tab">Draf</string>
+    <string name="mycontent_back">Kembali</string>
+    <string name="follow">Ikuti</string>
+    <string name="following">Mengikuti</string>
+    <string name="feed_explore">Jelajahi</string>
+    <string name="feed_following">Mengikuti</string>
+    <string name="feed_following_empty">Anda belum mengikuti siapa pun atau orang yang Anda ikuti belum membagikan apa pun.</string>
+    <string name="feed_following_go_explore">Mulai Menjelajah</string>
+    <string name="followers">Pengikut</string>
+    <string name="following_label">Mengikuti</string>
+    <string name="mycontent_home">Beranda</string>
+    <string name="mycontent_new_video">Video Baru</string>
+    <string name="mycontent_new_photo">Foto Baru</string>
+    <string name="mycontent_new_audio">Audio Baru</string>
+    <string name="mycontent_new_letter">Surat Baru</string>
+    <string name="mycontent_from_gallery">Dari Galeri</string>
+    <string name="mycontent_upload_cancelled">Pengunggahan dibatalkan.</string>
+    <string name="mycontent_video_preparing">Menyiapkan video untuk diedit&#8230;</string>
+    <string name="mycontent_content_loading">Memuat konten&#8230;</string>
+    <string name="mycontent_publish_success">Konten berhasil diterbitkan!</string>
+    <string name="mycontent_unpublish_success">Konten ditarik dari publikasi.</string>
+    <string name="mycontent_sheet_published">Diterbitkan</string>
+    <string name="mycontent_sheet_draft">Draf</string>
+    <string name="mycontent_sheet_views">Tayangan</string>
+    <string name="mycontent_sheet_reactions">Interaksi</string>
+    <string name="mycontent_sheet_comments">Komentar</string>
+    <string name="mycontent_sheet_open">Buka</string>
+    <string name="mycontent_sheet_unpublish">Tarik Publikasi</string>
+    <string name="mycontent_sheet_publish">Terbitkan</string>
+    <string name="mycontent_sheet_edit">Edit</string>
+    <string name="mycontent_sheet_delete">Hapus</string>
+    <string name="mycontent_card_video_thumb">Pratinjau Video</string>
+    <string name="mycontent_card_play_video">Putar Video</string>
+    <string name="mycontent_card_user_photo">Foto Pengguna</string>
+    <string name="mycontent_card_audio_waveform">Bentuk Gelombang Audio</string>
+    <string name="mycontent_delete_dialog_title">Hapus Konten</string>
+    <string name="mycontent_delete_dialog_text">Apakah Anda yakin ingin menghapus konten ini secara permanen?</string>
+    <string name="mycontent_delete_dialog_confirm">Ya, Hapus</string>
+    <string name="mycontent_delete_dialog_cancel">Batal</string>
+    <string name="mycontent_no_published_content">Anda belum memiliki konten yang diterbitkan.</string>
+    <string name="mycontent_no_draft_content">Anda belum memiliki draf.</string>
+
+    <!-- Sohbet (ChatHome & PrivateChat) -->
+    <string name="chathome_messages_deleted_snackbar">%1$d pesan dihapus</string>
+    <string name="chathome_undo">Urungkan</string>
+    <string name="chathome_messages_copied">Pesan disalin</string>
+    <string name="chathome_file_downloading">Mengunduh File</string>
+    <string name="chathome_download_started">Pengunduhan dimulai&#8230;</string>
+    <string name="chathome_download_failed">Pengunduhan gagal.</string>
+    <string name="chathome_edit_message">Edit Pesan</string>
+    <string name="chathome_back">Kembali</string>
+    <string name="chathome_home">Beranda</string>
+    <string name="chathome_today">Hari Ini</string>
+    <string name="chathome_yesterday">Kemarin</string>
+    <string name="chathome_delete_all_messages">Hapus semua pesan</string>
+    <string name="chathome_delete_all_dialog_title">Hapus Semua Pesan</string>
+    <string name="chathome_delete_all_dialog_text">Semua pesan di ruangan ini akan dihapus secara permanen. Apakah Anda yakin?</string>
+    <string name="chathome_delete">Hapus</string>
+    <string name="chathome_cancel">Batal</string>
+    <string name="chathome_gallery">Galeri</string>
+    <string name="chathome_select_from_gallery">Pilih dari Galeri</string>
+    <string name="chathome_photo">Foto</string>
+    <string name="chathome_open_camera">Buka Kamera</string>
+    <string name="chathome_photo_description">Foto</string>
+    <string name="chathome_video">Video</string>
+    <string name="chathome_open_video">Rekam Video</string>
+    <string name="chathome_share_preparing">Menyiapkan berbagi&#8230;</string>
+    <string name="chathome_share_with">Bagikan dengan&#8230;</string>
+    <string name="chathome_share_failed">Gagal membagikan.</string>
+    <string name="chathome_image_uri_error">Jalur gambar tidak dapat dibuat.</string>
+    <string name="chathome_video_uri_error">Jalur video tidak dapat dibuat.</string>
+    <string name="chathome_anonymous">Anonim</string>
+    <string name="chathome_background_image_description">Latar belakang obrolan</string>
+    <string name="privatechat_title">Obrolan Pribadi</string>
+    <string name="privatechat_no_messages">Belum ada pesan dengan %1$s.</string>
+    <string name="privatechat_no_messages_default_user">Pengguna Terpilih</string>
+    <string name="privatechat_no_messages_default_user_with_name">%1$s</string>
+    <string name="privatechat_error">Kesalahan: %1$s</string>
+    <string name="groupitem_private_group">Grup Rahasia</string>
+    <string name="groupitem_public_group">Grup Publik</string>
+    <string name="groupitem_info_content_description">Info Grup</string>
+    <string name="groupchatlist_add_group">Tambah Grup</string>
+    <string name="groupchatlist_title">Obrolan Grup</string>
+    <string name="groupchatlist_back">Kembali</string>
+    <string name="groupchatlist_home">Beranda</string>
+    <string name="groupchatlist_hide_list">Sembunyikan Daftar</string>
+    <string name="groupchatlist_show_list">Tampilkan Daftar</string>
+    <string name="groupchatlist_no_groups">Belum ada grup.</string>
+    <string name="groupchatlist_dialog_create_new_group">Buat Grup Baru</string>
+    <string name="groupchatlist_dialog_group_name">Nama Grup</string>
+    <string name="groupchatlist_dialog_group_description">Deskripsi Grup</string>
+    <string name="groupchatlist_dialog_private_group">Grup Rahasia?</string>
+    <string name="groupchatlist_dialog_private_group_desc">Hanya untuk undangan</string>
+    <string name="groupchatlist_dialog_create">Buat</string>
+    <string name="groupchatlist_dialog_cancel">Batal</string>
+    <string name="groupchatlist_error_name_empty">Nama grup tidak boleh kosong.</string>
+    <string name="groupchatlist_error_no_user">Pengguna tidak ditentukan.</string>
+    <string name="groupchatlist_success_group_created">Grup berhasil dibuat!</string>
+    <string name="groupchatlist_default_description">Grup baru dibuat.</string>
+
+    <string name="chat_profile_image">Foto Profil</string>
+    <string name="chat_sent_image">Gambar Terkirim</string>
+    <string name="chat_play_video">Putar Video</string>
+    <string name="chat_pause">Jeda</string>
+    <string name="chat_play">Putar</string>
+    <string name="chat_message_read">Dibaca</string>
+    <string name="chat_message_sent">Terkirim</string>
+    <string name="chat_today">Hari Ini</string>
+    <string name="chat_me">Anda</string>
+    <string name="chat_typing">Sedang mengetik&#8230;</string>
+
+    <!-- Sohbet Seçim Modu (Mode Pilihan Obrolan) -->
+    <string name="chat_selection_title">%1$d dipilih</string>
+    <string name="chat_selection_close">Tutup Pilihan</string>
+    <string name="chat_selection_save_to_gallery">Simpan ke Galeri</string>
+    <string name="chat_selection_share">Bagikan</string>
+    <string name="chat_selection_copy">Salin</string>
+    <string name="chat_selection_edit">Edit</string>
+    <string name="chat_selection_reply">Balas</string>
+    <string name="chat_selection_transcribe">Transkripsi</string>
+    <string name="chat_selection_delete">Hapus</string>
+
+    <!-- HomeScreen -->
+    <string name="home_menu">Menu</string>
+    <string name="home_my_contents">Konten Saya</string>
+    <string name="home_learn_turkish">Belajar Bahasa Turki</string>
+    <string name="home_videos">Video</string>
+    <string name="home_photos">Foto</string>
+    <string name="home_audios">Suara</string>
+    <string name="home_letters">Surat</string>
+    <string name="home_chat">Obrolan</string>
+    <string name="home_no_content">Belum ada konten.</string>
+    <string name="home_share_content">Bagikan</string>
+    <string name="home_pin_content">Sematkan</string>
+    <string name="home_pinned_filter">Pilihan Saya</string>
+    <string name="tutorial_title_pin">Pilihan Saya</string>
+    <string name="tutorial_desc_pin">Anda dapat membuat feed kustom dengan menyematkan konten yang menarik perhatian Anda.</string>
+    <string name="tutorial_title_following">Mengikuti</string>
+    <string name="tutorial_desc_following">Gunakan filter ini untuk hanya melihat kiriman dari orang yang Anda ikuti.</string>
+
+    <string name="tutorial_title_quarantine">Karantina</string>
+    <string name="tutorial_desc_quarantine">Anda dapat memantau konten yang ditandai komunitas dan sedang dalam proses peninjauan di sini.</string>
+
+    <string name="tutorial_title_popular">1000+</string>
+    <string name="tutorial_desc_popular">Kiriman yang melebihi 1000 interaksi dalam emosi apa pun ditampilkan di sini.</string>
+
+    <string name="popular_sheet_title">1000+</string>
+    <string name="popular_sheet_subtitle">1000+ interaksi</string>
+    <string name="popular_sheet_empty">Belum ada konten 1000+.</string>
+    <string name="popular_owner_title">Selamat! 🏆</string>
+    <string name="popular_owner_message">Kiriman Anda ada di halaman 1000+</string>
+    <string name="popular_reactor_title">Anda berbagi kesuksesan! ✨</string>
+    <string name="popular_reactor_message">Konten yang Anda beri reaksi ada di halaman 1000+</string>
+    <string name="status_in_review">Sedang Ditinjau</string>
+
+    <string name="quarantine_explanation_forbidden">Komunitas menandai konten ini sebagai \'Tidak Pantas / Berbahaya\'.</string>
+    <string name="quarantine_explanation_delete">Komunitas meminta konten ini untuk \'Dihapus\'.</string>
+    <string name="quarantine_explanation_generic">Konten sedang dalam tahap peninjauan.</string>
+    <string name="quarantine_footer_note">Peninjauan akhir akan dilakukan oleh tim Anoba.</string>
+
+    <!-- ProfileScreen -->
+    <string name="profilescreen_home">Beranda</string>
+    <string name="profilescreen_email">Email</string>
+    <string name="profilescreen_user_number">Nomor Pengguna</string>
+    <string name="profilescreen_blocked_users">Pengguna yang Diblokir</string>
+    <string name="profilescreen_edit_profile">Edit Profil</string>
+
+    <!-- GroupChatScreen -->
+    <string name="groupchatscreen_not_logged_in">Anda harus masuk terlebih dahulu.</string>
+    <string name="groupchatscreen_downloading_file">Mengunduh file&#8230;</string>
+    <string name="groupchatscreen_download_started">Pengunduhan dimulai.</string>
+    <string name="groupchatscreen_download_failed">Pengunduhan gagal.</string>
+    <string name="groupchatscreen_share_preparing">Menyiapkan berbagi&#8230;</string>
+    <string name="groupchatscreen_share_with">Bagikan dengan&#8230;</string>
+    <string name="groupchatscreen_share_failed">Gagal membagikan.</string>
+    <string name="groupchatscreen_image_uri_error">Kesalahan jalur gambar.</string>
+    <string name="groupchatscreen_video_uri_error">Kesalahan jalur video.</string>
+    <string name="groupchatscreen_title_default">Obrolan Grup</string>
+    <string name="groupchatscreen_back">Kembali</string>
+    <string name="groupchatscreen_home">Beranda</string>
+    <string name="groupchatscreen_typing_one">%1$s sedang mengetik&#8230;</string>
+    <string name="groupchatscreen_typing_two">%1$s dan %2$s sedang mengetik&#8230;</string>
+    <string name="groupchatscreen_typing_many">%1$s dan lainnya sedang mengetik&#8230;</string>
+    <string name="groupchatscreen_edit_mode">Mode Edit</string>
+    <string name="groupchatscreen_cancel_edit">Batalkan Edit</string>
+    <string name="groupchatscreen_edit_message_title">Edit Pesan</string>
+
+    <!-- GroupInfo Screen -->
+    <string name="groupinfo_title">Info Grup</string>
+    <string name="groupinfo_back">Kembali</string>
+    <string name="groupinfo_cancel_edit">Batal</string>
+    <string name="groupinfo_save_changes">Simpan Perubahan</string>
+    <string name="groupinfo_edit_group">Edit Grup</string>
+    <string name="groupinfo_group_profile_image">Foto Profil Grup</string>
+    <string name="groupinfo_change_image">Ganti Gambar</string>
+    <string name="groupinfo_group_name">Nama Grup</string>
+    <string name="groupinfo_group_description">Deskripsi Grup</string>
+    <string name="groupinfo_mute_group">Bisukan Grup</string>
+    <string name="groupinfo_is_private">Rahasia?</string>
+    <string name="groupinfo_member_management">Anggota</string>
+    <string name="groupinfo_invite_member">Undang Anggota</string>
+    <string name="groupinfo_remove_member">Keluarkan Anggota</string>
+    <string name="groupinfo_group_settings">Pengaturan Grup</string>
+    <string name="groupinfo_delete_group_permanently">Hapus Grup Secara Permanen</string>
+    <string name="groupinfo_leave_group">Keluar dari Grup</string>
+    <string name="groupinfo_leave_group_confirm">Apakah Anda yakin ingin keluar dari grup ini?</string>
+    <string name="groupinfo_dialog_invite_member_title">Undang Anggota</string>
+    <string name="groupinfo_dialog_delete_group_title">Hapus Grup</string>
+    <string name="groupinfo_dialog_delete_group_text">Apakah Anda yakin ingin menghapus grup ini? Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="groupinfo_dialog_confirm_delete">Ya, Hapus</string>
+    <string name="groupinfo_dialog_cancel">Batal</string>
+    <string name="groupinfo_dialog_remove_member_title">Keluarkan Anggota</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_title">Keluarkan Anggota</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_text">Keluarkan %1$s dari grup?</string>
+
+    <!-- User Selection Dialog -->
+    <string name="userselection_title">Mulai Obrolan</string>
+    <string name="userselection_search_placeholder">Cari di kontak&#8230;</string>
+    <string name="userselection_search_icon">Cari</string>
+    <string name="userselection_start_chat_prompt">Ketuk untuk memulai obrolan</string>
+    <string name="userselection_profile_image_description">Foto profil %1$s</string>
+    <string name="userselection_dialog_search_placeholder">Cari pengguna&#8230;</string>
+    <string name="userselection_dialog_search_icon">Ikon Pencarian</string>
+    <string name="userselection_dialog_clear_search">Hapus Pencarian</string>
+    <string name="userselection_dialog_no_results">Hasil tidak ditemukan.</string>
+    <string name="userselection_dialog_profile_image_description">Foto profil %1$s</string>
+    <string name="userselection_dialog_close">Tutup</string>
+
+    <!-- Profil & Drawer -->
+    <string name="drawer_my_profile">Profil Saya</string>
+    <string name="drawer_logout">Keluar</string>
+    <string name="drawer_logout_dialog_title">Keluar</string>
+    <string name="drawer_logout_dialog_text">Apakah Anda yakin ingin keluar?</string>
+    <string name="drawer_logout_dialog_confirm">Ya</string>
+    <string name="drawer_logout_dialog_dismiss">Tidak</string>
+    <string name="drawer_privacy_policy">Kebijakan Privasi</string>
+    <string name="profilescreen_info_not_available">Informasi profil tidak tersedia.</string>
+    <string name="profilescreen_try_again">Coba Lagi</string>
+    <string name="profilescreen_email_not_specified">Email tidak ditentukan</string>
+    <string name="profilescreen_guest_user">Pengguna Tamu</string>
+    <string name="profilescreen_close_app">Tutup Aplikasi</string>
+    <string name="profilescreen_back">Kembali</string>
+    <string name="profileedit_title">Edit Profil</string>
+    <string name="profileedit_display_name_label">Nama Tampilan</string>
+    <string name="profileedit_save_changes">Simpan Perubahan</string>
+    <string name="profileedit_delete_account_and_data">Hapus Akun dan Data</string>
+    <string name="profileedit_delete_account_confirm_title">Apakah Anda yakin?</string>
+    <string name="profileedit_delete_account_confirm_text">Akun Anda akan dihapus sepenuhnya.</string>
+    <string name="profileedit_delete_account_password_label">Kata Sandi</string>
+    <string name="profileedit_deleting_process">Menghapus&#8230;</string>
+    <string name="profileedit_delete_account_success_toast">Akun dihapus.</string>
+    <string name="profileedit_delete_account_error_password">Kata sandi salah.</string>
+    <string name="profileedit_enter_password_warning">Silakan masukkan kata sandi Anda.</string>
+    <string name="profileedit_delete_permanently">HAPUS</string>
+    <string name="profileedit_cancel">Batal</string>
+    <string name="profileedit_profile_updated_toast">Profil diperbarui.</string>
+    <string name="profileedit_photo_updated_toast">Foto diperbarui.</string>
+    <string name="profileedit_name_updated_toast">Nama diperbarui.</string>
+
+    <!-- Video & Kamera -->
+    <string name="video_upload_success">Video berhasil diunggah ✅</string>
+    <string name="video_upload_error">Terjadi kesalahan saat mengunggah video ❌</string>
+    <string name="video_uploading">Mengunggah video&#8230;</string>
+    <string name="camera_back">Kembali</string>
+    <string name="camera_stop_recording">Hentikan Perekaman</string>
+    <string name="camera_start_recording">Mulai Merekam</string>
+    <string name="camera_preview_pause">Jeda</string>
+    <string name="camera_preview_play">Putar</string>
+    <string name="camera_cancel">Batal</string>
+    <string name="camera_save">Simpan</string>
+    <string name="camera_permission_request_text">Izin kamera dan mikrofon diperlukan.</string>
+    <string name="camera_permission_request_button">Minta Izin</string>
+    <string name="camera_video_title">Video %1$s</string>
+
+    <!-- VideoCard -->
+    <string name="videocard_user_profile_image">Foto Profil Pengguna</string>
+    <string name="videocard_play_video">Putar Video</string>
+    <string name="videocard_view_count">Jumlah Tayangan</string>
+    <string name="videocard_video_title">Video: %1$s</string>
+    <string name="videocard_comments">Komentar</string>
+    <string name="videocard_delete_confirm_title">Hapus Video</string>
+    <string name="videocard_delete_confirm_text">Apakah Anda yakin ingin menghapus video ini secara permanen?</string>
+    <string name="videocard_delete_confirm_yes">Ya, Hapus</string>
+    <string name="videocard_delete_confirm_no">Batal</string>
+
+    <!-- VideoDetailScreen -->
+    <string name="video_detail_share_chooser_title">Bagikan video&#8230;</string>
+    <string name="video_detail_share_preparing">Menyiapkan berbagi&#8230;</string>
+    <string name="video_detail_back">Kembali</string>
+    <string name="video_detail_share">Bagikan</string>
+    <string name="videohome_home">Beranda</string>
+    <string name="videodetail_play_pause">Putar/Jeda</string>
+    <string name="videodetail_rewind">Mundur 10dtk</string>
+    <string name="videodetail_forward">Maju 10dtk</string>
+    <string name="videodetail_unmute">Bunyikan</string>
+    <string name="videodetail_mute">Bisukan</string>
+    <string name="videodetail_comments_count">%d komentar</string>
+    <string name="videodetail_restart">Mulai Ulang</string>
+    <string name="videodetail_playback_speed">Kecepatan Putar</string>
+
+    <!-- VideoEditScreen -->
+    <string name="video_edit_title">Edit</string>
+    <string name="video_edit_back">Kembali</string>
+    <string name="video_edit_error">Terjadi kesalahan: %1$s</string>
+    <string name="video_edit_success">Berhasil disimpan.</string>
+    <string name="video_edit_loading">Memuat&#8230;</string>
+    <string name="video_edit_mute_on">Bisukan</string>
+    <string name="video_edit_mute_off">Bunyikan</string>
+    <string name="video_edit_rotate">Putar</string>
+    <string name="video_edit_apply_and_save">Terapkan dan Simpan</string>
+    <string name="video_edit_saving">Menyimpan&#8230;</string>
+    <string name="video_edit_play">Putar</string>
+    <string name="video_edit_processing">Memproses&#8230;</string>
+
+    <!-- VideoCommentsScreen -->
+    <string name="videocomments_title">Komentar Video</string>
+    <string name="videocomments_back">Kembali</string>
+    <string name="videocomments_home">Beranda</string>
+    <string name="videocomments_replying_to">Membalas ke %1$s</string>
+    <string name="videocomments_cancel_reply">Batalkan Balasan</string>
+    <string name="videocomments_comment_placeholder">Tulis komentar&#8230;</string>
+    <string name="videocomments_like">Suka</string>
+    <string name="videocomments_reply">Balas</string>
+    <string name="videocomments_delete">Hapus</string>
+    <string name="videocomments_no_comments">Belum ada komentar.</string>
+    <string name="videocomments_profile_image">Foto Profil</string>
+    <string name="videocomments_send">Kirim</string>
+
+    <!-- VideoHomeScreen -->
+    <string name="videohome_title">Video</string>
+    <string name="videohome_back">Kembali</string>
+    <string name="videohome_no_videos">Belum ada video.</string>
+    <string name="videohome_error_duration">Durasi tidak dapat dimuat.</string>
+
+    <!-- Fotoğraf Modülü (Modul Foto) -->
+    <string name="photohome_title">Foto</string>
+    <string name="photohome_back">Kembali</string>
+    <string name="photohome_home">Beranda</string>
+    <string name="photohome_no_photos">Belum ada foto yang diunggah.</string>
+    <string name="photocreate_title">Tambah Foto Baru</string>
+    <string name="photocreate_cancelled">Pengambilan foto dibatalkan.</string>
+    <string name="photocreate_file_prepare_error">Gagal menyiapkan file foto.</string>
+    <string name="photocreate_permission_denied">Izin kamera ditolak.</string>
+    <string name="photocreate_permission_requesting">Meminta izin kamera&#8230;</string>
+    <string name="photocreate_success_toast">Draf foto dibuat ✅</string>
+    <string name="photocreate_failure_toast">Gagal mengunggah foto.</string>
+    <string name="photocreate_uploading_title">Mengunggah&#8230;</string>
+    <string name="photocreate_upload_preview">Pratinjau foto yang diunggah</string>
+    <string name="photocreate_creating_draft">Membuat draf foto&#8230;</string>
+    <string name="photodetail_title">Foto</string>
+    <string name="photodetail_back">Kembali</string>
+    <string name="photodetail_share">Bagikan</string>
+    <string name="photodetail_home">Beranda</string>
+    <string name="photodetail_share_chooser_title">Bagikan foto&#8230;</string>
+    <string name="photodetail_share_preparing">Menyiapkan berbagi&#8230;</string>
+    <string name="photodetail_anonymous">Anonim</string>
+    <string name="photodetail_photo_description">Foto %1$s</string>
+    <string name="photodetail_view_count">Dilihat</string>
+    <string name="photodetail_comment">Komentar</string>
+    <string name="photodetail_comments_count">%d komentar</string>
+    <string name="photoedit_title">Edit Foto</string>
+    <string name="photoedit_back">Kembali</string>
+    <string name="photoedit_save">Simpan</string>
+    <string name="photoedit_content_description">Foto untuk diedit</string>
+    <string name="photoedit_title_label">Judul</string>
+    <string name="photoedit_note_label">Catatan</string>
+
+    <!-- PhotoCard -->
+    <string name="photocard_anonymous">Anonim</string>
+    <string name="photocard_photo_description">Foto: %1$s</string>
+    <string name="photocard_view_count">Tayangan</string>
+    <string name="photocard_comment_count">Jumlah Komentar</string>
+
+    <!-- PhotoComments -->
+    <string name="photocomments_title">Komentar</string>
+    <string name="photocomments_replying_to">Membalas ke %1$s</string>
+    <string name="photocomments_error_loading">Gagal memuat komentar.</string>
+    <string name="photocomments_error_sending">Gagal mengirim komentar.</string>
+    <string name="photocomments_error_auth_required">Silakan masuk terlebih dahulu.</string>
+    <string name="photocomments_error_delete">Gagal menghapus komentar.</string>
+    <string name="photocomments_error_no_permission">Anda tidak memiliki izin untuk menghapus komentar ini.</string>
+    <string name="photocomments_comment_placeholder">Tulis komentar&#8230;</string>
+    <string name="photocomments_reply">Balas</string>
+    <string name="photocomments_delete">Hapus</string>
+    <string name="photocomments_back">Kembali</string>
+    <string name="photocomments_home">Beranda</string>
+    <string name="photocomments_cancel_reply">Batalkan Balasan</string>
+    <string name="photocomments_send">Kirim</string>
+    <string name="photocomments_no_comments">Belum ada komentar.</string>
+    <string name="photocomments_profile_image">Foto Profil</string>
+    <string name="photocomments_like">Suka</string>
+
+    <!-- Mektup Modülü (Modul Surat) -->
+    <string name="letterhome_title">Surat</string>
+    <string name="letterhome_back">Kembali</string>
+    <string name="letterhome_home">Beranda</string>
+    <string name="letterhome_all_letters">Semua Surat</string>
+    <string name="letterhome_no_letters">Belum ada surat.</string>
+    <string name="lettercreate_title">Surat Baru</string>
+    <string name="lettercreate_back">Kembali</string>
+    <string name="lettercreate_home">Beranda</string>
+    <string name="lettercreate_textfield_placeholder">Tulis surat baru&#8230;</string>
+    <string name="lettercreate_discard">Batalkan</string>
+    <string name="lettercreate_save">Simpan dan Segel</string>
+    <string name="lettercreate_draft_saved_toast">Draf disimpan!</string>
+    <string name="lettercreate_draft_failed_toast">Gagal menyimpan draf.</string>
+    <string name="lettercreate_unlock_date">Tanggal Buka: %1$s</string>
+    <string name="lettercreate_time_capsule_option">Jadikan Kapsul Waktu (Opsional)</string>
+    <string name="lettercreate_privacy_dialog_title">Privasi Surat</string>
+    <string name="lettercreate_privacy_dialog_text">Siapa yang dapat melihat surat ini?</string>
+    <string name="lettercreate_privacy_dialog_public">Publik</string>
+    <string name="lettercreate_privacy_dialog_sealed">Tersegel (Pribadi)</string>
+    <string name="lettercreate_sealed_draft_saved_toast">Draf tersegel disimpan untuk %1$s!</string>
+    <string name="lettercreate_recipient_dialog_title">Pilih Penerima</string>
+    <string name="lettercreate_recipient_dialog_search">Cari Pengguna</string>
+    <string name="lettercreate_recipient_dialog_cancel">Batal</string>
+    <string name="lettercreate_time_capsule_make">Kapsul Waktu</string>
+    <string name="lettercreate_time_capsule_label">Kapsul Waktu</string>
+    <string name="lettercreate_share_public">Publik</string>
+    <string name="lettercreate_send_sealed">Tersegel (Khusus Pribadi)</string>
+    <string name="lettercreate_datepicker_public">Publik</string>
+    <string name="lettercreate_datepicker_sealed">Tersegel (Orang Terpilih)</string>
+    <string name="lettercreate_select_date_error">Silakan pilih tanggal</string>
+    <string name="lettercreate_cancel_action">Batal</string>
+    <string name="letterdetail_title">Detail Surat</string>
+    <string name="letterdetail_sender">Dari: %1$s</string>
+    <string name="letterdetail_anonymous_sender">Anonim</string>
+    <string name="letterdetail_comment">Komentar</string>
+    <string name="letterdetail_comments_count">%d komentar</string>
+    <string name="letterdetail_close_button">Tutup Surat</string>
+    <string name="letterdetail_video_title">Video: %1$s</string>
+    <string name="letteredit_title">Edit Surat</string>
+    <string name="letteredit_back">Kembali</string>
+    <string name="letteredit_save">Simpan</string>
+    <string name="letteredit_content_label">Isi Surat</string>
+    <string name="letteredit_title_label">Judul</string>
+    <string name="letteredit_personal_note_label">Catatan</string>
+
+    <string name="letter_ask_anoba_label">Kepada: Kakak Anoba</string>
+    <string name="letter_ask_anoba_hidden_content">Isi surat ini bersifat rahasia,\nhanya tanggapan dari Kakak Anoba yang dipublikasikan.</string>
+    <string name="letter_anoba_response_title">Jawaban dari Kakak Anoba</string>
+
+    <string name="lettercreate_anoba_title">Tulis ke Kakak Anoba</string>
+    <string name="lettercreate_anoba_desc">Bagikan keluh kesahmu, biarkan Anoba menulis balasan yang bijak dan istimewa untukmu.</string>
+    <string name="lettercreate_pseudonym_label">Nama Samaran (Cth: Burung Gelisah)</string>
+    <string name="lettercreate_pseudonym_placeholder">Tulis nama samaran untuk menyembunyikan identitasmu&#8230;</string>
+    <string name="lettercreate_anoba_privacy_public">Biarkan semua orang melihat balasannya</string>
+    <string name="lettercreate_anoba_privacy_private">Hanya saya yang dapat melihat</string>
+    <string name="lettercreate_anoba_send">Kirim ke Kakak Anoba ✨</string>
+    <string name="lettercreate_pseudonym_error">Silakan masukkan nama samaran terlebih dahulu.</string>
+    <string name="lettercreate_mode_write">Tulis</string>
+    <string name="lettercreate_mode_speak">Bicara</string>
+    <string name="lettercreate_audio_recorded">Suara Direkam</string>
+    <string name="lettercreate_audio_record_hint">Tekan tombol untuk menyampaikan suratmu lewat suara.</string>
+
+    <!-- Ses Düzenleme (Edit Audio) -->
+    <string name="sesedit_title">Edit Suara</string>
+    <string name="sesedit_back">Kembali</string>
+    <string name="sesedit_save">Simpan</string>
+    <string name="sesedit_trim_label">Pangkas Suara</string>
+    <string name="sesedit_title_label">Judul</string>
+    <string name="sesedit_note_label">Catatan</string>
+    <string name="sesedit_success">Suara berhasil diperbarui</string>
+    <string name="sesedit_player_error">Kesalahan pemutar media: %1$s</string>
+
+    <!-- Mektup Yorumları (Komentar Surat) -->
+    <string name="lettercomments_title">Komentar Surat</string>
+    <string name="lettercomments_replying_to">Membalas ke %1$s</string>
+    <string name="lettercomments_comment_placeholder">Tulis komentar&#8230;</string>
+    <string name="lettercomments_no_comments">Belum ada komentar.</string>
+    <string name="lettercomments_reply">Balas</string>
+    <string name="lettercomments_delete">Hapus</string>
+
+    <!-- Mektup Kartı (Kartu Surat) -->
+    <string name="lettercard_sealed_error">Surat ini tersegel.</string>
+    <string name="lettercard_time_capsule_msg">Surat ini belum dibuka.</string>
+    <string name="lettercard_sender">Dari: %1$s</string>
+    <string name="lettercard_recipient">Kepada: %1$s</string>
+    <string name="lettercard_time_capsule_label">Kapsul Waktu</string>
+    <string name="lettercard_sealed_label">Surat Tersegel</string>
+
+    <!-- Ses Modülü (Modul Suara) -->
+    <string name="seshome_title">Rekaman Suara</string>
+    <string name="seshome_back">Kembali</string>
+    <string name="seshome_home">Beranda</string>
+    <string name="seshome_no_ses">Belum ada rekaman suara.</string>
+    <string name="audiorecording_permission_needed">🎙️ Izin mikrofon diperlukan</string>
+    <string name="audiorecording_status_loading">Memuat Rekaman&#8230;</string>
+    <string name="audiorecording_status_recording">Merekam&#8230;</string>
+    <string name="audiorecording_status_completed">Perekaman Selesai</string>
+    <string name="audiorecording_status_create">Buat Rekaman Suara</string>
+    <string name="audiorecording_start_prompt">Ketuk tombol untuk mulai merekam</string>
+    <string name="audiorecording_stop_prompt">Ketuk tombol untuk menghentikan rekaman</string>
+    <string name="audiorecording_success_toast">Draf suara dibuat!</string>
+    <string name="audiorecording_error_toast">Kesalahan: Gagal membuat draf suara.</string>
+    <string name="audiorecording_add_to_drafts">Tambahkan ke Draf</string>
+    <string name="audiorecording_cancel">Batal</string>
+    <string name="sesdetail_share_chooser_title">Bagikan rekaman&#8230;</string>
+    <string name="sesdetail_share_preparing">Menyiapkan berbagi&#8230;</string>
+    <string name="sesdetail_loading">⏳ Memuat&#8230;</string>
+    <string name="sesdetail_back">Kembali</string>
+    <string name="sesdetail_share">Bagikan</string>
+    <string name="sesdetail_home">Beranda</string>
+    <string name="sesdetail_anonymous">Anonim</string>
+    <string name="sesdetail_stop">Berhenti</string>
+    <string name="sesdetail_play">Putar</string>
+    <string name="sesdetail_view_count">Didengarkan</string>
+    <string name="sesdetail_comment">Komentar</string>
+    <string name="sesdetail_comments_count">%d komentar</string>
+    <string name="sesdetail_transcribe">Ubah ke Teks</string>
+    <string name="sesdetail_close_button">Matikan Suara</string>
+    <string name="sescomments_title">Komentar</string>
+    <string name="sescomments_back">Kembali</string>
+    <string name="sescomments_home">Beranda</string>
+    <string name="sescomments_replying_to">Membalas ke %1$s</string>
+    <string name="sescomments_cancel_reply">Batalkan Balasan</string>
+    <string name="sescomments_comment_placeholder">Tulis komentar Anda&#8230;</string>
+    <string name="sescomments_send">Kirim</string>
+    <string name="sescomments_no_comments">Belum ada komentar.</string>
+    <string name="sescomments_profile_image">Foto Profil</string>
+    <string name="sescomments_reply">Balas</string>
+    <string name="sescomments_delete">Hapus</string>
+    <string name="sescomments_retry">Coba Lagi</string>
+    <string name="sescomments_like">Suka</string>
+
+    <!-- Ses Kartı (Kartu Suara) -->
+    <string name="sescard_user_profile_image">Foto Profil Pengguna</string>
+    <string name="sescard_anonymous">Anonim</string>
+    <string name="sescard_play_audio">Putar Suara</string>
+    <string name="sescard_view_count">Didengarkan</string>
+    <string name="sescard_comments">Komentar</string>
+
+    <string name="reactions_title">Reaksi</string>
+    <string name="reactions_all">Semua</string>
+    <string name="reactions_empty">Belum ada reaksi.</string>
+
+    <!-- Emojiler (Emoji) -->
+    <string name="emoji_heart_desc">Hati</string>
+    <string name="emoji_laugh_desc">Tertawa</string>
+    <string name="emoji_thumbs_up_desc">Suka</string>
+    <string name="emoji_sad_desc">Sedih</string>
+    <string name="emoji_surprise_desc">Terkejut</string>
+    <string name="emoji_thinking_desc">Berpikir</string>
+    <string name="emoji_angry_desc">Marah</string>
+    <string name="emoji_fire_desc">Api / Luar Biasa</string>
+    <string name="emoji_love_desc">Wajah Tersenyum dengan Mata Hati</string>
+    <string name="emoji_neutral_desc">Netral / Biasa Saja</string>
+    <string name="emoji_report_desc">Konten Tidak Pantas</string>
+    <string name="emoji_delete_desc">Hapus Konten Ini</string>
+    <string name="emoji_reaction_info">%1$s, %2$d reaksi</string>
+
+    <!-- Giriş Yap & Kayıt Ol UI (Masuk & Daftar UI) -->
+    <string name="login_welcome_title">Selamat Datang di Anoba</string>
+    <string name="login_title">Masuk</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_password_label">Kata Sandi</string>
+    <string name="login_remember_me">Ingat Saya</string>
+    <string name="login_forgot_password">Lupa Kata Sandi</string>
+    <string name="login_button">Masuk</string>
+    <string name="login_guest_button">Masuk sebagai Tamu</string>
+    <string name="login_no_account">Belum punya akun? Daftar</string>
+    <string name="login_go_to_signup">Daftar</string>
+    <string name="forgot_password_success">Tautan berhasil dikirim.</string>
+    <string name="forgot_password_desc">Masukkan email Anda.</string>
+    <string name="forgot_password_button">Kirim</string>
+    <string name="new_password_title">Kata Sandi Baru</string>
+    <string name="new_password_label">Kata Sandi</string>
+    <string name="new_password_button">Perbarui</string>
+    <string name="signup_title">Daftar</string>
+    <string name="signup_username_label">Nama Pengguna</string>
+    <string name="signup_email_label">Email</string>
+    <string name="signup_password_label">Kata Sandi</string>
+    <string name="signup_confirm_password">Konfirmasi Kata Sandi</string>
+    <string name="signup_button">Selesaikan Pendaftaran</string>
+    <string name="signup_already_have_account">Masuk</string>
+
+    <!-- Rehber & Splash (Panduan & Splash) -->
+    <string name="guide_title">Panduan Anoba</string>
+    <string name="guide_description">Anda dapat menelusuri konten bersama di sini.</string>
+    <string name="guide_empty_message">Belum ada konten panduan.</string>
+    <string name="splash_made_in_turkiye">Dibuat di Turki</string>
+
+    <!-- Güncelleme (Pembaruan) -->
+    <string name="update_downloaded">Pembaruan telah diunduh. Aplikasi sedang diperbarui&#8230;</string>
+
+    <!-- Mete -->
+    <string name="mete_title">Mete</string>
+    <string name="mete_empty_content">Memuat&#8230;</string>
+    <string name="mete_video_loading">Memuat video&#8230;</string>
+    <string name="mete_audio_loading">Memuat suara&#8230;</string>
+    <string name="mete_game_listen">Dengarkan</string>
+    <string name="mete_game_find_card">Yang mana?</string>
+    <string name="mete_game_correct">Luar biasa! 🎉</string>
+    <string name="mete_game_continue">LANJUTKAN</string>
+    <string name="mete_game_insufficient_content">Setidaknya 4 konten berbeda diperlukan untuk permainan ini.\nSilakan tambahkan konten atau ubah bahasa.</string>
+    <string name="mete_search_placeholder">Cari nama bagian atau nomor… (Cth: 1)</string>
+    <string name="mete_add_new_section">Buka Bagian Baru</string>
+    <string name="mete_section_name_label">Nama Bagian atau Nomor (Cth: 1)</string>
+    <string name="mete_create">Buat</string>
+    <string name="mete_story_fallback_title">Cerita / Kartun</string>
+
+    <!-- Tutorial (Tur Aplikasi) -->
+    <string name="tutorial_title_welcome">Selamat Datang!</string>
+    <string name="tutorial_desc_welcome">Mari kita mulai.</string>
+    <string name="tutorial_title_drawer">Menu</string>
+    <string name="tutorial_desc_drawer">Anda dapat mengakses profil pribadi, panduan bantuan, dan pengaturan akun dari sini.</string>
+    <string name="tutorial_title_flower">Untuk Anda</string>
+    <string name="tutorial_desc_flower"> </string>
+    <string name="tutorial_title_special">Petugas</string>
+    <string name="tutorial_desc_special">Animasi khusus dan kontrol administrasi.</string>
+    <string name="tutorial_title_more_menu">Opsi Lainnya</string>
+    <string name="tutorial_desc_more_menu">⭐ 1000+ Populer: Jelajahi konten populer.\n🛡️ Kolam Karantina: Lihat konten dalam peninjauan.\n🇹🇷 Mete: Pengalaman belajar yang menyenangkan dan alami.</string>
+    <string name="tutorial_title_search">Filter Pengguna</string>
+    <string name="tutorial_desc_search">Filter konten dengan mengetikkan nama pengguna atau ID.</string>
+    <string name="tutorial_title_my_contents">Konten Saya &amp; Draf</string>
+    <string name="tutorial_desc_my_contents">Kelola draf dan konten yang telah diterbitkan dari sini.</string>
+    <string name="tutorial_title_create_video">Video</string>
+    <string name="tutorial_desc_create_video">Rekam dan Bagikan.</string>
+    <string name="tutorial_title_create_photo">Foto</string>
+    <string name="tutorial_desc_create_photo">Abadikan momen.</string>
+    <string name="tutorial_title_create_audio">Suara</string>
+    <string name="tutorial_desc_create_audio">Suarakan suaramu.</string>
+    <string name="tutorial_title_create_letter">Tulis</string>
+    <string name="tutorial_desc_create_letter">Surat.</string>
+    <string name="tutorial_title_gallery">Galeri</string>
+    <string name="tutorial_desc_gallery">Unggah dari galeri.</string>
+    <string name="tutorial_title_map">Dunia Anoba</string>
+    <string name="tutorial_desc_map">Lihat berapa banyak konten yang dibagikan dari negara mana pun dan ikuti aktivitas Anoba di seluruh dunia.</string>
+    <string name="tutorial_title_mete">Mete</string>
+    <string name="tutorial_desc_mete">Pengalaman belajar alami bersama Mete.</string>
+    <string name="tutorial_title_mosaic">Mosaik</string>
+    <string name="tutorial_desc_mosaic">Jelajahi dunia mosaik penuh warna tempat berbagai konten bersatu.</string>
+    <string name="tutorial_title_tab_videos">Video</string>
+    <string name="tutorial_desc_tab_videos">Tonton video yang dibagikan.</string>
+    <string name="tutorial_title_tab_photos">Foto</string>
+    <string name="tutorial_desc_tab_photos">Lihat foto-foto.</string>
+    <string name="tutorial_title_tab_audios">Suara</string>
+    <string name="tutorial_desc_tab_audios">Dengarkan konten audio.</string>
+    <string name="tutorial_title_tab_letters">Surat</string>
+    <string name="tutorial_desc_tab_letters">Baca surat yang ditulis atau dengarkan surat audio.</string>
+    <string name="tutorial_title_tab_chats">Obrolan</string>
+    <string name="tutorial_desc_tab_chats">Kirim pesan, bersosialisasi, dan lakukan panggilan suara/video gratis.</string>
+    <string name="tutorial_title_notifications">Notifikasi</string>
+    <string name="tutorial_desc_notifications">Anda dapat memantau notifikasi Anda dari sini.</string>
+
+    <string name="tutorial_next">Berikutnya</string>
+    <string name="tutorial_skip">Lewati</string>
+    <string name="tutorial_finish">Selesai</string>
+
+    <!-- Mosaik -->
+    <string name="mosaic_title">Mosaik</string>
+    <string name="mosaic_close">Tutup</string>
+    <string name="mosaic_video_loading">Video akan segera diputar&#8230;</string>
+    <string name="mosaic_audio_label">Suara</string>
+    <string name="mosaic_video_label">Video</string>
+    <string name="mosaic_ad_label">Iklan</string>
+    <string name="mosaic_title_caps">MOSAIK</string>
+    <string name="mosaic_ad_contains">Mengandung Iklan</string>
+    <string name="home_guide_dialog_title">Tur Aplikasi</string>
+    <string name="home_guide_dialog_text">Bagaimana kalau tur singkat untuk menjelajahi Anoba?</string>
+    <string name="home_guide_dialog_tour">Mulai Tur</string>
+    <string name="map_title">Dunia Anoba</string>
+    <string name="map_content_count">%d Konten</string>
+    <string name="country_ae">Uni Emirat Arab</string>
+    <string name="country_dz">Aljazair</string>
+    <string name="country_ma">Maroko</string>
+    <string name="country_za">Afrika Selatan</string>
+    <string name="country_qa">Qatar</string>
+    <string name="country_ke">Kenya</string>
+    <string name="country_eg">Mesir</string>
+    <string name="country_ng">Nigeria</string>
+    <string name="country_tn">Tunisia</string>
+    <string name="country_tr">Turki</string>
+    <string name="country_sa">Arab Saudi</string>
+    <string name="country_om">Oman</string>
+    <string name="country_jo">Yordania</string>
+    <string name="country_ca">Kanada</string>
+    <string name="country_au">Australia</string>
+    <string name="country_br">Brasil</string>
+    <string name="country_ar">Argentina</string>
+    <string name="country_in">India</string>
+    <string name="country_jp">Jepang</string>
+    <string name="country_kr">Korea Selatan</string>
+    <string name="country_id">Indonesia</string>
+    <string name="country_gb">Inggris</string>
+    <string name="country_fr">Prancis</string>
+    <string name="country_es">Spanyol</string>
+    <string name="country_nl">Belanda</string>
+    <string name="country_co">Kolombia</string>
+    <string name="country_my">Malaysia</string>
+    <string name="country_tm">Turkmenistan</string>
+    <string name="country_other">Lainnya</string>
+    <string name="country_kg">Kirgistan</string>
+    <string name="country_az">Azerbaijan</string>
+    <string name="country_kz">Kazakhstan</string>
+    <string name="country_uz">Uzbekistan</string>
+    <string name="country_hu">Hungaria</string>
+    <string name="country_us">AS</string>
+    <string name="country_ru">Rusia</string>
+    <string name="country_pk">Pakistan</string>
+    <string name="country_mx">Meksiko</string>
+    <string name="country_it">Italia</string>
+    <string name="country_de">Jerman</string>
+
+    <!-- Sohbet Yanıt Önizlemeleri (Pratinjau Balasan Obrolan) -->
+    <string name="chat_reply_image">[Gambar]</string>
+    <string name="chat_reply_video">[Video]</string>
+    <string name="chat_reply_audio">[Pesan Suara]</string>
+
+    <!-- Yetkili Paneli (Panel Otoritas / Animasi) -->
+    <string name="admin_panel_title">Panel Animasi</string>
+    <string name="admin_panel_police">🔵 Penggerebekan Polisi</string>
+    <string name="admin_panel_commando" tools:ignore="Spelling">🔴 Operasi Komando</string>
+    <string name="admin_panel_bekci">🟤 Patroli Penjaga</string>
+    <string name="admin_panel_close">Tutup</string>
+
+    <!-- Arama Sistemi (Sistem Panggilan) -->
+    <string name="call_incoming">Panggilan Masuk</string>
+    <string name="call_video_incoming">Panggilan video masuk&#8230;</string>
+    <string name="call_voice_incoming">Panggilan suara masuk&#8230;</string>
+    <string name="call_accept">Jawab</string>
+    <string name="call_accept_video">Jawab Video</string>
+    <string name="call_reject">Tolak</string>
+    <string name="call_waiting">Memanggil&#8230;</string>
+    <string name="call_voice_ongoing">Sedang Berlangsung</string>
+    <string name="call_rejected_by_partner">Panggilan Ditolak</string>
+    <string name="call_ended">Panggilan Berakhir</string>
+
+    <!-- Arama Erişilebilirlik (Aksesibilitas Panggilan) -->
+    <string name="ax_mute">Bisukan</string>
+    <string name="ax_end_call">Akhiri Panggilan</string>
+    <string name="ax_camera">Buka/Tutup Kamera</string>
+    <string name="ax_speaker">Buka/Tutup Pengeras Suara</string>
+    <string name="ax_switch_camera">Ganti Kamera</string>
+
+    <!-- Engelleme Sistemi (Sistem Pemblokiran) -->
+    <string name="chat_block_user">Blokir Pengguna</string>
+    <string name="chat_unblock_user">Buka Blokir</string>
+    <string name="chat_block_dialog_title">Blokir Pengguna?</string>
+    <string name="chat_block_dialog_text">Apakah Anda yakin ingin memblokir %1$s? Anda tidak akan dapat saling mengirim pesan atau melakukan panggilan lagi.</string>
+    <string name="chat_user_blocked_toast">Pengguna diblokir.</string>
+    <string name="chat_user_unblocked_toast">Blokir dibuka.</string>
+    <string name="chat_no_blocked_users">Belum ada pengguna yang diblokir.</string>
+    <string name="chat_request_title">Permintaan Pesan</string>
+    <string name="chat_request_desc">%1$s mengirimi Anda pesan. Apakah Anda menerima obrolan ini?</string>
+    <string name="chat_request_accept">Terima</string>
+    <string name="chat_request_delete">Hapus</string>
+    <string name="chat_media_message">Pesan media</string>
+    <string name="chat_audio_recording">Merekam suara&#8230;</string>
+    <string name="chat_attachment_description">Lampiran</string>
+    <string name="chat_recording_failed">Gagal memulai perekaman.</string>
+    <string name="chat_recording_failed_system">Gagal memulai perekaman. Sistem mungkin memblokirnya.</string>
+    <string name="chat_microphone_permission_required">Izin mikrofon diperlukan untuk merekam suara.</string>
+    <string name="chat_search_user_prompt">Cari orang yang ingin Anda ajak mengobrol.</string>
+    <string name="chat_user_not_found">Pengguna tidak ditemukan.</string>
+    <string name="chat_group_user_added">menambahkan %1$s ke grup.</string>
+    <string name="chat_group_user_removed">mengeluarkan %1$s dari grup.</string>
+    <string name="chat_group_user_left">keluar dari grup.</string>
+    <string name="chat_group_image_update_failed">Gagal memperbarui gambar grup.</string>
+    <string name="chat_group_create_error">Terjadi kesalahan saat membuat grup: %1$s</string>
+    <string name="notification_someone">Seseorang</string>
+    <string name="notification_calling_you">%1$s memanggil Anda&#8230;</string>
+    <string name="notification_new_content">Anda memiliki notifikasi baru.</string>
+    <string name="chat_media">Media</string>
+    <string name="chat_options_accessible_name">Opsi Obrolan</string>
+
+    <string name="notification_anoba_response_title">Kakak Anoba</string>
+    <string name="notification_anoba_response_body">Suratmu telah dijawab! Ketuk untuk membaca balasannya ✨</string>
+    <string name="admin_anoba_panel_button">Panel Kakak Anoba</string>
+
+    <!-- Bildirim Merkezi (Pusat Notifikasi - v120) -->
+    <string name="notif_hub_title">Notifikasi</string>
+    <string name="notif_hub_mark_all_read">Baca</string>
+    <string name="notif_hub_empty">Belum ada notifikasi baru.</string>
+    <string name="notif_hub_close">Tutup</string>
+    <string name="notif_type_popular_owner">Selamat! Kiriman Anda ada di halaman 1000+ 🏆</string>
+    <string name="notif_type_popular_reactor">Konten yang Anda beri reaksi ada di halaman 1000+ ✨</string>
+    <string name="notif_type_quarantine_owner">Konten Anda telah dimasukkan ke dalam peninjauan komunitas 🛡️</string>
+    <string name="notif_type_reporter_quarantine">Konten yang Anda laporkan telah dikarantina ✅</string>
+    <string name="notif_type_reporter_unflag">Konten yang Anda laporkan dinyatakan bersih setelah peninjauan 🛡️</string>
+    <string name="notif_type_reaction">Bereaksi terhadap konten Anda.</string>
+    <string name="notif_type_comment">Mengomentari konten Anda.</string>
+    <string name="notif_type_generic">Anda menerima notifikasi baru.</string>
+
+    <string name="letteradmin_title">Kakak Anoba: Penampungan Surat</string>
+    <string name="letteradmin_tab_pending">Menunggu</string>
+    <string name="letteradmin_tab_answered">Dijawab</string>
+    <string name="letteradmin_response_label">Balasan dari Kakak Anoba:</string>
+    <string name="letteradmin_empty_pending">Tidak ada surat baru yang menunggu jawaban ✨</string>
+    <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+</resources>

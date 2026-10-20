@@ -1,0 +1,82 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // --- YARDIMCI FONKSİYONLAR ---
+    function isAuthenticated() { return request.auth != null; }
+
+    // --- KLASÖR KURALLARI ---
+
+    // 1. Profil Resimleri
+    match /profile_images/{userId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // 2. Medya İçerikleri (Foto, Video, Video Kapakları, Sesler)
+    match /photos/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /videos/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /thumbnails/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /ses/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // 3. Mektup Ekleri ve Sesli Mektuplar
+    match /letters/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /letter_audio/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // 4. Sohbet Dosyaları, Gruplar ve Paylaşımlar
+    match /chat_images/{allPaths=**} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /chat_audio/{allPaths=**} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /chat_videos/{allPaths=**} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /shared_images/{allPaths=**} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /groups/{allPaths=**} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // 5. Genel Sistem ve Animasyon Varlıkları (Mete, Çiçekler, Özel Görevliler)
+    match /{folder}/{allPaths=**} {
+      allow read: if folder.startsWith('mete') ||
+                    folder in ['flowers', 'anim_fall', 'anim_float', 'anim_fly', 'anim_pop', 'police_assets', 'commando_assets', 'bekci_assets'];
+      allow write: if isAuthenticated();
+    }
+
+    // 6. Genel Kapsayıcı
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+  }
+}

@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anoba</string>
+
+    <!-- Roles -->
+    <string name="role_admin">Msimamizi</string>
+    <string name="role_muhtar">Muhtar</string>
+    <string name="role_moderator">Msimamizi</string>
+    <string name="role_member">Mwanachama</string>
+    <string name="role_guest">Mgeni</string>
+
+    <!-- Error Messages -->
+    <string name="error_invalid_email">Muundo wa barua pepe si sahihi.</string>
+    <string name="error_wrong_password">Nywila si sahihi.</string>
+    <string name="error_user_not_found">Mtumiaji hajapatikana.</string>
+    <string name="error_user_disabled">Akaunti hii imezimwa.</string>
+    <string name="error_too_many_requests">Majaribio mengi sana, tafadhali jaribu tena baadaye.</string>
+    <string name="error_email_already_in_use">Anwani hii ya barua pepe tayari inatumiwa.</string>
+    <string name="error_weak_password">Nywila ni dhaifu sana.</string>
+    <string name="error_network_request_failed">Hitilafu ya unganisho la mtandao.</string>
+    <string name="error_unknown">Hitilafu isiyotarajiwa imetokea.</string>
+    <string name="error_password_too_short">Nywila lazima iwe na angalau herufi 6.</string>
+    <string name="error_username_short">Jina la mtumiaji ni fupi sana.</string>
+    <string name="error_passwords_mismatch">Nywila hazilingani.</string>
+    <string name="anonymous">Bila jina</string>
+    <string name="error_comments_loading">Hitilafu ya kupakia maoni.</string>
+    <string name="error_comment_send">Imeshindwa kutuma maoni.</string>
+    <string name="error_login_required">Tafadhali ingia ili kuendelea.</string>
+    <string name="error_action_failed">Kitendo kimeshindwa.</string>
+    <string name="error_delete_failed">Ufutaji umeshindwa.</string>
+    <string name="error_unauthorized">Huna idhini ya kitendo hiki.</string>
+    <string name="error_member_only_letter">Tafadhali jisajili ili kuandika barua.</string>
+    <string name="error_member_only_reaction">Tafadhali jisajili ili kutoa maoni.</string>
+    <string name="error_letter_not_found">Barua haijapatikana.</string>
+    <string name="error_letter_loading">Hitilafu ya kupakia barua.</string>
+    <string name="unknown_error">Hitilafu isiyojulikana.</string>
+
+    <!-- UI State Common Texts -->
+    <string name="state_loading">Inapakia&#8230;</string>
+    <string name="state_error_loading">Hitilafu imetokea wakati wa kupakia data.</string>
+    <string name="camera_permission_denied">Ruhusa ya kamera imekataliwa. Tafadhali iruhusu katika mipangilio.</string>
+    <string name="state_no_data">Bado hakuna ujumbe.</string>
+    <string name="state_retry">Jaribu tena</string>
+    <string name="state_transcribing">Kunukuu&#8230;</string>
+    <string name="state_loading_more">Inapakia zaidi&#8230;</string>
+    <string name="state_load_error">Hitilafu ya kupakia. Jaribu tena.</string>
+    <string name="chat_search_placeholder">Tafuta ujumbe&#8230;</string>
+    <string name="chat_input_placeholder">Andika ujumbe&#8230;</string>
+    <string name="chat_search_group_placeholder">Tafuta ujumbe wa kikundi&#8230;</string>
+    <string name="notification_channel_name">Ujumbe wa Anoba</string>
+    <string name="notification_default_title">Ujumbe Mpya</string>
+    <string name="notification_permission_denied_rationale">Ruhusa ya arifa imekataliwa. Unaweza kuiwasha katika mipangilio ili kuepuka kukosa ujumbe muhimu.</string>
+
+    <!-- Auth & AuthService -->
+    <string name="guest">Mgeni</string>
+    <string name="auth_generic_fail">Kitendo kimeshindwa.</string>
+    <string name="auth_user_object_null">Hitilafu ya kikao: Kitu cha mtumiaji ni tupu.</string>
+    <string name="auth_password_reset_success">Barua pepe ya kuweka upya nywila imetumwa.</string>
+    <string name="auth_not_logged_in">Tafadhali ingia fika.</string>
+    <string name="auth_password_update_success">Nywila imesasishwa kwa mafanikio.</string>
+    <string name="auth_user_not_found">Mtumiaji hajapatikana.</string>
+    <string name="auth_username_update_success">Jina limesasishwa kwa mafanikio.</string>
+    <string name="auth_image_upload_fail">Upakiaji wa picha umeshindwa.</string>
+    <string name="auth_profile_photo_update_success">Picha ya wasifu imesasishwa.</string>
+    <string name="auth_account_deleted_success">Akaunti yako imefutwa kwa mafanikio.</string>
+    <string name="auth_process_completed">Mchakato umekamilika kwa mafanikio.</string>
+
+    <!-- Common -->
+    <string name="cancel">Ghairi</string>
+    <string name="common_cancel">Ghairi</string>
+    <string name="delete">Futa</string>
+    <string name="common_back">Rudi Nyuma</string>
+    <string name="common_close">Funga</string>
+    <string name="common_confirm">Sawa</string>
+    <string name="common_listen">Sikiliza</string>
+    <string name="common_stop">Acha</string>
+    <string name="common_record">Hifadhi</string>
+    <string name="common_hide">Ficha</string>
+    <string name="common_just_now">sasa hivi</string>
+    <string name="common_minutes_ago">dakika %d zilizopita</string>
+    <string name="common_hours_ago">saa %d zilizopita</string>
+    <string name="common_days_ago">siku %d zilizopita</string>
+    <string name="common_minutes_later">dakika %d baadaye</string>
+    <string name="common_hours_later">saa %d baadaye</string>
+    <string name="common_days_later">siku %d baadaye</string>
+    <string name="common_unknown">Haijulikani</string>
+    <string name="transcription_ai_report">Ujumbe huu wa sauti ulichanganuliwa na injini ya AI ya ndani kwenye kifaa chako. Imechakatwa kwa %1$s.</string>
+
+    <!-- Chat & MyContent -->
+    <string name="chathome_uploading_media">Inapakia Vyombo vya Habari&#8230;</string>
+    <string name="mycontent_guest_warning">Tafadhali jisajili ili ushiriki maudhui.</string>
+    <string name="mycontent_guide_add">Ongeza kwenye Mwongozo (Anoba)</string>
+    <string name="mycontent_guide_remove">Ondoa kwenye Mwongozo</string>
+    <string name="mycontent_guide_updated">Hali ya mwongozo imesasishwa.</string>
+    <string name="mycontent_error_loading">Maudhui hayakuweza kupakiwa.</string>
+    <string name="mycontent_error_delete">Maudhui hayakuweza kufutwa.</string>
+    <string name="mycontent_error_timeout">Muda wa unganisho umeisha.</string>
+    <string name="mycontent_published_tab">Iliyochapishwa</string>
+    <string name="mycontent_drafts_tab">Rasimu</string>
+    <string name="mycontent_back">Nyuma</string>
+    <string name="follow">Fuata</string>
+    <string name="following">Unafuata</string>
+    <string name="feed_explore">Gundua</string>
+    <string name="feed_following">Unafuata</string>
+    <string name="feed_following_empty">Bado haumfuati yeyote, au bado hawajashiriki chochote.</string>
+    <string name="feed_following_go_explore">Anza kugundua</string>
+    <string name="followers">Wafuasi</string>
+    <string name="following_label">Unafuata</string>
+    <string name="mycontent_home">Nyumbani</string>
+    <string name="mycontent_new_video">Video Mpya</string>
+    <string name="mycontent_new_photo">Picha Mpya</string>
+    <string name="mycontent_new_audio">Sauti Mpya</string>
+    <string name="mycontent_new_letter">Barua Mpya</string>
+    <string name="mycontent_from_gallery">Kutoka Nyumba ya sanaa</string>
+    <string name="mycontent_upload_cancelled">Upakiaji umeghairiwa.</string>
+    <string name="mycontent_video_preparing">Inatayarisha video kwa uhariri&#8230;</string>
+    <string name="mycontent_content_loading">Inapakia maudhui&#8230;</string>
+    <string name="mycontent_publish_success">Maudhui yamechapishwa kwa mafanikio!</string>
+    <string name="mycontent_unpublish_success">Maudhui yameondolewa kwenye uchapishaji.</string>
+    <string name="mycontent_sheet_published">Iliyochapishwa</string>
+    <string name="mycontent_sheet_draft">Rasimu</string>
+    <string name="mycontent_sheet_views">Mitazamo</string>
+    <string name="mycontent_sheet_reactions">Mwingiliano</string>
+    <string name="mycontent_sheet_comments">Maoni</string>
+    <string name="mycontent_sheet_open">Fungua</string>
+    <string name="mycontent_sheet_unpublish">Ondoa Uchapishaji</string>
+    <string name="mycontent_sheet_publish">Chapisha</string>
+    <string name="mycontent_sheet_edit">Hariri</string>
+    <string name="mycontent_sheet_delete">Futa</string>
+    <string name="mycontent_card_video_thumb">Uhakiki wa Video</string>
+    <string name="mycontent_card_play_video">Cheza Video</string>
+    <string name="mycontent_card_user_photo">Picha ya Mtumiaji</string>
+    <string name="mycontent_card_audio_waveform">Sura ya Sauti</string>
+    <string name="mycontent_delete_dialog_title">Futa Maudhui</string>
+    <string name="mycontent_delete_dialog_text">Una uhakika unataka kufuta kabisa maudhui haya?</string>
+    <string name="mycontent_delete_dialog_confirm">Ndiyo, Futa</string>
+    <string name="mycontent_delete_dialog_cancel">Ghairi</string>
+    <string name="mycontent_no_published_content">Bado huna maudhui yaliyochapishwa.</string>
+    <string name="mycontent_no_draft_content">Bado huna maudhui ya rasimu.</string>
+
+    <!-- Chat (ChatHome & PrivateChat) -->
+    <string name="chathome_messages_deleted_snackbar">ujumbe %1$d umefutwa</string>
+    <string name="chathome_undo">Tendua</string>
+    <string name="chathome_messages_copied">Ujumbe umenakiliwa</string>
+    <string name="chathome_file_downloading">Inapakua Faili</string>
+    <string name="chathome_download_started">Upakuaji umeanza&#8230;</string>
+    <string name="chathome_download_failed">Upakuaji umeshindwa.</string>
+    <string name="chathome_edit_message">Hariri Ujumbe</string>
+    <string name="chathome_back">Nyuma</string>
+    <string name="chathome_home">Nyumbani</string>
+    <string name="chathome_today">Leo</string>
+    <string name="chathome_yesterday">Jana</string>
+    <string name="chathome_delete_all_messages">Futa ujumbe wote</string>
+    <string name="chathome_delete_all_dialog_title">Futa Ujumbe Wote</string>
+    <string name="chathome_delete_all_dialog_text">Ujumbe wote katika chumba hiki utafutwa kabisa. Una uhakika?</string>
+    <string name="chathome_delete">Futa</string>
+    <string name="chathome_cancel">Ghairi</string>
+    <string name="chathome_gallery">Nyumba ya sanaa</string>
+    <string name="chathome_select_from_gallery">Chagua kutoka Nyumba ya sanaa</string>
+    <string name="chathome_photo">Picha</string>
+    <string name="chathome_open_camera">Fungua Kamera</string>
+    <string name="chathome_photo_description">Picha</string>
+    <string name="chathome_video">Video</string>
+    <string name="chathome_open_video">Fungua Video</string>
+    <string name="chathome_share_preparing">Inatayarisha kwa kushiriki&#8230;</string>
+    <string name="chathome_share_with">Shiriki na&#8230;</string>
+    <string name="chathome_share_failed">Kushiriki kumeshindwa.</string>
+    <string name="chathome_image_uri_error">Haikuweza kuunda njia ya picha.</string>
+    <string name="chathome_video_uri_error">Haikuweza kuunda njia ya video.</string>
+    <string name="chathome_anonymous">Bila jina</string>
+    <string name="chathome_background_image_description">Asili ya mazungumzo</string>
+    <string name="privatechat_title">Mazungumzo ya Kibinafsi</string>
+    <string name="privatechat_no_messages">Bado huna ujumbe na %1$s.</string>
+    <string name="privatechat_no_messages_default_user">Mtumiaji Aliyechaguliwa</string>
+    <string name="privatechat_no_messages_default_user_with_name">%1$s</string>
+    <string name="privatechat_error">Hitilafu: %1$s</string>
+    <string name="groupitem_private_group">Kikundi cha Kibinafsi</string>
+    <string name="groupitem_public_group">Kikundi cha Umma</string>
+    <string name="groupitem_info_content_description">Maelezo ya Kikundi</string>
+    <string name="groupchatlist_add_group">Ongeza Kikundi</string>
+    <string name="groupchatlist_title">Mazungumzo ya Kikundi</string>
+    <string name="groupchatlist_back">Nyuma</string>
+    <string name="groupchatlist_home">Nyumbani</string>
+    <string name="groupchatlist_hide_list">Ficha Orodha</string>
+    <string name="groupchatlist_show_list">Onyesha Orodha</string>
+    <string name="groupchatlist_no_groups">Bado hakuna vikundi.</string>
+    <string name="groupchatlist_dialog_create_new_group">Unda Kikundi Kipya</string>
+    <string name="groupchatlist_dialog_group_name">Jina la Kikundi</string>
+    <string name="groupchatlist_dialog_group_description">Maelezo ya Kikundi</string>
+    <string name="groupchatlist_dialog_private_group">Kikundi cha Kibinafsi?</string>
+    <string name="groupchatlist_dialog_private_group_desc">Wanachama walioalikwa pekee</string>
+    <string name="groupchatlist_dialog_create">Unda</string>
+    <string name="groupchatlist_dialog_cancel">Ghairi</string>
+    <string name="groupchatlist_error_name_empty">Jina la kikundi haliwezi kuwa tupu.</string>
+    <string name="groupchatlist_error_no_user">Mtumiaji hakutambuliwa.</string>
+    <string name="groupchatlist_success_group_created">Kikundi kimeundwa kwa mafanikio!</string>
+    <string name="groupchatlist_default_description">Kikundi kipya kimeundwa.</string>
+
+    <string name="chat_profile_image">Picha ya Wasifu</string>
+    <string name="chat_sent_image">Picha Iliyotumwa</string>
+    <string name="chat_play_video">Cheza Video</string>
+    <string name="chat_pause">Sitisha</string>
+    <string name="chat_play">Cheza</string>
+    <string name="chat_message_read">Imesomwa</string>
+    <string name="chat_message_sent">Imetumwa</string>
+    <string name="chat_today">Leo</string>
+    <string name="chat_me">Wewe</string>
+    <string name="chat_typing">Anandika&#8230;</string>
+
+    <!-- Chat Selection Mode -->
+    <string name="chat_selection_title">%1$d imechaguliwa</string>
+    <string name="chat_selection_close">Funga Uchaguzi</string>
+    <string name="chat_selection_save_to_gallery">Hifadhi kwenye Nyumba ya sanaa</string>
+    <string name="chat_selection_share">Shiriki</string>
+    <string name="chat_selection_copy">Nakili</string>
+    <string name="chat_selection_edit">Hariri</string>
+    <string name="chat_selection_reply">Jibu</string>
+    <string name="chat_selection_transcribe">Nukuu</string>
+    <string name="chat_selection_delete">Futa</string>
+
+    <!-- HomeScreen -->
+    <string name="home_menu">Menyu</string>
+    <string name="home_my_contents">Maudhui Yangu</string>
+    <string name="home_learn_turkish">Jifunze Kituruki</string>
+    <string name="home_videos">Video</string>
+    <string name="home_photos">Picha</string>
+    <string name="home_audios">Sauti</string>
+    <string name="home_letters">Barua</string>
+    <string name="home_chat">Mazungumzo</string>
+    <string name="home_no_content">Bado hakuna maudhui.</string>
+    <string name="home_share_content">Shiriki</string>
+    <string name="home_pin_content">Bandika</string>
+    <string name="home_pinned_filter">Machaguo Yangu</string>
+    <string name="tutorial_title_pin">Machaguo Yangu</string>
+    <string name="tutorial_desc_pin">Unaweza kuunda mlisho wako binafsi kwa kubandika maudhui yanayokuvutia.</string>
+    <string name="tutorial_title_following">Wanaofuatwa</string>
+    <string name="tutorial_desc_following">Tumia kichujio hiki kuona machapisho kutoka kwa watu unaowafuata pekee.</string>
+
+    <string name="tutorial_title_quarantine">Dimbwi la Karantini</string>
+    <string name="tutorial_desc_quarantine">Unaweza kufuatilia maudhui ambayo hayatakiwi na jamii na yamechukuliwa kwenye mchakato wa ukaguzi kutoka hapa.</string>
+
+    <string name="popular_sheet_title">1000+</string>
+    <string name="popular_sheet_subtitle">Mwingiliano 1000+</string>
+    <string name="popular_sheet_empty">Bado hakuna maudhui ya 1000+.</string>
+    <string name="popular_owner_title">Hongera! 🏆</string>
+    <string name="popular_owner_message">Chapisho lako lipo kwenye ukurasa wa 1000+</string>
+    <string name="popular_reactor_title">Unashiriki mafanikio! ✨</string>
+    <string name="popular_reactor_message">Maudhui uliyoyaitikia yapo kwenye ukurasa wa 1000+</string>
+    <string name="status_in_review">Inakaguliwa</string>
+
+    <string name="quarantine_explanation_forbidden">Jumuiya imeweka alama kwenye maudhui haya kama \'hayafai / hayastahili\'.</string>
+    <string name="quarantine_explanation_delete">Jumuiya imeomba maudhui haya \'yaondolewe\'.</string>
+    <string name="quarantine_explanation_generic">Maudhui yanakaguliwa.</string>
+    <string name="quarantine_footer_note">Ukaguzi wa mwisho utafanywa na timu ya Anoba.</string>
+
+    <string name="tutorial_title_popular">1000+</string>
+    <string name="tutorial_desc_popular">Machapisho yanayozidi maingiliano 1000 katika hisia yoyote yanaonyeshwa hapa.</string>
+    <string name="profilescreen_home">Nyumbani</string>
+    <string name="profilescreen_email">Barua pepe</string>
+    <string name="profilescreen_user_number">Nambari ya Mtumiaji</string>
+    <string name="profilescreen_blocked_users">Watumiaji Waliozuiliwa</string>
+    <string name="profilescreen_edit_profile">Hariri Wasifu</string>
+
+    <!-- GroupChatScreen specific -->
+    <string name="groupchatscreen_not_logged_in">Lazima uingie.</string>
+    <string name="groupchatscreen_downloading_file">Inapakua faili&#8230;</string>
+    <string name="groupchatscreen_download_started">Upakuaji umeanza.</string>
+    <string name="groupchatscreen_download_failed">Upakuaji umeshindwa.</string>
+    <string name="groupchatscreen_share_preparing">Inatayarisha kushiriki&#8230;</string>
+    <string name="groupchatscreen_share_with">Shiriki na&#8230;</string>
+    <string name="groupchatscreen_share_failed">Kushiriki kumeshindwa.</string>
+    <string name="groupchatscreen_image_uri_error">Hitilafu ya njia ya picha.</string>
+    <string name="groupchatscreen_video_uri_error">Hitilafu ya njia ya video.</string>
+    <string name="groupchatscreen_title_default">Mazungumzo ya Kikundi</string>
+    <string name="groupchatscreen_back">Nyuma</string>
+    <string name="groupchatscreen_home">Nyumbani</string>
+    <string name="groupchatscreen_typing_one">%1$s anaandika&#8230;</string>
+    <string name="groupchatscreen_typing_two">%1$s na %2$s wanaandika&#8230;</string>
+    <string name="groupchatscreen_typing_many">%1$s na wengine wanaandika&#8230;</string>
+    <string name="groupchatscreen_edit_mode">Hali ya Hariri</string>
+    <string name="groupchatscreen_cancel_edit">Ghairi Hariri</string>
+    <string name="groupchatscreen_edit_message_title">Hariri Ujumbe</string>
+
+    <!-- GroupInfo Screen -->
+    <string name="groupinfo_title">Maelezo ya Kikundi</string>
+    <string name="groupinfo_back">Nyuma</string>
+    <string name="groupinfo_cancel_edit">Ghairi Hariri</string>
+    <string name="groupinfo_save_changes">Hifadhi Mabadiliko</string>
+    <string name="groupinfo_edit_group">Hariri Kikundi</string>
+    <string name="groupinfo_group_profile_image">Picha ya Wasifu wa Kikundi</string>
+    <string name="groupinfo_change_image">Badilisha Picha</string>
+    <string name="groupinfo_group_name">Jina la Kikundi</string>
+    <string name="groupinfo_group_description">Maelezo ya Kikundi</string>
+    <string name="groupinfo_mute_group">Nyamazisha Kikundi</string>
+    <string name="groupinfo_is_private">Ni ya Kibinafsi?</string>
+    <string name="groupinfo_member_management">Wanachama</string>
+    <string name="groupinfo_invite_member">Alika Mwanachama</string>
+    <string name="groupinfo_remove_member">Ondoa Mwanachama</string>
+    <string name="groupinfo_group_settings">Mipangilio ya Kikundi</string>
+    <string name="groupinfo_delete_group_permanently">Futa Kikundi Kabisa</string>
+    <string name="groupinfo_leave_group">Ondoka kwenye Kikundi</string>
+    <string name="groupinfo_leave_group_confirm">Una uhakika unataka kuondoka kwenye kikundi hiki?</string>
+    <string name="groupinfo_dialog_invite_member_title">Alika Mwanachama</string>
+    <string name="groupinfo_dialog_delete_group_title">Futa Kikundi</string>
+    <string name="groupinfo_dialog_delete_group_text">Una uhakika unataka kufuta kikundi hiki? Kitendo hiki hakiwezi kutenduliwa.</string>
+    <string name="groupinfo_dialog_confirm_delete">Ndiyo, Futa</string>
+    <string name="groupinfo_dialog_cancel">Ghairi</string>
+    <string name="groupinfo_dialog_remove_member_title">Ondoa Mwanachama</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_title">Ondoa Mwanachama</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_text">Ondoa %1$s kwenye kikundi?</string>
+
+    <!-- User Selection Dialog -->
+    <string name="userselection_title">Anza Mazungumzo</string>
+    <string name="userselection_search_placeholder">Tafuta anwani&#8230;</string>
+    <string name="userselection_search_icon">Tafuta</string>
+    <string name="userselection_start_chat_prompt">Gusa ili uanze mazungumzo</string>
+    <string name="userselection_profile_image_description">Picha ya wasifu ya %1$s</string>
+    <string name="userselection_dialog_search_placeholder">Tafuta mtumiaji&#8230;</string>
+    <string name="userselection_dialog_search_icon">Picha ya Tafuta</string>
+    <string name="userselection_dialog_clear_search">Futa Utafutaji</string>
+    <string name="userselection_dialog_no_results">Hakuna matokeo yaliyopatikana.</string>
+    <string name="userselection_dialog_profile_image_description">Picha ya wasifu ya %1$s</string>
+    <string name="userselection_dialog_close">Funga</string>
+
+    <!-- Profile & Drawer -->
+    <string name="drawer_my_profile">Wasifu Wangu</string>
+    <string name="drawer_logout">Ondoka</string>
+    <string name="drawer_logout_dialog_title">Ondoka</string>
+    <string name="drawer_logout_dialog_text">Una uhakika unataka kuondoka?</string>
+    <string name="drawer_logout_dialog_confirm">Ndiyo</string>
+    <string name="drawer_logout_dialog_dismiss">Hapana</string>
+    <string name="drawer_privacy_policy">Sera ya Faragha</string>
+    <string name="profilescreen_info_not_available">Maelezo ya wasifu hayapatikani.</string>
+    <string name="profilescreen_try_again">Jaribu Tena</string>
+    <string name="profilescreen_email_not_specified">Barua pepe haijaainishwa</string>
+    <string name="profilescreen_guest_user">Mtumiaji Mgeni</string>
+    <string name="profilescreen_close_app">Funga Programu</string>
+    <string name="profilescreen_back">Nyuma</string>
+    <string name="profileedit_title">Hariri Wasifu</string>
+    <string name="profileedit_display_name_label">Jina la Kuonyeshwa</string>
+    <string name="profileedit_save_changes">Hifadhi Mabadiliko</string>
+    <string name="profileedit_delete_account_and_data">Futa Akaunti na Data</string>
+    <string name="profileedit_delete_account_confirm_title">Una uhakika?</string>
+    <string name="profileedit_delete_account_confirm_text">Akaunti yako itafutwa kabisa.</string>
+    <string name="profileedit_delete_account_password_label">Nywila</string>
+    <string name="profileedit_deleting_process">Inafuta&#8230;</string>
+    <string name="profileedit_delete_account_success_toast">Akaunti imefutwa.</string>
+    <string name="profileedit_delete_account_error_password">Nywila isiyo sahihi.</string>
+    <string name="profileedit_enter_password_warning">Tafadhali weka nywila yako.</string>
+    <string name="profileedit_delete_permanently">FUTA</string>
+    <string name="profileedit_cancel">Ghairi</string>
+    <string name="profileedit_profile_updated_toast">Wasifu umesasishwa.</string>
+    <string name="profileedit_photo_updated_toast">Picha imesasishwa.</string>
+    <string name="profileedit_name_updated_toast">Jina limesasishwa.</string>
+
+    <!-- Video & Camera Module -->
+    <string name="video_upload_success">Video imepakiwa kwa mafanikio ✅</string>
+    <string name="video_upload_error">Hitilafu wakati wa kupakia video ❌</string>
+    <string name="video_uploading">Inapakia video&#8230;</string>
+    <string name="camera_back">Nyuma</string>
+    <string name="camera_stop_recording">Acha Kurekodi</string>
+    <string name="camera_start_recording">Anza Kurekodi</string>
+    <string name="camera_preview_pause">Sitisha</string>
+    <string name="camera_preview_play">Cheza</string>
+    <string name="camera_cancel">Ghairi</string>
+    <string name="camera_save">Hifadhi</string>
+    <string name="camera_permission_request_text">Ruhusa za kamera na sauti zinahitajika.</string>
+    <string name="camera_permission_request_button">Omba Ruhusa</string>
+    <string name="camera_video_title">Video %1$s</string>
+
+    <!-- VideoCard specific -->
+    <string name="videocard_user_profile_image">Picha ya Wasifu ya Mtumiaji</string>
+    <string name="videocard_play_video">Cheza Video</string>
+    <string name="videocard_view_count">Hesabu ya Mitazamo</string>
+    <string name="videocard_video_title">Video: %1$s</string>
+    <string name="videocard_comments">Maoni</string>
+    <string name="videocard_delete_confirm_title">Futa Video</string>
+    <string name="videocard_delete_confirm_text">Je, una uhakika unataka kufuta video hii kabisa?</string>
+    <string name="videocard_delete_confirm_yes">Ndiyo, Futa</string>
+    <string name="videocard_delete_confirm_no">Ghairi</string>
+
+    <!-- VideoDetailScreen specific -->
+    <string name="video_detail_share_chooser_title">Shiriki video&#8230;</string>
+    <string name="video_detail_share_preparing">Inatayarisha kwa ajili ya kushiriki&#8230;</string>
+    <string name="video_detail_back">Nyuma</string>
+    <string name="video_detail_share">Shiriki</string>
+    <string name="videohome_home">Nyumbani</string>
+    <string name="videodetail_play_pause">Cheza/Sitisha</string>
+    <string name="videodetail_rewind">Rudisha nyuma sekunde 10</string>
+    <string name="videodetail_forward">Mbele sekunde 10</string>
+    <string name="videodetail_unmute">Washa sauti</string>
+    <string name="videodetail_mute">Zima sauti</string>
+    <string name="videodetail_comments_count">maoni %d</string>
+    <string name="videodetail_restart">Anza upya</string>
+    <string name="videodetail_playback_speed">Kasi ya Kucheza</string>
+
+    <!-- VideoEditScreen specific -->
+    <string name="video_edit_title">Hariri</string>
+    <string name="video_edit_back">Nyuma</string>
+    <string name="video_edit_error">Hitilafu imetokea: %1$s</string>
+    <string name="video_edit_success">Imehifadhiwa kwa mafanikio.</string>
+    <string name="video_edit_loading">Inapakia&#8230;</string>
+    <string name="video_edit_mute_on">Nyamaza</string>
+    <string name="video_edit_mute_off">Washa sauti</string>
+    <string name="video_edit_rotate">Zungusha</string>
+    <string name="video_edit_apply_and_save">Tumia na Uhifadhi</string>
+    <string name="video_edit_saving">Inahifadhi&#8230;</string>
+    <string name="video_edit_play">Cheza</string>
+    <string name="video_edit_processing">Inachakata&#8230;</string>
+
+    <!-- VideoCommentsScreen specific -->
+    <string name="videocomments_title">Maoni ya Video</string>
+    <string name="videocomments_back">Nyuma</string>
+    <string name="videocomments_home">Nyumbani</string>
+    <string name="videocomments_replying_to">Kumjibu %1$s</string>
+    <string name="videocomments_cancel_reply">Ghairi Jibu</string>
+    <string name="videocomments_comment_placeholder">Andika maoni&#8230;</string>
+    <string name="videocomments_like">Penda</string>
+    <string name="videocomments_reply">Jibu</string>
+    <string name="videocomments_delete">Futa</string>
+    <string name="videocomments_no_comments">Bado hakuna maoni.</string>
+    <string name="videocomments_profile_image">Picha ya Wasifu</string>
+    <string name="videocomments_send">Tuma</string>
+
+    <!-- VideoHomeScreen specific -->
+    <string name="videohome_title">Video</string>
+    <string name="videohome_back">Nyuma</string>
+    <string name="videohome_no_videos">Bado hakuna video.</string>
+    <string name="videohome_error_duration">Muda haukuweza kupakiwa.</string>
+
+    <!-- Photo Module -->
+    <string name="photohome_title">Picha</string>
+    <string name="photohome_back">Nyuma</string>
+    <string name="photohome_home">Nyumbani</string>
+    <string name="photohome_no_photos">Bado hakuna picha zilizopakiwa.</string>
+    <string name="photocreate_title">Ongeza Picha Mpya</string>
+    <string name="photocreate_cancelled">Upigaji picha umeghairiwa.</string>
+    <string name="photocreate_file_prepare_error">Haikuweza kutayarisha faili ya picha.</string>
+    <string name="photocreate_permission_denied">Ruhusa ya kamera imekataliwa.</string>
+    <string name="photocreate_permission_requesting">Inaomba ruhusa ya kamera&#8230;</string>
+    <string name="photocreate_success_toast">Rasimu ya picha imeundwa ✅</string>
+    <string name="photocreate_failure_toast">Haikuweza kupakia picha.</string>
+    <string name="photocreate_uploading_title">Inapakia&#8230;</string>
+    <string name="photocreate_upload_preview">Uhakiki wa picha iliyopakiwa</string>
+    <string name="photocreate_creating_draft">Inaunda rasimu ya picha&#8230;</string>
+    <string name="photodetail_title">Picha</string>
+    <string name="photodetail_back">Nyuma</string>
+    <string name="photodetail_share">Shiriki</string>
+    <string name="photodetail_home">Nyumbani</string>
+    <string name="photodetail_share_chooser_title">Shiriki picha&#8230;</string>
+    <string name="photodetail_share_preparing">Inatayarisha kushiriki&#8230;</string>
+    <string name="photodetail_anonymous">Bila jina</string>
+    <string name="photodetail_photo_description">Picha %1$s</string>
+    <string name="photodetail_view_count">Hesabu ya Mitazamo</string>
+    <string name="photodetail_comment">Maoni</string>
+    <string name="photodetail_comments_count">maoni %d</string>
+    <string name="photoedit_title">Hariri Picha</string>
+    <string name="photoedit_back">Nyuma</string>
+    <string name="photoedit_save">Hifadhi</string>
+    <string name="photoedit_content_description">Picha ya kuhariri</string>
+    <string name="photoedit_title_label">Kichwa</string>
+    <string name="photoedit_note_label">Maelezo</string>
+
+    <!-- PhotoCard specific -->
+    <string name="photocard_anonymous">Bila jina</string>
+    <string name="photocard_photo_description">Picha: %1$s</string>
+    <string name="photocard_view_count">Mitazamo</string>
+    <string name="photocard_comment_count">Hesabu ya Maoni</string>
+
+    <!-- PhotoComments specific -->
+    <string name="photocomments_title">Maoni</string>
+    <string name="photocomments_replying_to">Kumjibu %1$s</string>
+    <string name="photocomments_error_loading">Haikuweza kupakia maoni.</string>
+    <string name="photocomments_error_sending">Imeshindwa kutuma maoni.</string>
+    <string name="photocomments_error_auth_required">Tafadhali ingia.</string>
+    <string name="photocomments_error_delete">Haikuweza kufuta maoni.</string>
+    <string name="photocomments_error_no_permission">Huna idhini ya kufuta maoni haya.</string>
+    <string name="photocomments_comment_placeholder">Andika maoni&#8230;</string>
+    <string name="photocomments_reply">Jibu</string>
+    <string name="photocomments_delete">Futa</string>
+    <string name="photocomments_back">Nyuma</string>
+    <string name="photocomments_home">Nyumbani</string>
+    <string name="photocomments_cancel_reply">Ghairi Jibu</string>
+    <string name="photocomments_send">Tuma</string>
+    <string name="photocomments_no_comments">Bado hakuna maoni.</string>
+    <string name="photocomments_profile_image">Picha ya Wasifu</string>
+    <string name="photocomments_like">Penda</string>
+
+    <!-- Letter Module -->
+    <string name="letterhome_title">Barua</string>
+    <string name="letterhome_back">Nyuma</string>
+    <string name="letterhome_home">Nyumbani</string>
+    <string name="letterhome_all_letters">Barua Zote</string>
+    <string name="letterhome_no_letters">Bado hakuna barua.</string>
+    <string name="lettercreate_title">Barua Mpya</string>
+    <string name="lettercreate_back">Nyuma</string>
+    <string name="lettercreate_home">Nyumbani</string>
+    <string name="lettercreate_textfield_placeholder">Andika barua mpya&#8230;</string>
+    <string name="lettercreate_discard">Tupa</string>
+    <string name="lettercreate_save">Hifadhi na Mhuri</string>
+    <string name="lettercreate_draft_saved_toast">Rasimu imehifadhiwa!</string>
+    <string name="lettercreate_draft_failed_toast">Haikuweza kuhifadhi rasimu.</string>
+    <string name="lettercreate_unlock_date">Tarehe ya Kufungua: %1$s</string>
+    <string name="lettercreate_time_capsule_option">Ifanye iwe Kapsuli ya Muda (Hiari)</string>
+    <string name="lettercreate_privacy_dialog_title">Faragha ya Barua</string>
+    <string name="lettercreate_privacy_dialog_text">Nani anapaswa kuona barua hii?</string>
+    <string name="lettercreate_privacy_dialog_public">Hadharani</string>
+    <string name="lettercreate_privacy_dialog_sealed">Mhuri (Kibinafsi)</string>
+    <string name="lettercreate_sealed_draft_saved_toast">Rasimu iliyotiwa muhuri imehifadhiwa kwa ajili ya %1$s!</string>
+    <string name="lettercreate_recipient_dialog_title">Chagua Mpokeaji</string>
+    <string name="lettercreate_recipient_dialog_search">Tafuta Mtumiaji</string>
+    <string name="lettercreate_recipient_dialog_cancel">Ghairi</string>
+    <string name="lettercreate_time_capsule_make">Kapsuli ya Muda</string>
+    <string name="lettercreate_time_capsule_label">Kapsuli ya Muda</string>
+    <string name="lettercreate_share_public">Shiriki hadharani</string>
+    <string name="lettercreate_send_sealed">Tuma ikiwa imetiwa muhuri (Kibinafsi)</string>
+    <string name="lettercreate_datepicker_public">Hadharani</string>
+    <string name="lettercreate_datepicker_sealed">Mhuri (Mtu aliyechaguliwa)</string>
+    <string name="lettercreate_select_date_error">Tafadhali chagua tarehe</string>
+    <string name="lettercreate_cancel_action">Ghairi</string>
+    <string name="letterdetail_title">Maelezo ya Barua</string>
+    <string name="letterdetail_sender">Kutoka kwa: %1$s</string>
+    <string name="letterdetail_anonymous_sender">Bila jina</string>
+    <string name="letterdetail_comment">Maoni</string>
+    <string name="letterdetail_comments_count">maoni %d</string>
+    <string name="letterdetail_close_button">Funga Barua</string>
+    <string name="letterdetail_video_title">Video: %1$s</string>
+    <string name="letteredit_title">Hariri Barua</string>
+    <string name="letteredit_back">Nyuma</string>
+    <string name="letteredit_save">Hifadhi</string>
+    <string name="letteredit_content_label">Maudhui ya Barua</string>
+    <string name="letteredit_title_label">Kichwa</string>
+    <string name="letteredit_personal_note_label">Kumbuka</string>
+
+    <string name="letter_ask_anoba_label">Kwa: Dada Anoba</string>
+    <string name="letter_ask_anoba_hidden_content">Yaliyomo katika barua hii ni ya siri,\njibu la Dada Anoba pekee ndilo limechapishwa.</string>
+    <string name="letter_anoba_response_title">Jibu la Dada Anoba</string>
+
+    <string name="lettercreate_anoba_title">Andika kwa Dada Anoba</string>
+    <string name="lettercreate_anoba_desc">Shiriki matatizo yako, Dada Anoba akuandikie jibu la busara.</string>
+    <string name="lettercreate_pseudonym_label">Lakabu / Jina la Utani (Mfano: Ndege wa Huzuni)</string>
+    <string name="lettercreate_pseudonym_placeholder">Andika lakabu ili kuficha utambulisho wako&#8230;</string>
+    <string name="lettercreate_anoba_privacy_public">Kila mtu aone jibu</string>
+    <string name="lettercreate_anoba_privacy_private">Mimi pekee nione jibu</string>
+    <string name="lettercreate_anoba_send">Tuma kwa Dada Anoba ✨</string>
+    <string name="lettercreate_pseudonym_error">Tafadhali andika lakabu kwanza.</string>
+    <string name="lettercreate_mode_write">Andika</string>
+    <string name="lettercreate_mode_speak">Zungumza</string>
+    <string name="lettercreate_audio_recorded">Sauti imerekodiwa</string>
+    <string name="lettercreate_audio_record_hint">Bonyeza kitufe ili kurekodi barua yako.</string>
+
+    <!-- Audio Edit -->
+    <string name="sesedit_title">Hariri Sauti</string>
+    <string name="sesedit_back">Nyuma</string>
+    <string name="sesedit_save">Hifadhi</string>
+    <string name="sesedit_trim_label">Kata Sauti</string>
+    <string name="sesedit_title_label">Kichwa</string>
+    <string name="sesedit_note_label">Maelezo</string>
+    <string name="sesedit_success">Sauti imesasishwa kwa mafanikio</string>
+    <string name="sesedit_player_error">Hitilafu ya kichezaji: %1$s</string>
+
+    <!-- Letter Comments -->
+    <string name="lettercomments_title">Maoni ya Barua</string>
+    <string name="lettercomments_replying_to">Kumjibu %1$s</string>
+    <string name="lettercomments_comment_placeholder">Andika maoni&#8230;</string>
+    <string name="lettercomments_no_comments">Bado hakuna maoni.</string>
+    <string name="lettercomments_reply">Jibu</string>
+    <string name="lettercomments_delete">Futa</string>
+
+    <!-- Letter Card -->
+    <string name="lettercard_sealed_error">Barua hii imetiwa muhuri.</string>
+    <string name="lettercard_time_capsule_msg">Barua hii bado haijafunguliwa.</string>
+    <string name="lettercard_sender">Kutoka kwa: %1$s</string>
+    <string name="lettercard_recipient">Kwa: %1$s</string>
+    <string name="lettercard_time_capsule_label">Kapsuli ya Muda</string>
+    <string name="lettercard_sealed_label">Barua Iliyotiwa Muhuri</string>
+
+    <!-- Audio Module -->
+    <string name="seshome_title">Rekodi za Sauti</string>
+    <string name="seshome_back">Nyuma</string>
+    <string name="seshome_home">Nyumbani</string>
+    <string name="seshome_no_ses">Bado hakuna rekodi za sauti.</string>
+    <string name="audiorecording_permission_needed">🎙️ Ruhusa ya maikrofoni inahitajika</string>
+    <string name="audiorecording_status_loading">Inapakia Rekodi&#8230;</string>
+    <string name="audiorecording_status_recording">Inarekodi&#8230;</string>
+    <string name="audiorecording_status_completed">Kurekodi Kumekamilika</string>
+    <string name="audiorecording_status_create">Unda Rekodi ya Sauti</string>
+    <string name="audiorecording_start_prompt">Gusa kitufe ili kuanza kurekodi</string>
+    <string name="audiorecording_stop_prompt">Gusa kitufe ili kuacha kurekodi</string>
+    <string name="audiorecording_success_toast">Rasimu ya sauti imeundwa!</string>
+    <string name="audiorecording_error_toast">Hitilafu: Haikuweza kuunda rasimu ya sauti.</string>
+    <string name="audiorecording_add_to_drafts">Ongeza kwenye Rasimu</string>
+    <string name="audiorecording_cancel">Ghairi</string>
+    <string name="sesdetail_share_chooser_title">Shiriki sauti&#8230;</string>
+    <string name="sesdetail_share_preparing">Inatayarisha kwa ajili ya kushiriki&#8230;</string>
+    <string name="sesdetail_loading">⏳ Inapakia&#8230;</string>
+    <string name="sesdetail_back">Nyuma</string>
+    <string name="sesdetail_share">Shiriki</string>
+    <string name="sesdetail_home">Nyumbani</string>
+    <string name="sesdetail_anonymous">Bila jina</string>
+    <string name="sesdetail_stop">Acha</string>
+    <string name="sesdetail_play">Cheza</string>
+    <string name="sesdetail_view_count">Hesabu ya Mitazamo</string>
+    <string name="sesdetail_comment">Maoni</string>
+    <string name="sesdetail_comments_count">maoni %d</string>
+    <string name="sesdetail_transcribe">Nukuu</string>
+    <string name="sesdetail_close_button">Funga Sauti</string>
+    <string name="sescomments_title">Maoni</string>
+    <string name="sescomments_back">Nyuma</string>
+    <string name="sescomments_home">Nyumbani</string>
+    <string name="sescomments_replying_to">Kumjibu %1$s</string>
+    <string name="sescomments_cancel_reply">Ghairi Jibu</string>
+    <string name="sescomments_comment_placeholder">Andika maoni yako&#8230;</string>
+    <string name="sescomments_send">Tuma</string>
+    <string name="sescomments_no_comments">Bado hakuna maoni.</string>
+    <string name="sescomments_profile_image">Picha ya Wasifu</string>
+    <string name="sescomments_reply">Jibu</string>
+    <string name="sescomments_delete">Futa</string>
+    <string name="sescomments_retry">Jaribu tena</string>
+    <string name="sescomments_like">Penda</string>
+
+    <!-- SesCard specific -->
+    <string name="sescard_user_profile_image">Picha ya Wasifu ya Mtumiaji</string>
+    <string name="sescard_anonymous">Bila jina</string>
+    <string name="sescard_play_audio">Cheza Sauti</string>
+    <string name="sescard_view_count">Mitazamo</string>
+    <string name="sescard_comments">Maoni</string>
+
+    <string name="reactions_title">Hisia</string>
+    <string name="reactions_all">Wote</string>
+    <string name="reactions_empty">Bado hakuna hisia.</string>
+
+    <!-- Emojis -->
+    <string name="emoji_heart_desc">Moyo</string>
+    <string name="emoji_laugh_desc">Kicheko</string>
+    <string name="emoji_thumbs_up_desc">Gumba juu</string>
+    <string name="emoji_sad_desc">Huzuni</string>
+    <string name="emoji_surprise_desc">Mshangao</string>
+    <string name="emoji_thinking_desc">Kufikiri</string>
+    <string name="emoji_angry_desc">Hasira</string>
+    <string name="emoji_fire_desc">Moto / Hadithi</string>
+    <string name="emoji_love_desc">Uso wenye tabasamu na mioyo</string>
+    <string name="emoji_neutral_desc">Neutral / Wastani</string>
+    <string name="emoji_report_desc">Maudhui yasiyofaa</string>
+    <string name="emoji_delete_desc">Ombi la kufuta maudhui</string>
+    <string name="emoji_reaction_info">%1$s, %2$d hisia</string>
+
+    <!-- Login UI -->
+    <string name="login_welcome_title">Karibu Anoba</string>
+    <string name="login_title">Ingia</string>
+    <string name="login_email_label">Barua pepe</string>
+    <string name="login_password_label">Nywila</string>
+    <string name="login_remember_me">Nikumbuke</string>
+    <string name="login_forgot_password">Umesahau Nywila</string>
+    <string name="login_button">Ingia</string>
+    <string name="login_guest_button">Ingia kama Mgeni</string>
+    <string name="login_no_account">Huna akaunti? Jisajili</string>
+    <string name="login_go_to_signup">Jisajili</string>
+    <string name="forgot_password_success">Kiungo kimetumwa.</string>
+    <string name="forgot_password_desc">Ingiza barua pepe.</string>
+    <string name="forgot_password_button">Tuma</string>
+    <string name="new_password_title">Nywila Mpya</string>
+    <string name="new_password_label">Nywila</string>
+    <string name="new_password_button">Sasisha</string>
+    <string name="signup_title">Jisajili</string>
+    <string name="signup_username_label">Jina la mtumiaji</string>
+    <string name="signup_email_label">Barua pepe</string>
+    <string name="signup_password_label">Nywila</string>
+    <string name="signup_confirm_password">Thibitisha Nywila</string>
+    <string name="signup_button">Kamilisha Usajili</string>
+    <string name="signup_already_have_account">Ingia</string>
+
+    <!-- Guide & Splash -->
+    <string name="guide_title">Mwongozo wa Anoba</string>
+    <string name="guide_description">Unaweza kukagua maudhui yaliyoshirikiwa hapa.</string>
+    <string name="guide_empty_message">Bado hakuna maudhui ya mwongozo.</string>
+    <string name="splash_made_in_turkiye">Imetengenezwa Türkiye</string>
+
+    <!-- Update -->
+    <string name="update_downloaded">Sasisho limepakuliwa. Programu inasasishwa&#8230;</string>
+
+    <!-- Mete -->
+    <string name="mete_title">Mete</string>
+    <string name="mete_empty_content">Inapakia&#8230;</string>
+    <string name="mete_video_loading">Video inapakia&#8230;</string>
+    <string name="mete_audio_loading">Oudio inapakia&#8230;</string>
+    <string name="mete_game_listen">Sikiliza</string>
+    <string name="mete_game_find_card">Ipi?</string>
+    <string name="mete_game_correct">Bora! 🎉</string>
+    <string name="mete_game_continue">ENDELEA</string>
+    <string name="mete_game_insufficient_content">Angalau vipengee 4 tofauti vinahitajika kwa mchezo.\nTafadhali ongeza maudhui au ubadilishe lugha.</string>
+    <string name="mete_search_placeholder">Tafuta jina au nambari ya sehemu… (Mfano: 1)</string>
+    <string name="mete_add_new_section">Fungua Sehemu Mpya</string>
+    <string name="mete_section_name_label">Jina au Nambari ya Sehemu (Mfano: 1)</string>
+    <string name="mete_create">Unda</string>
+    <string name="mete_story_fallback_title">Hadithi / Katuni</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_title_welcome">Karibu!</string>
+    <string name="tutorial_desc_welcome">Hebu tuanze.</string>
+    <string name="tutorial_title_drawer">Menyu</string>
+    <string name="tutorial_desc_drawer">Unaweza kupata wasifu wako, mwongozo wa msaada, na mipangilio ya akaunti kutoka hapa.</string>
+    <string name="tutorial_title_flower">Kwa ajili yako</string>
+    <string name="tutorial_desc_flower"> </string>
+    <string name="tutorial_title_special">Maafisa</string>
+    <string name="tutorial_desc_special">Udhibiti.</string>
+    <string name="tutorial_title_more_menu">Chaguzi Zaidi</string>
+    <string name="tutorial_desc_more_menu">⭐ 1000+ Maarufu: Mchanganuo wa maudhui maarufu.\n🛡️ Dimbwi la Karantini: Angalia maudhui yanayokaguliwa.\n🇹🇷 Mete: Uzoefu wa kujifunza wa kufurahisha na asilia.</string>
+    <string name="tutorial_title_search">Kichujio cha Mtumiaji</string>
+    <string name="tutorial_desc_search">Chuja maudhui kwa kuandika jina la mtumiaji au kitambulisho.</string>
+    <string name="tutorial_title_my_contents">Maudhui Yangu &amp; Rasimu</string>
+    <string name="tutorial_desc_my_contents">Dhibiti rasimu zako na maudhui yaliyochapishwa kutoka hapa.</string>
+    <string name="tutorial_title_create_video">Video</string>
+    <string name="tutorial_desc_create_video">Rekodi na Shiriki.</string>
+    <string name="tutorial_title_create_photo">Picha</string>
+    <string name="tutorial_desc_create_photo">Piga picha.</string>
+    <string name="tutorial_title_create_audio">Oudio</string>
+    <string name="tutorial_desc_create_audio">Rekodi.</string>
+    <string name="tutorial_title_create_letter">Andika</string>
+    <string name="tutorial_desc_create_letter">Barua.</string>
+    <string name="tutorial_title_gallery">Nyumba ya sanaa</string>
+    <string name="tutorial_desc_gallery">Pakia.</string>
+    <string name="tutorial_title_map">Dunia ya Anoba</string>
+    <string name="tutorial_desc_map">Tazama maudhui kiasi gani yanashirikiwa kutoka kila nchi na ufuatilie harakati za Anoba kote duniani.</string>
+    <string name="tutorial_title_mete">Mete</string>
+    <string name="tutorial_desc_mete">Uzoefu wa kujifunza asili na Mete.</string>
+    <string name="tutorial_title_mosaic">Mosai</string>
+    <string name="tutorial_desc_mosaic">Chunguza ulimwengu wa rangi ambapo maudhui mbalimbali huja pamoja.</string>
+    <string name="tutorial_title_tab_videos">Video</string>
+    <string name="tutorial_desc_tab_videos">Tazama.</string>
+    <string name="tutorial_title_tab_photos">Picha</string>
+    <string name="tutorial_desc_tab_photos">Angalia.</string>
+    <string name="tutorial_title_tab_audios">Sauti</string>
+    <string name="tutorial_desc_tab_audios">Sikiliza.</string>
+    <string name="tutorial_title_tab_letters">Barua</string>
+    <string name="tutorial_desc_tab_letters">Soma barua zilizoandikwa au sikiliza barua za sauti.</string>
+    <string name="tutorial_title_tab_chats">Mazungumzo</string>
+    <string name="tutorial_desc_tab_chats">Tuma ujumbe, jumuika na watu, na piga simu za sauti/video bila malipo.</string>
+    <string name="tutorial_title_notifications">Arifa</string>
+    <string name="tutorial_desc_notifications">Fuatilia arifa zako hapa.</string>
+
+    <string name="tutorial_next">Mbele</string>
+    <string name="tutorial_skip">Funga</string>
+    <string name="tutorial_finish">Maliza</string>
+
+    <!-- Mosaic -->
+    <string name="mosaic_title">Mosai</string>
+    <string name="mosaic_close">Funga</string>
+    <string name="mosaic_video_loading">Video itacheza hivi karibuni&#8230;</string>
+    <string name="mosaic_audio_label">Oudio</string>
+    <string name="mosaic_video_label">Video</string>
+    <string name="mosaic_ad_label">TANGAZO</string>
+    <string name="mosaic_title_caps">MOSAIC</string>
+    <string name="mosaic_ad_contains">Ina Matangazo</string>
+    <string name="home_guide_dialog_title">Ziara ya Programu</string>
+    <string name="home_guide_dialog_text">Je, ungependa kufanya ziara ya haraka ili kugundua Anoba?</string>
+    <string name="home_guide_dialog_tour">Anza Ziara</string>
+    <string name="map_title">Ramani ya Anoba ya Dunia</string>
+    <string name="map_content_count">Maudhui %d</string>
+    <string name="country_ae">Falme za Kiarabu</string>
+    <string name="country_dz">Aljeria</string>
+    <string name="country_ma">Moroko</string>
+    <string name="country_za">Afrika Kusini</string>
+    <string name="country_qa">Katari</string>
+    <string name="country_ke">Kenya</string>
+    <string name="country_eg">Misri</string>
+    <string name="country_ng">Nijeria</string>
+    <string name="country_tn">Tunisia</string>
+    <string name="country_tr">Uturuki</string>
+    <string name="country_sa">Saudia</string>
+    <string name="country_om">Omani</string>
+    <string name="country_jo">Yordani</string>
+    <string name="country_ca">Kanada</string>
+    <string name="country_au">Australia</string>
+    <string name="country_br">Brazili</string>
+    <string name="country_ar">Ajentina</string>
+    <string name="country_in">India</string>
+    <string name="country_jp">Japani</string>
+    <string name="country_kr">Korea Kusini</string>
+    <string name="country_id">Indonesia</string>
+    <string name="country_gb">Uingereza</string>
+    <string name="country_fr">Ufaransa</string>
+    <string name="country_es">Uhispania</string>
+    <string name="country_nl">Uholanzi</string>
+    <string name="country_co">Kolombia</string>
+    <string name="country_my">Malesia</string>
+    <string name="country_tm">Turkmenistan</string>
+    <string name="country_other">Nyengine</string>
+    <string name="country_kg">Kirigizistani</string>
+    <string name="country_pk">Pakistani</string>
+    <string name="country_az">Azerbaijani</string>
+    <string name="country_kz">Kazakhstani</string>
+    <string name="country_uz">Uzbekistani</string>
+    <string name="country_hu">Hungaria</string>
+    <string name="country_us">Marekani</string>
+    <string name="country_ru">Urusi</string>
+    <string name="country_mx">Meksiko</string>
+    <string name="country_it">Italia</string>
+    <string name="country_de">Ujerumani</string>
+
+    <!-- Chat Reply Previews -->
+    <string name="chat_reply_image">[Picha]</string>
+    <string name="chat_reply_video">[Video]</string>
+    <string name="chat_reply_audio">[Sauti ya Ujumbe]</string>
+
+    <!-- Official Panel -->
+    <string name="admin_panel_title">Jopo la Uhuishaji</string>
+    <string name="admin_panel_police">🔵 Uvamizi wa Polisi</string>
+    <string name="admin_panel_commando">🔴 Operesheni ya Kikomandoo</string>
+    <string name="admin_panel_bekci">🟤 Doria ya Mlinzi</string>
+    <string name="admin_panel_close">Funga</string>
+
+    <!-- Arama Sistemi -->
+    <string name="call_incoming">Simu inayopokelewa</string>
+    <string name="call_video_incoming">Simu ya video inayokuja&#8230;</string>
+    <string name="call_voice_incoming">Simu ya sauti inayokuja&#8230;</string>
+    <string name="call_accept">Kubali</string>
+    <string name="call_accept_video">Kubali Video</string>
+    <string name="call_reject">Kataa</string>
+    <string name="call_waiting">Inapiga&#8230;</string>
+    <string name="call_voice_ongoing">Kwenye simu</string>
+    <string name="call_rejected_by_partner">Simu imekataliwa</string>
+    <string name="call_ended">Simu imekatwa</string>
+
+    <!-- Arama Erişilebilirlik -->
+    <string name="ax_mute">Zima Sauti</string>
+    <string name="ax_end_call">Kata Simu</string>
+    <string name="ax_camera">Zima/Washa Kamera</string>
+    <string name="ax_speaker">Zima/Washa Spika</string>
+    <string name="ax_switch_camera">Badilisha Kamera</string>
+
+    <!-- Mfumo wa Kuzuia -->
+    <string name="chat_block_user">Mzuie Mtumiaji</string>
+    <string name="chat_unblock_user">Ondoa Zuio</string>
+    <string name="chat_block_dialog_title">Mzuie Mtumiaji?</string>
+    <string name="chat_block_dialog_text">Je, una uhakika unataka kumzuia %1$s? Hamtaweza kutumiana ujumbe wala kupigiana simu.</string>
+    <string name="chat_user_blocked_toast">Mtumiaji amezuiliwa.</string>
+    <string name="chat_user_unblocked_toast">Zuio limeondolewa.</string>
+    <string name="chat_no_blocked_users">Bado hakuna watumiaji waliozuiliwa.</string>
+    <string name="chat_request_title">Ombi la Ujumbe</string>
+    <string name="chat_request_desc">%1$s amekutumia ujumbe. Je, unakubali mazungumzo haya?</string>
+    <string name="chat_request_accept">Kubali</string>
+    <string name="chat_request_delete">Futa</string>
+    <string name="chat_media_message">Ujumbe wa media</string>
+    <string name="chat_audio_recording">Sauti inarekodiwa&#8230;</string>
+    <string name="chat_attachment_description">Kiambatisho</string>
+    <string name="chat_recording_failed">Kurekodi kumeshindwa.</string>
+    <string name="chat_recording_failed_system">Kurekodi kumeshindwa. Mfumo unaweza kuwa unaizuia.</string>
+    <string name="chat_microphone_permission_required">Ruhusa ya maikrofoni inahitajika kwa kurekodi sauti.</string>
+    <string name="chat_search_user_prompt">Tafuta mtu unayetaka kupiga naye gumzo.</string>
+    <string name="chat_user_not_found">Mtu hajapatikana.</string>
+    <string name="chat_group_user_added">Aliongeza %1$s kwenye kikundi.</string>
+    <string name="chat_group_user_removed">Alimwondoa %1$s kwenye kikundi.</string>
+    <string name="chat_group_user_left">aliondoka kwenye kikundi.</string>
+    <string name="chat_group_image_update_failed">Imeshindwa kusasisha picha ya kikundi.</string>
+    <string name="chat_group_create_error">Hitilafu wakati wa kuunda kikundi: %1$s</string>
+    <string name="notification_someone">Mtu fulani</string>
+    <string name="notification_calling_you">%1$s anakupigia simu&#8230;</string>
+    <string name="notification_new_content">Una arifa mpya.</string>
+    <string name="chat_media">Media</string>
+    <string name="chat_options_accessible_name">Chaguzi za mazungumzo</string>
+
+    <string name="notification_anoba_response_title">Dada Anoba</string>
+    <string name="notification_anoba_response_body">Barua yako imejibiwa! Gusa ili usome ✨</string>
+
+    <string name="admin_anoba_panel_button">Jopo la Dada Anoba</string>
+
+    <!-- Kituo cha Arifa (v120) -->
+    <string name="notif_hub_title">Arifa</string>
+    <string name="notif_hub_mark_all_read">Soma Zote</string>
+    <string name="notif_hub_empty">Bado hakuna arifa mpya.</string>
+    <string name="notif_hub_close">Funga</string>
+    <string name="notif_type_popular_owner">Hongera! Chapisho lako lipo kwenye ukurasa wa 1000+ 🏆</string>
+    <string name="notif_type_popular_reactor">Maudhui uliyoyaitikia yapo kwenye ukurasa wa 1000+ ✨</string>
+    <string name="notif_type_quarantine_owner">Maudhui yako yamepelekwa kwenye ukaguzi 🛡️</string>
+    <string name="notif_type_reporter_quarantine">Maudhui uliyoripoti yamewekwa karantini ✅</string>
+    <string name="notif_type_reporter_unflag">Maudhui uliyoripoti yameidhinishwa 🛡️</string>
+    <string name="notif_type_reaction">Ameitikia maudhui yako.</string>
+    <string name="notif_type_comment">Ameeleza maudhui yako.</string>
+    <string name="notif_type_generic">Umepokea arifa mpya.</string>
+
+    <string name="letteradmin_title">Dada Anoba: Kidimbwi cha Barua</string>
+    <string name="letteradmin_tab_pending">Zinasubiri</string>
+    <string name="letteradmin_tab_answered">Zilizojibiwa</string>
+    <string name="letteradmin_response_label">Jibu la Dada Anoba:</string>
+    <string name="letteradmin_empty_pending">Hakuna barua mpya zinazosubiri majibu ✨</string>
+    <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+</resources>

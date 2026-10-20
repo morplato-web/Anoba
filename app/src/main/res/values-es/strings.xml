@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anoba</string>
+
+    <!-- Roles -->
+    <string name="role_admin">Administrador</string>
+    <string name="role_muhtar">Líder Comunitario</string>
+    <string name="role_moderator">Moderador</string>
+    <string name="role_member">Miembro</string>
+    <string name="role_guest">Invitado</string>
+
+    <!-- Mensajes de Error -->
+    <string name="error_invalid_email">Formato de correo electrónico no válido.</string>
+    <string name="error_wrong_password">Contraseña incorrecta.</string>
+    <string name="error_user_not_found">Usuario no encontrado.</string>
+    <string name="error_user_disabled">Esta cuenta ha sido inhabilitada.</string>
+    <string name="error_too_many_requests">Demasiados intentos. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="error_email_already_in_use">Esta dirección de correo ya está en uso.</string>
+    <string name="error_weak_password">La contraseña es demasiado débil.</string>
+    <string name="error_network_request_failed">Error de conexión de red.</string>
+    <string name="error_unknown">Ocurrió un error inesperado.</string>
+    <string name="error_password_too_short">La contraseña debe tener al menos 6 caracteres.</string>
+    <string name="error_username_short">El nombre de usuario es demasiado corto.</string>
+    <string name="error_passwords_mismatch">Las contraseñas no coinciden.</string>
+    <string name="anonymous">Anónimo</string>
+    <string name="error_comments_loading">Error al cargar los comentarios.</string>
+    <string name="error_comment_send">No se pudo enviar el comentario.</string>
+    <string name="error_login_required">Por favor, inicie sesión para continuar.</string>
+    <string name="error_action_failed">Operación fallida.</string>
+    <string name="error_delete_failed">Error al eliminar.</string>
+    <string name="error_unauthorized">No tiene permiso para realizar esta acción.</string>
+    <string name="error_member_only_letter">Por favor, regístrese para escribir una carta.</string>
+    <string name="error_member_only_reaction">Por favor, regístrese para interactuar.</string>
+    <string name="error_letter_not_found">Carta no encontrada.</string>
+    <string name="error_letter_loading">Error al cargar la carta.</string>
+    <string name="unknown_error">Error desconocido.</string>
+
+    <!-- Textos de Estado UI -->
+    <string name="state_loading">Cargando&#8230;</string>
+    <string name="state_error_loading">Ocurrió un error al cargar los datos.</string>
+    <string name="camera_permission_denied">Permiso de cámara denegado. Conceda permiso desde los ajustes.</string>
+    <string name="state_no_data">Aún no hay mensajes.</string>
+    <string name="state_retry">Reintentar</string>
+    <string name="state_transcribing">Transcribiendo&#8230;</string>
+    <string name="state_loading_more">Cargando más&#8230;</string>
+    <string name="state_load_error">Error de carga. Reintentar.</string>
+    <string name="chat_search_placeholder">Buscar en mensajes&#8230;</string>
+    <string name="chat_input_placeholder">Escribe un mensaje&#8230;</string>
+    <string name="chat_search_group_placeholder">Buscar en mensajes grupales&#8230;</string>
+    <string name="notification_channel_name">Mensajes de Anoba</string>
+    <string name="notification_default_title">Nuevo Mensaje</string>
+    <string name="notification_permission_denied_rationale">Permiso de notificación denegado. Puede activarlo en los ajustes para no perder mensajes importantes.</string>
+
+    <!-- Auth & AuthService -->
+    <string name="guest">Invitado</string>
+    <string name="auth_generic_fail">No se pudo realizar la operación.</string>
+    <string name="auth_user_object_null">Error de sesión: El usuario está vacío.</string>
+    <string name="auth_password_reset_success">Correo de restablecimiento de contraseña enviado.</string>
+    <string name="auth_not_logged_in">Por favor, inicie sesión primero.</string>
+    <string name="auth_password_update_success">Contraseña actualizada con éxito.</string>
+    <string name="auth_user_not_found">Usuario no encontrado.</string>
+    <string name="auth_username_update_success">Nombre actualizado con éxito.</string>
+    <string name="auth_image_upload_fail">No se pudo subir la imagen.</string>
+    <string name="auth_profile_photo_update_success">Foto de perfil actualizada.</string>
+    <string name="auth_account_deleted_success">Su cuenta ha sido eliminada con éxito.</string>
+    <string name="auth_process_completed">Proceso completado con éxito.</string>
+
+    <!-- Común -->
+    <string name="cancel">Cancelar</string>
+    <string name="common_cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
+    <string name="common_back">Volver</string>
+    <string name="common_close">Cerrar</string>
+    <string name="common_confirm">Aceptar</string>
+    <string name="common_listen">Escuchar</string>
+    <string name="common_stop">Detener</string>
+    <string name="common_record">Grabar</string>
+    <string name="common_hide">Ocultar</string>
+    <string name="common_just_now">hace un momento</string>
+    <string name="common_minutes_ago">hace %d minutos</string>
+    <string name="common_hours_ago">hace %d horas</string>
+    <string name="common_days_ago">hace %d días</string>
+    <string name="common_minutes_later">en %d minutos</string>
+    <string name="common_hours_later">en %d horas</string>
+    <string name="common_days_later">en %d días</string>
+    <string name="common_unknown">Desconocido</string>
+    <string name="transcription_ai_report">Este mensaje de voz fue analizado por el motor de IA local de su dispositivo. El contenido se procesó en el idioma %1$s.</string>
+
+    <!-- Chat & MyContent -->
+    <string name="chathome_uploading_media">Subiendo archivo&#8230;</string>
+    <string name="mycontent_guest_warning">Por favor, regístrese para compartir contenido.</string>
+    <string name="mycontent_guide_add">Añadir a la Guía (Anoba)</string>
+    <string name="mycontent_guide_remove">Eliminar de la Guía</string>
+    <string name="mycontent_guide_updated">Estado de la guía actualizado.</string>
+    <string name="mycontent_error_loading">No se pudieron cargar los contenidos.</string>
+    <string name="mycontent_error_delete">No se pudo eliminar el contenido.</string>
+    <string name="mycontent_error_timeout">Tiempo de espera de conexión agotado.</string>
+    <string name="mycontent_published_tab">Publicados</string>
+    <string name="mycontent_drafts_tab">Borradores</string>
+    <string name="mycontent_back">Atrás</string>
+    <string name="follow">Seguir</string>
+    <string name="following">Siguiendo</string>
+    <string name="feed_explore">Explorar</string>
+    <string name="feed_following">Siguiendo</string>
+    <string name="feed_following_empty">Aún no sigues a nadie o ellos aún no han compartido nada.</string>
+    <string name="feed_following_go_explore">Empezar a explorar</string>
+    <string name="followers">Seguidores</string>
+    <string name="following_label">Siguiendo</string>
+    <string name="mycontent_home">Inicio</string>
+    <string name="mycontent_new_video">Nuevo Video</string>
+    <string name="mycontent_new_photo">Nueva Foto</string>
+    <string name="mycontent_new_audio">Nuevo Audio</string>
+    <string name="mycontent_new_letter">Nueva Carta</string>
+    <string name="mycontent_from_gallery">De la Galería</string>
+    <string name="mycontent_upload_cancelled">Subida cancelada.</string>
+    <string name="mycontent_video_preparing">Preparando video para edición&#8230;</string>
+    <string name="mycontent_content_loading">Cargando contenido&#8230;</string>
+    <string name="mycontent_publish_success">¡Contenido publicado con éxito!</string>
+    <string name="mycontent_unpublish_success">Contenido despublicado.</string>
+    <string name="mycontent_sheet_published">Publicado</string>
+    <string name="mycontent_sheet_draft">Borrador</string>
+    <string name="mycontent_sheet_views">Vistas</string>
+    <string name="mycontent_sheet_reactions">Reacciones</string>
+    <string name="mycontent_sheet_comments">Comentarios</string>
+    <string name="mycontent_sheet_open">Abrir</string>
+    <string name="mycontent_sheet_unpublish">Despublicar</string>
+    <string name="mycontent_sheet_publish">Publicar</string>
+    <string name="mycontent_sheet_edit">Editar</string>
+    <string name="mycontent_sheet_delete">Eliminar</string>
+    <string name="mycontent_card_video_thumb">Vista previa del video</string>
+    <string name="mycontent_card_play_video">Reproducir Video</string>
+    <string name="mycontent_card_user_photo">Foto de Usuario</string>
+    <string name="mycontent_card_audio_waveform">Onda de Audio</string>
+    <string name="mycontent_delete_dialog_title">Eliminar Contenido</string>
+    <string name="mycontent_delete_dialog_text">¿Está seguro de que desea eliminar este contenido de forma permanente?</string>
+    <string name="mycontent_delete_dialog_confirm">Sí, Eliminar</string>
+    <string name="mycontent_delete_dialog_cancel">Cancelar</string>
+    <string name="mycontent_no_published_content">Aún no tiene contenidos publicados.</string>
+    <string name="mycontent_no_draft_content">Aún no tiene borradores.</string>
+
+    <!-- Chat (ChatHome & PrivateChat) -->
+    <string name="chathome_messages_deleted_snackbar">%1$d mensajes eliminados</string>
+    <string name="chathome_undo">Deshacer</string>
+    <string name="chathome_messages_copied">Mensajes copiados</string>
+    <string name="chathome_file_downloading">Descargando archivo</string>
+    <string name="chathome_download_started">Descarga iniciada&#8230;</string>
+    <string name="chathome_download_failed">Error en la descarga.</string>
+    <string name="chathome_edit_message">Editar Mensaje</string>
+    <string name="chathome_back">Atrás</string>
+    <string name="chathome_home">Inicio</string>
+    <string name="chathome_today">Hoy</string>
+    <string name="chathome_yesterday">Ayer</string>
+    <string name="chathome_delete_all_messages">Eliminar todos los mensajes</string>
+    <string name="chathome_delete_all_dialog_title">Eliminar Todos los Mensajes</string>
+    <string name="chathome_delete_all_dialog_text">Todos los mensajes de esta sala se eliminarán permanentemente. ¿Está seguro?</string>
+    <string name="chathome_delete">Eliminar</string>
+    <string name="chathome_cancel">Cancelar</string>
+    <string name="chathome_gallery">Galería</string>
+    <string name="chathome_select_from_gallery">Seleccionar de la Galería</string>
+    <string name="chathome_photo">Foto</string>
+    <string name="chathome_open_camera">Abrir Cámara</string>
+    <string name="chathome_photo_description">Foto</string>
+    <string name="chathome_video">Video</string>
+    <string name="chathome_open_video">Grabar Video</string>
+    <string name="chathome_share_preparing">Preparando para compartir&#8230;</string>
+    <string name="chathome_share_with">Compartir con&#8230;</string>
+    <string name="chathome_share_failed">Error al compartir.</string>
+    <string name="chathome_image_uri_error">No se pudo crear la ruta de la imagen.</string>
+    <string name="chathome_video_uri_error">No se pudo crear la ruta del video.</string>
+    <string name="chathome_anonymous">Anónimo</string>
+    <string name="chathome_background_image_description">Fondo del chat</string>
+    <string name="privatechat_title">Chat Privado</string>
+    <string name="privatechat_no_messages">Aún no tiene mensajes con %1$s.</string>
+    <string name="privatechat_no_messages_default_user">Usuario Seleccionado</string>
+    <string name="privatechat_no_messages_default_user_with_name">%1$s</string>
+    <string name="privatechat_error">Error: %1$s</string>
+    <string name="groupitem_private_group">Grupo Privado</string>
+    <string name="groupitem_public_group">Grupo Público</string>
+    <string name="groupitem_info_content_description">Información del Grupo</string>
+    <string name="groupchatlist_add_group">Añadir Grupo</string>
+    <string name="groupchatlist_title">Chat Grupal</string>
+    <string name="groupchatlist_back">Atrás</string>
+    <string name="groupchatlist_home">Inicio</string>
+    <string name="groupchatlist_hide_list">Ocultar Lista</string>
+    <string name="groupchatlist_show_list">Mostrar Lista</string>
+    <string name="groupchatlist_no_groups">Aún no hay grupos.</string>
+    <string name="groupchatlist_dialog_create_new_group">Crear Nuevo Grupo</string>
+    <string name="groupchatlist_dialog_group_name">Nombre del Grupo</string>
+    <string name="groupchatlist_dialog_group_description">Descripción del Grupo</string>
+    <string name="groupchatlist_dialog_private_group">¿Es Grupo Privado?</string>
+    <string name="groupchatlist_dialog_private_group_desc">Solo personas invitadas</string>
+    <string name="groupchatlist_dialog_create">Crear</string>
+    <string name="groupchatlist_dialog_cancel">Cancelar</string>
+    <string name="groupchatlist_error_name_empty">El nombre del grupo no puede estar vacío.</string>
+    <string name="groupchatlist_error_no_user">No se pudo identificar al usuario.</string>
+    <string name="groupchatlist_success_group_created">¡Grupo creado con éxito!</string>
+    <string name="groupchatlist_default_description">Nuevo grupo creado.</string>
+
+    <string name="chat_profile_image">Foto de Perfil</string>
+    <string name="chat_sent_image">Imagen Enviada</string>
+    <string name="chat_play_video">Reproducir Video</string>
+    <string name="chat_pause">Pausar</string>
+    <string name="chat_play">Reproducir</string>
+    <string name="chat_message_read">Leído</string>
+    <string name="chat_message_sent">Enviado</string>
+    <string name="chat_today">Hoy</string>
+    <string name="chat_me">Tú</string>
+    <string name="chat_typing">Escribiendo&#8230;</string>
+
+    <!-- Modo Selección de Chat -->
+    <string name="chat_selection_title">%1$d seleccionados</string>
+    <string name="chat_selection_close">Cerrar Selección</string>
+    <string name="chat_selection_save_to_gallery">Guardar en Galería</string>
+    <string name="chat_selection_share">Compartir</string>
+    <string name="chat_selection_copy">Copiar</string>
+    <string name="chat_selection_edit">Editar</string>
+    <string name="chat_selection_reply">Responder</string>
+    <string name="chat_selection_transcribe">Transcribir</string>
+    <string name="chat_selection_delete">Eliminar</string>
+
+    <!-- HomeScreen -->
+    <string name="home_menu">Menú</string>
+    <string name="home_my_contents">Mis Contenidos</string>
+    <string name="home_learn_turkish">Aprender Turco</string>
+    <string name="home_videos">Videos</string>
+    <string name="home_photos">Fotos</string>
+    <string name="home_audios">Audios</string>
+    <string name="home_letters">Cartas</string>
+    <string name="home_chat">Chat</string>
+    <string name="home_no_content">Aún no hay contenido.</string>
+    <string name="home_share_content">Compartir</string>
+    <string name="home_pin_content">Fijar</string>
+    <string name="home_pinned_filter">Guardados</string>
+    <string name="tutorial_title_pin">Guardados</string>
+    <string name="tutorial_desc_pin">Puedes fijar contenidos interesantes para crear tu propio feed personalizado.</string>
+    <string name="tutorial_title_following">Seguidos</string>
+    <string name="tutorial_desc_following">Usa este filtro para ver solo las publicaciones de las personas a las que sigues.</string>
+
+    <string name="tutorial_title_quarantine">Pool de Cuarentena</string>
+    <string name="tutorial_desc_quarantine">Puedes rastrear los contenidos que no son deseados por la comunidad y que han sido llevados al proceso de revisión desde aquí.</string>
+
+    <string name="popular_sheet_title">1000+</string>
+    <string name="popular_sheet_subtitle">1000+ interacciones</string>
+    <string name="popular_sheet_empty">Aún no hay contenido 1000+.</string>
+    <string name="popular_owner_title">¡Felicidades! 🏆</string>
+    <string name="popular_owner_message">Tu publicación está en la página 1000+</string>
+    <string name="popular_reactor_title">¡Compartes el éxito! ✨</string>
+    <string name="popular_reactor_message">El contenido al que reaccionaste está en la página 1000+</string>
+    <string name="status_in_review">En Revisión</string>
+
+    <string name="quarantine_explanation_forbidden">La comunidad marcó este contenido como \'Inapropiado / Inadecuado\'.</string>
+    <string name="quarantine_explanation_delete">La comunidad solicitó que este contenido sea \'Eliminado\'.</string>
+    <string name="quarantine_explanation_generic">El contenido está bajo revisión.</string>
+    <string name="quarantine_footer_note">La revisión final será realizada por el equipo de Anoba.</string>
+
+    <string name="tutorial_title_popular">1000+</string>
+    <string name="tutorial_desc_popular">Las publicaciones que superan las 1000 interacciones en cualquier emoción se muestran aquí.</string>
+    <string name="profilescreen_home">Inicio</string>
+    <string name="profilescreen_email">Correo Electrónico</string>
+    <string name="profilescreen_user_number">Número de Usuario</string>
+    <string name="profilescreen_blocked_users">Usuarios Bloqueados</string>
+    <string name="profilescreen_edit_profile">Editar Perfil</string>
+
+    <!-- GroupChatScreen -->
+    <string name="groupchatscreen_not_logged_in">Debe iniciar sesión.</string>
+    <string name="groupchatscreen_downloading_file">Descargando archivo&#8230;</string>
+    <string name="groupchatscreen_download_started">Descarga iniciada.</string>
+    <string name="groupchatscreen_download_failed">Descarga fallida.</string>
+    <string name="groupchatscreen_share_preparing">Preparando para compartir&#8230;</string>
+    <string name="groupchatscreen_share_with">Compartir con&#8230;</string>
+    <string name="groupchatscreen_share_failed">Error al compartir.</string>
+    <string name="groupchatscreen_image_uri_error">Error en la ruta de imagen.</string>
+    <string name="groupchatscreen_video_uri_error">Error en la ruta del video.</string>
+    <string name="groupchatscreen_title_default">Chat Grupal</string>
+    <string name="groupchatscreen_back">Atrás</string>
+    <string name="groupchatscreen_home">Inicio</string>
+    <string name="groupchatscreen_typing_one">%1$s está escribiendo&#8230;</string>
+    <string name="groupchatscreen_typing_two">%1$s y %2$s están escribiendo&#8230;</string>
+    <string name="groupchatscreen_typing_many">%1$s y otros están escribiendo&#8230;</string>
+    <string name="groupchatscreen_edit_mode">Modo Edición</string>
+    <string name="groupchatscreen_cancel_edit">Cancelar Edición</string>
+    <string name="groupchatscreen_edit_message_title">Editar Mensaje</string>
+
+    <!-- GroupInfo Screen -->
+    <string name="groupinfo_title">Información del Grupo</string>
+    <string name="groupinfo_back">Atrás</string>
+    <string name="groupinfo_cancel_edit">Cancelar</string>
+    <string name="groupinfo_save_changes">Guardar Cambios</string>
+    <string name="groupinfo_edit_group">Editar Grupo</string>
+    <string name="groupinfo_group_profile_image">Foto de Perfil del Grupo</string>
+    <string name="groupinfo_change_image">Cambiar Imagen</string>
+    <string name="groupinfo_group_name">Nombre del Grupo</string>
+    <string name="groupinfo_group_description">Descripción del Grupo</string>
+    <string name="groupinfo_mute_group">Silenciar Grupo</string>
+    <string name="groupinfo_is_private">¿Es Privado?</string>
+    <string name="groupinfo_member_management">Miembros</string>
+    <string name="groupinfo_invite_member">Invitar Miembro</string>
+    <string name="groupinfo_remove_member">Eliminar Miembro</string>
+    <string name="groupinfo_group_settings">Ajustes del Grupo</string>
+    <string name="groupinfo_delete_group_permanently">Eliminar Grupo Definitivamente</string>
+    <string name="groupinfo_leave_group">Salir del Grupo</string>
+    <string name="groupinfo_leave_group_confirm">¿Está seguro de que desea salir de este grupo?</string>
+    <string name="groupinfo_dialog_invite_member_title">Invitar Miembro</string>
+    <string name="groupinfo_dialog_delete_group_title">Eliminar Grupo</string>
+    <string name="groupinfo_dialog_delete_group_text">¿Está seguro de que desea eliminar este grupo? Esta acción no se puede deshacer.</string>
+    <string name="groupinfo_dialog_confirm_delete">Sí, Eliminar</string>
+    <string name="groupinfo_dialog_cancel">Cancelar</string>
+    <string name="groupinfo_dialog_remove_member_title">Eliminar Miembro</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_title">Eliminar Miembro</string>
+    <string name="groupinfo_dialog_remove_member_confirmation_text">¿Eliminar a %1$s del grupo?</string>
+
+    <!-- Diálogo de Selección de Usuario -->
+    <string name="userselection_title">Iniciar Chat</string>
+    <string name="userselection_search_placeholder">Buscar contactos&#8230;</string>
+    <string name="userselection_search_icon">Buscar</string>
+    <string name="userselection_start_chat_prompt">Toca para iniciar una conversación</string>
+    <string name="userselection_profile_image_description">Foto de perfil de %1$s</string>
+    <string name="userselection_dialog_search_placeholder">Buscar usuario&#8230;</string>
+    <string name="userselection_dialog_search_icon">Ícono de Búsqueda</string>
+    <string name="userselection_dialog_clear_search">Limpiar Búsqueda</string>
+    <string name="userselection_dialog_no_results">Sin resultados.</string>
+    <string name="userselection_dialog_profile_image_description">Foto de perfil de %1$s</string>
+    <string name="userselection_dialog_close">Cerrar</string>
+
+    <!-- Perfil & Drawer -->
+    <string name="drawer_my_profile">Mi Perfil</string>
+    <string name="drawer_logout">Cerrar Sesión</string>
+    <string name="drawer_logout_dialog_title">Cerrar Sesión</string>
+    <string name="drawer_logout_dialog_text">¿Está seguro de que desea cerrar sesión?</string>
+    <string name="drawer_logout_dialog_confirm">Sí</string>
+    <string name="drawer_logout_dialog_dismiss">No</string>
+    <string name="drawer_privacy_policy">Política de Privacidad</string>
+    <string name="profilescreen_info_not_available">Información de perfil no disponible.</string>
+    <string name="profilescreen_try_again">Reintentar</string>
+    <string name="profilescreen_email_not_specified">Correo no especificado</string>
+    <string name="profilescreen_guest_user">Usuario Invitado</string>
+    <string name="profilescreen_close_app">Cerrar Aplicación</string>
+    <string name="profilescreen_back">Atrás</string>
+    <string name="profileedit_title">Editar Perfil</string>
+    <string name="profileedit_display_name_label">Nombre para Mostrar</string>
+    <string name="profileedit_save_changes">Guardar Cambios</string>
+    <string name="profileedit_delete_account_and_data">Eliminar Cuenta y Datos</string>
+    <string name="profileedit_delete_account_confirm_title">¿Está seguro?</string>
+    <string name="profileedit_delete_account_confirm_text">Su cuenta se eliminará por completo.</string>
+    <string name="profileedit_delete_account_password_label">Contraseña</string>
+    <string name="profileedit_deleting_process">Eliminando&#8230;</string>
+    <string name="profileedit_delete_account_success_toast">Cuenta eliminada.</string>
+    <string name="profileedit_delete_account_error_password">Contraseña incorrecta.</string>
+    <string name="profileedit_enter_password_warning">Por favor, introduzca su contraseña.</string>
+    <string name="profileedit_delete_permanently">ELIMINAR</string>
+    <string name="profileedit_cancel">Cancelar</string>
+    <string name="profileedit_profile_updated_toast">Perfil actualizado.</string>
+    <string name="profileedit_photo_updated_toast">Foto actualizada.</string>
+    <string name="profileedit_name_updated_toast">Nombre actualizado.</string>
+
+    <!-- Video & Cámara -->
+    <string name="video_upload_success">Video subido con éxito ✅</string>
+    <string name="video_upload_error">Error al subir el video ❌</string>
+    <string name="video_uploading">Subiendo video&#8230;</string>
+    <string name="camera_back">Atrás</string>
+    <string name="camera_stop_recording">Detener Grabación</string>
+    <string name="camera_start_recording">Iniciar Grabación</string>
+    <string name="camera_preview_pause">Pausar</string>
+    <string name="camera_preview_play">Reproducir</string>
+    <string name="camera_cancel">Cancelar</string>
+    <string name="camera_save">Guardar</string>
+    <string name="camera_permission_request_text">Se requieren permisos de cámara y micrófono.</string>
+    <string name="camera_permission_request_button">Solicitar Permiso</string>
+    <string name="camera_video_title">Video %1$s</string>
+
+    <!-- VideoCard -->
+    <string name="videocard_user_profile_image">Foto de Perfil del Usuario</string>
+    <string name="videocard_play_video">Reproducir Video</string>
+    <string name="videocard_view_count">Número de Vistas</string>
+    <string name="videocard_video_title">Video: %1$s</string>
+    <string name="videocard_comments">Comentarios</string>
+    <string name="videocard_delete_confirm_title">Eliminar Video</string>
+    <string name="videocard_delete_confirm_text">¿Está seguro de que desea eliminar este video de forma permanente?</string>
+    <string name="videocard_delete_confirm_yes">Sí, Eliminar</string>
+    <string name="videocard_delete_confirm_no">Cancelar</string>
+
+    <!-- VideoDetailScreen -->
+    <string name="video_detail_share_chooser_title">Compartir video&#8230;</string>
+    <string name="video_detail_share_preparing">Preparando para compartir&#8230;</string>
+    <string name="video_detail_back">Atrás</string>
+    <string name="video_detail_share">Compartir</string>
+    <string name="videohome_home">Inicio</string>
+    <string name="videodetail_play_pause">Reproducir/Pausar</string>
+    <string name="videodetail_rewind">10s Atrás</string>
+    <string name="videodetail_forward">10s Adelante</string>
+    <string name="videodetail_unmute">Activar Sonido</string>
+    <string name="videodetail_mute">Silenciar</string>
+    <string name="videodetail_comments_count">%d comentarios</string>
+    <string name="videodetail_restart">Reiniciar</string>
+    <string name="videodetail_playback_speed">Velocidad de Reproducción</string>
+
+    <!-- VideoEditScreen -->
+    <string name="video_edit_title">Editar</string>
+    <string name="video_edit_back">Atrás</string>
+    <string name="video_edit_error">Ocurrió un error: %1$s</string>
+    <string name="video_edit_success">Guardado con éxito.</string>
+    <string name="video_edit_loading">Cargando&#8230;</string>
+    <string name="video_edit_mute_on">Silenciar</string>
+    <string name="video_edit_mute_off">Activar Sonido</string>
+    <string name="video_edit_rotate">Girar</string>
+    <string name="video_edit_apply_and_save">Aplicar y Guardar</string>
+    <string name="video_edit_saving">Guardando&#8230;</string>
+    <string name="video_edit_play">Reproducir</string>
+    <string name="video_edit_processing">Procesando&#8230;</string>
+
+    <!-- VideoCommentsScreen -->
+    <string name="videocomments_title">Comentarios del Video</string>
+    <string name="videocomments_back">Atrás</string>
+    <string name="videocomments_home">Inicio</string>
+    <string name="videocomments_replying_to">Respondiendo a %1$s</string>
+    <string name="videocomments_cancel_reply">Cancelar Respuesta</string>
+    <string name="videocomments_comment_placeholder">Escribe un comentario&#8230;</string>
+    <string name="videocomments_like">Me gusta</string>
+    <string name="videocomments_reply">Responder</string>
+    <string name="videocomments_delete">Eliminar</string>
+    <string name="videocomments_no_comments">Aún no hay comentarios.</string>
+    <string name="videocomments_profile_image">Foto de Perfil</string>
+    <string name="videocomments_send">Enviar</string>
+
+    <!-- VideoHomeScreen -->
+    <string name="videohome_title">Videos</string>
+    <string name="videohome_back">Atrás</string>
+    <string name="videohome_no_videos">Aún no hay videos.</string>
+    <string name="videohome_error_duration">No se pudo cargar la duración.</string>
+
+    <!-- Módulo de Fotos -->
+    <string name="photohome_title">Fotos</string>
+    <string name="photohome_back">Atrás</string>
+    <string name="photohome_home">Inicio</string>
+    <string name="photohome_no_photos">Aún no se han subido fotos.</string>
+    <string name="photocreate_title">Añadir Nueva Foto</string>
+    <string name="photocreate_cancelled">Captura de foto cancelada.</string>
+    <string name="photocreate_file_prepare_error">No se pudo preparar el archivo de foto.</string>
+    <string name="photocreate_permission_denied">Permiso de cámara denegado.</string>
+    <string name="photocreate_permission_requesting">Solicitando permiso de cámara&#8230;</string>
+    <string name="photocreate_success_toast">Borrador de foto creado ✅</string>
+    <string name="photocreate_failure_toast">No se pudo subir la foto.</string>
+    <string name="photocreate_uploading_title">Cargando&#8230;</string>
+    <string name="photocreate_upload_preview">Vista previa de la foto subida</string>
+    <string name="photocreate_creating_draft">Creando borrador de foto&#8230;</string>
+    <string name="photodetail_title">Foto</string>
+    <string name="photodetail_back">Atrás</string>
+    <string name="photodetail_share">Compartir</string>
+    <string name="photodetail_home">Inicio</string>
+    <string name="photodetail_share_chooser_title">Compartir foto&#8230;</string>
+    <string name="photodetail_share_preparing">Preparando para compartir&#8230;</string>
+    <string name="photodetail_anonymous">Anónimo</string>
+    <string name="photodetail_photo_description">Foto %1$s</string>
+    <string name="photodetail_view_count">Visualizaciones</string>
+    <string name="photodetail_comment">Comentario</string>
+    <string name="photodetail_comments_count">%d comentarios</string>
+    <string name="photoedit_title">Editar Foto</string>
+    <string name="photoedit_back">Atrás</string>
+    <string name="photoedit_save">Guardar</string>
+    <string name="photoedit_content_description">Foto a editar</string>
+    <string name="photoedit_title_label">Título</string>
+    <string name="photoedit_note_label">Nota</string>
+
+    <!-- PhotoCard -->
+    <string name="photocard_anonymous">Anónimo</string>
+    <string name="photocard_photo_description">Foto: %1$s</string>
+    <string name="photocard_view_count">Vistas</string>
+    <string name="photocard_comment_count">Número de Comentarios</string>
+
+    <!-- PhotoComments -->
+    <string name="photocomments_title">Comentarios</string>
+    <string name="photocomments_replying_to">Respondiendo a %1$s</string>
+    <string name="photocomments_error_loading">No se pudieron cargar los comentarios.</string>
+    <string name="photocomments_error_sending">No se pudo enviar el comentario.</string>
+    <string name="photocomments_error_auth_required">Por favor, inicie sesión.</string>
+    <string name="photocomments_error_delete">No se pudo eliminar el comentario.</string>
+    <string name="photocomments_error_no_permission">No tiene permiso para eliminar este comentario.</string>
+    <string name="photocomments_comment_placeholder">Escribe un comentario&#8230;</string>
+    <string name="photocomments_reply">Responder</string>
+    <string name="photocomments_delete">Eliminar</string>
+    <string name="photocomments_back">Atrás</string>
+    <string name="photocomments_home">Inicio</string>
+    <string name="photocomments_cancel_reply">Cancelar Respuesta</string>
+    <string name="photocomments_send">Enviar</string>
+    <string name="photocomments_no_comments">Aún no hay comentarios.</string>
+    <string name="photocomments_profile_image">Foto de Perfil</string>
+    <string name="photocomments_like">Me gusta</string>
+
+    <!-- Módulo de Cartas -->
+    <string name="letterhome_title">Cartas</string>
+    <string name="letterhome_back">Atrás</string>
+    <string name="letterhome_home">Inicio</string>
+    <string name="letterhome_all_letters">Todas las Cartas</string>
+    <string name="letterhome_no_letters">Aún no hay cartas.</string>
+    <string name="lettercreate_title">Nueva Carta</string>
+    <string name="lettercreate_back">Atrás</string>
+    <string name="lettercreate_home">Inicio</string>
+    <string name="lettercreate_textfield_placeholder">Escribe una nueva carta&#8230;</string>
+    <string name="lettercreate_discard">Descartar</string>
+    <string name="lettercreate_save">Guardar y Sellar</string>
+    <string name="lettercreate_draft_saved_toast">¡Borrador guardado!</string>
+    <string name="lettercreate_draft_failed_toast">No se pudo guardar el borrador.</string>
+    <string name="lettercreate_unlock_date">Fecha de apertura: %1$s</string>
+    <string name="lettercreate_time_capsule_option">Crear Cápsula del Tiempo (Opcional)</string>
+    <string name="lettercreate_privacy_dialog_title">Privacidad de la Carta</string>
+    <string name="lettercreate_privacy_dialog_text">¿Quién puede ver esta carta?</string>
+    <string name="lettercreate_privacy_dialog_public">Pública</string>
+    <string name="lettercreate_privacy_dialog_sealed">Sellada (Privada)</string>
+    <string name="lettercreate_sealed_draft_saved_toast">¡Borrador sellado guardado para %1$s!</string>
+    <string name="lettercreate_recipient_dialog_title">Seleccionar Destinatario</string>
+    <string name="lettercreate_recipient_dialog_search">Buscar Usuario</string>
+    <string name="lettercreate_recipient_dialog_cancel">Cancelar</string>
+    <string name="lettercreate_time_capsule_make">Cápsula del Tiempo</string>
+    <string name="lettercreate_time_capsule_label">Cápsula del Tiempo</string>
+    <string name="lettercreate_share_public">Pública</string>
+    <string name="lettercreate_send_sealed">Sellada (Personal)</string>
+    <string name="lettercreate_datepicker_public">Pública</string>
+    <string name="lettercreate_datepicker_sealed">Sellada (Persona Seleccionada)</string>
+    <string name="lettercreate_select_date_error">Por favor, seleccione una fecha</string>
+    <string name="lettercreate_cancel_action">Cancelar</string>
+    <string name="letterdetail_title">Detalle de la Carta</string>
+    <string name="letterdetail_sender">De: %1$s</string>
+    <string name="letterdetail_anonymous_sender">Anónimo</string>
+    <string name="letterdetail_comment">Comentario</string>
+    <string name="letterdetail_comments_count">%d comentarios</string>
+    <string name="letterdetail_close_button">Cerrar Carta</string>
+    <string name="letterdetail_video_title">Video: %1$s</string>
+    <string name="letteredit_title">Editar Carta</string>
+    <string name="letteredit_back">Atrás</string>
+    <string name="letteredit_save">Guardar</string>
+    <string name="letteredit_content_label">Contenido de la Carta</string>
+    <string name="letteredit_title_label">Título</string>
+    <string name="letteredit_personal_note_label">Nota</string>
+
+    <string name="letter_ask_anoba_label">Para: Hermana Anoba</string>
+    <string name="letter_ask_anoba_hidden_content">El contenido de esta carta es privado,\nsolo se publica la respuesta de Hermana Anoba.</string>
+    <string name="letter_anoba_response_title">Respuesta de Hermana Anoba</string>
+
+    <string name="lettercreate_anoba_title">Escribir a Hermana Anoba</string>
+    <string name="lettercreate_anoba_desc">Comparte tus inquietudes, Anoba te dará una respuesta sabia y cercana.</string>
+    <string name="lettercreate_pseudonym_label">Seudónimo / Apodo (Ej: Corazón Inquieto)</string>
+    <string name="lettercreate_pseudonym_placeholder">Escribe un seudónimo para proteger tu identidad&#8230;</string>
+    <string name="lettercreate_anoba_privacy_public">Que todos vean la respuesta</string>
+    <string name="lettercreate_anoba_privacy_private">Solo para mí</string>
+    <string name="lettercreate_anoba_send">Enviar a Hermana Anoba ✨</string>
+    <string name="lettercreate_pseudonym_error">Por favor, escribe un seudónimo primero.</string>
+    <string name="lettercreate_mode_write">Escribir</string>
+    <string name="lettercreate_mode_speak">Hablar</string>
+    <string name="lettercreate_audio_recorded">Audio Grabado</string>
+    <string name="lettercreate_audio_record_hint">Presiona el botón para dictar tu carta con tu voz.</string>
+
+    <!-- Edición de Audio -->
+    <string name="sesedit_title">Editar Audio</string>
+    <string name="sesedit_back">Atrás</string>
+    <string name="sesedit_save">Guardar</string>
+    <string name="sesedit_trim_label">Recortar Audio</string>
+    <string name="sesedit_title_label">Título</string>
+    <string name="sesedit_note_label">Nota</string>
+    <string name="sesedit_success">Audio actualizado con éxito</string>
+    <string name="sesedit_player_error">Error del reproductor de medios: %1$s</string>
+
+    <!-- Comentarios de Cartas -->
+    <string name="lettercomments_title">Comentarios de la Carta</string>
+    <string name="lettercomments_replying_to">Respondiendo a %1$s</string>
+    <string name="lettercomments_comment_placeholder">Escribe un comentario&#8230;</string>
+    <string name="lettercomments_no_comments">Aún no hay comentarios.</string>
+    <string name="lettercomments_reply">Responder</string>
+    <string name="lettercomments_delete">Eliminar</string>
+
+    <!-- Tarjeta de Carta -->
+    <string name="lettercard_sealed_error">Esta carta está sellada.</string>
+    <string name="lettercard_time_capsule_msg">Esta carta aún no se ha abierto.</string>
+    <string name="lettercard_sender">De: %1$s</string>
+    <string name="lettercard_recipient">Para: %1$s</string>
+    <string name="lettercard_time_capsule_label">Cápsula del Tiempo</string>
+    <string name="lettercard_sealed_label">Carta Sellada</string>
+
+    <!-- Módulo de Audio -->
+    <string name="seshome_title">Grabaciones de Audio</string>
+    <string name="seshome_back">Atrás</string>
+    <string name="seshome_home">Inicio</string>
+    <string name="seshome_no_ses">Aún no hay grabaciones de audio.</string>
+    <string name="audiorecording_permission_needed">🎙️ Se requiere permiso de micrófono</string>
+    <string name="audiorecording_status_loading">Cargando grabación&#8230;</string>
+    <string name="audiorecording_status_recording">Grabando&#8230;</string>
+    <string name="audiorecording_status_completed">Grabación Completada</string>
+    <string name="audiorecording_status_create">Crear Grabación de Audio</string>
+    <string name="audiorecording_start_prompt">Toca el botón para comenzar a grabar</string>
+    <string name="audiorecording_stop_prompt">Toca el botón para detener la grabación</string>
+    <string name="audiorecording_success_toast">¡Borrador de audio creado!</string>
+    <string name="audiorecording_error_toast">Error: No se pudo crear el borrador de audio.</string>
+    <string name="audiorecording_add_to_drafts">Añadir a Borradores</string>
+    <string name="audiorecording_cancel">Cancelar</string>
+    <string name="sesdetail_share_chooser_title">Compartir audio&#8230;</string>
+    <string name="sesdetail_share_preparing">Preparando para compartir&#8230;</string>
+    <string name="sesdetail_loading">⏳ Cargando&#8230;</string>
+    <string name="sesdetail_back">Atrás</string>
+    <string name="sesdetail_share">Compartir</string>
+    <string name="sesdetail_home">Inicio</string>
+    <string name="sesdetail_anonymous">Anónimo</string>
+    <string name="sesdetail_stop">Detener</string>
+    <string name="sesdetail_play">Reproducir</string>
+    <string name="sesdetail_view_count">Reproducciones</string>
+    <string name="sesdetail_comment">Comentario</string>
+    <string name="sesdetail_comments_count">%d comentarios</string>
+    <string name="sesdetail_transcribe">Convertir a Texto</string>
+    <string name="sesdetail_close_button">Cerrar Audio</string>
+    <string name="sescomments_title">Comentarios</string>
+    <string name="sescomments_back">Atrás</string>
+    <string name="sescomments_home">Inicio</string>
+    <string name="sescomments_replying_to">Respondiendo a %1$s</string>
+    <string name="sescomments_cancel_reply">Cancelar Respuesta</string>
+    <string name="sescomments_comment_placeholder">Escribe tu comentario&#8230;</string>
+    <string name="sescomments_send">Enviar</string>
+    <string name="sescomments_no_comments">Aún no hay comentarios.</string>
+    <string name="sescomments_profile_image">Foto de Perfil</string>
+    <string name="sescomments_reply">Responder</string>
+    <string name="sescomments_delete">Eliminar</string>
+    <string name="sescomments_retry">Reintentar</string>
+    <string name="sescomments_like">Me gusta</string>
+
+    <!-- Tarjeta de Audio -->
+    <string name="sescard_user_profile_image">Foto de Perfil del Usuario</string>
+    <string name="sescard_anonymous">Anónimo</string>
+    <string name="sescard_play_audio">Reproducir Audio</string>
+    <string name="sescard_view_count">Reproducciones</string>
+    <string name="sescard_comments">Comentarios</string>
+
+    <string name="reactions_title">Reacciones</string>
+    <string name="reactions_all">Todas</string>
+    <string name="reactions_empty">Aún no hay reacciones.</string>
+
+    <!-- Emojis -->
+    <string name="emoji_heart_desc">Corazón</string>
+    <string name="emoji_laugh_desc">Risa</string>
+    <string name="emoji_thumbs_up_desc">Me gusta</string>
+    <string name="emoji_sad_desc">Triste</string>
+    <string name="emoji_surprise_desc">Sorprendido</string>
+    <string name="emoji_thinking_desc">Pensativo</string>
+    <string name="emoji_angry_desc">Enojado</string>
+    <string name="emoji_fire_desc">Fuego / Épico</string>
+    <string name="emoji_love_desc">Cara con Corazones</string>
+    <string name="emoji_neutral_desc">Neutral / Regular</string>
+    <string name="emoji_report_desc">Contenido Inapropiado</string>
+    <string name="emoji_delete_desc">Eliminar este contenido</string>
+    <string name="emoji_reaction_info">%1$s, %2$d reacciones</string>
+
+    <!-- Iniciar Sesión & Registro UI -->
+    <string name="login_welcome_title">Bienvenido a Anoba</string>
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="login_email_label">Correo Electrónico</string>
+    <string name="login_password_label">Contraseña</string>
+    <string name="login_remember_me">Recordarme</string>
+    <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_button">Entrar</string>
+    <string name="login_guest_button">Entrar como Invitado</string>
+    <string name="login_no_account">¿No tienes cuenta? Regístrate</string>
+    <string name="login_go_to_signup">Registrarse</string>
+    <string name="forgot_password_success">Enlace enviado.</string>
+    <string name="forgot_password_desc">Introduce tu correo electrónico.</string>
+    <string name="forgot_password_button">Enviar</string>
+    <string name="new_password_title">Nueva Contraseña</string>
+    <string name="new_password_label">Contraseña</string>
+    <string name="new_password_button">Actualizar</string>
+    <string name="signup_title">Registrarse</string>
+    <string name="signup_username_label">Nombre de Usuario</string>
+    <string name="signup_email_label">Correo Electrónico</string>
+    <string name="signup_password_label">Contraseña</string>
+    <string name="signup_confirm_password">Confirmar Contraseña</string>
+    <string name="signup_button">Completar Registro</string>
+    <string name="signup_already_have_account">Iniciar Sesión</string>
+
+    <!-- Guía & Splash -->
+    <string name="guide_title">Guía Anoba</string>
+    <string name="guide_description">Puedes explorar los contenidos compartidos desde aquí.</string>
+    <string name="guide_empty_message">Aún no hay contenido en la guía.</string>
+    <string name="splash_made_in_turkiye">Hecho en Turquía</string>
+
+    <!-- Actualización -->
+    <string name="update_downloaded">Actualización descargada. Actualizando la aplicación&#8230;</string>
+
+    <!-- Mete -->
+    <string name="mete_title">Mete</string>
+    <string name="mete_empty_content">Cargando&#8230;</string>
+    <string name="mete_video_loading">Cargando video&#8230;</string>
+    <string name="mete_audio_loading">Cargando audio&#8230;</string>
+    <string name="mete_game_listen">Escuchar</string>
+    <string name="mete_game_find_card">¿Cuál es?</string>
+    <string name="mete_game_correct">¡Genial! 🎉</string>
+    <string name="mete_game_continue">CONTINUAR</string>
+    <string name="mete_game_insufficient_content">Se requieren al menos 4 contenidos diferentes para el juego.\nPor favor añade contenido o cambia el idioma.</string>
+    <string name="mete_search_placeholder">Buscar sección o número… (Ej: 1)</string>
+    <string name="mete_add_new_section">Abrir Nueva Sección</string>
+    <string name="mete_section_name_label">Nombre o Número de Sección (Ej: 1)</string>
+    <string name="mete_create">Crear</string>
+    <string name="mete_story_fallback_title">Historia / Animación</string>
+
+    <!-- Tutorial (Recorrido) -->
+    <string name="tutorial_title_welcome">¡Bienvenido!</string>
+    <string name="tutorial_desc_welcome">Empecemos.</string>
+    <string name="tutorial_title_drawer">Menú</string>
+    <string name="tutorial_desc_drawer">Aquí puedes acceder a tu propio perfil, a la guía de ayuda y a la configuración de la cuenta.</string>
+    <string name="tutorial_title_flower">Para ti</string>
+    <string name="tutorial_desc_flower"> </string>
+    <string name="tutorial_title_special">Administradores</string>
+    <string name="tutorial_desc_special">Animaciones especiales y controles.</string>
+    <string name="tutorial_title_more_menu">Más opciones</string>
+    <string name="tutorial_desc_more_menu">⭐ 1000+ Popular: Explora contenidos populares.\n🛡️ Fondo de cuarentena: Ver contenido en revisión.\n🇹🇷 Mete: Experiencia de aprendizaje divertida y natural.</string>
+    <string name="tutorial_title_search">Filtro de usuario</string>
+    <string name="tutorial_desc_search">Filtra contenido escribiendo el nombre de usuario o ID.</string>
+    <string name="tutorial_title_my_contents">Mis contenidos &amp; borradores</string>
+    <string name="tutorial_desc_my_contents">Gestiona tus borradores y publicaciones desde aquí.</string>
+    <string name="tutorial_title_create_video">Video</string>
+    <string name="tutorial_desc_create_video">Graba y Comparte.</string>
+    <string name="tutorial_title_create_photo">Foto</string>
+    <string name="tutorial_desc_create_photo">Captura el momento.</string>
+    <string name="tutorial_title_create_audio">Audio</string>
+    <string name="tutorial_desc_create_audio">Hazte escuchar.</string>
+    <string name="tutorial_title_create_letter">Escribir</string>
+    <string name="tutorial_desc_create_letter">Cartas.</string>
+    <string name="tutorial_title_gallery">Galería</string>
+    <string name="tutorial_desc_gallery">Sube contenido desde tu galería.</string>
+    <string name="tutorial_title_map">Anoba Mundial</string>
+    <string name="tutorial_desc_map">Descubre cuánto contenido se comparte por país y sigue la actividad mundial de Anoba.</string>
+    <string name="tutorial_title_mete">Mete</string>
+    <string name="tutorial_desc_mete">Experiencia de aprendizaje natural con Mete.</string>
+    <string name="tutorial_title_mosaic">Mosaico</string>
+    <string name="tutorial_desc_mosaic">Descubre un colorido mundo de mosaicos con contenidos variados.</string>
+    <string name="tutorial_title_tab_videos">Videos</string>
+    <string name="tutorial_desc_tab_videos">Mira los videos compartidos.</string>
+    <string name="tutorial_title_tab_photos">Fotos</string>
+    <string name="tutorial_desc_tab_photos">Explora las fotos.</string>
+    <string name="tutorial_title_tab_audios">Audios</string>
+    <string name="tutorial_desc_tab_audios">Escucha contenidos de voz.</string>
+    <string name="tutorial_title_tab_letters">Cartas</string>
+    <string name="tutorial_desc_tab_letters">"Lee las cartas escritas o escucha las cartas de voz."</string>
+    <string name="tutorial_title_tab_chats">Chats</string>
+    <string name="tutorial_desc_tab_chats">"Envía mensajes, socializa y realiza videollamadas/llamadas de voz gratuitas."</string>
+    <string name="tutorial_title_notifications">Notificaciones</string>
+    <string name="tutorial_desc_notifications">Sigue tus notificaciones aquí.</string>
+
+    <string name="tutorial_next">Siguiente</string>
+    <string name="tutorial_skip">Saltar</string>
+    <string name="tutorial_finish">Finalizar</string>
+
+    <!-- Mosaico -->
+    <string name="mosaic_title">Mosaico</string>
+    <string name="mosaic_close">Cerrar</string>
+    <string name="mosaic_video_loading">El video se reproducirá pronto&#8230;</string>
+    <string name="mosaic_audio_label">Audio</string>
+    <string name="mosaic_video_label">Video</string>
+    <string name="mosaic_ad_label">Anuncio</string>
+    <string name="mosaic_title_caps">MOSAICO</string>
+    <string name="mosaic_ad_contains">Contiene Publicidad</string>
+    <string name="home_guide_dialog_title">Tour por la Aplicación</string>
+    <string name="home_guide_dialog_text">¿Te gustaría hacer un breve recorrido para descubrir Anoba?</string>
+    <string name="home_guide_dialog_tour">Iniciar Tour</string>
+    <string name="map_title">Anoba Mundial</string>
+    <string name="map_content_count">%d Contenidos</string>
+    <string name="country_ae">Emiratos Árabes Unidos</string>
+    <string name="country_dz">Argelia</string>
+    <string name="country_ma">Marruecos</string>
+    <string name="country_za">Sudáfrica</string>
+    <string name="country_qa">Catar</string>
+    <string name="country_ke">Kenia</string>
+    <string name="country_eg">Egipto</string>
+    <string name="country_ng">Nigeria</string>
+    <string name="country_tn">Túnez</string>
+    <string name="country_tr">Turquía</string>
+    <string name="country_sa">Arabia Saudita</string>
+    <string name="country_om">Omán</string>
+    <string name="country_jo">Jordania</string>
+    <string name="country_ca">Canadá</string>
+    <string name="country_au">Australia</string>
+    <string name="country_br">Brasil</string>
+    <string name="country_ar">Argentina</string>
+    <string name="country_in">India</string>
+    <string name="country_jp">Japón</string>
+    <string name="country_kr">Corea del Sur</string>
+    <string name="country_id">Indonesia</string>
+    <string name="country_gb">Reino Unido</string>
+    <string name="country_fr">Francia</string>
+    <string name="country_es">España</string>
+    <string name="country_nl">Países Bajos</string>
+    <string name="country_co">Colombia</string>
+    <string name="country_my">Malasia</string>
+    <string name="country_tm">Turkmenistán</string>
+    <string name="country_other">Otros</string>
+    <string name="country_kg">Kirguistán</string>
+    <string name="country_az">Azerbaiyán</string>
+    <string name="country_kz">Kazajistán</string>
+    <string name="country_uz">Uzbekistán</string>
+    <string name="country_hu">Hungría</string>
+    <string name="country_us">EE. UU.</string>
+    <string name="country_ru">Rusia</string>
+    <string name="country_pk">Pakistán</string>
+    <string name="country_mx">México</string>
+    <string name="country_it">Italia</string>
+    <string name="country_de">Alemania</string>
+
+    <!-- Vistas Previas de Respuestas en Chat -->
+    <string name="chat_reply_image">[Imagen]</string>
+    <string name="chat_reply_video">[Video]</string>
+    <string name="chat_reply_audio">[Mensaje de Voz]</string>
+
+    <!-- Panel de Administración -->
+    <string name="admin_panel_title">Panel de Animación</string>
+    <string name="admin_panel_police">🔵 Redada Policial</string>
+    <string name="admin_panel_commando">🔴 Operación Comando</string>
+    <string name="admin_panel_bekci">🟤 Patrulla de Vigilancia</string>
+    <string name="admin_panel_close">Cerrar</string>
+
+    <!-- Sistema de Llamadas -->
+    <string name="call_incoming">Llamada Entrante</string>
+    <string name="call_video_incoming">Videollamada entrante&#8230;</string>
+    <string name="call_voice_incoming">Llamada de voz entrante&#8230;</string>
+    <string name="call_accept">Responder</string>
+    <string name="call_accept_video">Responder con Video</string>
+    <string name="call_reject">Rechazar</string>
+    <string name="call_waiting">Llamando&#8230;</string>
+    <string name="call_voice_ongoing">En llamada</string>
+    <string name="call_rejected_by_partner">Llamada Rechazada</string>
+    <string name="call_ended">Llamada Finalizada</string>
+
+    <!-- Accesibilidad de Llamadas -->
+    <string name="ax_mute">Silenciar</string>
+    <string name="ax_end_call">Terminar Llamada</string>
+    <string name="ax_camera">Activar/Desactivar Cámara</string>
+    <string name="ax_speaker">Activar/Desactivar Altavoz</string>
+    <string name="ax_switch_camera">Cambiar Cámara</string>
+
+    <!-- Sistema de Bloqueo -->
+    <string name="chat_block_user">Bloquear Usuario</string>
+    <string name="chat_unblock_user">Desbloquear</string>
+    <string name="chat_block_dialog_title">¿Bloquear usuario?</string>
+    <string name="chat_block_dialog_text">¿Está seguro de que desea bloquear a %1$s? No podrán enviarse mensajes ni llamarse.</string>
+    <string name="chat_user_blocked_toast">Usuario bloqueado.</string>
+    <string name="chat_user_unblocked_toast">Usuario desbloqueado.</string>
+    <string name="chat_no_blocked_users">Aún no hay usuarios bloqueados.</string>
+    <string name="chat_request_title">Solicitud de Mensaje</string>
+    <string name="chat_request_desc">%1$s le ha enviado un mensaje. ¿Acepta el chat?</string>
+    <string name="chat_request_accept">Aceptar</string>
+    <string name="chat_request_delete">Eliminar</string>
+    <string name="chat_media_message">Mensaje multimedia</string>
+    <string name="chat_audio_recording">Grabando audio&#8230;</string>
+    <string name="chat_attachment_description">Archivo adjunto</string>
+    <string name="chat_recording_failed">No se pudo iniciar la grabación.</string>
+    <string name="chat_recording_failed_system">No se pudo iniciar la grabación. El sistema podría estar bloqueándola.</string>
+    <string name="chat_microphone_permission_required">Se requiere permiso de micrófono para grabar audio.</string>
+    <string name="chat_search_user_prompt">Busque a la persona con la que desea chatear.</string>
+    <string name="chat_user_not_found">Contacto no encontrado.</string>
+    <string name="chat_group_user_added">añadió a %1$s al grupo.</string>
+    <string name="chat_group_user_removed">eliminó a %1$s del grupo.</string>
+    <string name="chat_group_user_left">salió del grupo.</string>
+    <string name="chat_group_image_update_failed">No se pudo actualizar la imagen del grupo.</string>
+    <string name="chat_group_create_error">Error al crear el grupo: %1$s</string>
+    <string name="notification_someone">Alguien</string>
+    <string name="notification_calling_you">%1$s le está llamando&#8230;</string>
+    <string name="notification_new_content">Tiene una nueva notificación.</string>
+    <string name="chat_media">Multimedia</string>
+    <string name="chat_options_accessible_name">Opciones de Chat</string>
+
+    <string name="notification_anoba_response_title">Hermana Anoba</string>
+    <string name="notification_anoba_response_body">¡Tu carta ha sido respondida! Toca para leer la respuesta ✨</string>
+    <string name="admin_anoba_panel_button">Panel de Hermana Anoba</string>
+
+    <!-- Centro de Notificaciones (v120) -->
+    <string name="notif_hub_title">Notificaciones</string>
+    <string name="notif_hub_mark_all_read">Marcar todo como leído</string>
+    <string name="notif_hub_empty">No hay nuevas notificaciones aún.</string>
+    <string name="notif_hub_close">Cerrar</string>
+    <string name="notif_type_popular_owner">¡Felicidades! Tu publicación está en la página 1000+ 🏆</string>
+    <string name="notif_type_popular_reactor">El contenido al que reaccionaste está en la página 1000+ ✨</string>
+    <string name="notif_type_quarantine_owner">Tu contenido ha sido puesto en revisión 🛡️</string>
+    <string name="notif_type_reporter_quarantine">El contenido reportado ha sido puesto en cuarentena ✅</string>
+    <string name="notif_type_reporter_unflag">El contenido reportado ha sido aprobado 🛡️</string>
+    <string name="notif_type_reaction">Reaccionó a tu contenido.</string>
+    <string name="notif_type_comment">Comentó en tu contenido.</string>
+    <string name="notif_type_generic">Has recibido una nueva notificación.</string>
+
+    <string name="letteradmin_title">Hermana Anoba: Bandeja de Cartas</string>
+    <string name="letteradmin_tab_pending">Pendientes</string>
+    <string name="letteradmin_tab_answered">Respondidas</string>
+    <string name="letteradmin_response_label">Respuesta de Hermana Anoba:</string>
+    <string name="letteradmin_empty_pending">No hay cartas nuevas esperando respuesta ✨</string>
+    <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+</resources>
