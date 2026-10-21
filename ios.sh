@@ -7,4 +7,4 @@ fi
 
 echo "Using JAVA_HOME: $JAVA_HOME"
 chmod +x gradlew
-./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --stacktrace
+./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
