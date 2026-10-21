@@ -52,15 +52,8 @@ class GroupChatRepository(
     fun getMessagesPaging(groupId: String): Flow<PagingData<GroupMessage>> {
         startRealtimeSync(groupId)
 
-        return Pager(
-            config = PagingConfig(
-                pageSize = 30,
-                enablePlaceholders = false,
-                prefetchDistance = 10
-            ),
-            pagingSourceFactory = { chatDao.getGroupMessages(groupId) }
-        ).flow.map { pagingData ->
-            pagingData.map { it.toDomain() }
+        return chatDao.getGroupMessages(groupId).map { list ->
+            PagingData.from(list.map { it.toDomain() })
         }
     }
 

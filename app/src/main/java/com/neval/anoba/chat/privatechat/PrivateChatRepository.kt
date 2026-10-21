@@ -42,15 +42,8 @@ class PrivateChatRepository(
     fun getMessagesPaging(currentUserId: String, otherUserId: String): Flow<PagingData<PrivateMessage>> {
         startRealtimeSync(currentUserId, otherUserId)
 
-        return Pager(
-            config = PagingConfig(
-                pageSize = 30,
-                enablePlaceholders = false,
-                prefetchDistance = 10
-            ),
-            pagingSourceFactory = { chatDao.getPrivateMessages(currentUserId, otherUserId) }
-        ).flow.map { pagingData ->
-            pagingData.map { it.toDomain() }
+        return chatDao.getPrivateMessages(currentUserId, otherUserId).map { list ->
+            PagingData.from(list.map { it.toDomain() })
         }
     }
 

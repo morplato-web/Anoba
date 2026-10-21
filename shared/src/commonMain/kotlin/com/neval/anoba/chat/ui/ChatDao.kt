@@ -1,21 +1,21 @@
 package com.neval.anoba.chat.ui
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ChatDao {
 
     // --- GENEL SOHBET ---
     @Query("SELECT * FROM general_messages ORDER BY timestampMillis DESC")
-    fun getGeneralMessages(): PagingSource<Int, GeneralChatMessageEntity>
+    fun getGeneralMessages(): Flow<List<GeneralChatMessageEntity>>
 
     @Query("SELECT * FROM general_messages WHERE content LIKE '%' || :searchQuery || '%' ORDER BY timestampMillis DESC")
-    fun searchGeneralMessages(searchQuery: String): PagingSource<Int, GeneralChatMessageEntity>
+    fun searchGeneralMessages(searchQuery: String): Flow<List<GeneralChatMessageEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGeneralMessages(messages: List<GeneralChatMessageEntity>)
@@ -28,7 +28,7 @@ interface ChatDao {
 
     // --- GRUP SOHBETİ ---
     @Query("SELECT * FROM group_messages WHERE groupId = :groupId ORDER BY timestampMillis DESC")
-    fun getGroupMessages(groupId: String): PagingSource<Int, GroupMessageEntity>
+    fun getGroupMessages(groupId: String): Flow<List<GroupMessageEntity>>
 
     @Query("SELECT MIN(timestampMillis) FROM group_messages WHERE groupId = :groupId")
     suspend fun getOldestGroupMessageTimestamp(groupId: String): Long?
@@ -44,7 +44,7 @@ interface ChatDao {
 
     // --- ÖZEL SOHBET ---
     @Query("SELECT * FROM private_messages WHERE (senderId = :myId AND receiverId = :partnerId) OR (senderId = :partnerId AND receiverId = :myId) ORDER BY timestampMillis DESC")
-    fun getPrivateMessages(myId: String, partnerId: String): PagingSource<Int, PrivateMessageEntity>
+    fun getPrivateMessages(myId: String, partnerId: String): Flow<List<PrivateMessageEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPrivateMessages(messages: List<PrivateMessageEntity>)

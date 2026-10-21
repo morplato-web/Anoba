@@ -31,21 +31,13 @@ class GeneralChatRepository(
     fun getMessagesPaging(roomId: String, searchQuery: String = ""): Flow<PagingData<GeneralChatMessage>> {
         startRealtimeSync(roomId)
 
-        return Pager(
-            config = PagingConfig(
-                pageSize = 30,
-                enablePlaceholders = false,
-                prefetchDistance = 10
-            ),
-            pagingSourceFactory = {
-                if (searchQuery.isBlank()) {
-                    chatDao.getGeneralMessages()
-                } else {
-                    chatDao.searchGeneralMessages(searchQuery)
-                }
-            }
-        ).flow.map { pagingData ->
-            pagingData.map { it.toDomain() }
+        val flow = if (searchQuery.isBlank()) {
+            chatDao.getGeneralMessages()
+        } else {
+            chatDao.searchGeneralMessages(searchQuery)
+        }
+        return flow.map { list ->
+            PagingData.from(list.map { it.toDomain() })
         }
     }
 
