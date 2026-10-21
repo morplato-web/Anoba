@@ -7,9 +7,14 @@ fi
 
 echo "Using JAVA_HOME: $JAVA_HOME"
 
-# Bozuk Kotlin-Native önbelleğini kesin olarak temizle
-echo "Kotlin-Native önbelleği saptanıyor ve sıfırlanıyor..."
-rm -rf "$HOME/.konan"
-
+# 1. Arka planda çalışan eski Gradle Daemon süreçlerini tamamen kapat
 chmod +x gradlew
-./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
+./gradlew --stop
+
+# 2. Bozuk .konan ve eski build klasörlerini temizle
+echo "Bozuk önbellek ve eski derleme dosyaları temizleniyor..."
+rm -rf "$HOME/.konan"
+rm -rf build shared/build app/build
+
+# 3. Temiz ve yeni bir süreçle (no-daemon) derlemeyi başlat
+./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --no-daemon
