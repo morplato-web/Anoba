@@ -228,6 +228,18 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
   - **Kullanıcı Filtresi (Arama İkonu) Tura Eklendi:** `SEARCH_FILTER` adımı tura dahil edilerek Büyüteç ikonuna ışık odağı bağlandı.
   - **"Bitti" Butonu Düzeltmesi:** Sohbetler adımında erken çıkan "Bitti" yazısı kaldırıldı. "Bitti" butonu artık turun tam son adımı olan `MY_CONTENTS` (İçeriklerim & Taslaklar) üzerinde görünmektedir.
 
+---
+
+## 22. Kotlin Multiplatform (KMP) & iOS Dönüşümü (v141 Güncellemeleri)
+- **Ortak Modül Yapısı (`:shared`):** Android ve iOS ortak mantığı için `:shared` modülü kuruldu. Veri modelleri, Room Veritabanı (`AppDatabase`), Koin DI ve KMP mimarisi entegre edildi.
+- **Compose Multiplatform UI:** Arayüz bileşenleri hem Android hem iOS üzerinde çalışacak şekilde uyumlu hale getirildi.
+- **Room KMP Native Uyumlaştırması:** `ChatDao`, `FollowedUserDao`, `PinnedItemDao` ve `Converters` sınıfları KMP Native (iOS) derleme standartlarına taşındı. Android'e özel `PagingSource` bağımlılıkları Native uyumlu `Flow` akışına çevrildi.
+- **Bulut Mac (MacInCloud) Entegrasyonu & GitHub CI/CD:**
+  - Proje GitHub reposuna (`https://github.com/morplato-web/Anoba.git`) taşındı.
+  - Bulut Mac sunucusu (`FF376.macincloud.com`, kullanıcı: `user299223`) kuruldu.
+  - Mac üzerinde hızlı derleme için otomatik `build.sh` betiği oluşturuldu (`sh build.sh`).
+
+
 
 
 
