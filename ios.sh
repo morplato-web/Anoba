@@ -7,13 +7,9 @@ fi
 
 echo "Using JAVA_HOME: $JAVA_HOME"
 
-# Bozuk konan önbelleği kontrolü ve otomatik temizleme
-if [ -d "$HOME/.konan" ]; then
-    if [ ! -f "$HOME/.konan/kotlin-native-prebuilt-macos-aarch64-2.1.0/tools/env_blacklist" ]; then
-        echo "Bozuk/Eksik Kotlin-Native önbelleği tespit edildi. Temizleniyor..."
-        rm -rf "$HOME/.konan"
-    fi
-fi
+# Bozuk Kotlin-Native önbelleğini kesin olarak temizle
+echo "Kotlin-Native önbelleği saptanıyor ve sıfırlanıyor..."
+rm -rf "$HOME/.konan"
 
 chmod +x gradlew
 ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
