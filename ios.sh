@@ -7,18 +7,16 @@ fi
 
 echo "Using JAVA_HOME: $JAVA_HOME"
 
-# Projedeki tüm dosyaların yazma/düzenleme izinlerini tam aç
-echo "Proje yazma izinleri açılıyor (Unlock permissions)..."
+# Proje izinlerini tam aç
 chmod -R 777 "$HOME/Anoba" 2>/dev/null || true
 chmod -R 777 . 2>/dev/null || true
 
-# 1. Eski Gradle Daemon süreçlerini, takılı Xcode'u ve bozuk önbellekleri kapat
+# 1. Eski süreçleri kapat
 chmod +x gradlew
 ./gradlew --stop
 killall -9 Xcode 2>/dev/null || true
-killall -9 Simulator 2>/dev/null || true
 
-echo "Xcode ve SwiftPM bozuk önbellekleri temizleniyor..."
+# 2. Önbellekleri temizle
 rm -rf "$HOME/Library/Developer/Xcode/DerivedData"
 rm -rf "$HOME/Library/Saved Application State/com.apple.dt.Xcode.savedState"
 rm -rf "$HOME/.swiftpm/cache"
@@ -26,23 +24,19 @@ rm -rf "$HOME/.konan"
 rm -rf "$HOME/.gradle/caches/modules-2/files-2.1/androidx.room"
 rm -rf build shared/build app/build
 
-# 2. Framework derlemesini yap
+# 3. SharedKit.framework derlemesini yap
 ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --no-daemon
 
-# 3. SharedKit.framework dosyasını Xcode dizinlerine kopyala
-echo "SharedKit.framework kütüphanesi tüm Xcode dizinlerine kopyalanıyor..."
+# 4. Framework kopyala
 mkdir -p iosApp/Frameworks
 mkdir -p shared/build/xcode-frameworks/Debug/iphonesimulator
-mkdir -p shared/build/xcode-frameworks/Release/iphoneos
-
 cp -R shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework iosApp/Frameworks/ 2>/dev/null || true
 cp -R shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework iosApp/ 2>/dev/null || true
 cp -R shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework shared/build/xcode-frameworks/Debug/iphonesimulator/ 2>/dev/null || true
 
 chmod -R 777 "$HOME/Anoba" 2>/dev/null || true
 
-echo "Kopyalama ve temizlik tamamlandı!"
-
-# 4. Bağımsız ve Temiz Anoba iOS Projesini Xcode üzerinde aç
-echo "Müstakil Anoba iOS Projesi Xcode üzerinde açılıyor..."
-open "$HOME/Anoba/iosApp/iosApp.xcodeproj"
+# 5. Terminal üzerinden xcodebuild ile tam derleme ve teşhis yap
+echo "iOS Uygulaması xcodebuild ile derleniyor..."
+cd iosApp
+xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
