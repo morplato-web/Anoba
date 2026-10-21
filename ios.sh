@@ -30,4 +30,6 @@ cp -R shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework iosA
 cp -R shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework iosApp/ 2>/dev/null || true
 chmod -R 777 "$HOME/Anoba" 2>/dev/null || true
 
-echo "İzinler tamamen açıldı ve kopyalama tamamlandı!"
+# 5. Gerçek Anoba iOS Projesini Xcode ile otomatik aç
+echo "Gerçek Anoba iOS projesi Xcode üzerinde açılıyor..."
+open iosApp/iosApp.xcodeproj 2>/dev/null || open iosApp/ 2>/dev/null || true
