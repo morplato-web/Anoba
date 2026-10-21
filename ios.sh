@@ -12,14 +12,15 @@ echo "Proje yazma izinleri açılıyor (Unlock permissions)..."
 chmod -R 777 "$HOME/Anoba" 2>/dev/null || true
 chmod -R 777 . 2>/dev/null || true
 
-# 1. Eski Gradle Daemon süreçlerini ve Xcode önbelleklerini temizle
+# 1. Eski Gradle Daemon süreçlerini ve bozuk swiftpm/derivedData önbelleklerini temizle
 chmod +x gradlew
 ./gradlew --stop
 killall Xcode 2>/dev/null || true
 
-echo "Xcode türev verileri ve eski önbellekler temizleniyor..."
+echo "Xcode ve SwiftPM bozuk önbellekleri temizleniyor..."
 rm -rf "$HOME/Library/Developer/Xcode/DerivedData"
 rm -rf "$HOME/Library/Saved Application State/com.apple.dt.Xcode.savedState"
+rm -rf "$HOME/.swiftpm/cache"
 rm -rf "$HOME/.konan"
 rm -rf "$HOME/.gradle/caches/modules-2/files-2.1/androidx.room"
 rm -rf build shared/build app/build
@@ -41,6 +42,6 @@ chmod -R 777 "$HOME/Anoba" 2>/dev/null || true
 
 echo "Kopyalama ve temizlik tamamlandı!"
 
-# 4. Gerçek Anoba projesini Xcode üzerinde temiz sıfır pencere ile aç
-echo "Gerçek Anoba iOS projesi açılıyor..."
-open "$HOME/Anoba/iosApp/iosApp.xcodeproj" 2>/dev/null || open "$HOME/Anoba/iosApp" 2>/dev/null || true
+# 4. Bağımsız ve Temiz Anoba iOS Projesini Xcode üzerinde aç
+echo "Müstakil Anoba iOS Projesi Xcode üzerinde açılıyor..."
+open "$HOME/Anoba/iosApp/iosApp.xcodeproj"
