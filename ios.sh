@@ -9,6 +9,11 @@ echo "=========================================="
 echo "🚀 ANOBA iOS TAM OTOMATİK BAŞLATICI"
 echo "=========================================="
 
+# 0. GitHub'dan en güncel kodları otomatik çek
+echo "📥 Güncellemeler otomatik çekiliyor..."
+git stash 2>/dev/null || true
+git pull 2>/dev/null || true
+
 # 1. Ekranda çakışan tüm Xcode pencerelerini kapat
 killall -9 Xcode 2>/dev/null || true
 sleep 1
