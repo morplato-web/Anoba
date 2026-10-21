@@ -12,10 +12,11 @@ echo "Proje yazma izinleri açılıyor (Unlock permissions)..."
 chmod -R 777 "$HOME/Anoba" 2>/dev/null || true
 chmod -R 777 . 2>/dev/null || true
 
-# 1. Eski Gradle Daemon süreçlerini ve bozuk swiftpm/derivedData önbelleklerini temizle
+# 1. Eski Gradle Daemon süreçlerini, takılı Xcode'u ve bozuk önbellekleri kapat
 chmod +x gradlew
 ./gradlew --stop
-killall Xcode 2>/dev/null || true
+killall -9 Xcode 2>/dev/null || true
+killall -9 Simulator 2>/dev/null || true
 
 echo "Xcode ve SwiftPM bozuk önbellekleri temizleniyor..."
 rm -rf "$HOME/Library/Developer/Xcode/DerivedData"
