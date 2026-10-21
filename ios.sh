@@ -24,12 +24,22 @@ rm -rf build shared/build app/build
 # 3. Framework derlemesini yap
 ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --no-daemon
 
-# 4. SharedKit.framework dosyasını kopyala ve tüm izinleri 777 yap
+# 4. SharedKit.framework dosyasını Xcode'un aradığı TÜM olası dizinlere kopyala
+echo "SharedKit.framework kütüphanesi tüm Xcode dizinlerine kopyalanıyor..."
 mkdir -p iosApp/Frameworks
+mkdir -p shared/build/xcode-frameworks/Debug/iphonesimulator
+mkdir -p shared/build/xcode-frameworks/Release/iphoneos
+
 cp -R shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework iosApp/Frameworks/ 2>/dev/null || true
 cp -R shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework iosApp/ 2>/dev/null || true
+cp -R shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework shared/build/xcode-frameworks/Debug/iphonesimulator/ 2>/dev/null || true
+
 chmod -R 777 "$HOME/Anoba" 2>/dev/null || true
 
-# 5. Gerçek Anoba iOS Projesini Xcode ile otomatik aç
-echo "Gerçek Anoba iOS projesi Xcode üzerinde açılıyor..."
+echo "Kopyalama tamamlandı!"
+
+# 5. Xcode'u tamamen kapatıp temiz şekilde tekrar aç
+killall Xcode 2>/dev/null || true
+sleep 1
+echo "Xcode temiz olarak başlatılıyor..."
 open iosApp/iosApp.xcodeproj 2>/dev/null || open iosApp/ 2>/dev/null || true
