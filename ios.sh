@@ -76,6 +76,8 @@ if [ -n "$APP_PATH" ]; then
 
     echo "📦 Yüklenen App Yolu: $APP_PATH"
     xcrun simctl install booted "$APP_PATH" 2>/dev/null || xcrun simctl install "$SIM_ID" "$APP_PATH" 2>/dev/null || true
+
+    echo "📱 Uygulama simülatörde başlatılıyor ve konsol logları dinleniyor..."
     xcrun simctl launch booted com.neval.anoba.iosApp 2>/dev/null || xcrun simctl launch "$SIM_ID" com.neval.anoba.iosApp 2>/dev/null || true
 fi
 
