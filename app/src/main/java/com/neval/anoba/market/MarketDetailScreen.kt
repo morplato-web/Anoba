@@ -7,7 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.LocationOn
@@ -258,7 +258,7 @@ fun MarketDetailScreen(
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700))
                         ) {
-                            Icon(Icons.Default.Chat, contentDescription = null, tint = Color.Black)
+                            Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = null, tint = Color.Black)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text("Satıcı İle Sohbet Et 💬", color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
