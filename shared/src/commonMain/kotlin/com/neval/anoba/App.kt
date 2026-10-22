@@ -1,19 +1,14 @@
 package com.neval.anoba
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.RocketLaunch
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,59 +25,12 @@ fun App() {
             modifier = Modifier.fillMaxSize(),
             color = Color(0xFF0F172A)
         ) {
-            Scaffold(
-                containerColor = Color(0xFF0F172A),
-                bottomBar = {
-                    NavigationBar(
-                        containerColor = Color(0xFF1E293B),
-                        contentColor = Color.White
-                    ) {
-                        NavigationBarItem(
-                            selected = currentTab == 0,
-                            onClick = { currentTab = 0 },
-                            icon = { Icon(Icons.Default.Home, contentDescription = "Ana Sayfa") },
-                            label = { Text("Ana Sayfa") },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = Color(0xFFFFD700),
-                                selectedTextColor = Color(0xFFFFD700),
-                                unselectedIconColor = Color(0xFF94A3B8),
-                                unselectedTextColor = Color(0xFF94A3B8),
-                                indicatorColor = Color(0xFF334155)
-                            )
-                        )
-                        NavigationBarItem(
-                            selected = currentTab == 1,
-                            onClick = { currentTab = 1 },
-                            icon = { Icon(Icons.Default.Chat, contentDescription = "Sohbet") },
-                            label = { Text("Sohbet") },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = Color(0xFFFFD700),
-                                selectedTextColor = Color(0xFFFFD700),
-                                unselectedIconColor = Color(0xFF94A3B8),
-                                unselectedTextColor = Color(0xFF94A3B8),
-                                indicatorColor = Color(0xFF334155)
-                            )
-                        )
-                        NavigationBarItem(
-                            selected = currentTab == 2,
-                            onClick = { currentTab = 2 },
-                            icon = { Icon(Icons.Default.Person, contentDescription = "Profil") },
-                            label = { Text("Profil") },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = Color(0xFFFFD700),
-                                selectedTextColor = Color(0xFFFFD700),
-                                unselectedIconColor = Color(0xFF94A3B8),
-                                unselectedTextColor = Color(0xFF94A3B8),
-                                indicatorColor = Color(0xFF334155)
-                            )
-                        )
-                    }
-                }
-            ) { innerPadding ->
+            Column(modifier = Modifier.fillMaxSize()) {
+                // Main Content View
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
+                        .weight(1f)
+                        .fillMaxWidth()
                 ) {
                     when (currentTab) {
                         0 -> AnobaHomeView()
@@ -90,8 +38,56 @@ fun App() {
                         2 -> AnobaProfileView()
                     }
                 }
+
+                // Custom Bulletproof Bottom Navigation Bar
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color(0xFF1E293B),
+                    shadowElevation = 8.dp
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(64.dp)
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        NavItem("🏠", "Ana Sayfa", currentTab == 0) { currentTab = 0 }
+                        NavItem("💬", "Sohbet", currentTab == 1) { currentTab = 1 }
+                        NavItem("👤", "Profil", currentTab == 2) { currentTab = 2 }
+                    }
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun NavItem(
+    icon: String,
+    label: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .clickable { onClick() }
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = icon,
+            fontSize = 20.sp
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = label,
+            fontSize = 11.sp,
+            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+            color = if (isSelected) Color(0xFFFFD700) else Color(0xFF94A3B8)
+        )
     }
 }
 
@@ -103,6 +99,8 @@ private fun AnobaHomeView() {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(20.dp))
+
         // Upper Header
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -113,24 +111,21 @@ private fun AnobaHomeView() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Surface(
-                        shape = CircleShape,
-                        color = Color(0xFFFFD700),
-                        modifier = Modifier.size(40.dp)
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Text("A", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                        }
+                Surface(
+                    shape = CircleShape,
+                    color = Color(0xFFFFD700),
+                    modifier = Modifier.size(44.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Text("A", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 22.sp)
                     }
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column {
-                        Text("Anoba iOS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                        Text("Connect, Chat & Time Capsule", color = Color(0xFF94A3B8), fontSize = 12.sp)
-                    }
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text("Anoba iOS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    Text("Connect, Chat & Time Capsule", color = Color(0xFF94A3B8), fontSize = 12.sp)
                 }
             }
         }
@@ -145,12 +140,7 @@ private fun AnobaHomeView() {
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.RocketLaunch,
-                        contentDescription = null,
-                        tint = Color(0xFFFFD700),
-                        modifier = Modifier.size(28.dp)
-                    )
+                    Text("🚀", fontSize = 24.sp)
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = "177 Ülkede Canlı Akış",
@@ -193,12 +183,7 @@ private fun AnobaChatView() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            imageVector = Icons.Default.Chat,
-            contentDescription = null,
-            tint = Color(0xFFFFD700),
-            modifier = Modifier.size(64.dp)
-        )
+        Text("💬", fontSize = 48.sp)
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Anoba Sohbet & Gruplar",
@@ -225,12 +210,7 @@ private fun AnobaProfileView() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            imageVector = Icons.Default.Person,
-            contentDescription = null,
-            tint = Color(0xFFFFD700),
-            modifier = Modifier.size(64.dp)
-        )
+        Text("👤", fontSize = 48.sp)
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Kullanıcı Profili",
