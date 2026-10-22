@@ -68,6 +68,12 @@ open -a Simulator
 sleep 2
 
 if [ -n "$APP_PATH" ]; then
+    echo "📦 SharedKit.framework uygulama içine gömülüyor (Embed Frameworks)..."
+    mkdir -p "$APP_PATH/Frameworks"
+    cp -R "$HOME/Anoba/iosApp/Frameworks/SharedKit.framework" "$APP_PATH/Frameworks/" 2>/dev/null || true
+    codesign --force --sign - --timestamp=none "$APP_PATH/Frameworks/SharedKit.framework" 2>/dev/null || true
+    codesign --force --sign - --timestamp=none "$APP_PATH" 2>/dev/null || true
+
     echo "📦 Yüklenen App Yolu: $APP_PATH"
     xcrun simctl install booted "$APP_PATH" 2>/dev/null || xcrun simctl install "$SIM_ID" "$APP_PATH" 2>/dev/null || true
     xcrun simctl launch booted com.neval.anoba.iosApp 2>/dev/null || xcrun simctl launch "$SIM_ID" com.neval.anoba.iosApp 2>/dev/null || true
