@@ -420,7 +420,7 @@ fun ChatHomeScreen(
                         }
                     }
 
-                    if (pagingItems.loadState.refresh is LoadState.Loading) {
+                    if (pagingItems.loadState.refresh is LoadState.Loading && pagingItems.itemCount == 0) {
                         item {
                             Box(modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
                                 CircularProgressIndicator()

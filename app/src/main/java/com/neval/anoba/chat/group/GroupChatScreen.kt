@@ -683,7 +683,7 @@ fun GroupChatScreen(
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        if (pagingItems.loadState.refresh is LoadState.Loading) {
+                        if (pagingItems.loadState.refresh is LoadState.Loading && pagingItems.itemCount == 0) {
                             item {
                                 Box(modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
                                     CircularProgressIndicator()
