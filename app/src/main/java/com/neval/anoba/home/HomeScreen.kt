@@ -53,6 +53,7 @@ import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
@@ -252,6 +253,7 @@ fun HomeScreen(
                     is ContentItem.LetterContent -> item.letter.countryCode
                     is ContentItem.VideoContent -> item.video.countryCode
                     is ContentItem.AudioContent -> item.audio.countryCode
+                    is ContentItem.MarketContent -> item.marketItem.countryCode
                 }?.trim()?.uppercase()
 
                 if (target == "OTHER") {
@@ -278,6 +280,7 @@ fun HomeScreen(
                     is ContentItem.LetterContent -> item.letter.username.lowercase().contains(query) || item.letter.ownerId.lowercase() == query
                     is ContentItem.VideoContent -> item.video.username.lowercase().contains(query) || item.video.ownerId.lowercase() == query
                     is ContentItem.AudioContent -> item.audio.username.lowercase().contains(query) || item.audio.ownerId.lowercase() == query
+                    is ContentItem.MarketContent -> item.marketItem.username.lowercase().contains(query) || item.marketItem.ownerId.lowercase() == query
                 }
             }
         }
@@ -696,6 +699,34 @@ fun HomeScreen(
                                                         navController.navigate(Constants.METE_SCREEN)
                                                     }
                                                 )
+
+                                                // 🛒 Anoba Pazar Yeri (İlanlar)
+                                                DropdownMenuItem(
+                                                    text = {
+                                                        Row(
+                                                            verticalAlignment = Alignment.CenterVertically,
+                                                            modifier = Modifier.padding(vertical = 2.dp)
+                                                        ) {
+                                                            Icon(
+                                                                imageVector = Icons.Default.ShoppingBag,
+                                                                contentDescription = "Pazar Yeri",
+                                                                modifier = Modifier.size(20.dp),
+                                                                tint = AnobaNavy
+                                                            )
+                                                            Spacer(Modifier.width(10.dp))
+                                                            Text(
+                                                                text = "Pazar Yeri 🛒",
+                                                                style = MaterialTheme.typography.bodyMedium,
+                                                                color = AnobaNavy,
+                                                                fontWeight = FontWeight.SemiBold
+                                                            )
+                                                        }
+                                                    },
+                                                    onClick = {
+                                                        showMoreMenu = false
+                                                        navController.navigate(Constants.MARKET_NAV_GRAPH)
+                                                    }
+                                                )
                                             }
                                         }
                                     }
@@ -1092,6 +1123,13 @@ fun HomeScreen(
                                                         onShareClick = {
                                                             homeViewModel.shareVideo(context, contentItem.video.videoUrl, contentItem.video.id)
                                                         }
+                                                    )
+                                                    is ContentItem.MarketContent -> com.neval.anoba.market.MarketFeedCard(
+                                                        item = contentItem.marketItem,
+                                                        onClick = {
+                                                            navController.navigate("market_detail_screen/${contentItem.marketItem.id}")
+                                                        },
+                                                        onUserClick = onUserCardClick
                                                     )
                                                 }
                                             }

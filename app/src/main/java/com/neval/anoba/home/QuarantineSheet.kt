@@ -141,6 +141,7 @@ fun QuarantineSheet(
                                         is ContentItem.VideoContent -> Constants.VIDEO_DETAIL_SCREEN.replace("{videoId}", item.id)
                                         is ContentItem.LetterContent -> Constants.LETTER_DETAIL_SCREEN.replace("{letterId}", item.id)
                                         is ContentItem.AudioContent -> Constants.SES_DETAIL_SCREEN.replace("{sesId}", item.id)
+                                        is ContentItem.MarketContent -> "market_detail_screen/${item.id}"
                                     }
                                     navController.navigate(route)
                                 }
@@ -208,6 +209,14 @@ fun QuarantineGridItem(item: ContentItem, onClick: () -> Unit) {
                 }
                 is ContentItem.AudioContent -> {
                     Icon(Icons.Default.Mic, null, modifier = Modifier.size(32.dp), tint = Color.Gray)
+                }
+                is ContentItem.MarketContent -> {
+                    AsyncImage(
+                        model = item.marketItem.photoUrl,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
                 }
             }
             

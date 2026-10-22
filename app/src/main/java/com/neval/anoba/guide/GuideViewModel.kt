@@ -91,6 +91,7 @@ class GuideViewModel(
                             is ContentItem.PhotoContent -> item.photo.publishTimestamp?.time ?: item.photo.createdAt?.time ?: 0L
                             is ContentItem.VideoContent -> item.video.publishTimestamp?.time ?: item.video.createdAt?.time ?: 0L
                             is ContentItem.AudioContent -> item.audio.publishTimestamp?.time ?: item.audio.createdAt?.time ?: 0L
+                            is ContentItem.MarketContent -> item.marketItem.createdAt?.time ?: 0L
                         }
                     }
                     _guideContent.value = sorted

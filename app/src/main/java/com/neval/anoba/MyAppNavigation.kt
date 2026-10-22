@@ -13,6 +13,7 @@ import com.neval.anoba.common.utils.Constants
 import com.neval.anoba.drawer.drawerNavGraph
 import com.neval.anoba.letter.letterNavGraph
 import com.neval.anoba.login.ui.loginNavGraph
+import com.neval.anoba.market.marketNavGraph
 import com.neval.anoba.mycontent.myContentNavGraph
 import com.neval.anoba.photo.photoNavGraph
 import com.neval.anoba.ses.sesNavGraph
@@ -43,6 +44,7 @@ fun MainAppNavHost(
         photoNavGraph(navController)
         videoNavGraph(navController)
         myContentNavGraph(navController)
+        marketNavGraph(navController)
         
         composable(Constants.HOME_SCREEN + "?countryCode={countryCode}") { backStackEntry ->
             val countryCode = backStackEntry.arguments?.getString("countryCode")

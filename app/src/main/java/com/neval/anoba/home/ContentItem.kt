@@ -1,6 +1,7 @@
 package com.neval.anoba.home
 
 import com.neval.anoba.letter.LetterModel
+import com.neval.anoba.market.MarketItemModel
 import com.neval.anoba.photo.PhotoModel
 import com.neval.anoba.ses.SesModel
 import com.neval.anoba.video.VideoModel
@@ -55,5 +56,15 @@ sealed class ContentItem {
         override val isPublished: Boolean get() = video.isPublished
         override val isOfficial: Boolean get() = video.isOfficial
         override val viewCount: Long get() = video.viewCount
+    }
+
+    data class MarketContent(val marketItem: MarketItemModel) : ContentItem() {
+        override val id: String get() = marketItem.id
+        override val contentType: String get() = "market"
+        override val createdAt: Date? get() = marketItem.createdAt
+        override val publishTimestamp: Date? get() = marketItem.createdAt
+        override val isPublished: Boolean get() = !marketItem.isSold
+        override val isOfficial: Boolean get() = marketItem.isOfficial
+        override val viewCount: Long get() = 0
     }
 }

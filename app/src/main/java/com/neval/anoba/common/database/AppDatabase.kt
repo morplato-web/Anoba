@@ -11,6 +11,8 @@ import com.neval.anoba.follow.FollowedUserDao
 import com.neval.anoba.follow.FollowedUserEntity
 import com.neval.anoba.letter.LetterDao
 import com.neval.anoba.letter.LetterModel
+import com.neval.anoba.market.MarketDao
+import com.neval.anoba.market.MarketItemModel
 import com.neval.anoba.photo.PhotoDao
 import com.neval.anoba.photo.PhotoModel
 import com.neval.anoba.ses.SesDao
@@ -28,9 +30,10 @@ import com.neval.anoba.video.VideoModel
         GroupMessageEntity::class,
         PrivateMessageEntity::class,
         PinnedItemEntity::class,
-        FollowedUserEntity::class
+        FollowedUserEntity::class,
+        MarketItemModel::class
     ],
-    version = 19,
+    version = 20,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -42,4 +45,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
     abstract fun pinnedItemDao(): PinnedItemDao
     abstract fun followedUserDao(): FollowedUserDao
+    abstract fun marketDao(): MarketDao
 }

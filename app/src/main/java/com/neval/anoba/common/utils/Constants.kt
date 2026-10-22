@@ -68,6 +68,12 @@ object Constants {
     // --- CALL ---
     const val CALL_SCREEN = "call_screen/{channelName}/{isVideoCall}/{isIncoming}"
 
+    // --- MARKETPLACE (PAZAR YERİ) ---
+    const val MARKET_NAV_GRAPH = "market_nav_graph"
+    const val MARKET_HOME_SCREEN = "market_home_screen"
+    const val MARKET_CREATE_SCREEN = "market_create_screen"
+    const val MARKET_DETAIL_SCREEN = "market_detail_screen/{itemId}"
+
     // --- AGORA ---
     const val AGORA_APP_ID = "c027fbb214d14f96807be938ad733a92"
 

@@ -129,6 +129,7 @@ fun PopularSheet(
                                         is ContentItem.VideoContent -> Constants.VIDEO_DETAIL_SCREEN.replace("{videoId}", item.video.id)
                                         is ContentItem.LetterContent -> Constants.LETTER_DETAIL_SCREEN.replace("{letterId}", item.letter.id)
                                         is ContentItem.AudioContent -> Constants.SES_DETAIL_SCREEN.replace("{sesId}", item.audio.id)
+                                        is ContentItem.MarketContent -> "market_detail_screen/${item.marketItem.id}"
                                     }
                                     navController.navigate(route)
                                 })
@@ -183,6 +184,14 @@ fun PopularGridItem(item: ContentItem, onClick: () -> Unit) {
                     Box(modifier = Modifier.fillMaxSize().background(Color(0xFFF3E5F5)), contentAlignment = Alignment.Center) {
                         Icon(imageVector = Icons.Default.Mic, contentDescription = null, tint = Color(0xFF8E24AA))
                     }
+                }
+                is ContentItem.MarketContent -> {
+                    AsyncImage(
+                        model = item.marketItem.photoUrl,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
                 }
             }
         }

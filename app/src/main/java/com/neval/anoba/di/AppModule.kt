@@ -38,6 +38,9 @@ import com.neval.anoba.letter.LetterViewModel
 import com.neval.anoba.letter.lettercomment.LetterCommentRepository
 import com.neval.anoba.letter.lettercomment.LetterCommentViewModel
 import com.neval.anoba.letter.letteremoji.LetterEmojiReactionRepository
+import com.neval.anoba.market.MarketDao
+import com.neval.anoba.market.MarketRepository
+import com.neval.anoba.market.MarketViewModel
 import com.neval.anoba.login.repository.ILoginRepository
 import com.neval.anoba.login.repository.LoginRepository
 import com.neval.anoba.login.viewmodel.ForgotPasswordViewModel
@@ -107,6 +110,7 @@ fun createAppModuleDefinition(
     single { get<AppDatabase>().chatDao() }
     single { get<AppDatabase>().pinnedItemDao() }
     single { get<AppDatabase>().followedUserDao() }
+    single { get<AppDatabase>().marketDao() }
 
     // --- REPOSITORY & SERVICE BAĞIMLILIKLARI ---
     single<FollowRepository> { com.neval.anoba.follow.FollowRepositoryImpl(get(), get(), get()) }
@@ -114,6 +118,7 @@ fun createAppModuleDefinition(
     single { SesRepository(get(), get(), get()) }
     single { PhotoRepository(get(), get(), get()) }
     single { VideoRepository(get(), get(), get()) }
+    single { MarketRepository(get(), get(), get(), get()) }
     single { com.neval.anoba.common.repository.PinnedItemRepository(get()) }
 
     single<AuthServiceInterface> { AuthService(get(), get(), get(), get(), androidContext(), get(), get(), get(), get(), get()) }
@@ -166,12 +171,14 @@ fun createAppModuleDefinition(
     viewModelOf(::CallViewModel)
 
     viewModelOf(::FollowViewModel)
+    viewModelOf(::MarketViewModel)
     viewModel {
         HomeViewModel(
             letterRepository = get(),
             photoRepository = get(),
             videoRepository = get(),
             sesRepository = get(),
+            marketRepository = get(),
             firestore = get(),
             authService = get(),
             pinnedItemRepository = get(),

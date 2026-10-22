@@ -14,6 +14,8 @@ import com.neval.anoba.common.services.AuthServiceInterface
 import com.neval.anoba.common.state.UiState
 import com.neval.anoba.letter.LetterModel
 import com.neval.anoba.letter.LetterRepository
+import com.neval.anoba.market.MarketItemModel
+import com.neval.anoba.market.MarketRepository
 import com.neval.anoba.login.state.AuthState
 import com.neval.anoba.models.AnobaNotification
 import com.neval.anoba.photo.PhotoModel
@@ -45,6 +47,7 @@ class HomeViewModel(
     private val photoRepository: PhotoRepository,
     private val videoRepository: VideoRepository,
     private val sesRepository: SesRepository,
+    private val marketRepository: MarketRepository,
     private val firestore: FirebaseFirestore,
     private val authService: AuthServiceInterface,
     private val pinnedItemRepository: PinnedItemRepository,
@@ -380,12 +383,14 @@ class HomeViewModel(
                         is ContentItem.VideoContent -> item.video.isFlagged
                         is ContentItem.LetterContent -> item.letter.isFlagged
                         is ContentItem.AudioContent -> item.audio.isFlagged
+                        is ContentItem.MarketContent -> false
                     }
                     val isPublished = when(item) {
                         is ContentItem.PhotoContent -> item.photo.isPublished
                         is ContentItem.VideoContent -> item.video.isPublished
                         is ContentItem.LetterContent -> item.letter.isPublished
                         is ContentItem.AudioContent -> item.audio.isPublished
+                        is ContentItem.MarketContent -> !item.marketItem.isSold
                     }
                     !isFlagged && isPublished
                 }
@@ -396,9 +401,20 @@ class HomeViewModel(
                 letterRepository.getLettersOffline(),
                 sesRepository.getSeslerOffline(),
                 videoRepository.getVideosOffline(),
+                marketRepository.getMarketItemsStream(),
                 _refreshTrigger
-            ) { p, l, s, v, _ ->
-                mapToContentItems(p, l, s, v)
+            ) { array ->
+                @Suppress("UNCHECKED_CAST")
+                val p = array[0] as List<PhotoModel>
+                @Suppress("UNCHECKED_CAST")
+                val l = array[1] as List<LetterModel>
+                @Suppress("UNCHECKED_CAST")
+                val s = array[2] as List<SesModel>
+                @Suppress("UNCHECKED_CAST")
+                val v = array[3] as List<VideoModel>
+                @Suppress("UNCHECKED_CAST")
+                val m = array[4] as List<MarketItemModel>
+                mapToContentItems(p, l, s, v, m)
             }
 
             // 🌍 HARİTA İÇİN TEMİZ VERİ (Filtresiz)
@@ -441,6 +457,7 @@ class HomeViewModel(
                                 is ContentItem.LetterContent -> item.letter.ownerId
                                 is ContentItem.AudioContent -> item.audio.ownerId
                                 is ContentItem.VideoContent -> item.video.ownerId
+                                is ContentItem.MarketContent -> item.marketItem.ownerId
                             }
                             followedIds.contains(ownerId)
                         }
@@ -650,15 +667,23 @@ class HomeViewModel(
     fun toggleCommandoAnimation(status: Boolean) { commandoJob?.cancel(); if (!status) commandoJob = null; viewModelScope.launch { try { firestore.collection("animations").document("commando_rain").set(mapOf("isActive" to status), SetOptions.merge()) } catch (_: Exception) { } } }
     fun toggleBekciAnimation(status: Boolean) { bekciJob?.cancel(); if (!status) bekciJob = null; viewModelScope.launch { try { firestore.collection("animations").document("bekci_rain").set(mapOf("isActive" to status), SetOptions.merge()) } catch (_: Exception) { } } }
 
-    private fun mapToContentItems(photos: List<PhotoModel>, letters: List<LetterModel>, audios: List<SesModel>, videos: List<VideoModel>): List<ContentItem> {
+    private fun mapToContentItems(
+        photos: List<PhotoModel>,
+        letters: List<LetterModel>,
+        audios: List<SesModel>,
+        videos: List<VideoModel>,
+        markets: List<MarketItemModel> = emptyList()
+    ): List<ContentItem> {
         return (photos.map { ContentItem.PhotoContent(it) } +
                 letters.map { ContentItem.LetterContent(it) } +
                 audios.map { ContentItem.AudioContent(it) } +
-                videos.map { ContentItem.VideoContent(it) })
+                videos.map { ContentItem.VideoContent(it) } +
+                markets.map { ContentItem.MarketContent(it) })
             .filter { item ->
                 when (item) {
                     is ContentItem.LetterContent -> item.letter.privacy.trim().uppercase() == "PUBLIC"
                     is ContentItem.AudioContent -> item.audio.privacy.trim().uppercase() == "PUBLIC"
+                    is ContentItem.MarketContent -> !item.marketItem.isSold
                     else -> true
                 }
             }

@@ -114,6 +114,7 @@ fun GlobalMapScreen(
                     is ContentItem.LetterContent -> item.letter.countryCode
                     is ContentItem.VideoContent -> item.video.countryCode
                     is ContentItem.AudioContent -> item.audio.countryCode
+                    is ContentItem.MarketContent -> item.marketItem.countryCode
                 }?.trim()?.uppercase()
 
                 if (code.isNullOrBlank()) "TR"

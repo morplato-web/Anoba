@@ -34,8 +34,9 @@ fun App() {
                 ) {
                     when (currentTab) {
                         0 -> AnobaHomeView()
-                        1 -> AnobaChatView()
-                        2 -> AnobaProfileView()
+                        1 -> AnobaMarketView()
+                        2 -> AnobaChatView()
+                        3 -> AnobaProfileView()
                     }
                 }
 
@@ -49,13 +50,14 @@ fun App() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(64.dp)
-                            .padding(horizontal = 16.dp),
+                            .padding(horizontal = 8.dp),
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         NavItem("🏠", "Ana Sayfa", currentTab == 0) { currentTab = 0 }
-                        NavItem("💬", "Sohbet", currentTab == 1) { currentTab = 1 }
-                        NavItem("👤", "Profil", currentTab == 2) { currentTab = 2 }
+                        NavItem("🛒", "Pazar Yeri", currentTab == 1) { currentTab = 1 }
+                        NavItem("💬", "Sohbet", currentTab == 2) { currentTab = 2 }
+                        NavItem("👤", "Profil", currentTab == 3) { currentTab = 3 }
                     }
                 }
             }
@@ -171,6 +173,33 @@ private fun AnobaHomeView() {
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun AnobaMarketView() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text("🛒", fontSize = 48.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Anoba Pazar Yeri",
+            color = Color.White,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Ürün İlanları & Doğrudan Satıcı Mesajlaşması",
+            color = Color(0xFF94A3B8),
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center
+        )
     }
 }
 

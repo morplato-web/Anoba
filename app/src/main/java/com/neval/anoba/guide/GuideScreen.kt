@@ -161,6 +161,7 @@ fun GuideScreen(
                                 is ContentItem.VideoContent -> Constants.VIDEO_DETAIL_SCREEN.replace("{videoId}", item.video.id)
                                 is ContentItem.PhotoContent -> Constants.PHOTO_DETAIL_SCREEN.replace("{photoId}", item.photo.id)
                                 is ContentItem.AudioContent -> Constants.SES_DETAIL_SCREEN.replace("{sesId}", item.audio.id)
+                                is ContentItem.MarketContent -> "market_detail_screen/${item.marketItem.id}"
                             }
                             navController.navigate(route)
                         }
@@ -232,6 +233,7 @@ fun GuideGridItem(
         is ContentItem.PhotoContent -> Color(0xFFFFEBEE)
         is ContentItem.AudioContent -> Color(0xFFFFD1DC)
         is ContentItem.LetterContent -> Color(0xFFFFF3E0)
+        is ContentItem.MarketContent -> Color(0xFFFEF3C7)
     }
 
     Card(
@@ -284,6 +286,14 @@ fun GuideGridItem(
                             color = brandNavy
                         )
                     }
+                }
+                is ContentItem.MarketContent -> {
+                    AsyncImage(
+                        model = item.marketItem.photoUrl,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
                 }
             }
         }
