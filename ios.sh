@@ -53,7 +53,7 @@ xcrun simctl shutdown all 2>/dev/null || true
 sleep 1
 
 # Sadece 1 adet varsayılan iPhone simülatörünü seç ve başlat
-SIM_ID=$(xcrun simctl list devices | grep "iPhone 16" | grep -v "unavailable" | head -n 1 | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
+SIM_ID=$(xcrun simctl list devices | grep "iPhone 17" | grep -v "unavailable" | head -n 1 | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
 if [ -z "$SIM_ID" ]; then
     SIM_ID=$(xcrun simctl list devices | grep "iPhone" | grep -v "unavailable" | head -n 1 | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
 fi
