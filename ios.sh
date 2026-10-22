@@ -45,7 +45,7 @@ xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk ip
 cd "$HOME/Anoba" || exit 1
 
 # 6. Derlenen .app paketini bul ve TEK BİR Simülatörde çalıştır
-APP_PATH=$(find "$HOME/Library/Developer/Xcode/DerivedData" -name "iosApp.app" 2>/dev/null | head -n 1)
+APP_PATH=$(find "$HOME/Library/Developer/Xcode/DerivedData" -name "Anoba.app" -o -name "iosApp.app" 2>/dev/null | head -n 1)
 
 echo "📱 3/3: Tüm ekstra simülatörler kapatılıyor, tek bir temiz iPhone açılıyor..."
 killall -9 Simulator 2>/dev/null || true
@@ -67,6 +67,10 @@ fi
 open -a Simulator
 sleep 2
 
+# Simülatördeki tüm eski ve çakışan ikonu temizle
+xcrun simctl uninstall booted com.neval.anoba.iosApp 2>/dev/null || true
+xcrun simctl uninstall booted com.neval.anoba 2>/dev/null || true
+
 if [ -n "$APP_PATH" ]; then
     echo "📦 SharedKit.framework uygulama içine gömülüyor (Embed Frameworks)..."
     mkdir -p "$APP_PATH/Frameworks"
@@ -77,7 +81,7 @@ if [ -n "$APP_PATH" ]; then
     echo "📦 Yüklenen App Yolu: $APP_PATH"
     xcrun simctl install booted "$APP_PATH" 2>/dev/null || xcrun simctl install "$SIM_ID" "$APP_PATH" 2>/dev/null || true
 
-    echo "📱 Uygulama simülatörde başlatılıyor ve konsol logları dinleniyor..."
+    echo "📱 Anoba iOS uygulaması simülatörde otomatik başlatılıyor..."
     xcrun simctl launch booted com.neval.anoba.iosApp 2>/dev/null || xcrun simctl launch "$SIM_ID" com.neval.anoba.iosApp 2>/dev/null || true
 fi
 
