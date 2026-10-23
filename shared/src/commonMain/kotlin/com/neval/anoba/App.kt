@@ -2,6 +2,8 @@ package com.neval.anoba
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -10,10 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neval.anoba.chat.ui.ChatHomeScreen
+import com.neval.anoba.home.ContentType
+import com.neval.anoba.home.SharedFeedCard
+import com.neval.anoba.home.SharedFeedItem
 import com.neval.anoba.market.MarketContainerView
 import com.neval.anoba.profile.ProfileScreen
 import com.neval.anoba.ui.theme.AnobaTheme
@@ -97,83 +101,90 @@ private fun NavItem(
 
 @Composable
 private fun AnobaHomeView() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(20.dp))
+    val feedItems = remember {
+        listOf(
+            SharedFeedItem(
+                id = "feed_1",
+                type = ContentType.PHOTO,
+                title = "İstanbul Boğazında Gün Batımı 🌅",
+                description = "Zaman kapsülüne kaydedilen eşsiz bir manzara karesi.",
+                mediaUrl = null,
+                ownerId = "u1",
+                username = "Ahmet Y.",
+                userBadgeType = "PIONEER",
+                isOfficial = false,
+                topEmoji = "❤️",
+                reactionCount = 84,
+                createdAtMillis = 1710000000000L
+            ),
+            SharedFeedItem(
+                id = "feed_2",
+                type = ContentType.LETTER,
+                title = "Geleceğe Mektup: 2026 Hedefleri ✉️",
+                description = "Zaman kapsülü kilitlendi, 1 yıl sonra açılacak.",
+                mediaUrl = null,
+                ownerId = "anoba_official",
+                username = "Anoba",
+                userBadgeType = "OFFICIAL",
+                isOfficial = true,
+                topEmoji = "🔥",
+                reactionCount = 156,
+                createdAtMillis = 1710000050000L
+            ),
+            SharedFeedItem(
+                id = "feed_3",
+                type = ContentType.AUDIO,
+                title = "Sesli Not: Doğa Sesi & Yağmur 🎧",
+                description = "2 dakikalık huzur veren doğa ses kaydı.",
+                mediaUrl = null,
+                ownerId = "u2",
+                username = "Zeynep K.",
+                userBadgeType = "NONE",
+                isOfficial = false,
+                topEmoji = "👏",
+                reactionCount = 42,
+                createdAtMillis = 1710000100000L
+            )
+        )
+    }
 
-        // Upper Header
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            color = Color(0xFF1E293B)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(14.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        item {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                color = Color(0xFF1E293B)
             ) {
-                Surface(
-                    shape = CircleShape,
-                    color = Color(0xFFFFD700),
-                    modifier = Modifier.size(44.dp)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Text("A", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                    Surface(
+                        shape = CircleShape,
+                        color = Color(0xFFFFD700),
+                        modifier = Modifier.size(44.dp)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Text("A", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                        }
                     }
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-                Column {
-                    Text("Anoba iOS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                    Text("Connect, Chat & Time Capsule", color = Color(0xFF94A3B8), fontSize = 12.sp)
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text("Anoba iOS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        Text("Connect, Chat & Time Capsule", color = Color(0xFF94A3B8), fontSize = 12.sp)
+                    }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        // Global Feed Welcome Card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B))
-        ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("🚀", fontSize = 24.sp)
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = "177 Ülkede Canlı Akış",
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "Anoba'nın tüm ortak mimarisi (Room Veritabanı, KMP Modülleri, Takip Sistemi ve Çoklu Dil Desteği) iOS üzerinde aktif edildi.",
-                    color = Color(0xFFCBD5E1),
-                    fontSize = 14.sp,
-                    lineHeight = 20.sp
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Surface(
-                    shape = RoundedCornerShape(10.dp),
-                    color = Color(0xFF10B981).copy(alpha = 0.2f)
-                ) {
-                    Text(
-                        text = "🌍 11 Dil & Local-First Mimarisi Aktif",
-                        color = Color(0xFF10B981),
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 13.sp,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
-                    )
-                }
-            }
+        items(feedItems, key = { it.id }) { item ->
+            SharedFeedCard(item = item)
         }
     }
 }
