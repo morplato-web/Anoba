@@ -11,6 +11,8 @@ import com.neval.anoba.chat.ui.GroupMessageEntity
 import com.neval.anoba.chat.ui.PrivateMessageEntity
 import com.neval.anoba.follow.FollowedUserDao
 import com.neval.anoba.follow.FollowedUserEntity
+import com.neval.anoba.market.MarketDao
+import com.neval.anoba.market.MarketItemModel
 
 @Database(
     entities = [
@@ -18,9 +20,10 @@ import com.neval.anoba.follow.FollowedUserEntity
         GroupMessageEntity::class,
         PrivateMessageEntity::class,
         PinnedItemEntity::class,
-        FollowedUserEntity::class
+        FollowedUserEntity::class,
+        MarketItemModel::class
     ],
-    version = 19,
+    version = 20,
     exportSchema = false
 )
 @TypeConverters(SharedConverters::class)
@@ -29,6 +32,7 @@ abstract class SharedAppDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
     abstract fun pinnedItemDao(): PinnedItemDao
     abstract fun followedUserDao(): FollowedUserDao
+    abstract fun marketDao(): MarketDao
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")

@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.neval.anoba.chat.ui.ChatHomeScreen
 import com.neval.anoba.market.MarketContainerView
 import com.neval.anoba.ui.theme.AnobaTheme
 
@@ -183,29 +184,7 @@ private fun AnobaMarketView() {
 
 @Composable
 private fun AnobaChatView() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text("💬", fontSize = 48.sp)
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Anoba Sohbet & Gruplar",
-            color = Color.White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "Genel ve Özel Sohbet Odaları iOS Entegrasyonunda",
-            color = Color(0xFF94A3B8),
-            fontSize = 14.sp,
-            textAlign = TextAlign.Center
-        )
-    }
+    ChatHomeScreen()
 }
 
 @Composable
