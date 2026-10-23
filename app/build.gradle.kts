@@ -37,11 +37,11 @@ android {
         applicationId = "com.neval.anoba"
         minSdk = 24
         targetSdk = 36
-        versionCode = 140
-        versionName = "9.2.1"
+        versionCode = 141
+        versionName = "9.2.2"
 
-        // tüm desteklenen diller
-        resourceConfigurations += listOf("tr", "en", "ar", "fr", "ru", "sw", "af", "es", "it", "de", "pt")
+        // tüm desteklenen diller (13 dil klasörü)
+        resourceConfigurations += listOf("tr", "en", "ar", "fr", "ru", "sw", "af", "es", "it", "de", "pt", "id", "in")
 
         ndk {
             abiFilters += listOf("armeabi-v7a", "arm64-v8a")
