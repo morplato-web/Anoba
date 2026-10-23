@@ -1,4 +1,3 @@
-
 #!/bin/bash
 if [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
     export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
@@ -8,5 +7,10 @@ fi
 
 echo "Using JAVA_HOME: $JAVA_HOME"
 chmod +x gradlew
-./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --stacktrace
 
+ARCH=$(uname -m)
+if [ "$ARCH" = "x86_64" ]; then
+    ./gradlew :shared:linkDebugFrameworkIosX64 --stacktrace
+else
+    ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --stacktrace
+fi

@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.neval.anoba.market.MarketHomeScreen
 import com.neval.anoba.ui.theme.AnobaTheme
 
 @Composable
@@ -178,29 +179,7 @@ private fun AnobaHomeView() {
 
 @Composable
 private fun AnobaMarketView() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text("🛒", fontSize = 48.sp)
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Anoba Pazar Yeri",
-            color = Color.White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "Ürün İlanları & Doğrudan Satıcı Mesajlaşması",
-            color = Color(0xFF94A3B8),
-            fontSize = 14.sp,
-            textAlign = TextAlign.Center
-        )
-    }
+    MarketHomeScreen()
 }
 
 @Composable

@@ -28,20 +28,32 @@ sleep 1
 # 2. İzinleri kontrol et
 chmod -R 777 "$HOME/Anoba" 2>/dev/null || true
 
-# 3. SharedKit.framework kütüphanesini derle
-chmod +x gradlew
-echo "📦 1/3: SharedKit kütüphanesi derleniyor..."
-./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --no-daemon
+# 3. İşlemci mimarisini tespit et (Intel x86_64 vs Apple Silicon arm64)
+ARCH=$(uname -m)
+echo "🖥️ İşlemci Mimarisi: $ARCH"
+
+if [ "$ARCH" = "x86_64" ]; then
+    echo "📦 1/3: Intel Mac için SharedKit (IosX64) derleniyor..."
+    chmod +x gradlew
+    ./gradlew :shared:linkDebugFrameworkIosX64 --no-daemon
+    FRAMEWORK_SRC="shared/build/bin/iosX64/debugFramework/SharedKit.framework"
+else
+    echo "📦 1/3: Apple Silicon Mac için SharedKit (IosSimulatorArm64) derleniyor..."
+    chmod +x gradlew
+    ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --no-daemon
+    FRAMEWORK_SRC="shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework"
+fi
 
 # 4. Kütüphaneyi kopyala
 mkdir -p iosApp/Frameworks
-cp -R shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework iosApp/Frameworks/ 2>/dev/null || true
+rm -rf iosApp/Frameworks/SharedKit.framework
+cp -R "$FRAMEWORK_SRC" iosApp/Frameworks/ 2>/dev/null || true
 chmod -R 777 "$HOME/Anoba" 2>/dev/null || true
 
 # 5. Xcode GUI olmadan doğrudan komut satırından iOS uygulamasını derle
 echo "🔨 2/3: iOS Uygulaması derleniyor (xcodebuild)..."
 cd "$HOME/Anoba/iosApp" || exit 1
-xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator build
+xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator clean build
 cd "$HOME/Anoba" || exit 1
 
 # 6. Derlenen .app paketini bul ve TEK BİR Simülatörde çalıştır
@@ -53,10 +65,7 @@ xcrun simctl shutdown all 2>/dev/null || true
 sleep 1
 
 # Sadece 1 adet varsayılan iPhone simülatörünü seç ve başlat
-SIM_ID=$(xcrun simctl list devices | grep "iPhone 17" | grep -v "unavailable" | head -n 1 | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
-if [ -z "$SIM_ID" ]; then
-    SIM_ID=$(xcrun simctl list devices | grep "iPhone" | grep -v "unavailable" | head -n 1 | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
-fi
+SIM_ID=$(xcrun simctl list devices | grep "iPhone" | grep -v "unavailable" | head -n 1 | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
 
 if [ -n "$SIM_ID" ]; then
     echo "📱 Başlatılan Tek Simülatör UDID: $SIM_ID"
@@ -74,7 +83,8 @@ xcrun simctl uninstall booted com.neval.anoba 2>/dev/null || true
 if [ -n "$APP_PATH" ]; then
     echo "📦 SharedKit.framework uygulama içine gömülüyor (Embed Frameworks)..."
     mkdir -p "$APP_PATH/Frameworks"
-    cp -R "$HOME/Anoba/iosApp/Frameworks/SharedKit.framework" "$APP_PATH/Frameworks/" 2>/dev/null || true
+    rm -rf "$APP_PATH/Frameworks/SharedKit.framework"
+    cp -R "$FRAMEWORK_SRC" "$APP_PATH/Frameworks/" 2>/dev/null || true
     codesign --force --sign - --timestamp=none "$APP_PATH/Frameworks/SharedKit.framework" 2>/dev/null || true
     codesign --force --sign - --timestamp=none "$APP_PATH" 2>/dev/null || true
 
