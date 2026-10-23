@@ -8,6 +8,16 @@ elif command -v /usr/libexec/java_home &> /dev/null; then
     export JAVA_HOME=$(/usr/libexec/java_home -v 17 2>/dev/null || /usr/libexec/java_home)
 fi
 
+# Masaüstüne Çift Tıklanabilir Başlatıcı Kısayolu Oluştur
+if [ -d "$HOME/Desktop" ]; then
+    cat << 'EOF' > "$HOME/Desktop/Baslat.command"
+#!/bin/bash
+cd "$HOME/Anoba" || exit 1
+sh ios.sh
+EOF
+    chmod +x "$HOME/Desktop/Baslat.command" 2>/dev/null || true
+fi
+
 echo "=========================================="
 echo "🚀 ANOBA iOS TAM OTOMATİK BAŞLATICI"
 echo "=========================================="
@@ -66,7 +76,15 @@ fi
 
 echo "📦 Bulunan App Paketi: $APP_PATH"
 
-# 6. Simülatörü temizle ve başlat
+# 6. Kütüphaneyi Paket İçine Göm (Embed Frameworks) ve İmzala
+echo "📦 SharedKit.framework uygulama içine tam gömülüyor..."
+mkdir -p "$APP_PATH/Frameworks"
+rm -rf "$APP_PATH/Frameworks/SharedKit.framework"
+cp -R "$FRAMEWORK_SRC" "$APP_PATH/Frameworks/"
+codesign --force --sign - --timestamp=none "$APP_PATH/Frameworks/SharedKit.framework" 2>/dev/null || true
+codesign --force --sign - --timestamp=none "$APP_PATH" 2>/dev/null || true
+
+# 7. Simülatörü temizle ve başlat
 echo "📱 5/5: Simülatör hazırlanıyor ve uygulama yükleniyor..."
 xcrun simctl shutdown all 2>/dev/null || true
 
@@ -85,7 +103,7 @@ sleep 3
 xcrun simctl uninstall booted com.neval.anoba.iosApp 2>/dev/null || true
 xcrun simctl uninstall booted com.neval.anoba 2>/dev/null || true
 
-# Uygulamayı yükle (Sorun varsa HATA MESAJI terminalde çıkacak)
+# Uygulamayı yükle
 echo "🚀 Uygulama simülatöre yükleniyor..."
 xcrun simctl install booted "$APP_PATH"
 
