@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -69,14 +70,24 @@ fun MarketCard(
                     .fillMaxWidth()
                     .height(140.dp)
                     .background(Color(0xFF0F172A))
-                    .border(1.dp, Color(0xFF334155))
+                    .border(1.dp, Color(0xFF334155)),
+                contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
-                    model = item.photoUrl,
-                    contentDescription = item.title,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
+                if (item.photoUrl.isNotBlank()) {
+                    AsyncImage(
+                        model = item.photoUrl,
+                        contentDescription = item.title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.ShoppingBag,
+                        contentDescription = null,
+                        tint = Color(0xFFFFD700).copy(alpha = 0.7f),
+                        modifier = Modifier.size(48.dp)
+                    )
+                }
 
                 // Kategori Rozeti
                 Surface(

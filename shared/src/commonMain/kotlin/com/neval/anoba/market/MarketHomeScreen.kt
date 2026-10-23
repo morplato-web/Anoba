@@ -46,7 +46,7 @@ fun MarketHomeScreen(
                 category = "Elektronik",
                 condition = "İkinci El",
                 city = "İstanbul",
-                photoUrl = "https://picsum.photos/400/300?random=1",
+                photoUrl = "",
                 ownerId = "user1",
                 username = "Ahmet Y.",
                 isSold = false
@@ -60,7 +60,7 @@ fun MarketHomeScreen(
                 category = "Elektronik",
                 condition = "İkinci El",
                 city = "Ankara",
-                photoUrl = "https://picsum.photos/400/300?random=2",
+                photoUrl = "",
                 ownerId = "user2",
                 username = "Zeynep K.",
                 isSold = false
@@ -74,7 +74,7 @@ fun MarketHomeScreen(
                 category = "Ev & Yaşam",
                 condition = "Sıfır",
                 city = "İzmir",
-                photoUrl = "https://picsum.photos/400/300?random=3",
+                photoUrl = "",
                 ownerId = "user3",
                 username = "Anoba İmalat",
                 isSold = false,
@@ -89,7 +89,7 @@ fun MarketHomeScreen(
                 category = "Giyim & Moda",
                 condition = "Sıfır",
                 city = "Bursa",
-                photoUrl = "https://picsum.photos/400/300?random=4",
+                photoUrl = "",
                 ownerId = "user4",
                 username = "Mehmet T.",
                 isSold = true
