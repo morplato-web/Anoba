@@ -5,9 +5,9 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
-expect fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase>
+expect fun getDatabaseBuilder(): RoomDatabase.Builder<SharedAppDatabase>
 
-fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {
+fun getRoomDatabase(builder: RoomDatabase.Builder<SharedAppDatabase>): SharedAppDatabase {
     return builder
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)

@@ -302,8 +302,12 @@ fun PrivateChatScreen(
         when {
             isSelectionModeActive -> privateChatViewModel.clearMessageSelection()
             selectedUserForChat != null -> {
-                selectedUserForChat = null
-                privateChatViewModel.resetChatState()
+                if (!initialTargetUserId.isNullOrBlank()) {
+                    navController.popBackStack()
+                } else {
+                    selectedUserForChat = null
+                    privateChatViewModel.resetChatState()
+                }
             }
             else -> navController.popBackStack()
         }
@@ -450,8 +454,12 @@ fun PrivateChatScreen(
                                 },
                                 navigationIcon = {
                                     IconButton(onClick = {
-                                        selectedUserForChat = null
-                                        privateChatViewModel.resetChatState()
+                                        if (!initialTargetUserId.isNullOrBlank()) {
+                                            navController.popBackStack()
+                                        } else {
+                                            selectedUserForChat = null
+                                            privateChatViewModel.resetChatState()
+                                        }
                                     }) {
                                         Icon(Icons.AutoMirrored.Filled.ArrowBack, null, tint = AnobaNavy)
                                     }

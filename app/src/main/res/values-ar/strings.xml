@@ -885,4 +885,31 @@
     <string name="letteradmin_response_label">رد الأخت أنوبا:</string>
     <string name="letteradmin_empty_pending">لا توجد رسائل جديدة تنتظر الرد ✨</string>
     <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+
+    <!-- Marketplace -->
+    <string name="market_screen_title">سوق أنوبا</string>
+    <string name="market_create_button">إضافة إعلان</string>
+    <string name="market_search_placeholder">البحث عن منتج أو مدينة أو وصف&#8230;</string>
+    <string name="market_no_items">لا توجد إعلانات بعد</string>
+    <string name="market_clear_filters">مسح الفلاتر / عرض الكل</string>
+    <string name="market_create_title">إنشاء إعلان جديد 🛍️</string>
+    <string name="market_edit_title">تعديل الإعلان</string>
+    <string name="market_detail_title">تفاصيل الإعلان</string>
+    <string name="market_for_sale_badge">للبيع</string>
+    <string name="market_sold_badge">تم البيع 🛑</string>
+    <string name="market_mark_as_sold">تحديد كـ تم البيع</string>
+    <string name="market_item_is_sold">تم بيع هذا المنتج 🛑</string>
+    <string name="market_chat_seller">المحادثة مع البائع</string>
+    <string name="market_seller_info">معلومات البائع</string>
+    <string name="market_seller_label">بائع أنوبا</string>
+    <string name="market_report_title">الإبلاغ عن الإعلان ⚠️</string>
+    <string name="market_report_success">تم الإبلاغ عن الإعلان للمراجعة.</string>
+    <string name="market_delete_title">حذف الإعلان 🗑️</string>
+    <string name="market_delete_confirm">هل أنت تأكد من حذف هذا الإعلان؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="market_yes_delete">نعم، حذف</string>
+    <string name="market_cancel">لا / إلغاء</string>
+    <string name="market_save_changes">حفظ التغييرات</string>
+    <string name="market_updated_toast">تم تحديث الإعلان.</string>
+    <string name="market_published_toast">تم نشر إعلانك بنجاح! 🚀</string>
+    <string name="market_tab_name">السوق 🛍️</string>
 </resources>

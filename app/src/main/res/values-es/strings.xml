@@ -884,4 +884,31 @@
     <string name="letteradmin_response_label">Respuesta de Hermana Anoba:</string>
     <string name="letteradmin_empty_pending">No hay cartas nuevas esperando respuesta ✨</string>
     <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+
+    <!-- Marketplace -->
+    <string name="market_screen_title">Mercado Anoba</string>
+    <string name="market_create_button">Publicar anuncio</string>
+    <string name="market_search_placeholder">Buscar producto, ciudad o descripción&#8230;</string>
+    <string name="market_no_items">Aún no hay anuncios</string>
+    <string name="market_clear_filters">Borrar filtros / Ver todo</string>
+    <string name="market_create_title">Crear nuevo anuncio 🛍️</string>
+    <string name="market_edit_title">Editar anuncio</string>
+    <string name="market_detail_title">Detalles del anuncio</string>
+    <string name="market_for_sale_badge">En venta</string>
+    <string name="market_sold_badge">VENDIDO 🛑</string>
+    <string name="market_mark_as_sold">Marcar como vendido</string>
+    <string name="market_item_is_sold">Este artículo ha sido vendido 🛑</string>
+    <string name="market_chat_seller">Chatear con el vendedor</string>
+    <string name="market_seller_info">Información del vendedor</string>
+    <string name="market_seller_label">Vendedor Anoba</string>
+    <string name="market_report_title">Reportar anuncio ⚠️</string>
+    <string name="market_report_success">Anuncio reportado a administración.</string>
+    <string name="market_delete_title">Eliminar anuncio 🗑️</string>
+    <string name="market_delete_confirm">¿Estás seguro de que deseas eliminar este anuncio? Esta acción no se puede deshacer.</string>
+    <string name="market_yes_delete">Sí, Eliminar</string>
+    <string name="market_cancel">No / Cancelar</string>
+    <string name="market_save_changes">Guardar cambios</string>
+    <string name="market_updated_toast">Anuncio actualizado.</string>
+    <string name="market_published_toast">¡Tu anuncio se publicó con éxito! 🚀</string>
+    <string name="market_tab_name">Mercado 🛍️</string>
 </resources>

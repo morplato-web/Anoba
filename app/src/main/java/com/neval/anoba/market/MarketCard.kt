@@ -1,29 +1,14 @@
 package com.neval.anoba.market
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,28 +23,53 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.neval.anoba.common.ui.UserAvatar
+import com.neval.anoba.common.utils.getRelativeTimeString
 
 @Composable
 fun MarketCard(
     item: MarketItemModel,
-    onClick: () -> Unit,
-    onSendMessageClick: () -> Unit
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            // Product Image with Price Badge
+            // 🚀 ÜST BANT (Sadece Profil Fotoğrafı & Tam Kullanıcı Adı - Geniş ve Kesintisiz)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                UserAvatar(
+                    photoUrl = item.userProfileImageUrl,
+                    username = item.username,
+                    size = 28.dp
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = item.username,
+                    color = Color.White,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            // 🚀 ÜRÜN FOTOĞRAFI (Kategori Rozeti Görselin Üstünde Sol Üstte, Fiyat Sağ Üstte)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
+                    .height(140.dp)
                     .background(Color(0xFF0F172A))
+                    .border(1.dp, Color(0xFF334155))
             ) {
                 AsyncImage(
                     model = item.photoUrl,
@@ -68,41 +78,41 @@ fun MarketCard(
                     modifier = Modifier.fillMaxSize()
                 )
 
-                // Category Tag Top Left
+                // Kategori Rozeti Görselin Sol Üstünde
                 Surface(
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(6.dp)
                         .align(Alignment.TopStart),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(6.dp),
                     color = Color(0xFF0F172A).copy(alpha = 0.85f)
                 ) {
                     Text(
                         text = item.category,
                         color = Color(0xFFFFD700),
-                        fontSize = 11.sp,
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
                     )
                 }
 
-                // Price Tag Top Right
+                // Fiyat Rozeti Görselin Sağ Üstünde
                 Surface(
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(6.dp)
                         .align(Alignment.TopEnd),
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(8.dp),
                     color = Color(0xFF10B981)
                 ) {
                     Text(
                         text = "${item.price.toInt()} ${item.currency}",
                         color = Color.White,
-                        fontSize = 14.sp,
+                        fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
 
-                // Sold Overlay if marked sold
+                // Satıldı Katmanı
                 if (item.isSold) {
                     Box(
                         modifier = Modifier
@@ -111,97 +121,68 @@ fun MarketCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Surface(
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(8.dp),
                             color = Color(0xFFEF4444)
                         ) {
                             Text(
                                 text = "SATILDI 🛑",
                                 color = Color.White,
-                                fontSize = 16.sp,
+                                fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
                             )
                         }
                     }
                 }
             }
 
-            // Info Section
-            Column(modifier = Modifier.padding(14.dp)) {
-                Text(
-                    text = item.title,
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+            // FERAH ALT BANT (Ürün Adı, Zaman Damgası ve Şehir)
+            Column(modifier = Modifier.padding(10.dp)) {
+                // Satır 1: Başlık (Sol) + Zaman Damgası (Sağ)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = item.title,
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                    val timeStr = getRelativeTimeString(item.createdAt)
+                    if (timeStr.isNotBlank()) {
+                        Text(
+                            text = timeStr,
+                            color = Color(0xFF94A3B8),
+                            fontSize = 10.sp,
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
+                    }
+                }
 
+                Spacer(modifier = Modifier.height(3.dp))
+
+                // Satır 2: Şehir Bilgisi
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = null,
                         tint = Color(0xFF94A3B8),
-                        modifier = Modifier.size(14.dp)
+                        modifier = Modifier.size(12.dp)
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(3.dp))
                     Text(
                         text = item.city.ifBlank { "Tüm Türkiye" },
                         color = Color(0xFF94A3B8),
-                        fontSize = 12.sp
+                        fontSize = 11.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-                HorizontalDivider(color = Color(0xFF334155), thickness = 1.dp)
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Seller Bar & Direct Message Button
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        UserAvatar(
-                            photoUrl = item.userProfileImageUrl,
-                            username = item.username,
-                            size = 28.dp
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = item.username,
-                            color = Color(0xFFCBD5E1),
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.Medium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.widthIn(max = 120.dp)
-                        )
-                    }
-
-                    Button(
-                        onClick = onSendMessageClick,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF232066)),
-                        shape = RoundedCornerShape(10.dp),
-                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.Chat,
-                            contentDescription = null,
-                            tint = Color(0xFFFFD700),
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "Mesaj At 💬",
-                            color = Color.White,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
                 }
             }
         }

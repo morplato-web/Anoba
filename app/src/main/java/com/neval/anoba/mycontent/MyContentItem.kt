@@ -1,13 +1,14 @@
 package com.neval.anoba.mycontent
 
 import com.neval.anoba.letter.LetterModel
+import com.neval.anoba.market.MarketItemModel
 import com.neval.anoba.photo.PhotoModel
 import com.neval.anoba.ses.SesModel
 import com.neval.anoba.video.VideoModel
 import java.util.Date
 
 enum class MyContentType {
-    LETTER, PHOTO, VIDEO, AUDIO
+    LETTER, PHOTO, VIDEO, AUDIO, MARKET
 }
 
 sealed class MyContentItem {
@@ -85,5 +86,20 @@ sealed class MyContentItem {
         override val publishTimestamp: Date? get() = audio.publishTimestamp
         override val personalNote: String get() = audio.personalNote
         override val thumbnailUrl: String? get() = null
+    }
+
+    data class Market(val marketItem: MarketItemModel) : MyContentItem() {
+        override val id: String get() = marketItem.id
+        override val type: MyContentType get() = MyContentType.MARKET
+        override val isPublished: Boolean get() = !marketItem.isSold
+        override val isFlagged: Boolean get() = false
+        override val isGuideContent: Boolean get() = false
+        override val viewCount: Long get() = 0
+        override val reactionsCount: Long get() = 0
+        override val commentsCount: Long get() = 0
+        override val createdAt: Date? get() = marketItem.createdAt
+        override val publishTimestamp: Date? get() = marketItem.createdAt
+        override val personalNote: String get() = marketItem.title
+        override val thumbnailUrl: String get() = marketItem.photoUrl
     }
 }

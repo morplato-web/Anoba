@@ -42,14 +42,16 @@ class MarketViewModel(
         _selectedCategory,
         _searchQuery
     ) { allItems, category, query ->
-        allItems.filter { item ->
-            val matchesCategory = (category == "Tümü" || item.category.equals(category, ignoreCase = true))
-            val matchesQuery = query.isBlank() ||
-                    item.title.contains(query, ignoreCase = true) ||
-                    item.description.contains(query, ignoreCase = true) ||
-                    item.city.contains(query, ignoreCase = true)
-            matchesCategory && matchesQuery
-        }
+        allItems
+            .sortedByDescending { it.createdAt?.time ?: 0L }
+            .filter { item ->
+                val matchesCategory = (category == "Tümü" || item.category.equals(category, ignoreCase = true))
+                val matchesQuery = query.isBlank() ||
+                        item.title.contains(query, ignoreCase = true) ||
+                        item.description.contains(query, ignoreCase = true) ||
+                        item.city.contains(query, ignoreCase = true)
+                matchesCategory && matchesQuery
+            }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -116,6 +118,33 @@ class MarketViewModel(
 
     fun resetCreateState() {
         _createUiState.value = MarketCreateUiState.Idle
+    }
+
+    fun updateMarketItem(
+        itemId: String,
+        title: String,
+        description: String,
+        priceText: String,
+        category: String,
+        city: String,
+        condition: String,
+        onSuccess: () -> Unit
+    ) {
+        val price = priceText.toDoubleOrNull() ?: 0.0
+        viewModelScope.launch {
+            val success = marketRepository.updateMarketItem(
+                itemId = itemId,
+                title = title,
+                description = description,
+                price = price,
+                category = category,
+                city = city,
+                condition = condition
+            )
+            if (success) {
+                onSuccess()
+            }
+        }
     }
 
     fun markAsSold(itemId: String) {

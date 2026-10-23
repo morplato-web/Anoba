@@ -1,29 +1,14 @@
 package com.neval.anoba.market
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Chat
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.ShoppingBag
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.neval.anoba.common.ui.UserAvatar
+import com.neval.anoba.common.utils.getRelativeTimeString
 
 @Composable
 fun MarketFeedCard(
@@ -52,7 +38,7 @@ fun MarketFeedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            // Header Bar (Seller Info + Market Badge)
+            // Header Bar (Seller Profile Photo + Username + Clean Satılık Badge)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -70,22 +56,15 @@ fun MarketFeedCard(
                         size = 36.dp
                     )
                     Spacer(modifier = Modifier.width(10.dp))
-                    Column {
-                        Text(
-                            text = item.username,
-                            color = Color.White,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = item.city.ifBlank { "Tüm Türkiye" },
-                            color = Color(0xFF94A3B8),
-                            fontSize = 11.sp
-                        )
-                    }
+                    Text(
+                        text = item.username,
+                        color = Color.White,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
 
-                // Distinct "Satılık / Pazar Yeri 🛒" Badge (NOT Sponsored!)
+                // Clean "Satılık" Badge
                 Surface(
                     shape = RoundedCornerShape(12.dp),
                     color = Color(0xFFFFD700)
@@ -102,7 +81,7 @@ fun MarketFeedCard(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "Satılık 🛒",
+                            text = "Satılık",
                             color = Color.Black,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.ExtraBold
@@ -117,6 +96,7 @@ fun MarketFeedCard(
                     .fillMaxWidth()
                     .height(220.dp)
                     .background(Color(0xFF0F172A))
+                    .border(1.dp, Color(0xFF334155))
             ) {
                 AsyncImage(
                     model = item.photoUrl,
@@ -143,49 +123,74 @@ fun MarketFeedCard(
                 }
             }
 
-            // Product Details
-            Column(modifier = Modifier.padding(14.dp)) {
-                Text(
-                    text = item.title,
-                    color = Color.White,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                if (item.description.isNotBlank()) {
-                    Spacer(modifier = Modifier.height(4.dp))
+            // Compact Bottom Section
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 10.dp)
+            ) {
+                // Row 1: Product Title (Left) + Time Stamp (Right)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text = item.description,
-                        color = Color(0xFFCBD5E1),
-                        fontSize = 13.sp,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        text = item.title,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
                     )
+
+                    val timeStr = getRelativeTimeString(item.createdAt)
+                    if (timeStr.isNotBlank()) {
+                        Text(
+                            text = timeStr,
+                            color = Color(0xFF94A3B8),
+                            fontSize = 12.sp,
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-                Button(
-                    onClick = onClick,
+                // Row 2: Description (Left) + City/Location (Right)
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF232066))
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.Chat,
-                        contentDescription = null,
-                        tint = Color(0xFFFFD700),
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "İlanı İncele & Mesaj At 🛒",
-                        color = Color.White,
+                        text = item.description.ifBlank { "Açıklama yok" },
+                        color = Color(0xFFCBD5E1),
                         fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
                     )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(start = 8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocationOn,
+                            contentDescription = null,
+                            tint = Color(0xFF94A3B8),
+                            modifier = Modifier.size(13.dp)
+                        )
+                        Spacer(modifier = Modifier.width(3.dp))
+                        Text(
+                            text = item.city.ifBlank { "Tüm Türkiye" },
+                            color = Color(0xFF94A3B8),
+                            fontSize = 12.sp,
+                            maxLines = 1
+                        )
+                    }
                 }
             }
         }

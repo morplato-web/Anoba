@@ -55,6 +55,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.outlined.PushPin
+import androidx.compose.material.icons.outlined.ShoppingBag
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -180,6 +181,7 @@ fun HomeScreen(
     var flowerDotRect by remember { mutableStateOf<Rect?>(null) }
     var myContentsIconRect by remember { mutableStateOf<Rect?>(null) }
     var moreMenuIconRect by remember { mutableStateOf<Rect?>(null) }
+    var marketIconRect by remember { mutableStateOf<Rect?>(null) }
     var searchIconRect by remember { mutableStateOf<Rect?>(null) }
     var pinnedIconRect by remember { mutableStateOf<Rect?>(null) }
     var followingIconRect by remember { mutableStateOf<Rect?>(null) }
@@ -200,6 +202,7 @@ fun HomeScreen(
         TutorialStep.DRAWER_MENU -> menuIconRect
         TutorialStep.FLOWER_DOT -> flowerDotRect
         TutorialStep.MORE_MENU -> moreMenuIconRect
+        TutorialStep.MARKET -> marketIconRect
         TutorialStep.SEARCH_FILTER -> searchIconRect
         TutorialStep.PINNED_FILTER -> pinnedIconRect
         TutorialStep.FOLLOWING_FILTER -> followingIconRect
@@ -700,34 +703,22 @@ fun HomeScreen(
                                                     }
                                                 )
 
-                                                // 🛒 Anoba Pazar Yeri (İlanlar)
-                                                DropdownMenuItem(
-                                                    text = {
-                                                        Row(
-                                                            verticalAlignment = Alignment.CenterVertically,
-                                                            modifier = Modifier.padding(vertical = 2.dp)
-                                                        ) {
-                                                            Icon(
-                                                                imageVector = Icons.Default.ShoppingBag,
-                                                                contentDescription = "Pazar Yeri",
-                                                                modifier = Modifier.size(20.dp),
-                                                                tint = AnobaNavy
-                                                            )
-                                                            Spacer(Modifier.width(10.dp))
-                                                            Text(
-                                                                text = "Pazar Yeri 🛒",
-                                                                style = MaterialTheme.typography.bodyMedium,
-                                                                color = AnobaNavy,
-                                                                fontWeight = FontWeight.SemiBold
-                                                            )
-                                                        }
-                                                    },
-                                                    onClick = {
-                                                        showMoreMenu = false
-                                                        navController.navigate(Constants.MARKET_NAV_GRAPH)
-                                                    }
-                                                )
                                             }
+                                        }
+
+                                        Spacer(modifier = Modifier.width(4.dp))
+
+                                        // 🛍️ PAZAR YERİ HIZLI BUTONU (Kurumsal AnobaNavy & Outlined İkon)
+                                        IconButton(
+                                            modifier = Modifier.size(28.dp),
+                                            onClick = { navController.navigate(Constants.MARKET_NAV_GRAPH) }
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Outlined.ShoppingBag,
+                                                contentDescription = "Pazar Yeri",
+                                                tint = AnobaNavy,
+                                                modifier = Modifier.size(20.dp).onGloballyPositioned { marketIconRect = it.boundsInWindow() }
+                                            )
                                         }
                                     }
                                 },

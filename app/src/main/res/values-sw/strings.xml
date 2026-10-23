@@ -885,4 +885,31 @@
     <string name="letteradmin_response_label">Jibu la Dada Anoba:</string>
     <string name="letteradmin_empty_pending">Hakuna barua mpya zinazosubiri majibu ✨</string>
     <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+
+    <!-- Marketplace -->
+    <string name="market_screen_title">Soko la Anoba</string>
+    <string name="market_create_button">Weka Tangazo</string>
+    <string name="market_search_placeholder">Tafuta bidhaa, mji au maelezo&#8230;</string>
+    <string name="market_no_items">Bado Hakuna Matangazo</string>
+    <string name="market_clear_filters">Ondoa Vichungi / Tazama Yote</string>
+    <string name="market_create_title">Tengeneza Tangazo Jipya 🛍️</string>
+    <string name="market_edit_title">Hariri Tangazo</string>
+    <string name="market_detail_title">Maelezo ya Tangazo</string>
+    <string name="market_for_sale_badge">Inauzwa</string>
+    <string name="market_sold_badge">IMEUMBO 🛑</string>
+    <string name="market_mark_as_sold">Weka Kama Imeuzwa</string>
+    <string name="market_item_is_sold">Bidhaa Hii Imeuzwa 🛑</string>
+    <string name="market_chat_seller">Zungumza na Muuzaji</string>
+    <string name="market_seller_info">Taarifa za Muuzaji</string>
+    <string name="market_seller_label">Muuzaji wa Anoba</string>
+    <string name="market_report_title">Ripoti Tangazo ⚠️</string>
+    <string name="market_report_success">Tangazo limeripotiwa kwa ukaguzi.</string>
+    <string name="market_delete_title">Futa Tangazo 🗑️</string>
+    <string name="market_delete_confirm">Je, una uhakika unataka kufuta tangazo hili? Kitendo hiki hakiwezi kutenguliwa.</string>
+    <string name="market_yes_delete">Ndiyo, Futa</string>
+    <string name="market_cancel">Hapana / Ghairi</string>
+    <string name="market_save_changes">Hifadhi Mabadiliko</string>
+    <string name="market_updated_toast">Tangazo limesasishwa.</string>
+    <string name="market_published_toast">Tangazo lako limechapishwa kwa mafanikio! 🚀</string>
+    <string name="market_tab_name">Soko 🛍️</string>
 </resources>

@@ -23,15 +23,15 @@ import com.neval.anoba.follow.FollowedUserEntity
     version = 19,
     exportSchema = false
 )
-@TypeConverters(Converters::class)
-@ConstructedBy(AppDatabaseConstructor::class)
-abstract class AppDatabase : RoomDatabase() {
+@TypeConverters(SharedConverters::class)
+@ConstructedBy(SharedAppDatabaseConstructor::class)
+abstract class SharedAppDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
     abstract fun pinnedItemDao(): PinnedItemDao
     abstract fun followedUserDao(): FollowedUserDao
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")
-expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
-    override fun initialize(): AppDatabase
+expect object SharedAppDatabaseConstructor : RoomDatabaseConstructor<SharedAppDatabase> {
+    override fun initialize(): SharedAppDatabase
 }

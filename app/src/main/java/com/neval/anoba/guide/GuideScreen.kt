@@ -151,6 +151,17 @@ fun GuideScreen(
                     )
                 }
 
+                // 4. PAZAR YERİ 🛍️
+                item {
+                    SpecialGuideItem(
+                        title = "Pazar Yeri 🛍️",
+                        icon = Icons.Default.ShoppingBag,
+                        containerColor = Color(0xFFFEF3C7),
+                        iconColor = Color(0xFFD97706),
+                        onClick = { navController.navigate(Constants.MARKET_NAV_GRAPH) }
+                    )
+                }
+
                 // NORMAL İÇERİKLER
                 items(guideContent, key = { it.id + it.contentType }) { item ->
                     GuideGridItem(

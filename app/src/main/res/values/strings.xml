@@ -676,6 +676,8 @@
     <string name="guide_title">Anoba Rehberi</string>
     <string name="guide_description">Paylaşılan içerikleri buradan inceleyebilirsiniz.</string>
     <string name="guide_empty_message">Henüz rehber içerik yok.</string>
+    <string name="market_title">Anoba Pazar Yeri (Ücretsiz İlanlar)</string>
+    <string name="market_guide_desc">Kullanıcıların ikinci el, sıfır veya el yapımı ürünlerini sergilediği, alıcı ile satıcının uygulama içi özel sohbetle komisyonsuz ve doğrudan buluştuğu güvenli ilan alanı.</string>
     <string name="splash_made_in_turkiye">Türkiye\'de yapıldı</string>
 
     <!-- Güncelleme -->
@@ -886,4 +888,31 @@
     <string name="letteradmin_response_label">Anoba Ablası\'nın Cevabı:</string>
     <string name="letteradmin_empty_pending">Cevap bekleyen yeni bir mektup yok ✨</string>
     <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+
+    <!-- Pazar Yeri (Marketplace) -->
+    <string name="market_screen_title">Anoba Pazar Yeri</string>
+    <string name="market_create_button">İlan Ver</string>
+    <string name="market_search_placeholder">Ürün, şehir veya açıklama ara&#8230;</string>
+    <string name="market_no_items">Henüz İlan Bulunmuyor</string>
+    <string name="market_clear_filters">Filtreleri Temizle / Tümünü Gör</string>
+    <string name="market_create_title">Yeni İlan Oluştur 🛍️</string>
+    <string name="market_edit_title">İlanı Düzenle</string>
+    <string name="market_detail_title">İlan Detayı</string>
+    <string name="market_for_sale_badge">Satılık</string>
+    <string name="market_sold_badge">SATILDI 🛑</string>
+    <string name="market_mark_as_sold">Satıldı Olarak İşaretle</string>
+    <string name="market_item_is_sold">Bu Ürün Satılmıştır 🛑</string>
+    <string name="market_chat_seller">Satıcı İle Sohbet Et</string>
+    <string name="market_seller_info">Satıcı Bilgileri</string>
+    <string name="market_seller_label">Anoba Satıcısı</string>
+    <string name="market_report_title">İlanı Bildir ⚠️</string>
+    <string name="market_report_success">İlan incelenmek üzere yönetime bildirildi.</string>
+    <string name="market_delete_title">İlanı Sil 🗑️</string>
+    <string name="market_delete_confirm">Bu ilanı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.</string>
+    <string name="market_yes_delete">Evet, Sil</string>
+    <string name="market_cancel">Hayır / İptal</string>
+    <string name="market_save_changes">Değişiklikleri Kaydet</string>
+    <string name="market_updated_toast">İlan güncellendi.</string>
+    <string name="market_published_toast">İlanınız başarıyla yayınlandı! 🚀</string>
+    <string name="market_tab_name">Pazar Yeri 🛍️</string>
 </resources>

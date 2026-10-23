@@ -885,4 +885,31 @@
     <string name="letteradmin_response_label">Antwort von Schwester Anoba:</string>
     <string name="letteradmin_empty_pending">Keine neuen Briefe, die auf eine Antwort warten ✨</string>
     <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+
+    <!-- Pazar Yeri (Marketplace) -->
+    <string name="market_screen_title">Anoba Marktplatz</string>
+    <string name="market_create_button">Anzeige aufgeben</string>
+    <string name="market_search_placeholder">Produkt, Stadt oder Beschreibung suchen&#8230;</string>
+    <string name="market_no_items">Noch keine Angebote vorhanden</string>
+    <string name="market_clear_filters">Filter zurücksetzen / Alle anzeigen</string>
+    <string name="market_create_title">Neues Angebot erstellen 🛍️</string>
+    <string name="market_edit_title">Angebot bearbeiten</string>
+    <string name="market_detail_title">Angebotsdetails</string>
+    <string name="market_for_sale_badge">Zu verkaufen</string>
+    <string name="market_sold_badge">VERKAUFT 🛑</string>
+    <string name="market_mark_as_sold">Als verkauft markieren</string>
+    <string name="market_item_is_sold">Dieser Artikel wurde verkauft 🛑</string>
+    <string name="market_chat_seller">Mit Verkäufer chatten</string>
+    <string name="market_seller_info">Verkäuferinformationen</string>
+    <string name="market_seller_label">Anoba Verkäufer</string>
+    <string name="market_report_title">Anzeige melden ⚠️</string>
+    <string name="market_report_success">Anzeige zur Überprüfung gemeldet.</string>
+    <string name="market_delete_title">Anzeige löschen 🗑️</string>
+    <string name="market_delete_confirm">Möchten Sie diese Anzeige wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.</string>
+    <string name="market_yes_delete">Ja, Löschen</string>
+    <string name="market_cancel">Nein / Abbrechen</string>
+    <string name="market_save_changes">Änderungen speichern</string>
+    <string name="market_updated_toast">Anzeige aktualisiert.</string>
+    <string name="market_published_toast">Ihre Anzeige wurde erfolgreich veröffentlicht! 🚀</string>
+    <string name="market_tab_name">Marktplatz 🛍️</string>
 </resources>

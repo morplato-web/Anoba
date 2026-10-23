@@ -11,6 +11,7 @@ import com.neval.anoba.R
 import com.neval.anoba.common.services.AuthServiceInterface
 import com.neval.anoba.common.utils.Constants
 import com.neval.anoba.letter.LetterRepository
+import com.neval.anoba.market.MarketRepository
 import com.neval.anoba.login.state.AuthState
 import com.neval.anoba.photo.PhotoRepository
 import com.neval.anoba.ses.SesRepository
@@ -42,6 +43,7 @@ class MyContentViewModel(
     private val photoRepository: PhotoRepository,
     private val videoRepository: VideoRepository,
     private val sesRepository: SesRepository,
+    private val marketRepository: MarketRepository,
     private val authService: AuthServiceInterface,
     private val firestore: FirebaseFirestore,
     savedStateHandle: SavedStateHandle
@@ -105,12 +107,14 @@ class MyContentViewModel(
             val photosFlow = photoRepository.getUserPhotos(effectiveUid).catch { emit(emptyList()) }
             val videosFlow = videoRepository.getUserVideos(effectiveUid).catch { emit(emptyList()) }
             val audiosFlow = sesRepository.getUserAudios(effectiveUid).catch { emit(emptyList()) }
+            val marketsFlow = marketRepository.getMarketItemsStream().map { items -> items.filter { it.ownerId == effectiveUid } }.catch { emit(emptyList()) }
 
-            combine(lettersFlow, photosFlow, videosFlow, audiosFlow) { letters, photos, videos, audios ->
+            combine(lettersFlow, photosFlow, videosFlow, audiosFlow, marketsFlow) { letters, photos, videos, audios, markets ->
                 (letters.map { MyContentItem.Letter(it) } +
                         photos.map { MyContentItem.Photo(it) } +
                         videos.map { MyContentItem.Video(it) } +
-                        audios.map { MyContentItem.Audio(it) })
+                        audios.map { MyContentItem.Audio(it) } +
+                        markets.map { MyContentItem.Market(it) })
                     .filter { it.id.isNotBlank() }
             }.onStart {
                 _isLoading.value = true
@@ -138,20 +142,31 @@ class MyContentViewModel(
 
     val publishedContent: StateFlow<List<MyContentItem>> = combine(allUserContent, isOwner) { content, owner ->
         if (owner) {
-            content.filter { it.isPublished }
+            content.filter { it.isPublished && it !is MyContentItem.Market }
                 .sortedByDescending { it.sortDate }
         } else {
-            content.filter { it.isPublished && !it.isFlagged }
+            content.filter { it.isPublished && !it.isFlagged && it !is MyContentItem.Market }
                 .sortedByDescending { it.sortDate }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val draftContent: StateFlow<List<MyContentItem>> = combine(allUserContent, isOwner) { content, owner ->
         if (owner) {
-            content.filterNot { it.isPublished }
+            content.filter { !it.isPublished && it !is MyContentItem.Market }
                 .sortedByDescending { it.sortDate }
         } else {
             emptyList()
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val marketContent: StateFlow<List<MyContentItem.Market>> = combine(allUserContent, isOwner) { content, owner ->
+        if (owner) {
+            content.filterIsInstance<MyContentItem.Market>()
+                .sortedByDescending { it.sortDate }
+        } else {
+            content.filterIsInstance<MyContentItem.Market>()
+                .filter { it.isPublished && !it.isFlagged }
+                .sortedByDescending { it.sortDate }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
@@ -169,6 +184,7 @@ class MyContentViewModel(
                     MyContentType.PHOTO -> photoRepository.togglePublishState(id)
                     MyContentType.VIDEO -> videoRepository.togglePublishState(id)
                     MyContentType.AUDIO -> sesRepository.togglePublishState(id)
+                    MyContentType.MARKET -> marketRepository.markAsSold(id)
                 }
                 refreshTrigger.value++
             } catch (_: Exception) {
@@ -188,7 +204,8 @@ class MyContentViewModel(
                     MyContentType.LETTER -> "letters"
                     MyContentType.PHOTO -> "photos"
                     MyContentType.VIDEO -> "videos"
-                    MyContentType.AUDIO -> "sesler" // 🚀 DÜZELTME: Projedeki standart Firestore koleksiyon adı yapıldı
+                    MyContentType.AUDIO -> "sesler"
+                    MyContentType.MARKET -> "market_items"
                 }
                 val docRef = db.collection(collectionName).document(id)
                 val snapshot = docRef.get().await()
@@ -208,6 +225,7 @@ class MyContentViewModel(
                     MyContentType.PHOTO -> photoRepository.deletePhoto(id)
                     MyContentType.VIDEO -> videoRepository.deleteVideo(id)
                     MyContentType.AUDIO -> sesRepository.deleteSes(id)
+                    MyContentType.MARKET -> marketRepository.deleteItem(id)
                 }
                 refreshTrigger.value++
             } catch (_: Exception) {
@@ -236,6 +254,7 @@ class MyContentViewModel(
             }
             is MyContentItem.Audio -> navController.navigate(Constants.SES_EDIT_SCREEN.replace("{sesId}", item.audio.id))
             is MyContentItem.Letter -> navController.navigate(Constants.LETTER_EDIT_SCREEN.replace("{letterId}", item.letter.id))
+            is MyContentItem.Market -> navController.navigate("market_edit_screen/${item.marketItem.id}")
         }
     }
 

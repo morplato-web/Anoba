@@ -886,4 +886,31 @@
     <string name="letteradmin_response_label">Anoba Sister\'s Response:</string>
     <string name="letteradmin_empty_pending">No new letters waiting for a response ✨</string>
     <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+
+    <!-- Marketplace -->
+    <string name="market_screen_title">Anoba Marketplace</string>
+    <string name="market_create_button">Post Ad</string>
+    <string name="market_search_placeholder">Search product, city or description&#8230;</string>
+    <string name="market_no_items">No Listings Yet</string>
+    <string name="market_clear_filters">Clear Filters / View All</string>
+    <string name="market_create_title">Create New Listing 🛍️</string>
+    <string name="market_edit_title">Edit Listing</string>
+    <string name="market_detail_title">Listing Details</string>
+    <string name="market_for_sale_badge">For Sale</string>
+    <string name="market_sold_badge">SOLD 🛑</string>
+    <string name="market_mark_as_sold">Mark as Sold</string>
+    <string name="market_item_is_sold">This Item Has Been Sold 🛑</string>
+    <string name="market_chat_seller">Chat with Seller</string>
+    <string name="market_seller_info">Seller Info</string>
+    <string name="market_seller_label">Anoba Seller</string>
+    <string name="market_report_title">Report Listing ⚠️</string>
+    <string name="market_report_success">Listing reported for management review.</string>
+    <string name="market_delete_title">Delete Listing 🗑️</string>
+    <string name="market_delete_confirm">Are you sure you want to delete this listing? This action cannot be undone.</string>
+    <string name="market_yes_delete">Yes, Delete</string>
+    <string name="market_cancel">No / Cancel</string>
+    <string name="market_save_changes">Save Changes</string>
+    <string name="market_updated_toast">Listing updated.</string>
+    <string name="market_published_toast">Your listing was published successfully! 🚀</string>
+    <string name="market_tab_name">Marketplace 🛍️</string>
 </resources>

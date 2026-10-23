@@ -886,4 +886,31 @@
     <string name="letteradmin_response_label">Balasan dari Kakak Anoba:</string>
     <string name="letteradmin_empty_pending">Tidak ada surat baru yang menunggu jawaban ✨</string>
     <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+
+    <!-- Marketplace -->
+    <string name="market_screen_title">Pasar Anoba</string>
+    <string name="market_create_button">Pasang Iklan</string>
+    <string name="market_search_placeholder">Cari produk, kota atau deskripsi&#8230;</string>
+    <string name="market_no_items">Belum Ada Iklan</string>
+    <string name="market_clear_filters">Hapus Filter / Lihat Semua</string>
+    <string name="market_create_title">Buat Iklan Baru 🛍️</string>
+    <string name="market_edit_title">Edit Iklan</string>
+    <string name="market_detail_title">Detail Iklan</string>
+    <string name="market_for_sale_badge">Dijual</string>
+    <string name="market_sold_badge">TERJUAL 🛑</string>
+    <string name="market_mark_as_sold">Tandai Sebagai Terjual</string>
+    <string name="market_item_is_sold">Barang Ini Sudah Terjual 🛑</string>
+    <string name="market_chat_seller">Obrolan dengan Penjual</string>
+    <string name="market_seller_info">Info Penjual</string>
+    <string name="market_seller_label">Penjual Anoba</string>
+    <string name="market_report_title">Laporkan Iklan ⚠️</string>
+    <string name="market_report_success">Iklan dilaporkan untuk ditinjau pengelola.</string>
+    <string name="market_delete_title">Hapus Iklan 🗑️</string>
+    <string name="market_delete_confirm">Apakah Anda yakin ingin menghapus iklan ini? Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="market_yes_delete">Ya, Hapus</string>
+    <string name="market_cancel">Tidak / Batal</string>
+    <string name="market_save_changes">Simpan Perubahan</string>
+    <string name="market_updated_toast">Iklan diperbarui.</string>
+    <string name="market_published_toast">Iklan Anda berhasil diterbitkan! 🚀</string>
+    <string name="market_tab_name">Pasar 🛍️</string>
 </resources>

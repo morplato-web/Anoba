@@ -885,4 +885,31 @@
     <string name="letteradmin_response_label">Ответ Сестры Анобы:</string>
     <string name="letteradmin_empty_pending">Нет новых писем, ожидающих ответа ✨</string>
     <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+
+    <!-- Marketplace -->
+    <string name="market_screen_title">Маркетплейс Anoba</string>
+    <string name="market_create_button">Подать объявление</string>
+    <string name="market_search_placeholder">Поиск товара, города или описания&#8230;</string>
+    <string name="market_no_items">Объявлений пока нет</string>
+    <string name="market_clear_filters">Сбросить фильтры / Показать все</string>
+    <string name="market_create_title">Создать объявление 🛍️</string>
+    <string name="market_edit_title">Редактировать объявление</string>
+    <string name="market_detail_title">Детали объявления</string>
+    <string name="market_for_sale_badge">Продается</string>
+    <string name="market_sold_badge">ПРОДАНО 🛑</string>
+    <string name="market_mark_as_sold">Отметить как проданное</string>
+    <string name="market_item_is_sold">Этот товар продан 🛑</string>
+    <string name="market_chat_seller">Написать продавцу</string>
+    <string name="market_seller_info">Информация о продавце</string>
+    <string name="market_seller_label">Продавец Anoba</string>
+    <string name="market_report_title">Пожаловаться ⚠️</string>
+    <string name="market_report_success">Жалоба отправлена на проверку.</string>
+    <string name="market_delete_title">Удалить объявление 🗑️</string>
+    <string name="market_delete_confirm">Вы уверены, что хотите удалить это объявление? Это действие нельзя отменить.</string>
+    <string name="market_yes_delete">Да, удалить</string>
+    <string name="market_cancel">Нет / Отмена</string>
+    <string name="market_save_changes">Сохранить изменения</string>
+    <string name="market_updated_toast">Объявление обновлено.</string>
+    <string name="market_published_toast">Ваше объявление успешно опубликовано! 🚀</string>
+    <string name="market_tab_name">Маркетплейс 🛍️</string>
 </resources>

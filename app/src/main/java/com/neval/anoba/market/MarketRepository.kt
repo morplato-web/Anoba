@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.exifinterface.media.ExifInterface
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -70,6 +71,20 @@ class MarketRepository(
 
             val docRef = firestore.collection("market_items").document()
             
+            val userDoc = try {
+                firestore.collection("users").document(currentUser.uid).get().await()
+            } catch (_: Exception) { null }
+
+            val userHandle = userDoc?.getString("username")?.ifBlank { null }
+                ?: userDoc?.getString("displayName")
+                ?: currentUser.displayName
+                ?: "Kullanıcı"
+
+            val userProfilePhoto = userDoc?.getString("photoURL")
+                ?: userDoc?.getString("profileImageUrl")
+                ?: userDoc?.getString("photoUrl")
+                ?: currentUser.photoUrl?.toString()
+
             val newItem = MarketItemModel(
                 id = docRef.id,
                 title = title,
@@ -81,8 +96,8 @@ class MarketRepository(
                 city = city,
                 photoUrl = downloadUrl,
                 ownerId = currentUser.uid,
-                username = currentUser.displayName ?: "Kullanıcı",
-                userProfileImageUrl = currentUser.photoUrl?.toString(),
+                username = userHandle,
+                userProfileImageUrl = userProfilePhoto,
                 createdAt = Date(),
                 isSold = false,
                 isOfficial = false,
@@ -96,6 +111,35 @@ class MarketRepository(
         } catch (e: Exception) {
             Log.e("MarketRepository", "İlan oluşturma hatası: ${e.message}")
             Result.failure(e)
+        }
+    }
+
+    suspend fun updateMarketItem(
+        itemId: String,
+        title: String,
+        description: String,
+        price: Double,
+        category: String,
+        city: String,
+        condition: String
+    ): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val existing = marketDao.getItemById(itemId) ?: return@withContext false
+            val updated = existing.copy(
+                title = title,
+                description = description,
+                price = price,
+                category = category,
+                city = city,
+                condition = condition
+            )
+
+            marketDao.insert(updated)
+            firestore.collection("market_items").document(itemId).set(updated, SetOptions.merge()).await()
+            true
+        } catch (e: Exception) {
+            Log.e("MarketRepository", "İlan güncelleme hatası: ${e.message}")
+            false
         }
     }
 

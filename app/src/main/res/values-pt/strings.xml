@@ -791,4 +791,31 @@
   <string name="notification_anoba_response_body">Your letter has been answered! Tap to read âœ¨</string>
   <string name="admin_anoba_panel_button">Anoba Sister Panel</string>
   <string name="default_web_client_id">235397995656-ocisph5417a63h2hro9nfsghds276ufh.apps.googleusercontent.com</string>
+
+    <!-- Marketplace -->
+    <string name="market_screen_title">Mercado Anoba</string>
+    <string name="market_create_button">Anunciar</string>
+    <string name="market_search_placeholder">Buscar produto, cidade ou descrição&#8230;</string>
+    <string name="market_no_items">Nenhum anúncio ainda</string>
+    <string name="market_clear_filters">Limpar filtros / Ver todos</string>
+    <string name="market_create_title">Criar Novo Anúncio 🛍️</string>
+    <string name="market_edit_title">Editar Anúncio</string>
+    <string name="market_detail_title">Detalhes do Anúncio</string>
+    <string name="market_for_sale_badge">À Venda</string>
+    <string name="market_sold_badge">VENDIDO 🛑</string>
+    <string name="market_mark_as_sold">Marcar como Vendido</string>
+    <string name="market_item_is_sold">Este item foi vendido 🛑</string>
+    <string name="market_chat_seller">Conversar com o Vendedor</string>
+    <string name="market_seller_info">Informações do Vendedor</string>
+    <string name="market_seller_label">Vendedor Anoba</string>
+    <string name="market_report_title">Denunciar Anúncio ⚠️</string>
+    <string name="market_report_success">Anúncio denunciado para análise.</string>
+    <string name="market_delete_title">Excluir Anúncio 🗑️</string>
+    <string name="market_delete_confirm">Tem certeza de que deseja excluir este anúncio? Esta ação não pode ser desfeita.</string>
+    <string name="market_yes_delete">Sim, Excluir</string>
+    <string name="market_cancel">Não / Cancelar</string>
+    <string name="market_save_changes">Salvar Alterações</string>
+    <string name="market_updated_toast">Anúncio atualizado.</string>
+    <string name="market_published_toast">Seu anúncio foi publicado com sucesso! 🚀</string>
+    <string name="market_tab_name">Mercado 🛍️</string>
 </resources>

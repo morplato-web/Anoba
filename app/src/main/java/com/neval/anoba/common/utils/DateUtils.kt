@@ -22,3 +22,19 @@ fun getFormattedDate(millis: Long?): String? {
         else -> SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(Date(millis))
     }
 }
+
+fun getRelativeTimeString(date: Date?): String {
+    if (date == null) return ""
+    val diffMillis = System.currentTimeMillis() - date.time
+    val diffMinutes = diffMillis / (1000 * 60)
+    val diffHours = diffMinutes / 60
+    val diffDays = diffHours / 24
+
+    return when {
+        diffMinutes < 1 -> "Şimdi"
+        diffMinutes < 60 -> "$diffMinutes dk"
+        diffHours < 24 -> "$diffHours sa"
+        diffDays < 7 -> "$diffDays gün"
+        else -> SimpleDateFormat("dd MMM", Locale.getDefault()).format(date)
+    }
+}

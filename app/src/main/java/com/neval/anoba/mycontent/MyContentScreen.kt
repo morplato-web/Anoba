@@ -63,6 +63,7 @@ fun MyContentScreen(
     val targetUsername by viewModel.targetUsername.collectAsState()
     val publishedContent by viewModel.publishedContent.collectAsState()
     val draftContent by viewModel.draftContent.collectAsState()
+    val marketContent by viewModel.marketContent.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val uploadProgress by viewModel.uploadProgress.collectAsState()
     val isAnobaUser by viewModel.isAnobaUser.collectAsState()
@@ -104,8 +105,19 @@ fun MyContentScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     var selectedContentItem by remember { mutableStateOf<MyContentItem?>(null) }
-    var selectedTabIndex by rememberSaveable { mutableIntStateOf(1) }
-    val tabs = listOf(stringResource(id = R.string.mycontent_published_tab), stringResource(id = R.string.mycontent_drafts_tab))
+    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
+    val tabs = if (isOwner) {
+        listOf(
+            stringResource(id = R.string.mycontent_published_tab),
+            stringResource(id = R.string.mycontent_drafts_tab),
+            "Pazar Yeri 🛍️"
+        )
+    } else {
+        listOf(
+            stringResource(id = R.string.mycontent_published_tab),
+            "Pazar Yeri 🛍️"
+        )
+    }
 
     LaunchedEffect(videoDownloadState) {
         when (val state = videoDownloadState) {
@@ -220,23 +232,42 @@ fun MyContentScreen(
             Column(modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)) {
-                if (isOwner) {
-                    PrimaryTabRow(selectedTabIndex = selectedTabIndex) {
-                        tabs.forEachIndexed { index, title ->
-                            Tab(selected = selectedTabIndex == index, onClick = { selectedTabIndex = index }, text = { Text(text = title) })
-                        }
+                PrimaryTabRow(selectedTabIndex = selectedTabIndex) {
+                    tabs.forEachIndexed { index, title ->
+                        Tab(selected = selectedTabIndex == index, onClick = { selectedTabIndex = index }, text = { Text(text = title) })
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+
                 Box(modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 8.dp), contentAlignment = Alignment.Center) {
                     if (errorMessageRes != null) {
                         Text(text = stringResource(id = errorMessageRes!!), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
                     } else {
-                        val itemsToShow = if (isOwner && selectedTabIndex == 1) draftContent else publishedContent
+                        val itemsToShow: List<MyContentItem> = if (isOwner) {
+                            when (selectedTabIndex) {
+                                0 -> publishedContent
+                                1 -> draftContent
+                                2 -> marketContent
+                                else -> publishedContent
+                            }
+                        } else {
+                            when (selectedTabIndex) {
+                                0 -> publishedContent
+                                1 -> marketContent
+                                else -> publishedContent
+                            }
+                        }
+
+                        val emptyMessage = when {
+                            isOwner && selectedTabIndex == 1 -> stringResource(id = R.string.mycontent_no_draft_content)
+                            selectedTabIndex == (if (isOwner) 2 else 1) -> "Henüz İlan Bulunmuyor 🛍️"
+                            else -> stringResource(id = R.string.mycontent_no_published_content)
+                        }
+
                         if (itemsToShow.isEmpty() && !isLoading) {
-                            Text(if (isOwner && selectedTabIndex == 1) stringResource(id = R.string.mycontent_no_draft_content) else stringResource(id = R.string.mycontent_no_published_content))
+                            Text(text = emptyMessage)
                         } else {
                             LazyVerticalStaggeredGrid(
                                 columns = StaggeredGridCells.Fixed(3),
@@ -256,6 +287,7 @@ fun MyContentScreen(
                                                         is MyContentItem.Letter -> Constants.LETTER_DETAIL_SCREEN.replace("{letterId}", item.letter.id)
                                                         is MyContentItem.Photo -> Constants.PHOTO_DETAIL_SCREEN.replace("{photoId}", item.photo.id)
                                                         is MyContentItem.Video -> Constants.VIDEO_DETAIL_SCREEN.replace("{videoId}", item.video.id)
+                                                        is MyContentItem.Market -> Constants.MARKET_DETAIL_SCREEN.replace("{itemId}", item.marketItem.id)
                                                     }
                                                     navController.navigate(route)
                                                 } else {
@@ -347,6 +379,7 @@ fun MyContentScreen(
                         is MyContentItem.Letter -> Constants.LETTER_DETAIL_SCREEN.replace("{letterId}", item.letter.id)
                         is MyContentItem.Photo -> Constants.PHOTO_DETAIL_SCREEN.replace("{photoId}", item.photo.id)
                         is MyContentItem.Video -> Constants.VIDEO_DETAIL_SCREEN.replace("{videoId}", item.video.id)
+                        is MyContentItem.Market -> Constants.MARKET_DETAIL_SCREEN.replace("{itemId}", item.marketItem.id)
                     }
                     navController.navigate(route)
                     scope.launch { sheetState.hide(); selectedContentItem = null }
@@ -374,6 +407,7 @@ fun MyContentScreen(
                         is MyContentItem.Letter -> item.letter.content
                         is MyContentItem.Photo -> item.photo.photoUrl
                         is MyContentItem.Video -> item.video.videoUrl
+                        is MyContentItem.Market -> item.marketItem.photoUrl
                     }
                     val shareIntent = android.content.Intent().apply {
                         action = android.content.Intent.ACTION_SEND
@@ -474,7 +508,7 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
             is MyContentItem.Letter -> {
                 MyContentLetterItem(letter = item.letter, onClick = onClick)
             }
-            is MyContentItem.Video, is MyContentItem.Photo, is MyContentItem.Audio -> {
+            is MyContentItem.Video, is MyContentItem.Photo, is MyContentItem.Audio, is MyContentItem.Market -> {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -485,6 +519,7 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
                             is MyContentItem.Video -> Color(0xFFB3E5FC)
                             is MyContentItem.Photo -> Color(0xFFD1C4E9)
                             is MyContentItem.Audio -> Color(0xFFFFD1DC)
+                            is MyContentItem.Market -> Color(0xFFFFF9C4)
                             else -> Color(0xFFB3E5FC)
                         }
                     )
@@ -496,6 +531,30 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
                         contentAlignment = Alignment.Center
                     ) {
                         when (item) {
+                            is MyContentItem.Market -> {
+                                AsyncImage(
+                                    model = item.marketItem.photoUrl,
+                                    contentDescription = item.marketItem.title,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop,
+                                    error = painterResource(id = R.drawable.ic_default_profile)
+                                )
+                                Surface(
+                                    modifier = Modifier
+                                        .align(Alignment.TopEnd)
+                                        .padding(4.dp),
+                                    shape = RoundedCornerShape(4.dp),
+                                    color = Color(0xFFFFD700)
+                                ) {
+                                    Text(
+                                        text = "🛍️ İlan",
+                                        color = Color.Black,
+                                        fontSize = 8.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                                    )
+                                }
+                            }
                             is MyContentItem.Video -> {
                                 AsyncImage(
                                     model = item.video.thumbnailUrl,
@@ -547,6 +606,7 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
             is MyContentItem.Letter -> item.letter.personalNote
             is MyContentItem.Photo -> item.photo.personalNote
             is MyContentItem.Video -> item.video.personalNote
+            is MyContentItem.Market -> item.marketItem.title
         }
 
         if (personalNote.isNotBlank()) {

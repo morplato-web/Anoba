@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class Converters {
+class SharedConverters {
     @TypeConverter
     fun fromStringList(value: String?): List<String> {
         if (value.isNullOrBlank()) return emptyList()

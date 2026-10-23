@@ -30,6 +30,7 @@ enum class TutorialStep {
     DRAWER_MENU,
     FLOWER_DOT,
     MORE_MENU,
+    MARKET,
     SEARCH_FILTER,
     PINNED_FILTER,
     FOLLOWING_FILTER,
@@ -169,6 +170,7 @@ fun getTutorialTitle(step: TutorialStep): String {
         TutorialStep.DRAWER_MENU -> stringResource(R.string.tutorial_title_drawer)
         TutorialStep.FLOWER_DOT -> stringResource(R.string.tutorial_title_flower)
         TutorialStep.MORE_MENU -> stringResource(R.string.tutorial_title_more_menu)
+        TutorialStep.MARKET -> stringResource(R.string.market_title)
         TutorialStep.SEARCH_FILTER -> stringResource(R.string.tutorial_title_search)
         TutorialStep.PINNED_FILTER -> stringResource(R.string.tutorial_title_pin)
         TutorialStep.FOLLOWING_FILTER -> stringResource(R.string.tutorial_title_following)
@@ -191,6 +193,7 @@ fun getTutorialDescription(step: TutorialStep): String {
         TutorialStep.DRAWER_MENU -> stringResource(R.string.tutorial_desc_drawer)
         TutorialStep.FLOWER_DOT -> stringResource(R.string.tutorial_desc_flower)
         TutorialStep.MORE_MENU -> stringResource(R.string.tutorial_desc_more_menu)
+        TutorialStep.MARKET -> stringResource(R.string.market_guide_desc)
         TutorialStep.SEARCH_FILTER -> stringResource(R.string.tutorial_desc_search)
         TutorialStep.PINNED_FILTER -> stringResource(R.string.tutorial_desc_pin)
         TutorialStep.FOLLOWING_FILTER -> stringResource(R.string.tutorial_desc_following)
