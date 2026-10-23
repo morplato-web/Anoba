@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neval.anoba.chat.ui.ChatHomeScreen
 import com.neval.anoba.market.MarketContainerView
+import com.neval.anoba.profile.ProfileScreen
 import com.neval.anoba.ui.theme.AnobaTheme
 
 @Composable
@@ -189,27 +190,5 @@ private fun AnobaChatView() {
 
 @Composable
 private fun AnobaProfileView() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text("👤", fontSize = 48.sp)
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Kullanıcı Profili",
-            color = Color.White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "Yayınlanan İçerikler, Taslaklar ve Ayarlar",
-            color = Color(0xFF94A3B8),
-            fontSize = 14.sp,
-            textAlign = TextAlign.Center
-        )
-    }
+    ProfileScreen()
 }
