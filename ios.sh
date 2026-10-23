@@ -2,6 +2,9 @@
 # Her zaman ana proje dizinine geç
 cd "$HOME/Anoba" || exit 1
 
+chmod +x "$HOME/Anoba/ios.sh" 2>/dev/null || true
+chmod +x "$HOME/Anoba/Baslat.command" 2>/dev/null || true
+
 if [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
     export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 elif command -v /usr/libexec/java_home &> /dev/null; then
@@ -16,6 +19,7 @@ cd "$HOME/Anoba" || exit 1
 sh ios.sh
 EOF
     chmod +x "$HOME/Desktop/Baslat.command" 2>/dev/null || true
+    chmod 777 "$HOME/Desktop/Baslat.command" 2>/dev/null || true
 fi
 
 echo "=========================================="
@@ -84,7 +88,7 @@ cp -R "$FRAMEWORK_SRC" "$APP_PATH/Frameworks/"
 codesign --force --sign - --timestamp=none "$APP_PATH/Frameworks/SharedKit.framework" 2>/dev/null || true
 codesign --force --sign - --timestamp=none "$APP_PATH" 2>/dev/null || true
 
-# 7. Simülatörü temizle ve başlat
+# 7. Simülatörü temizle me başlat
 echo "📱 5/5: Simülatör hazırlanıyor ve uygulama yükleniyor..."
 xcrun simctl shutdown all 2>/dev/null || true
 
