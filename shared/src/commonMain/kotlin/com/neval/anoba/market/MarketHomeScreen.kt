@@ -21,20 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MarketHomeScreen(
-    onCreateItemClick: () -> Unit = {},
-    onItemClick: (MarketItemModel) -> Unit = {}
-) {
-    val categories = remember {
-        listOf("Tümü", "Elektronik", "Giyim & Moda", "Ev & Yaşam", "Araç & Vasıta", "Spor & Hobi", "Kitap & Oyun", "Diğer")
-    }
+fun MarketContainerView() {
+    var activeView by remember { mutableStateOf("LIST") }
+    var selectedItem by remember { mutableStateOf<MarketItemModel?>(null) }
 
-    var selectedCategory by remember { mutableStateOf("Tümü") }
-    var searchQuery by remember { mutableStateOf("") }
-
-    // Örnek Pazar Yeri İlan Verileri (iOS & KMP Canlı Test İçin)
     val sampleItems = remember {
         mutableStateListOf(
             MarketItemModel(
@@ -97,8 +88,51 @@ fun MarketHomeScreen(
         )
     }
 
-    val filteredItems = remember(selectedCategory, searchQuery, sampleItems.toList()) {
-        sampleItems.filter { item ->
+    when (activeView) {
+        "CREATE" -> {
+            MarketCreateScreen(
+                onNavigateBack = { activeView = "LIST" },
+                onSuccess = { newItem ->
+                    sampleItems.add(0, newItem)
+                    activeView = "LIST"
+                }
+            )
+        }
+        "DETAIL" -> {
+            MarketDetailScreen(
+                item = selectedItem,
+                onNavigateBack = { activeView = "LIST" }
+            )
+        }
+        else -> {
+            MarketHomeScreen(
+                itemsList = sampleItems,
+                onCreateItemClick = { activeView = "CREATE" },
+                onItemClick = { item ->
+                    selectedItem = item
+                    activeView = "DETAIL"
+                }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MarketHomeScreen(
+    itemsList: List<MarketItemModel> = emptyList(),
+    onCreateItemClick: () -> Unit = {},
+    onItemClick: (MarketItemModel) -> Unit = {}
+) {
+    val categories = remember {
+        listOf("Tümü", "Elektronik", "Giyim & Moda", "Ev & Yaşam", "Araç & Vasıta", "Spor & Hobi", "Kitap & Oyun", "Diğer")
+    }
+
+    var selectedCategory by remember { mutableStateOf("Tümü") }
+    var searchQuery by remember { mutableStateOf("") }
+
+    val filteredItems = remember(selectedCategory, searchQuery, itemsList) {
+        itemsList.filter { item ->
             val matchesCategory = (selectedCategory == "Tümü" || item.category == selectedCategory)
             val matchesSearch = searchQuery.isBlank() ||
                     item.title.contains(searchQuery, ignoreCase = true) ||
