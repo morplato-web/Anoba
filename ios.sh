@@ -80,15 +80,7 @@ fi
 
 echo "📦 Bulunan App Paketi: $APP_PATH"
 
-# 6. Kütüphaneyi Paket İçine Göm (Embed Frameworks) ve İmzala
-echo "📦 SharedKit.framework uygulama içine tam gömülüyor..."
-mkdir -p "$APP_PATH/Frameworks"
-rm -rf "$APP_PATH/Frameworks/SharedKit.framework"
-cp -R "$FRAMEWORK_SRC" "$APP_PATH/Frameworks/"
-codesign --force --sign - --timestamp=none "$APP_PATH/Frameworks/SharedKit.framework" 2>/dev/null || true
-codesign --force --sign - --timestamp=none "$APP_PATH" 2>/dev/null || true
-
-# 7. Simülatörü temizle me başlat
+# 6. Simülatörü temizle ve başlat
 echo "📱 5/5: Simülatör hazırlanıyor ve uygulama yükleniyor..."
 xcrun simctl shutdown all 2>/dev/null || true
 
@@ -104,8 +96,8 @@ open -a Simulator
 sleep 3
 
 # Eski uygulamayı kaldır
-xcrun simctl uninstall booted com.neval.anoba.iosApp 2>/dev/null || true
 xcrun simctl uninstall booted com.neval.anoba 2>/dev/null || true
+xcrun simctl uninstall booted com.neval.anoba.iosApp 2>/dev/null || true
 
 # Uygulamayı yükle
 echo "🚀 Uygulama simülatöre yükleniyor..."
