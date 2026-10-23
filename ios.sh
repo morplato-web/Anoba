@@ -112,7 +112,7 @@ echo "🚀 Uygulama simülatöre yükleniyor..."
 xcrun simctl install booted "$APP_PATH"
 
 echo "📱 Uygulama canlı başlatılıyor (Log Akışı)..."
-xcrun simctl launch --console-pty booted com.neval.anoba.iosApp || xcrun simctl launch --console-pty booted com.neval.anoba
+xcrun simctl launch --console-pty booted com.neval.anoba || xcrun simctl launch --console-pty booted com.neval.anoba.iosApp
 
 echo "=========================================="
 echo "🎉 İŞLEM TAMAMLANDI!"
