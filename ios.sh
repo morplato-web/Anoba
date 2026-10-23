@@ -107,8 +107,8 @@ xcrun simctl uninstall booted com.neval.anoba 2>/dev/null || true
 echo "🚀 Uygulama simülatöre yükleniyor..."
 xcrun simctl install booted "$APP_PATH"
 
-echo "📱 Uygulama başlatılıyor..."
-xcrun simctl launch booted com.neval.anoba.iosApp || xcrun simctl launch booted com.neval.anoba
+echo "📱 Uygulama canlı başlatılıyor (Log Akışı)..."
+xcrun simctl launch --console-pty booted com.neval.anoba.iosApp || xcrun simctl launch --console-pty booted com.neval.anoba
 
 echo "=========================================="
 echo "🎉 İŞLEM TAMAMLANDI!"
