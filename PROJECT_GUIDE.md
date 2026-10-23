@@ -1,4 +1,4 @@
-# Anoba Proje Özeti & Mimarî Protokol (Sürüm 9.1.6 - v136)
+# Anoba Proje Özeti & Mimarî Protokol (Sürüm 9.2.2 - v142)
 
 ⚠️ **GELİŞTİRİCİ İÇİN KRİTİK KURALLAR (ASLA BOZMA)** ⚠️
 1. **Listing Tasarımı:** Ana akıştaki kartlar (Listing) daima SADE kalmalıdır. Sadece "En Çok Beğenilen Emoji + Sayı" görünür. Emoji seçim barı ASLA listing kartlarına eklenmez, sadece Detay sayfalarında olur.
@@ -183,7 +183,7 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **Firestore Kuralları Tam Eşleme (`firestore.rules`):**
   - Normal kullanıcıların `is_popular`, `is_flagged`, `flag_reason`, `flagged_at` alanlarını güncelleyebilmesi için izinler eklendi ve buluta deploy edildi.
 - **MyContentScreen Sekme Düzeni & Varsayılan Açılış (`Taslaklar`):**
-  - Sekme dizilimi **Yayınlananlar / Taslaklar** olarak düzenlendi. Sayfa açıldığında varsayılan olarak **Taslaklar** sekmesi (`selectedTabIndex = 1`) aktif ve seçili olarak gelir. Sekme koruması `rememberSaveable` ile güvence altındadır.
+  - Sekme dizilimi **Yayınlananlar / Taslaklar** olarak düzenlendi. Sayfa açıldığında varsayılan olarak **Taslaklar** sekmesi (`selectedTabIndex = 1`) aktif ve seçili olarak gelir. Sekme koruması `rememberSaveable` ile güvence atındadır.
 
 ---
 
@@ -241,8 +241,16 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
   - Kilitli Xcode şablonlarının yerine bağımsız **`iosApp/iosApp.xcodeproj`** projesi oluşturuldu.
   - Mac üzerinde tek komutla güncellemeleri çeken, önbellekleri temizleyen, kütüphaneyi kopyalayıp iPhone Simülatöründe Anoba'yı başlatan **`ios.sh`** ve **`open.sh`** betikleri eklendi.
 
+---
 
-
-
-
-
+## 23. Anoba Pazar Yeri (C2C Marketplace) Modülü & 13 Dil Yerelleştirmesi (v142 Güncellemeleri)
+- **Komisyonsuz C2C İlan Altyapısı (`MarketItemModel` & `MarketDao`):** Kullanıcıların ikinci el, sıfır veya el yapımı ürünlerini ücretsiz sergilediği, komisyonsuz ve doğrudan uygulama içi sohbetle (`PrivateChatScreen`) buluştuğu Pazar Yeri modülü kuruldu.
+- **Local-First Veritabanı & Firestore Sync (Room v20):** `MarketItemModel` entity'si Room v20 veritabanına eklendi. İlan görselleri istemci tarafında 1080px %80 kalitede otomatik sıkıştırılarak Firebase Storage `"market_photos"` dizinine, ilan verileri Firestore `"market_items"` koleksiyonuna ve yerel SQLite veritabanına kaydolmaktadır.
+- **2'li Şık Izgara (Grid) Arayüzü (`MarketHomeScreen`):** İlanlar Letgo/Sahibinden tarzında 2 sütunlu izgara (`LazyVerticalGrid`) olarak listelenir. Ürün başlığı, göreceli zaman damgası, şehir, satıcı profil fotoğrafı ve kullanıcı adı en az yer kaplayacak şekilde kompakt tasarlanmıştır.
+- **Akıllı Konum Seçimi (`LocationBottomSheet`):** İlan eklerken ve düzenlerken 81 Türkiye İli + Uluslararası şehir arama motoru entegre edildi.
+- **İlan Detay & Sabit Eylem Butonu (`MarketDetailScreen`):** *"Satıcı İle Sohbet Et"* veya *"Satıldı Olarak İşaretle"* butonu ekranın en altına sabitlendi (`Scaffold.bottomBar`).
+- **İlanı Düzenle (`MarketEditScreen`) & Gerekçeli Şikayet (⚠️):** İlan sahibine özel ilan güncelleme ekranı ve normal kullanıcılara özel gerekçeli şikayet etme penceresi eklendi. Şikayet edilen ilanlar otomatik Karantina Havuzuna aktarılır.
+- **"İçeriklerim" ➔ "Pazar Yeri 🛍️" Sekmesi (`MyContentScreen`):** Kullanıcının yayınladığı tüm ilanları tek yerden yönetebileceği 3. sekme açıldı. Satıcı profiline tıklandığında doğrudan o satıcının Pazar Yeri sekmesine yönlendirilir.
+- **Uygulama Turu (Anoba Rehberi) Entegrasyonu (`HomeTutorial`):** Step-by-step Uygulama Turu rehberine Pazar Yeri ışık odağı ve onaylı tanımı entegre edildi.
+- **13 Dünya Dili Yerelleştirmesi (`strings.xml` & `build.gradle.kts`):** Tüm Pazar Yeri metinleri 13 farklı dil klasörüne (`values`, `values-en`, `values-de`, `values-fr`, `values-es`, `values-it`, `values-ru`, `values-ar`, `values-sw`, `values-af`, `values-in`, `values-id`, `values-pt`) eklendi ve `build.gradle.kts` içinde `resourceConfigurations` listesine `id` ve `in` kodları dahil edildi.
+- **DEX & Release AAB Çakışma Temizliği:** `:app` ve `:shared` modülleri arasında çift tanımlanan sınıflar (`InitialsAvatar`, `AnobaBadge`, `OfficialBadge`, `UserRole`, `Theme`, `Converters`) temizlenerek Release AAB paketi (`bundleRelease`) %100 sorunsuz üretilip Google Play Console'da başarıyla yayınlandı.
