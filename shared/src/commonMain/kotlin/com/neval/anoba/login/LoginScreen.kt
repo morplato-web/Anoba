@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 fun AuthContainerView(
     onLoginSuccess: () -> Unit = {}
 ) {
-    var authMode by remember { mutableStateOf("LOGIN") } // LOGIN vs SIGN_UP
+    var authMode by remember { mutableStateOf("LOGIN") }
 
     when (authMode) {
         "SIGN_UP" -> {
@@ -58,7 +58,9 @@ fun LoginScreen(
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
 
-    Scaffold(containerColor = Color(0xFF0F172A)) { paddingValues ->
+    val primaryColor = Color(0xFF232066)
+
+    Scaffold(containerColor = Color.White) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -72,40 +74,62 @@ fun LoginScreen(
 
             Text(
                 text = "Anoba'ya Hoş Geldiniz",
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.displaySmall,
+                color = primaryColor,
+                fontWeight = FontWeight.ExtraBold,
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // 🚀 GOOGLE İLE DEVAM ET BUTONU
+            OutlinedButton(
+                onClick = onLoginSuccess,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
+                border = BorderStroke(1.dp, Color.LightGray)
+            ) {
+                Text("🌐 Google ile Devam Et", color = Color.Black, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
+                Text(
+                    text = "  veya  ",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("E-Posta Adresi") },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(8.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFFFD700),
-                    unfocusedBorderColor = Color(0xFF334155),
-                    focusedLabelColor = Color(0xFFFFD700),
-                    unfocusedLabelColor = Color(0xFF94A3B8),
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
-                )
+                singleLine = true
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Şifre") },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(8.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 singleLine = true,
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -114,18 +138,10 @@ fun LoginScreen(
                         Icon(
                             imageVector = if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             contentDescription = null,
-                            tint = Color(0xFFFFD700)
+                            tint = primaryColor
                         )
                     }
-                },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFFFD700),
-                    unfocusedBorderColor = Color(0xFF334155),
-                    focusedLabelColor = Color(0xFFFFD700),
-                    unfocusedLabelColor = Color(0xFF94A3B8),
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
-                )
+                }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -138,13 +154,13 @@ fun LoginScreen(
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700))
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
             ) {
                 if (isLoading) {
-                    CircularProgressIndicator(color = Color.Black, modifier = Modifier.size(24.dp))
+                    CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
-                    Text("Giriş Yap", color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text("Giriş Yap", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
 
@@ -154,28 +170,15 @@ fun LoginScreen(
             OutlinedButton(
                 onClick = onGuestLogin,
                 modifier = Modifier.fillMaxWidth().height(50.dp),
-                shape = RoundedCornerShape(14.dp),
-                border = BorderStroke(1.dp, Color(0xFFFFD700)),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFFFD700))
+                shape = RoundedCornerShape(8.dp),
+                border = BorderStroke(1.dp, primaryColor),
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFFFD700))
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Person, contentDescription = null, tint = Color(0xFFFFD700))
+                    Icon(Icons.Default.Person, contentDescription = null, tint = primaryColor)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Misafir Olarak Devam Et 👤", color = Color(0xFFFFD700), fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text("Misafir Olarak Devam Et 👤", color = primaryColor, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                 }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // 🚀 GOOGLE İLE DEVAM ET BUTONU
-            OutlinedButton(
-                onClick = onLoginSuccess,
-                modifier = Modifier.fillMaxWidth().height(50.dp),
-                shape = RoundedCornerShape(14.dp),
-                border = BorderStroke(1.dp, Color(0xFF334155)),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
-            ) {
-                Text("🌐 Google ile Devam Et", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -183,7 +186,7 @@ fun LoginScreen(
             TextButton(onClick = onNavigateSignUp) {
                 Text(
                     text = "Hesabınız yok mu? Kayıt Olun ✨",
-                    color = Color(0xFFFFD700),
+                    color = primaryColor,
                     fontSize = 14.sp,
                     textDecoration = TextDecoration.Underline
                 )

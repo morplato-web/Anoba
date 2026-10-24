@@ -1,5 +1,6 @@
 package com.neval.anoba.login
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,16 +29,20 @@ fun SignUpScreen(
     onNavigateBack: () -> Unit = {},
     onSignUpSuccess: () -> Unit = {}
 ) {
-    var name by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isPasswordVisible by remember { mutableStateOf(false) }
+    var confirmPassword by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
 
+    val primaryColor = Color(0xFF232066)
+
     Scaffold(
-        containerColor = Color(0xFF0F172A),
+        containerColor = Color.White,
         topBar = {
-            Surface(color = Color(0xFF1E293B), shadowElevation = 4.dp) {
+            Surface(color = Color.White, shadowElevation = 2.dp) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -47,9 +52,9 @@ fun SignUpScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = primaryColor)
                     }
-                    Text("Kayıt Ol ✨", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text("Kayıt Ol ✨", color = primaryColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -63,87 +68,125 @@ fun SignUpScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = "Yeni Anoba Hesabı Oluştur",
-                style = MaterialTheme.typography.headlineSmall,
-                color = Color.White,
+                text = "Kayıt Ol",
+                style = MaterialTheme.typography.headlineMedium,
+                color = primaryColor,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Ad Soyad") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFFFD700),
-                    unfocusedBorderColor = Color(0xFF334155),
-                    focusedLabelColor = Color(0xFFFFD700),
-                    unfocusedLabelColor = Color(0xFF94A3B8),
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
+            // GOOGLE İLE HIZLI KAYIT BUTONU
+            OutlinedButton(
+                onClick = onSignUpSuccess,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
+                border = BorderStroke(1.dp, Color.LightGray)
+            ) {
+                Text(
+                    text = "🌐 Google ile Hızlı Kayıt Ol",
+                    color = Color.Black,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 15.sp
                 )
-            )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
+                Text(
+                    text = "  veya e-posta ile  ",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // KULLANICI ADI
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Kullanıcı Adı") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // E-POSTA
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("E-Posta Adresi") },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(8.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFFFD700),
-                    unfocusedBorderColor = Color(0xFF334155),
-                    focusedLabelColor = Color(0xFFFFD700),
-                    unfocusedLabelColor = Color(0xFF94A3B8),
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
-                )
+                singleLine = true
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
+            // ŞİFRE
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Şifre") },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(8.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 singleLine = true,
-                visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
-                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
                         Icon(
-                            imageVector = if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             contentDescription = null,
-                            tint = Color(0xFFFFD700)
+                            tint = primaryColor
                         )
                     }
-                },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFFFD700),
-                    unfocusedBorderColor = Color(0xFF334155),
-                    focusedLabelColor = Color(0xFFFFD700),
-                    unfocusedLabelColor = Color(0xFF94A3B8),
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
-                )
+                }
             )
 
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
+            // ŞİFRE ONAY
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it },
+                label = { Text("Şifreyi Onayla") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                singleLine = true,
+                visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                        Icon(
+                            imageVector = if (confirmPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            contentDescription = null,
+                            tint = primaryColor
+                        )
+                    }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // KAYIT OL BUTONU
             Button(
                 onClick = {
                     if (email.isNotBlank() && password.isNotBlank()) {
@@ -151,16 +194,34 @@ fun SignUpScreen(
                         onSignUpSuccess()
                     }
                 },
-                modifier = Modifier.fillMaxWidth().height(50.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700))
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
             ) {
                 if (isLoading) {
-                    CircularProgressIndicator(color = Color.Black, modifier = Modifier.size(24.dp))
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White)
                 } else {
-                    Text("Kayıt Ol ve Katıl 🚀", color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "Kayıt Ol 🚀",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        color = Color.White
+                    )
                 }
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            TextButton(onClick = onNavigateBack) {
+                Text(
+                    text = "Zaten bir hesabınız var mı? Giriş Yapın",
+                    color = primaryColor
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
