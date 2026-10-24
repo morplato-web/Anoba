@@ -78,14 +78,6 @@ fun LoginScreen(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "Connect, Chat & Time Capsule",
-                color = Color(0xFF94A3B8),
-                fontSize = 14.sp
-            )
-
             Spacer(modifier = Modifier.height(32.dp))
 
             OutlinedTextField(
