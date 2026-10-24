@@ -31,6 +31,7 @@ fun App() {
         if (!isAuthenticated) {
             LoginScreen(
                 onLoginSuccess = { isAuthenticated = true },
+                onGuestLogin = { isAuthenticated = true },
                 onNavigateSignUp = { isAuthenticated = true }
             )
         } else {

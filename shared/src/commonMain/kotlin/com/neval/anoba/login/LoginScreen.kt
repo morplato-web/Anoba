@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit = {},
+    onGuestLogin: () -> Unit = {},
     onNavigateSignUp: () -> Unit = {}
 ) {
     var email by remember { mutableStateOf("") }
@@ -43,7 +45,7 @@ fun LoginScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
             Text(
                 text = "Anoba'ya Hoş Geldiniz 🚀",
@@ -61,7 +63,7 @@ fun LoginScreen(
                 fontSize = 14.sp
             )
 
-            Spacer(modifier = Modifier.height(36.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             OutlinedTextField(
                 value = email,
@@ -111,7 +113,7 @@ fun LoginScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = {
@@ -120,7 +122,7 @@ fun LoginScreen(
                         onLoginSuccess()
                     }
                 },
-                modifier = Modifier.fillMaxWidth().height(52.dp),
+                modifier = Modifier.fillMaxWidth().height(50.dp),
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700))
             ) {
@@ -129,6 +131,36 @@ fun LoginScreen(
                 } else {
                     Text("Giriş Yap", color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 🚀 MİSAFİR GİRİŞİ BUTONU
+            OutlinedButton(
+                onClick = onGuestLogin,
+                modifier = Modifier.fillMaxWidth().height(50.dp),
+                shape = RoundedCornerShape(14.dp),
+                border = BorderStroke(1.dp, Color(0xFFFFD700)),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFFFD700))
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.Person, contentDescription = null, tint = Color(0xFFFFD700))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Misafir Olarak Devam Et 👤", color = Color(0xFFFFD700), fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 🚀 GOOGLE İLE DEVAM ET BUTONU
+            OutlinedButton(
+                onClick = onLoginSuccess,
+                modifier = Modifier.fillMaxWidth().height(50.dp),
+                shape = RoundedCornerShape(14.dp),
+                border = BorderStroke(1.dp, Color(0xFF334155)),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
+            ) {
+                Text("🌐 Google ile Devam Et", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
