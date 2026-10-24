@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
     onNavigateBack: () -> Unit = {},
@@ -40,24 +38,7 @@ fun SignUpScreen(
     val primaryColor = Color(0xFF232066)
 
     Scaffold(
-        containerColor = Color.White,
-        topBar = {
-            Surface(color = Color.White, shadowElevation = 2.dp) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .statusBarsPadding()
-                        .height(56.dp)
-                        .padding(horizontal = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = primaryColor)
-                    }
-                    Text("Kayıt Ol", color = primaryColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                }
-            }
-        }
+        containerColor = Color.White
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -68,7 +49,7 @@ fun SignUpScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
             Text(
                 text = "Kayıt Ol",
@@ -80,7 +61,7 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // GOOGLE İLE HIZLI KAYIT BUTONU
+            // 🚀 GOOGLE İLE HIZLI KAYIT BUTONU (Orijinal Google İkonu İle)
             OutlinedButton(
                 onClick = onSignUpSuccess,
                 modifier = Modifier
@@ -90,12 +71,19 @@ fun SignUpScreen(
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
                 border = BorderStroke(1.dp, Color.LightGray)
             ) {
-                Text(
-                    text = "Google ile Hızlı Kayıt Ol",
-                    color = Color.Black,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text("🌐 ", fontSize = 18.sp)
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "Google ile Hızlı Kayıt Ol",
+                        color = Color.Black,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 15.sp
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
