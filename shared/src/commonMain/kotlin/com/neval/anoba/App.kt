@@ -191,22 +191,26 @@ private fun AnobaHomeView() {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // SOLA YATKIN İKONLAR (Boşluk Azaltıldı)
+                        // SOLA YATKIN İKONLAR (Boşluk Eşitlendi)
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(1.dp)
+                            horizontalArrangement = Arrangement.Start
                         ) {
                             IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
                                 Icon(Icons.Default.Menu, contentDescription = "Menü", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
 
+                            Spacer(modifier = Modifier.width(4.dp))
+
+                            // Pembe Çiçek Yuvarlağı
                             Box(
                                 modifier = Modifier
-                                    .padding(horizontal = 2.dp)
                                     .size(12.dp)
                                     .clip(CircleShape)
                                     .background(Color(0xFFF06292))
                             )
+
+                            Spacer(modifier = Modifier.width(4.dp))
 
                             Box {
                                 IconButton(onClick = { showMoreMenu = true }, modifier = Modifier.size(32.dp)) {
@@ -238,7 +242,7 @@ private fun AnobaHomeView() {
                             }
                         }
 
-                        // SAĞA YATKIN İKONLAR (Boşluk Azaltıldı)
+                        // SAĞA YATKIN İKONLAR
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(1.dp)
@@ -247,7 +251,7 @@ private fun AnobaHomeView() {
                                 Icon(Icons.Default.Search, contentDescription = "Arama", tint = Color(0xFF0288D1), modifier = Modifier.size(22.dp))
                             }
 
-                            // İÇİ BOŞ İĞNE İKONU (Android Birebir)
+                            // İÇİ BOŞ İĞNE İKONU
                             IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
                                 Icon(Icons.Outlined.PushPin, contentDescription = "Sabitlenenler", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
@@ -260,7 +264,7 @@ private fun AnobaHomeView() {
                                 Icon(Icons.Default.Language, contentDescription = "Dünya Haritası", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
 
-                            // YEŞİL CHAT İKONU (Android Birebir)
+                            // YEŞİL CHAT İKONU
                             IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
                                 Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = "Sohbet", tint = Color(0xFF2E7D32), modifier = Modifier.size(22.dp))
                             }
@@ -283,16 +287,16 @@ private fun AnobaHomeView() {
                         // SOLDA: MOZAİK Butonu (Koyu Lacivert) + Reklam İçerir
                         Surface(
                             shape = RoundedCornerShape(12.dp),
-                            color = Color(0xFF2C3E50),
+                            color = AnobaNavy,
                             modifier = Modifier.height(38.dp).clickable { }
                         ) {
                             Column(
-                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 3.dp),
+                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 2.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.Black, fontSize = 11.sp)
-                                Text("Reklam İçerir", color = Color(0xFF90A4AE), fontSize = 8.sp)
+                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 11.sp, letterSpacing = 0.5.sp)
+                                Text("Reklam İçerir", color = Color(0xFFB0BEC5), fontSize = 8.sp, fontWeight = FontWeight.Normal)
                             }
                         }
 
