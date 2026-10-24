@@ -25,6 +25,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
+fun AuthContainerView(
+    onLoginSuccess: () -> Unit = {}
+) {
+    var authMode by remember { mutableStateOf("LOGIN") } // LOGIN vs SIGN_UP
+
+    when (authMode) {
+        "SIGN_UP" -> {
+            SignUpScreen(
+                onNavigateBack = { authMode = "LOGIN" },
+                onSignUpSuccess = onLoginSuccess
+            )
+        }
+        else -> {
+            LoginScreen(
+                onLoginSuccess = onLoginSuccess,
+                onGuestLogin = onLoginSuccess,
+                onNavigateSignUp = { authMode = "SIGN_UP" }
+            )
+        }
+    }
+}
+
+@Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit = {},
     onGuestLogin: () -> Unit = {},

@@ -15,10 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neval.anoba.chat.ui.ChatHomeScreen
+import com.neval.anoba.home.ContentDetailScreen
 import com.neval.anoba.home.ContentType
 import com.neval.anoba.home.SharedFeedCard
 import com.neval.anoba.home.SharedFeedItem
-import com.neval.anoba.login.LoginScreen
+import com.neval.anoba.login.AuthContainerView
 import com.neval.anoba.market.MarketContainerView
 import com.neval.anoba.profile.ProfileScreen
 import com.neval.anoba.ui.theme.AnobaTheme
@@ -29,10 +30,8 @@ fun App() {
         var isAuthenticated by remember { mutableStateOf(false) }
 
         if (!isAuthenticated) {
-            LoginScreen(
-                onLoginSuccess = { isAuthenticated = true },
-                onGuestLogin = { isAuthenticated = true },
-                onNavigateSignUp = { isAuthenticated = true }
+            AuthContainerView(
+                onLoginSuccess = { isAuthenticated = true }
             )
         } else {
             MainAppScreen()
@@ -117,6 +116,8 @@ private fun NavItem(
 
 @Composable
 private fun AnobaHomeView() {
+    var selectedItem by remember { mutableStateOf<SharedFeedItem?>(null) }
+
     val feedItems = remember {
         listOf(
             SharedFeedItem(
@@ -164,43 +165,53 @@ private fun AnobaHomeView() {
         )
     }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(14.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        item {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                color = Color(0xFF1E293B)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+    if (selectedItem != null) {
+        ContentDetailScreen(
+            item = selectedItem,
+            onNavigateBack = { selectedItem = null }
+        )
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(14.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            item {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    color = Color(0xFF1E293B)
                 ) {
-                    Surface(
-                        shape = CircleShape,
-                        color = Color(0xFFFFD700),
-                        modifier = Modifier.size(44.dp)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Text("A", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                        Surface(
+                            shape = CircleShape,
+                            color = Color(0xFFFFD700),
+                            modifier = Modifier.size(44.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Text("A", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                            }
                         }
-                    }
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column {
-                        Text("Anoba iOS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                        Text("Connect, Chat & Time Capsule", color = Color(0xFF94A3B8), fontSize = 12.sp)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column {
+                            Text("Anoba iOS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Text("Connect, Chat & Time Capsule", color = Color(0xFF94A3B8), fontSize = 12.sp)
+                        }
                     }
                 }
             }
-        }
 
-        items(feedItems, key = { it.id }) { item ->
-            SharedFeedCard(item = item)
+            items(feedItems, key = { it.id }) { item ->
+                SharedFeedCard(
+                    item = item,
+                    onItemClick = { selectedItem = it }
+                )
+            }
         }
     }
 }
