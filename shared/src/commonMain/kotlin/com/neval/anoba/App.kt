@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.DynamicFeed
 import androidx.compose.material.icons.filled.Edit
@@ -17,9 +18,9 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.PhotoLibrary
-import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.ShoppingBag
+import androidx.compose.material.icons.outlined.PushPin
+import androidx.compose.material.icons.outlined.ShoppingBag
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -141,7 +142,7 @@ private fun AnobaHomeView() {
                 id = "feed_1",
                 type = ContentType.LETTER,
                 title = "*Anoba'ya Hoş Geldiniz! 🌍✨",
-                description = "Bu uygulama, sınırları ortadan kaldıran ve iletişimi daha canlı kılan dijital bir köprü olması için tasarlandı.\n• 📜 İçeriklerinizi taslak olarak kaydedebilir; istediğiniz zaman...",
+                description = "Bu uygulama, sınırları ortadan kaldırarak iletişimi daha canlı kılan dijital bir köprü olması için tasarlandı.\n• 📜 İçeriklerinizi taslak olarak kaydedebilir; istediğiniz zaman...",
                 mediaUrl = null,
                 ownerId = "anoba_official",
                 username = "Anoba",
@@ -177,36 +178,39 @@ private fun AnobaHomeView() {
         )
     } else {
         Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF8FAFC))) {
-            // 🚀 BİREBİR ANDROID TOP ACTION BAR (Açık Beyaz Tema)
+            // 🚀 ANDROID İLE %100 BİREBİR TOP ACTION BAR
             Surface(
                 color = Color.White,
                 shadowElevation = 2.dp,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 8.dp, vertical = 4.dp)) {
-                    // 1. Satır İkonlar (Üst Bitişik)
+                Column(modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 6.dp, vertical = 2.dp)) {
+                    // 1. Satır: SOLDA Menü + Çiçek + 3 Nokta + İçi Boş Mağaza, SAĞDA Arama + İçi Boş İğne + Takip + Dünya + Yeşil Chat
                     Row(
-                        modifier = Modifier.fillMaxWidth().height(48.dp),
+                        modifier = Modifier.fillMaxWidth().height(44.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            IconButton(onClick = {}) {
-                                Icon(Icons.Default.Menu, contentDescription = "Menü", tint = AnobaNavy)
+                        // SOLA YATKIN İKONLAR (Boşluk Azaltıldı)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(1.dp)
+                        ) {
+                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                Icon(Icons.Default.Menu, contentDescription = "Menü", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
 
                             Box(
                                 modifier = Modifier
+                                    .padding(horizontal = 2.dp)
                                     .size(12.dp)
                                     .clip(CircleShape)
                                     .background(Color(0xFFF06292))
                             )
 
-                            Spacer(modifier = Modifier.width(4.dp))
-
                             Box {
-                                IconButton(onClick = { showMoreMenu = true }) {
-                                    Icon(Icons.Default.MoreVert, contentDescription = "3 Nokta", tint = AnobaNavy)
+                                IconButton(onClick = { showMoreMenu = true }, modifier = Modifier.size(32.dp)) {
+                                    Icon(Icons.Default.MoreVert, contentDescription = "3 Nokta", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                                 }
 
                                 DropdownMenu(
@@ -228,49 +232,67 @@ private fun AnobaHomeView() {
                                 }
                             }
 
-                            IconButton(onClick = {}) {
-                                Icon(Icons.Default.ShoppingBag, contentDescription = "Pazar Yeri", tint = AnobaNavy)
+                            // İÇİ BOŞ MAĞAZA İKONU (Android Birebir)
+                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                Icon(Icons.Outlined.ShoppingBag, contentDescription = "Pazar Yeri", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
                         }
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            IconButton(onClick = {}) {
-                                Icon(Icons.Default.Search, contentDescription = "Arama", tint = Color(0xFF1E88E5))
+                        // SAĞA YATKIN İKONLAR (Boşluk Azaltıldı)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(1.dp)
+                        ) {
+                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                Icon(Icons.Default.Search, contentDescription = "Arama", tint = Color(0xFF0288D1), modifier = Modifier.size(22.dp))
                             }
-                            IconButton(onClick = {}) {
-                                Icon(Icons.Default.PushPin, contentDescription = "Sabitlenenler", tint = AnobaNavy)
+
+                            // İÇİ BOŞ İĞNE İKONU (Android Birebir)
+                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                Icon(Icons.Outlined.PushPin, contentDescription = "Sabitlenenler", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
-                            IconButton(onClick = {}) {
-                                Icon(Icons.Default.People, contentDescription = "Takip Edilenler", tint = AnobaNavy)
+
+                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                Icon(Icons.Default.People, contentDescription = "Takip Edilenler", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
-                            IconButton(onClick = {}) {
-                                Icon(Icons.Default.Language, contentDescription = "Dünya Haritası", tint = AnobaNavy)
+
+                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                Icon(Icons.Default.Language, contentDescription = "Dünya Haritası", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
-                            IconButton(onClick = {}) {
-                                Icon(Icons.Default.Notifications, contentDescription = "Bildirimler", tint = Color(0xFF4CAF50))
+
+                            // YEŞİL CHAT İKONU (Android Birebir)
+                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = "Sohbet", tint = Color(0xFF2E7D32), modifier = Modifier.size(22.dp))
                             }
                         }
                     }
 
-                    // 2. Satır: SOLDA Lacivert MOZAİK Butonu, SAĞDA 5 Renkli Kare Kart
+                    // SATIRLAR ARASI ÇİZGİ (Divider)
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 2.dp),
+                        thickness = 0.5.dp,
+                        color = Color.LightGray.copy(alpha = 0.5f)
+                    )
+
+                    // 2. Satır: SOLDA "MOZAİK / Reklam İçerir", SAĞDA 5 Renkli Kare Kart
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp),
+                        modifier = Modifier.fillMaxWidth().padding(top = 2.dp, bottom = 4.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // SOLDA: MOZAİK Butonu (Koyu Lacivert)
+                        // SOLDA: MOZAİK Butonu (Koyu Lacivert) + Reklam İçerir
                         Surface(
                             shape = RoundedCornerShape(12.dp),
-                            color = AnobaNavy,
+                            color = Color(0xFF2C3E50),
                             modifier = Modifier.height(38.dp).clickable { }
                         ) {
                             Column(
-                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 4.dp),
+                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 3.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
                                 Text("MOZAİK", color = Color.White, fontWeight = FontWeight.Black, fontSize = 11.sp)
-                                Text("Reklam İçerir", color = Color.LightGray, fontSize = 8.sp)
+                                Text("Reklam İçerir", color = Color(0xFF90A4AE), fontSize = 8.sp)
                             }
                         }
 
