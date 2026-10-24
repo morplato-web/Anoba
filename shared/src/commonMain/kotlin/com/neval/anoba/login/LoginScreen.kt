@@ -71,7 +71,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(48.dp))
 
             Text(
-                text = "Anoba'ya Hoş Geldiniz 🚀",
+                text = "Anoba'ya Hoş Geldiniz",
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
