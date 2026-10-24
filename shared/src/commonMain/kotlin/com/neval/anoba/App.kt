@@ -18,6 +18,7 @@ import com.neval.anoba.chat.ui.ChatHomeScreen
 import com.neval.anoba.home.ContentType
 import com.neval.anoba.home.SharedFeedCard
 import com.neval.anoba.home.SharedFeedItem
+import com.neval.anoba.login.LoginScreen
 import com.neval.anoba.market.MarketContainerView
 import com.neval.anoba.profile.ProfileScreen
 import com.neval.anoba.ui.theme.AnobaTheme
@@ -25,46 +26,60 @@ import com.neval.anoba.ui.theme.AnobaTheme
 @Composable
 fun App() {
     AnobaTheme {
-        var currentTab by remember { mutableStateOf(0) }
+        var isAuthenticated by remember { mutableStateOf(false) }
 
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color(0xFF0F172A)
-        ) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                // Main Content View
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                ) {
-                    when (currentTab) {
-                        0 -> AnobaHomeView()
-                        1 -> AnobaMarketView()
-                        2 -> AnobaChatView()
-                        3 -> AnobaProfileView()
-                    }
+        if (!isAuthenticated) {
+            LoginScreen(
+                onLoginSuccess = { isAuthenticated = true },
+                onNavigateSignUp = { isAuthenticated = true }
+            )
+        } else {
+            MainAppScreen()
+        }
+    }
+}
+
+@Composable
+private fun MainAppScreen() {
+    var currentTab by remember { mutableStateOf(0) }
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color(0xFF0F172A)
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            // Main Content View
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
+                when (currentTab) {
+                    0 -> AnobaHomeView()
+                    1 -> AnobaMarketView()
+                    2 -> AnobaChatView()
+                    3 -> AnobaProfileView()
                 }
+            }
 
-                // Custom Bulletproof Bottom Navigation Bar
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color(0xFF1E293B),
-                    shadowElevation = 8.dp
+            // Custom Bulletproof Bottom Navigation Bar
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = Color(0xFF1E293B),
+                shadowElevation = 8.dp
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(64.dp)
+                        .padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(64.dp)
-                            .padding(horizontal = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        NavItem("🏠", "Ana Sayfa", currentTab == 0) { currentTab = 0 }
-                        NavItem("🛒", "Pazar Yeri", currentTab == 1) { currentTab = 1 }
-                        NavItem("💬", "Sohbet", currentTab == 2) { currentTab = 2 }
-                        NavItem("👤", "Profil", currentTab == 3) { currentTab = 3 }
-                    }
+                    NavItem("🏠", "Ana Sayfa", currentTab == 0) { currentTab = 0 }
+                    NavItem("🛒", "Pazar Yeri", currentTab == 1) { currentTab = 1 }
+                    NavItem("💬", "Sohbet", currentTab == 2) { currentTab = 2 }
+                    NavItem("👤", "Profil", currentTab == 3) { currentTab = 3 }
                 }
             }
         }
