@@ -54,7 +54,7 @@ fun SignUpScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = primaryColor)
                     }
-                    Text("Kayıt Ol ✨", color = primaryColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text("Kayıt Ol", color = primaryColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -91,7 +91,7 @@ fun SignUpScreen(
                 border = BorderStroke(1.dp, Color.LightGray)
             ) {
                 Text(
-                    text = "🌐 Google ile Hızlı Kayıt Ol",
+                    text = "Google ile Hızlı Kayıt Ol",
                     color = Color.Black,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp
@@ -204,7 +204,7 @@ fun SignUpScreen(
                     CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White)
                 } else {
                     Text(
-                        text = "Kayıt Ol 🚀",
+                        text = "Kayıt Ol",
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = Color.White

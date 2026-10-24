@@ -185,7 +185,7 @@ fun LoginScreen(
 
             TextButton(onClick = onNavigateSignUp) {
                 Text(
-                    text = "Hesabınız yok mu? Kayıt Olun ✨",
+                    text = "Hesabınız yok mu? Kayıt Olun",
                     color = primaryColor,
                     fontSize = 14.sp,
                     textDecoration = TextDecoration.Underline
