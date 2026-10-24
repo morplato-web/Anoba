@@ -56,6 +56,7 @@ fun LoginScreen(
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var rememberMe by remember { mutableStateOf(true) }
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
 
@@ -83,7 +84,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 🚀 GOOGLE İLE DEVAM ET BUTONU (4 Renkli Resmi Google Logosu İle)
+            // 🚀 GOOGLE İLE DEVAM ET BUTONU
             OutlinedButton(
                 onClick = onLoginSuccess,
                 modifier = Modifier
@@ -152,7 +153,32 @@ fun LoginScreen(
                 }
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // 🚀 BENİ HATIRLA & ŞİFREMİ UNUTTUM SATIRI (Android Birebir)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = rememberMe,
+                        onCheckedChange = { rememberMe = it },
+                        colors = CheckboxDefaults.colors(checkedColor = primaryColor)
+                    )
+                    Text("Beni Hatırla", style = MaterialTheme.typography.bodyMedium, color = primaryColor)
+                }
+                TextButton(onClick = { }) {
+                    Text(
+                        text = "Şifremi Unuttum?",
+                        color = primaryColor,
+                        textDecoration = TextDecoration.Underline
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = {
