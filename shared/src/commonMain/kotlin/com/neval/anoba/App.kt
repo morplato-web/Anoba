@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.PhotoLibrary
-import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material.icons.outlined.ShoppingBag
@@ -33,6 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neval.anoba.chat.ui.ChatHomeScreen
+import com.neval.anoba.drawer.DrawerSheetContent
+import com.neval.anoba.guide.GuideScreen
 import com.neval.anoba.home.ContentDetailScreen
 import com.neval.anoba.home.ContentType
 import com.neval.anoba.home.QuarantineSheet
@@ -55,37 +56,56 @@ fun App() {
                 onLoginSuccess = { isAuthenticated = true }
             )
         } else {
-            MainAppScreen()
+            MainAppScreen(
+                onLogout = { isAuthenticated = false }
+            )
         }
     }
 }
 
 @Composable
-private fun MainAppScreen() {
+private fun MainAppScreen(
+    onLogout: () -> Unit = {}
+) {
     var activeView by remember { mutableStateOf("HOME") }
+    var isDrawerOpen by remember { mutableStateOf(false) }
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color(0xFFF8FAFC)
-    ) {
-        when (activeView) {
-            "MARKET" -> MarketContainerView()
-            "CHAT" -> ChatHomeScreen()
-            "PROFILE" -> ProfileScreen()
-            "METE" -> MeteHomeScreen(onNavigateBack = { activeView = "HOME" })
-            else -> AnobaHomeView(
-                onOpenMarket = { activeView = "MARKET" },
-                onOpenChat = { activeView = "CHAT" },
-                onOpenProfile = { activeView = "PROFILE" },
-                onOpenMete = { activeView = "METE" }
-            )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = Color(0xFFF8FAFC)
+        ) {
+            when (activeView) {
+                "MARKET" -> MarketContainerView()
+                "CHAT" -> ChatHomeScreen()
+                "PROFILE" -> ProfileScreen()
+                "GUIDE" -> GuideScreen(onNavigateBack = { activeView = "HOME" })
+                "METE" -> MeteHomeScreen(onNavigateBack = { activeView = "HOME" })
+                else -> AnobaHomeView(
+                    onOpenDrawer = { isDrawerOpen = true },
+                    onOpenMarket = { activeView = "MARKET" },
+                    onOpenChat = { activeView = "CHAT" },
+                    onOpenProfile = { activeView = "PROFILE" },
+                    onOpenMete = { activeView = "METE" }
+                )
+            }
         }
+
+        // 🚀 Orijinal Android Sol Yan Menü (Drawer)
+        DrawerSheetContent(
+            isOpen = isDrawerOpen,
+            onDismiss = { isDrawerOpen = false },
+            onNavigateProfile = { activeView = "PROFILE" },
+            onNavigateGuide = { activeView = "GUIDE" },
+            onLogout = onLogout
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AnobaHomeView(
+    onOpenDrawer: () -> Unit = {},
     onOpenMarket: () -> Unit = {},
     onOpenChat: () -> Unit = {},
     onOpenProfile: () -> Unit = {},
@@ -144,7 +164,7 @@ private fun AnobaHomeView(
         )
     } else {
         Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF8FAFC))) {
-            // 🚀 ANDROID İLE %100 BİREBİR TOP ACTION BAR (Alt Çubuksuz Sadece Üst Bar)
+            // 🚀 ANDROID İLE %100 BİREBİR TOP ACTION BAR (Sol Yan Menülü)
             Surface(
                 color = Color.White,
                 shadowElevation = 2.dp,
@@ -162,7 +182,7 @@ private fun AnobaHomeView(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Start
                         ) {
-                            IconButton(onClick = onOpenProfile, modifier = Modifier.size(32.dp)) {
+                            IconButton(onClick = onOpenDrawer, modifier = Modifier.size(32.dp)) {
                                 Icon(Icons.Default.Menu, contentDescription = "Menü", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
 
@@ -208,7 +228,7 @@ private fun AnobaHomeView(
                                 }
                             }
 
-                            // İÇİ BOŞ MAĞAZA İKONU 🛍️ -> Pazar Yeri'ni Açarsınız
+                            // İÇİ BOŞ MAĞAZA İKONU 🛍️
                             IconButton(onClick = onOpenMarket, modifier = Modifier.size(32.dp)) {
                                 Icon(Icons.Outlined.ShoppingBag, contentDescription = "Pazar Yeri", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
@@ -235,7 +255,7 @@ private fun AnobaHomeView(
                                 Icon(Icons.Default.Language, contentDescription = "Dünya Haritası", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
 
-                            // YEŞİL CHAT İKONU 💬 -> Sohbet Odalarını Açarsınız
+                            // YEŞİL CHAT İKONU 💬
                             IconButton(onClick = onOpenChat, modifier = Modifier.size(32.dp)) {
                                 Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = "Sohbet", tint = Color(0xFF2E7D32), modifier = Modifier.size(22.dp))
                             }
@@ -306,7 +326,7 @@ private fun AnobaHomeView(
                 }
             }
 
-            // Ana Akış Listesi (Sınırsız Tam Ekran Görünüm)
+            // Ana Akış Listesi
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(12.dp),
