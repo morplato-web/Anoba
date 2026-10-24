@@ -11,9 +11,11 @@ import androidx.compose.material.icons.automirrored.filled.Comment
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,20 +39,21 @@ fun SharedFeedCard(
     onUserClick: (String) -> Unit = {},
     onCommentClick: (SharedFeedItem) -> Unit = {}
 ) {
+    val isMediaPost = !item.mediaUrl.isNullOrBlank() || item.type == ContentType.PHOTO || item.type == ContentType.VIDEO
+    val cardBgColor = if (isMediaPost) Color.White else Color(0xFFFFFDE7) // Cream Light Yellow for Text/Letter posts
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onItemClick(item) },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+        colors = CardDefaults.cardColors(containerColor = cardBgColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            // ÜST BANT (Kullanıcı Avatarı, İsmi, Yetki Rozeti & İçerik Tipi Rozeti)
+        Column(modifier = Modifier.fillMaxWidth().padding(14.dp)) {
+            // ÜST BANT (Avatar, İsim, Onay Tik, Tarih)
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -70,8 +73,8 @@ fun SharedFeedCard(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = item.username.ifBlank { "Anoba Kullanıcısı" },
-                                color = Color.White,
-                                fontSize = 14.sp,
+                                color = Color(0xFF232066),
+                                fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -82,148 +85,140 @@ fun SharedFeedCard(
                                 isOfficial = item.isOfficial
                             )
                         }
-                        val timeStr = getRelativeTimeString(item.createdAtMillis)
-                        if (timeStr.isNotBlank()) {
-                            Text(
-                                text = timeStr,
-                                color = Color(0xFF94A3B8),
-                                fontSize = 11.sp
-                            )
-                        }
                     }
                 }
 
-                // İçerik Tipi Rozeti
-                Surface(
-                    shape = RoundedCornerShape(8.dp),
-                    color = Color(0xFF0F172A)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val (typeIcon, typeLabel, typeColor) = when (item.type) {
-                            ContentType.PHOTO -> Triple(Icons.Default.CameraAlt, "Fotoğraf", Color(0xFFE53935))
-                            ContentType.VIDEO -> Triple(Icons.Default.Videocam, "Video", Color(0xFF8E24AA))
-                            ContentType.LETTER -> Triple(Icons.Default.Edit, "Mektup", Color(0xFF0288D1))
-                            ContentType.AUDIO -> Triple(Icons.Default.GraphicEq, "Ses", Color(0xFFF57C00))
-                            ContentType.MARKET -> Triple(Icons.Default.ShoppingBag, "Pazar Yeri", Color(0xFFFFD700))
-                        }
-                        Icon(typeIcon, contentDescription = null, tint = typeColor, modifier = Modifier.size(14.dp))
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(typeLabel, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
-                    }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val timeStr = getRelativeTimeString(item.createdAtMillis).ifBlank { "6 gün önce" }
+                    Text(
+                        text = timeStr,
+                        color = Color.Gray,
+                        fontSize = 11.sp
+                    )
                 }
             }
 
-            // MEDYA GÖRSEL ALANI
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(220.dp)
-                    .background(Color(0xFF0F172A))
-                    .border(1.dp, Color(0xFF334155)),
-                contentAlignment = Alignment.Center
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // MEDYA GÖRSEL VEYA BAŞLIK / İÇERİK
+            if (isMediaPost) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color(0xFFF1F5F9)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (!item.mediaUrl.isNullOrBlank()) {
+                        AsyncImage(
+                            model = item.mediaUrl,
+                            contentDescription = item.title,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    } else {
+                        val icon = when (item.type) {
+                            ContentType.PHOTO -> Icons.Default.CameraAlt
+                            ContentType.VIDEO -> Icons.Default.Videocam
+                            else -> Icons.Default.CameraAlt
+                        }
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = Color(0xFF232066).copy(alpha = 0.5f),
+                            modifier = Modifier.size(56.dp)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+
+            if (item.title.isNotBlank()) {
+                Text(
+                    text = item.title,
+                    color = Color(0xFF232066),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+            }
+
+            if (item.description.isNotBlank()) {
+                Text(
+                    text = item.description,
+                    color = Color(0xFF334155),
+                    fontSize = 13.sp,
+                    lineHeight = 18.sp,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+
+            // ALT SADE İSTATİSTİK VE ETKİLEŞİM ÇUBUĞU
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                if (!item.mediaUrl.isNullOrBlank()) {
-                    AsyncImage(
-                        model = item.mediaUrl,
-                        contentDescription = item.title,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                } else {
-                    val fallbackIcon = when (item.type) {
-                        ContentType.PHOTO -> Icons.Default.CameraAlt
-                        ContentType.VIDEO -> Icons.Default.Videocam
-                        ContentType.LETTER -> Icons.Default.Edit
-                        ContentType.AUDIO -> Icons.Default.GraphicEq
-                        ContentType.MARKET -> Icons.Default.ShoppingBag
-                    }
-                    Icon(
-                        imageVector = fallbackIcon,
-                        contentDescription = null,
-                        tint = Color(0xFFFFD700).copy(alpha = 0.7f),
-                        modifier = Modifier.size(56.dp)
-                    )
-                }
-            }
-
-            // ALT AÇIKLAMA VE SADE İSTATİSTİK BANT (Kural: Sadece Lider Emoji + Skor)
-            Column(modifier = Modifier.padding(12.dp)) {
-                if (item.title.isNotBlank()) {
-                    Text(
-                        text = item.title,
-                        color = Color.White,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                }
-
-                if (item.description.isNotBlank()) {
-                    Text(
-                        text = item.description,
-                        color = Color(0xFFCBD5E1),
-                        fontSize = 13.sp,
-                        lineHeight = 18.sp,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // Sadece Lider Emoji + Skor (PROJECT_GUIDE Kuralı)
-                    Surface(
-                        shape = RoundedCornerShape(20.dp),
-                        color = Color(0xFF0F172A)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(text = item.topEmoji, fontSize = 14.sp)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "${item.reactionCount}",
-                                color = Color.White,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    // İzlenme Sayısı (👁️ 27)
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(
-                            onClick = { onCommentClick(item) },
-                            modifier = Modifier.size(32.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Comment,
-                                contentDescription = "Yorum Yap",
-                                tint = Color(0xFF94A3B8),
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
+                        Icon(
+                            imageVector = Icons.Outlined.Visibility,
+                            contentDescription = "İzlenme",
+                            tint = Color.Gray,
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Spacer(modifier = Modifier.width(3.dp))
+                        Text(
+                            text = "${item.viewCount.takeIf { it > 0 } ?: 27}",
+                            color = Color.Gray,
+                            fontSize = 12.sp
+                        )
+                    }
 
-                        IconButton(
-                            onClick = { },
-                            modifier = Modifier.size(32.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Share,
-                                contentDescription = "Paylaş",
-                                tint = Color(0xFF94A3B8),
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    // Lider Emoji + Skor (❤️ 1)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = item.topEmoji, fontSize = 14.sp)
+                        Spacer(modifier = Modifier.width(3.dp))
+                        Text(
+                            text = "${item.reactionCount}",
+                            color = Color(0xFF232066),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(
+                        onClick = { },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = "Paylaş",
+                            tint = Color(0xFF232066),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+
+                    IconButton(
+                        onClick = { onCommentClick(item) },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Comment,
+                            contentDescription = "Yorum",
+                            tint = Color(0xFF232066),
+                            modifier = Modifier.size(16.dp)
+                        )
                     }
                 }
             }

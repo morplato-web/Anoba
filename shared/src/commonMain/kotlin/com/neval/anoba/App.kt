@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +38,7 @@ import com.neval.anoba.home.SharedFeedItem
 import com.neval.anoba.login.AuthContainerView
 import com.neval.anoba.market.MarketContainerView
 import com.neval.anoba.profile.ProfileScreen
+import com.neval.anoba.ui.theme.AnobaNavy
 import com.neval.anoba.ui.theme.AnobaTheme
 
 @Composable
@@ -60,7 +62,7 @@ private fun MainAppScreen() {
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color(0xFF0F172A)
+        color = Color(0xFFF8FAFC)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
@@ -78,7 +80,7 @@ private fun MainAppScreen() {
 
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                color = Color(0xFF1E293B),
+                color = Color.White,
                 shadowElevation = 8.dp
             ) {
                 Row(
@@ -122,7 +124,7 @@ private fun NavItem(
             text = label,
             fontSize = 11.sp,
             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-            color = if (isSelected) Color(0xFFFFD700) else Color(0xFF94A3B8)
+            color = if (isSelected) AnobaNavy else Color(0xFF94A3B8)
         )
     }
 }
@@ -137,45 +139,33 @@ private fun AnobaHomeView() {
         listOf(
             SharedFeedItem(
                 id = "feed_1",
-                type = ContentType.PHOTO,
-                title = "İstanbul Boğazında Gün Batımı 🌅",
-                description = "Zaman kapsülüne kaydedilen eşsiz bir manzara karesi.",
-                mediaUrl = null,
-                ownerId = "u1",
-                username = "Ahmet Y.",
-                userBadgeType = "PIONEER",
-                isOfficial = false,
-                topEmoji = "❤️",
-                reactionCount = 84,
-                createdAtMillis = 1710000000000L
-            ),
-            SharedFeedItem(
-                id = "feed_2",
                 type = ContentType.LETTER,
-                title = "Geleceğe Mektup: 2026 Hedefleri ✉️",
-                description = "Zaman kapsülü kilitlendi, 1 yıl sonra açılacak.",
+                title = "*Anoba'ya Hoş Geldiniz! 🌍✨",
+                description = "Bu uygulama, sınırları ortadan kaldıran ve iletişimi daha canlı kılan dijital bir köprü olması için tasarlandı.\n• 📜 İçeriklerinizi taslak olarak kaydedebilir; istediğiniz zaman...",
                 mediaUrl = null,
                 ownerId = "anoba_official",
                 username = "Anoba",
                 userBadgeType = "OFFICIAL",
                 isOfficial = true,
-                topEmoji = "🔥",
-                reactionCount = 156,
-                createdAtMillis = 1710000050000L
+                topEmoji = "❤️",
+                reactionCount = 1,
+                viewCount = 27,
+                createdAtMillis = 1710000000000L
             ),
             SharedFeedItem(
-                id = "feed_3",
-                type = ContentType.AUDIO,
-                title = "Sesli Not: Doğa Sesi & Yağmur 🎧",
-                description = "2 dakikalık huzur veren doğa ses kaydı.",
+                id = "feed_2",
+                type = ContentType.PHOTO,
+                title = "Betty",
+                description = "Bahçede güneşli bir gün karesi.",
                 mediaUrl = null,
-                ownerId = "u2",
-                username = "Zeynep K.",
+                ownerId = "u_betty",
+                username = "Betty",
                 userBadgeType = "NONE",
                 isOfficial = false,
-                topEmoji = "👏",
-                reactionCount = 42,
-                createdAtMillis = 1710000100000L
+                topEmoji = "❤️",
+                reactionCount = 12,
+                viewCount = 104,
+                createdAtMillis = 1710000050000L
             )
         )
     }
@@ -186,15 +176,15 @@ private fun AnobaHomeView() {
             onNavigateBack = { selectedItem = null }
         )
     } else {
-        Column(modifier = Modifier.fillMaxSize()) {
-            // 🚀 BİREBİR ANDROID TOP ACTION BAR (Tüm İkonlar)
+        Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF8FAFC))) {
+            // 🚀 BİREBİR ANDROID TOP ACTION BAR (Açık Beyaz Tema)
             Surface(
-                color = Color(0xFF1E293B),
-                shadowElevation = 4.dp,
+                color = Color.White,
+                shadowElevation = 2.dp,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 8.dp, vertical = 4.dp)) {
-                    // 1. Satır İkonlar
+                    // 1. Satır İkonlar (Üst Bitişik)
                     Row(
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -202,7 +192,7 @@ private fun AnobaHomeView() {
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             IconButton(onClick = {}) {
-                                Icon(Icons.Default.Menu, contentDescription = "Menü", tint = Color.White)
+                                Icon(Icons.Default.Menu, contentDescription = "Menü", tint = AnobaNavy)
                             }
 
                             Box(
@@ -216,7 +206,7 @@ private fun AnobaHomeView() {
 
                             Box {
                                 IconButton(onClick = { showMoreMenu = true }) {
-                                    Icon(Icons.Default.MoreVert, contentDescription = "3 Nokta", tint = Color.White)
+                                    Icon(Icons.Default.MoreVert, contentDescription = "3 Nokta", tint = AnobaNavy)
                                 }
 
                                 DropdownMenu(
@@ -239,49 +229,81 @@ private fun AnobaHomeView() {
                             }
 
                             IconButton(onClick = {}) {
-                                Icon(Icons.Default.ShoppingBag, contentDescription = "Pazar Yeri", tint = Color(0xFFFFD700))
+                                Icon(Icons.Default.ShoppingBag, contentDescription = "Pazar Yeri", tint = AnobaNavy)
                             }
                         }
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             IconButton(onClick = {}) {
-                                Icon(Icons.Default.Search, contentDescription = "Arama", tint = Color.White)
+                                Icon(Icons.Default.Search, contentDescription = "Arama", tint = Color(0xFF1E88E5))
                             }
                             IconButton(onClick = {}) {
-                                Icon(Icons.Default.PushPin, contentDescription = "Sabitlenenler", tint = Color.White)
+                                Icon(Icons.Default.PushPin, contentDescription = "Sabitlenenler", tint = AnobaNavy)
                             }
                             IconButton(onClick = {}) {
-                                Icon(Icons.Default.People, contentDescription = "Takip Edilenler", tint = Color.White)
+                                Icon(Icons.Default.People, contentDescription = "Takip Edilenler", tint = AnobaNavy)
                             }
                             IconButton(onClick = {}) {
-                                Icon(Icons.Default.Language, contentDescription = "Dünya Haritası", tint = Color.White)
+                                Icon(Icons.Default.Language, contentDescription = "Dünya Haritası", tint = AnobaNavy)
                             }
                             IconButton(onClick = {}) {
-                                Icon(Icons.Default.Notifications, contentDescription = "Bildirimler", tint = Color(0xFFFFD700))
+                                Icon(Icons.Default.Notifications, contentDescription = "Bildirimler", tint = Color(0xFF4CAF50))
                             }
                         }
                     }
 
-                    // 2. Satır Hızlı Üretim Butonları (Kamera, Kalem, Galeri, İçeriklerim)
+                    // 2. Satır: SOLDA Lacivert MOZAİK Butonu, SAĞDA 5 Renkli Kare Kart
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp),
-                        horizontalArrangement = Arrangement.End,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // SOLDA: MOZAİK Butonu (Koyu Lacivert)
                         Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = Color(0xFF0F172A)
+                            shape = RoundedCornerShape(12.dp),
+                            color = AnobaNavy,
+                            modifier = Modifier.height(38.dp).clickable { }
                         ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                            Column(
+                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 4.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
                             ) {
-                                Icon(Icons.Default.CameraAlt, contentDescription = "Çek", tint = Color(0xFFE53935), modifier = Modifier.size(20.dp))
-                                Icon(Icons.Default.Edit, contentDescription = "Yaz", tint = Color(0xFF0288D1), modifier = Modifier.size(20.dp))
-                                Icon(Icons.Default.PhotoLibrary, contentDescription = "Seç", tint = Color(0xFFFFD700), modifier = Modifier.size(20.dp))
-                                Icon(Icons.Default.DynamicFeed, contentDescription = "Yönet", tint = Color.White, modifier = Modifier.size(20.dp))
+                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.Black, fontSize = 11.sp)
+                                Text("Reklam İçerir", color = Color.LightGray, fontSize = 8.sp)
                             }
+                        }
+
+                        // SAĞDA: 5 Renkli Kare Kart (Zil, Kamera, Kalem, Galeri, İçeriklerim)
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            SquareActionCard(
+                                icon = Icons.Default.Notifications,
+                                bgColor = Color(0xFFFFF8E1),
+                                iconColor = Color(0xFFE53935)
+                            )
+                            SquareActionCard(
+                                icon = Icons.Default.CameraAlt,
+                                bgColor = Color(0xFFF3E5F5),
+                                iconColor = Color(0xFF8E24AA)
+                            )
+                            SquareActionCard(
+                                icon = Icons.Default.Edit,
+                                bgColor = Color(0xFFE1F5FE),
+                                iconColor = Color(0xFF0288D1)
+                            )
+                            SquareActionCard(
+                                icon = Icons.Default.PhotoLibrary,
+                                bgColor = Color(0xFFFFEBEE),
+                                iconColor = Color(0xFFE53935)
+                            )
+                            SquareActionCard(
+                                icon = Icons.Default.DynamicFeed,
+                                bgColor = Color(0xFFECEFF1),
+                                iconColor = Color(0xFF455A64)
+                            )
                         }
                     }
                 }
@@ -290,8 +312,8 @@ private fun AnobaHomeView() {
             // Ana Akış Listesi
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(14.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                contentPadding = PaddingValues(12.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(feedItems, key = { it.id }) { item ->
                     SharedFeedCard(
@@ -300,6 +322,24 @@ private fun AnobaHomeView() {
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun SquareActionCard(
+    icon: ImageVector,
+    bgColor: Color,
+    iconColor: Color,
+    onClick: () -> Unit = {}
+) {
+    Surface(
+        shape = RoundedCornerShape(8.dp),
+        color = bgColor,
+        modifier = Modifier.size(34.dp).clickable { onClick() }
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Icon(imageVector = icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(18.dp))
         }
     }
 }
