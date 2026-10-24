@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.neval.anoba.common.ui.GoogleLogoIcon
 
 @Composable
 fun AuthContainerView(
@@ -82,7 +83,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 🚀 GOOGLE İLE DEVAM ET BUTONU
+            // 🚀 GOOGLE İLE DEVAM ET BUTONU (4 Renkli Resmi Google Logosu İle)
             OutlinedButton(
                 onClick = onLoginSuccess,
                 modifier = Modifier
@@ -92,7 +93,14 @@ fun LoginScreen(
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
                 border = BorderStroke(1.dp, Color.LightGray)
             ) {
-                Text("🌐 Google ile Devam Et", color = Color.Black, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    GoogleLogoIcon(size = 20.dp)
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text("Google ile Devam Et", color = Color.Black, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                }
             }
 
             Spacer(modifier = Modifier.height(20.dp))

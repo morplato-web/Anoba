@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.neval.anoba.common.ui.GoogleLogoIcon
 
 @Composable
 fun SignUpScreen(
@@ -61,7 +62,7 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 🚀 GOOGLE İLE HIZLI KAYIT BUTONU (Orijinal Google İkonu İle)
+            // 🚀 GOOGLE İLE HIZLI KAYIT BUTONU (4 Renkli Resmi Google Logosu İle)
             OutlinedButton(
                 onClick = onSignUpSuccess,
                 modifier = Modifier
@@ -75,8 +76,8 @@ fun SignUpScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text("🌐 ", fontSize = 18.sp)
-                    Spacer(modifier = Modifier.width(6.dp))
+                    GoogleLogoIcon(size = 20.dp)
+                    Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = "Google ile Hızlı Kayıt Ol",
                         color = Color.Black,
