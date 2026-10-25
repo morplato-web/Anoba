@@ -11,6 +11,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.DynamicFeed
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -30,10 +31,10 @@ import com.neval.anoba.ui.theme.AnobaNavy
 fun ProfileScreen(
     onNavigateBack: () -> Unit = {}
 ) {
-    var activeSubScreen by remember { mutableStateOf<String?>(null) } // "MY_CONTENT", "EDIT", "BLOCKED"
-    var username by remember { mutableStateOf("Tarık Özgür") }
+    var activeSubScreen by remember { mutableStateOf<String?>(null) }
+    var username by remember { mutableStateOf("Anoba") }
     var userEmail by remember { mutableStateOf("morplato@gmail.com") }
-    var userBadgeType by remember { mutableStateOf("PIONEER") }
+    var userBadgeType by remember { mutableStateOf("OFFICIAL") }
     var followerCount by remember { mutableStateOf(142) }
     var followingCount by remember { mutableStateOf(38) }
 
@@ -60,24 +61,16 @@ fun ProfileScreen(
                                     Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = AnobaNavy)
                                 }
                                 Text(
-                                    text = "👤 Profilim",
+                                    text = "Profilim",
                                     color = AnobaNavy,
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
 
-                            Surface(
-                                shape = RoundedCornerShape(10.dp),
-                                color = Color(0xFFFFD700)
-                            ) {
-                                Text(
-                                    text = "Öncü Üye ✨",
-                                    color = Color.Black,
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
-                                )
+                            // Sağda Home İkonu (Android Birebir)
+                            IconButton(onClick = onNavigateBack) {
+                                Icon(Icons.Default.Home, contentDescription = "Ana Sayfa", tint = AnobaNavy)
                             }
                         }
                     }
@@ -273,6 +266,21 @@ fun ProfileScreen(
                             Spacer(modifier = Modifier.width(12.dp))
                             Text("Engellenen Kullanıcılar 🚫", color = Color(0xFFEF4444), fontSize = 15.sp)
                         }
+                    }
+
+                    Spacer(modifier = Modifier.height(28.dp))
+
+                    // 🚀 UYGULAMAYI KAPAT BUTONU (Android Birebir)
+                    OutlinedButton(
+                        onClick = onNavigateBack,
+                        modifier = Modifier.fillMaxWidth().height(52.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFEF4444)),
+                        border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
+                            brush = androidx.compose.ui.graphics.SolidColor(Color(0xFFEF4444))
+                        )
+                    ) {
+                        Text("Uygulamayı Kapat", color = Color(0xFFEF4444), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
