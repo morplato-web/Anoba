@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.neval.anoba.chat.ui.ChatHomeScreen
 import com.neval.anoba.drawer.DrawerSheetContent
 import com.neval.anoba.guide.GuideScreen
@@ -192,194 +193,197 @@ private fun AnobaHomeView(
         )
     }
 
-    // 🌸 Pembe Çiçek Animasyon Efekti Overlay (Android Birebir Süzülen Efekt)
-    HomeAnimationOverlay(
-        isActive = showHomeAnimation,
-        onFinished = { showHomeAnimation = false }
-    )
-
-    if (selectedItem != null) {
-        ContentDetailScreen(
-            item = selectedItem,
-            onNavigateBack = { selectedItem = null }
-        )
-    } else {
-        Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF8FAFC))) {
-            // 🚀 ANDROID İLE %100 BİREBİR TOP ACTION BAR
-            Surface(
-                color = Color.White,
-                shadowElevation = 2.dp,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 6.dp, vertical = 2.dp)) {
-                    // 1. Satır: SOLDA Menü + Çiçek + 3 Nokta + İçi Boş Mağaza, SAĞDA Arama + İçi Boş İğne + Takip + Dünya + Yeşil Chat
-                    Row(
-                        modifier = Modifier.fillMaxWidth().height(44.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (selectedItem != null) {
+            ContentDetailScreen(
+                item = selectedItem,
+                onNavigateBack = { selectedItem = null }
+            )
+        } else {
+            Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF8FAFC))) {
+                // 🚀 ANDROID İLE %100 BİREBİR TOP ACTION BAR
+                Surface(
+                    color = Color.White,
+                    shadowElevation = 2.dp,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 6.dp, vertical = 2.dp)) {
+                        // 1. Satır: SOLDA Menü + Çiçek + 3 Nokta + İçi Boş Mağaza, SAĞDA Arama + İçi Boş İğne + Takip + Dünya + Yeşil Chat
                         Row(
+                            modifier = Modifier.fillMaxWidth().height(44.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            IconButton(onClick = onOpenDrawer, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Default.Menu, contentDescription = "Menü", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                            }
-
-                            Spacer(modifier = Modifier.width(4.dp))
-
-                            // Pembe Çiçek Yuvarlağı (Tıklanabilir Animasyon)
-                            Box(
-                                modifier = Modifier
-                                    .size(14.dp)
-                                    .clip(CircleShape)
-                                    .background(Color(0xFFF06292))
-                                    .clickable { showHomeAnimation = true }
-                            )
-
-                            Spacer(modifier = Modifier.width(4.dp))
-
-                            Box {
-                                IconButton(onClick = { showMoreMenu = true }, modifier = Modifier.size(32.dp)) {
-                                    Icon(Icons.Default.MoreVert, contentDescription = "3 Nokta", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                                }
-
-                                DropdownMenu(
-                                    expanded = showMoreMenu,
-                                    onDismissRequest = { showMoreMenu = false }
-                                ) {
-                                    DropdownMenuItem(
-                                        text = { Text("⭐ 1000+ Popüler") },
-                                        onClick = {
-                                            showMoreMenu = false
-                                            showPopularSheet = true
-                                        }
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("🛡️ Karantina Havuzu") },
-                                        onClick = {
-                                            showMoreMenu = false
-                                            showQuarantineSheet = true
-                                        }
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("🇹🇷 Mete") },
-                                        onClick = {
-                                            showMoreMenu = false
-                                            onOpenMete()
-                                        }
-                                    )
-                                }
-                            }
-
-                            IconButton(onClick = onOpenMarket, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Outlined.ShoppingBag, contentDescription = "Pazar Yeri", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                            }
-                        }
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(1.dp)
-                        ) {
-                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Default.Search, contentDescription = "Arama", tint = Color(0xFF0288D1), modifier = Modifier.size(22.dp))
-                            }
-
-                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Outlined.PushPin, contentDescription = "Sabitlenenler", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                            }
-
-                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Default.People, contentDescription = "Takip Edilenler", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                            }
-
-                            IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Default.Language, contentDescription = "Dünya Haritası", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                            }
-
-                            IconButton(onClick = onOpenChat, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = "Sohbet", tint = Color(0xFF2E7D32), modifier = Modifier.size(22.dp))
-                            }
-                        }
-                    }
-
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 2.dp),
-                        thickness = 0.5.dp,
-                        color = Color.LightGray.copy(alpha = 0.5f)
-                    )
-
-                    // 2. Satır: MOZAİK / Reklam İçerir
-                    Row(
-                        modifier = Modifier.fillMaxWidth().height(42.dp).padding(top = 2.dp, bottom = 2.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            color = Color(0xFF2C3E50),
-                            modifier = Modifier.width(82.dp).fillMaxHeight().clickable { showMosaicSheet = true }
-                        ) {
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
                             ) {
-                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 10.sp, lineHeight = 11.sp, letterSpacing = 0.5.sp)
-                                Text("Reklam İçerir", color = Color(0xFFCFD8DC), fontSize = 8.sp, lineHeight = 9.sp, fontWeight = FontWeight.Bold)
+                                IconButton(onClick = onOpenDrawer, modifier = Modifier.size(32.dp)) {
+                                    Icon(Icons.Default.Menu, contentDescription = "Menü", tint = AnobaNavy, modifier = Modifier.size(22.dp))
+                                }
+
+                                Spacer(modifier = Modifier.width(4.dp))
+
+                                // Pembe Çiçek Yuvarlağı (Tıklanabilir Animasyon)
+                                Box(
+                                    modifier = Modifier
+                                        .size(14.dp)
+                                        .clip(CircleShape)
+                                        .background(Color(0xFFF06292))
+                                        .clickable { showHomeAnimation = true }
+                                )
+
+                                Spacer(modifier = Modifier.width(4.dp))
+
+                                Box {
+                                    IconButton(onClick = { showMoreMenu = true }, modifier = Modifier.size(32.dp)) {
+                                        Icon(Icons.Default.MoreVert, contentDescription = "3 Nokta", tint = AnobaNavy, modifier = Modifier.size(22.dp))
+                                    }
+
+                                    DropdownMenu(
+                                        expanded = showMoreMenu,
+                                        onDismissRequest = { showMoreMenu = false }
+                                    ) {
+                                        DropdownMenuItem(
+                                            text = { Text("⭐ 1000+ Popüler") },
+                                            onClick = {
+                                                showMoreMenu = false
+                                                showPopularSheet = true
+                                            }
+                                        )
+                                        DropdownMenuItem(
+                                            text = { Text("🛡️ Karantina Havuzu") },
+                                            onClick = {
+                                                showMoreMenu = false
+                                                showQuarantineSheet = true
+                                            }
+                                        )
+                                        DropdownMenuItem(
+                                            text = { Text("🇹🇷 Mete") },
+                                            onClick = {
+                                                showMoreMenu = false
+                                                onOpenMete()
+                                            }
+                                        )
+                                    }
+                                }
+
+                                IconButton(onClick = onOpenMarket, modifier = Modifier.size(32.dp)) {
+                                    Icon(Icons.Outlined.ShoppingBag, contentDescription = "Pazar Yeri", tint = AnobaNavy, modifier = Modifier.size(22.dp))
+                                }
+                            }
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(1.dp)
+                            ) {
+                                IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                    Icon(Icons.Default.Search, contentDescription = "Arama", tint = Color(0xFF0288D1), modifier = Modifier.size(22.dp))
+                                }
+
+                                IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                    Icon(Icons.Outlined.PushPin, contentDescription = "Sabitlenenler", tint = AnobaNavy, modifier = Modifier.size(22.dp))
+                                }
+
+                                IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                    Icon(Icons.Default.People, contentDescription = "Takip Edilenler", tint = AnobaNavy, modifier = Modifier.size(22.dp))
+                                }
+
+                                IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+                                    Icon(Icons.Default.Language, contentDescription = "Dünya Haritası", tint = AnobaNavy, modifier = Modifier.size(22.dp))
+                                }
+
+                                IconButton(onClick = onOpenChat, modifier = Modifier.size(32.dp)) {
+                                    Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = "Sohbet", tint = Color(0xFF2E7D32), modifier = Modifier.size(22.dp))
+                                }
                             }
                         }
 
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 2.dp),
+                            thickness = 0.5.dp,
+                            color = Color.LightGray.copy(alpha = 0.5f)
+                        )
+
+                        // 2. Satır: MOZAİK / Reklam İçerir
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.fillMaxWidth().height(42.dp).padding(top = 2.dp, bottom = 2.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            SquareActionCard(
-                                icon = Icons.Default.Notifications,
-                                bgColor = Color(0xFFFFF8E1),
-                                iconColor = Color(0xFFE53935)
-                            )
-                            SquareActionCard(
-                                icon = Icons.Default.CameraAlt,
-                                bgColor = Color(0xFFF3E5F5),
-                                iconColor = Color(0xFF8E24AA)
-                            )
-                            SquareActionCard(
-                                icon = Icons.Default.Edit,
-                                bgColor = Color(0xFFE1F5FE),
-                                iconColor = Color(0xFF0288D1)
-                            )
-                            SquareActionCard(
-                                icon = Icons.Default.PhotoLibrary,
-                                bgColor = Color(0xFFFFEBEE),
-                                iconColor = Color(0xFFE53935)
-                            )
-                            SquareActionCard(
-                                icon = Icons.Default.DynamicFeed,
-                                bgColor = Color(0xFFECEFF1),
-                                iconColor = Color(0xFF455A64)
-                            )
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = Color(0xFF2C3E50),
+                                modifier = Modifier.width(82.dp).fillMaxHeight().clickable { showMosaicSheet = true }
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 10.sp, lineHeight = 11.sp, letterSpacing = 0.5.sp)
+                                    Text("Reklam İçerir", color = Color(0xFFCFD8DC), fontSize = 8.sp, lineHeight = 9.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                SquareActionCard(
+                                    icon = Icons.Default.Notifications,
+                                    bgColor = Color(0xFFFFF8E1),
+                                    iconColor = Color(0xFFE53935)
+                                )
+                                SquareActionCard(
+                                    icon = Icons.Default.CameraAlt,
+                                    bgColor = Color(0xFFF3E5F5),
+                                    iconColor = Color(0xFF8E24AA)
+                                )
+                                SquareActionCard(
+                                    icon = Icons.Default.Edit,
+                                    bgColor = Color(0xFFE1F5FE),
+                                    iconColor = Color(0xFF0288D1)
+                                )
+                                SquareActionCard(
+                                    icon = Icons.Default.PhotoLibrary,
+                                    bgColor = Color(0xFFFFEBEE),
+                                    iconColor = Color(0xFFE53935)
+                                )
+                                SquareActionCard(
+                                    icon = Icons.Default.DynamicFeed,
+                                    bgColor = Color(0xFFECEFF1),
+                                    iconColor = Color(0xFF455A64)
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            // Ana Akış Listesi
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                contentPadding = PaddingValues(12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                items(feedItems, key = { it.id }) { item ->
-                    SharedFeedCard(
-                        item = item,
-                        onItemClick = { selectedItem = it }
-                    )
+                // Ana Akış Listesi
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentPadding = PaddingValues(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(feedItems, key = { it.id }) { item ->
+                        SharedFeedCard(
+                            item = item,
+                            onItemClick = { selectedItem = it }
+                        )
+                    }
                 }
             }
         }
+
+        // 🌸 Pembe Çiçek Animasyon Efekti Overlay (Ekranın En Üst Katmanında Oynatılır)
+        HomeAnimationOverlay(
+            isActive = showHomeAnimation,
+            onFinished = { showHomeAnimation = false },
+            modifier = Modifier.zIndex(999f)
+        )
     }
 }
 
