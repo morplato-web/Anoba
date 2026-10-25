@@ -287,7 +287,7 @@ private fun AnobaHomeView(
                         color = Color.LightGray.copy(alpha = 0.5f)
                     )
 
-                    // 2. Satır: MOZAİK / Reklam İçerir (Dinamik Esnek Dolgu)
+                    // 2. Satır: MOZAİK / Reklam İçerir (Genişletilmiş ve Sıkışmayan Boyut)
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(top = 2.dp, bottom = 4.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -296,10 +296,10 @@ private fun AnobaHomeView(
                         Surface(
                             shape = RoundedCornerShape(10.dp),
                             color = Color(0xFF2C3E50),
-                            modifier = Modifier.clickable { showMosaicSheet = true }
+                            modifier = Modifier.width(82.dp).height(36.dp).clickable { showMosaicSheet = true }
                         ) {
                             Column(
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 3.dp),
+                                modifier = Modifier.fillMaxSize(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
@@ -371,7 +371,7 @@ private fun SquareActionCard(
     Surface(
         shape = RoundedCornerShape(8.dp),
         color = bgColor,
-        modifier = Modifier.size(32.dp).clickable { onClick() }
+        modifier = Modifier.size(30.dp).clickable { onClick() }
     ) {
         Box(contentAlignment = Alignment.Center) {
             Icon(imageVector = icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(17.dp))
