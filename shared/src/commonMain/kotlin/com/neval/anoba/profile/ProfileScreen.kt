@@ -8,11 +8,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.DynamicFeed
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.neval.anoba.common.ui.AnobaBadge
 import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.mycontent.MyContentScreen
+import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,8 +33,8 @@ fun ProfileScreen(
     var username by remember { mutableStateOf("Anoba") }
     var userEmail by remember { mutableStateOf("morplato@gmail.com") }
     var userBadgeType by remember { mutableStateOf("OFFICIAL") }
-    var followerCount by remember { mutableStateOf(142) }
-    var followingCount by remember { mutableStateOf(38) }
+    var followerCount by remember { mutableStateOf(2) }
+    var followingCount by remember { mutableStateOf(15) }
 
     when (activeSubScreen) {
         "MY_CONTENT" -> MyContentScreen(onNavigateBack = { activeSubScreen = null })
@@ -56,17 +54,16 @@ fun ProfileScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                IconButton(onClick = onNavigateBack) {
-                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = AnobaNavy)
-                                }
-                                Text(
-                                    text = "Profilim",
-                                    color = AnobaNavy,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
+                            IconButton(onClick = onNavigateBack) {
+                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = AnobaNavy)
                             }
+
+                            Text(
+                                text = "Profilim",
+                                color = AnobaNavy,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
 
                             // Sağda Home İkonu (Android Birebir)
                             IconButton(onClick = onNavigateBack) {
@@ -81,18 +78,18 @@ fun ProfileScreen(
                         .fillMaxSize()
                         .padding(innerPadding)
                         .verticalScroll(rememberScrollState())
-                        .padding(20.dp),
+                        .padding(horizontal = 24.dp, vertical = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     UserAvatar(
                         photoUrl = null,
                         username = username,
-                        size = 100.dp
+                        size = 90.dp
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(14.dp))
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
@@ -101,186 +98,142 @@ fun ProfileScreen(
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
                         AnobaBadge(
                             badgeType = userBadgeType,
                             isOfficial = true
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
-                        text = userEmail,
-                        color = Color.Gray,
-                        fontSize = 14.sp
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    // Takipçi ve Takip Edilen
-                    Surface(
+                    // Takipçi ve Takip (Android Birebir)
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
-                        color = Color(0xFFF8FAFC),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, Color.LightGray.copy(alpha = 0.5f))
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceAround,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(
-                                    text = "$followerCount",
-                                    color = AnobaNavy,
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "Takipçi",
-                                    color = Color.Gray,
-                                    fontSize = 13.sp
-                                )
-                            }
-
-                            Box(
-                                modifier = Modifier
-                                    .width(1.dp)
-                                    .height(32.dp)
-                                    .background(Color.LightGray)
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "$followerCount",
+                                color = AnobaNavy,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
                             )
+                            Text(
+                                text = "Takipçi",
+                                color = Color.Gray,
+                                fontSize = 12.sp
+                            )
+                        }
 
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(
-                                    text = "$followingCount",
-                                    color = AnobaNavy,
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "Takip Edilen",
-                                    color = Color.Gray,
-                                    fontSize = 13.sp
-                                )
-                            }
+                        Spacer(modifier = Modifier.width(36.dp))
+
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "$followingCount",
+                                color = AnobaNavy,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "Takip",
+                                color = Color.Gray,
+                                fontSize = 12.sp
+                            )
                         }
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Aksiyon Butonları
-                    Text(
-                        text = "İçeriklerim ve Yönetim 🎬",
-                        color = AnobaNavy,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    // E-posta Bilgi Satırı (Android Birebir)
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = "E-posta",
+                            color = Color.Gray,
+                            fontSize = 12.sp
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = userEmail,
+                            color = AnobaNavy,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
+                    }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
+                    // 1. İÇERİKLERİM BUTONU (Dark Navy)
                     Button(
                         onClick = { activeSubScreen = "MY_CONTENT" },
-                        modifier = Modifier.fillMaxWidth().height(52.dp),
-                        shape = RoundedCornerShape(14.dp),
+                        modifier = Modifier.fillMaxWidth().height(50.dp),
+                        shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = AnobaNavy)
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                            Icon(Icons.Default.DynamicFeed, contentDescription = null, tint = Color.White)
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text("Yayınlanan İçeriklerim 🎬", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                            Icon(Icons.Default.DynamicFeed, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text("İçeriklerim", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Button(
-                        onClick = { activeSubScreen = "MY_CONTENT" },
-                        modifier = Modifier.fillMaxWidth().height(52.dp),
-                        shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = AnobaNavy)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-                            Icon(Icons.Default.ShoppingBag, contentDescription = null, tint = Color(0xFFFFD700))
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text("Pazar Yeri İlanlarım 🛍️", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Text(
-                        text = "Hesap Ayarları ⚙️",
-                        color = AnobaNavy,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.fillMaxWidth()
-                    )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    OutlinedButton(
+                    // 2. ANOBA ABLASI PANELİ (Sadece Yetkili İçin Sarı Buton)
+                    Button(
+                        onClick = { },
+                        modifier = Modifier.fillMaxWidth().height(50.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = AnobaGold)
+                    ) {
+                        Text("Anoba Ablası Paneli", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // 3. PROFİLİ DÜZENLE (Dark Navy)
+                    Button(
                         onClick = { activeSubScreen = "EDIT" },
-                        modifier = Modifier.fillMaxWidth().height(52.dp),
-                        shape = RoundedCornerShape(14.dp),
+                        modifier = Modifier.fillMaxWidth().height(50.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = AnobaNavy)
+                    ) {
+                        Text("Profili Düzenle", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // 4. ENGELLENEN KULLANICILAR (Outlined Button)
+                    OutlinedButton(
+                        onClick = { activeSubScreen = "BLOCKED" },
+                        modifier = Modifier.fillMaxWidth().height(50.dp),
+                        shape = RoundedCornerShape(12.dp),
                         border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
                             brush = androidx.compose.ui.graphics.SolidColor(AnobaNavy)
                         )
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-                            Icon(Icons.Default.Edit, contentDescription = null, tint = AnobaNavy)
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text("Profili Düzenle", color = AnobaNavy, fontSize = 15.sp)
-                        }
+                        Text("Engellenen Kullanıcılar", color = AnobaNavy, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                    OutlinedButton(
-                        onClick = { activeSubScreen = "BLOCKED" },
-                        modifier = Modifier.fillMaxWidth().height(52.dp),
-                        shape = RoundedCornerShape(14.dp),
-                        border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
-                            brush = androidx.compose.ui.graphics.SolidColor(Color(0xFFEF4444))
-                        )
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-                            Icon(Icons.Default.Block, contentDescription = null, tint = Color(0xFFEF4444))
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text("Engellenen Kullanıcılar 🚫", color = Color(0xFFEF4444), fontSize = 15.sp)
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(28.dp))
-
-                    // 🚀 UYGULAMAYI KAPAT BUTONU (Android Birebir)
+                    // 5. UYGULAMAYI KAPAT (Outlined Red Button)
                     OutlinedButton(
                         onClick = onNavigateBack,
-                        modifier = Modifier.fillMaxWidth().height(52.dp),
+                        modifier = Modifier.fillMaxWidth().height(50.dp),
                         shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFEF4444)),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFC62828)),
                         border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
-                            brush = androidx.compose.ui.graphics.SolidColor(Color(0xFFEF4444))
+                            brush = androidx.compose.ui.graphics.SolidColor(Color.LightGray)
                         )
                     ) {
-                        Text("Uygulamayı Kapat", color = Color(0xFFEF4444), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text("Uygulamayı Kapat", color = Color(0xFFC62828), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
