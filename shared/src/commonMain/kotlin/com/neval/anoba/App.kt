@@ -36,6 +36,7 @@ import com.neval.anoba.drawer.DrawerSheetContent
 import com.neval.anoba.guide.GuideScreen
 import com.neval.anoba.home.ContentDetailScreen
 import com.neval.anoba.home.ContentType
+import com.neval.anoba.home.PopularSheet
 import com.neval.anoba.home.QuarantineSheet
 import com.neval.anoba.home.SharedFeedCard
 import com.neval.anoba.home.SharedFeedItem
@@ -115,7 +116,9 @@ private fun AnobaHomeView(
     var selectedItem by remember { mutableStateOf<SharedFeedItem?>(null) }
     var showMoreMenu by remember { mutableStateOf(false) }
     var showQuarantineSheet by remember { mutableStateOf(false) }
+    var showPopularSheet by remember { mutableStateOf(false) }
     var showMosaicSheet by remember { mutableStateOf(false) }
+    var showHomeAnimation by remember { mutableStateOf(false) }
 
     val feedItems = remember {
         listOf(
@@ -174,10 +177,33 @@ private fun AnobaHomeView(
         )
     }
 
+    if (showPopularSheet) {
+        PopularSheet(
+            isVisible = true,
+            onDismiss = { showPopularSheet = false }
+        )
+    }
+
     if (showMosaicSheet) {
         MosaicSheet(
             isVisible = true,
             onDismiss = { showMosaicSheet = false }
+        )
+    }
+
+    // 🌸 Pembe Çiçek Animasyon Diyaloğu
+    if (showHomeAnimation) {
+        AlertDialog(
+            onDismissRequest = { showHomeAnimation = false },
+            confirmButton = {
+                TextButton(onClick = { showHomeAnimation = false }) {
+                    Text("Tamam", color = AnobaNavy, fontWeight = FontWeight.Bold)
+                }
+            },
+            title = { Text("🌸 Anoba Animasyon Efekti") },
+            text = { Text("Çiçek animasyonu başarıyla başlatıldı! ✨") },
+            shape = RoundedCornerShape(16.dp),
+            containerColor = Color.White
         )
     }
 
@@ -211,11 +237,13 @@ private fun AnobaHomeView(
 
                             Spacer(modifier = Modifier.width(4.dp))
 
+                            // Pembe Çiçek Yuvarlağı (Tıklanabilir Animasyon)
                             Box(
                                 modifier = Modifier
-                                    .size(12.dp)
+                                    .size(14.dp)
                                     .clip(CircleShape)
                                     .background(Color(0xFFF06292))
+                                    .clickable { showHomeAnimation = true }
                             )
 
                             Spacer(modifier = Modifier.width(4.dp))
@@ -231,7 +259,10 @@ private fun AnobaHomeView(
                                 ) {
                                     DropdownMenuItem(
                                         text = { Text("⭐ 1000+ Popüler") },
-                                        onClick = { showMoreMenu = false }
+                                        onClick = {
+                                            showMoreMenu = false
+                                            showPopularSheet = true
+                                        }
                                     )
                                     DropdownMenuItem(
                                         text = { Text("🛡️ Karantina Havuzu") },
@@ -241,7 +272,7 @@ private fun AnobaHomeView(
                                         }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("🇹🇷 Mete Ay-Yıldız") },
+                                        text = { Text("🇹🇷 Mete") },
                                         onClick = {
                                             showMoreMenu = false
                                             onOpenMete()
