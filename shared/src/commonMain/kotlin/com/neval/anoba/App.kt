@@ -78,7 +78,7 @@ private fun MainAppScreen(
             color = Color(0xFFF8FAFC)
         ) {
             when (activeView) {
-                "MARKET" -> MarketContainerView()
+                "MARKET" -> MarketContainerView(onNavigateHome = { activeView = "HOME" })
                 "CHAT" -> ChatHomeScreen()
                 "PROFILE" -> ProfileScreen(onNavigateBack = { activeView = "HOME" })
                 "GUIDE" -> GuideScreen(onNavigateBack = { activeView = "HOME" })

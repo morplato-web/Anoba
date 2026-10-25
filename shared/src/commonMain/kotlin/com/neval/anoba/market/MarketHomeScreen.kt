@@ -8,7 +8,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingBag
@@ -22,7 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MarketContainerView() {
+fun MarketContainerView(
+    onNavigateHome: () -> Unit = {}
+) {
     var activeView by remember { mutableStateOf("LIST") }
     var selectedItem by remember { mutableStateOf<MarketItemModel?>(null) }
 
@@ -107,6 +111,7 @@ fun MarketContainerView() {
         else -> {
             MarketHomeScreen(
                 itemsList = sampleItems,
+                onNavigateHome = onNavigateHome,
                 onCreateItemClick = { activeView = "CREATE" },
                 onItemClick = { item ->
                     selectedItem = item
@@ -121,6 +126,7 @@ fun MarketContainerView() {
 @Composable
 fun MarketHomeScreen(
     itemsList: List<MarketItemModel> = emptyList(),
+    onNavigateHome: () -> Unit = {},
     onCreateItemClick: () -> Unit = {},
     onItemClick: (MarketItemModel) -> Unit = {}
 ) {
@@ -145,7 +151,7 @@ fun MarketHomeScreen(
         containerColor = Color(0xFF0F172A),
         topBar = {
             Surface(
-                color = Color(0xFF1E293B),
+                color = Color(0xFF0F172A),
                 shadowElevation = 4.dp
             ) {
                 Column(modifier = Modifier.fillMaxWidth().statusBarsPadding()) {
@@ -153,38 +159,60 @@ fun MarketHomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp)
-                            .padding(horizontal = 16.dp),
+                            .padding(horizontal = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
+                            IconButton(onClick = onNavigateHome) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "Geri",
+                                    tint = Color.White
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.width(4.dp))
+
                             Text(
-                                text = "🛍️ Pazar Yeri",
+                                text = "Anoba Pazar Yeri",
                                 color = Color.White,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
 
-                        Button(
-                            onClick = onCreateItemClick,
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700)),
-                            shape = RoundedCornerShape(12.dp),
-                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = null,
-                                tint = Color.Black,
-                                modifier = Modifier.size(18.dp)
-                            )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Button(
+                                onClick = onCreateItemClick,
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700)),
+                                shape = RoundedCornerShape(10.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = null,
+                                    tint = Color.Black,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = "İlan Ver",
+                                    color = Color.Black,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "İlan Ver",
-                                color = Color.Black,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Bold
-                            )
+
+                            IconButton(onClick = onNavigateHome) {
+                                Icon(
+                                    imageVector = Icons.Default.Home,
+                                    contentDescription = "Ana Sayfa",
+                                    tint = Color.White
+                                )
+                            }
                         }
                     }
 
@@ -196,15 +224,15 @@ fun MarketHomeScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 6.dp),
                         placeholder = {
-                            Text("Ürün, şehir veya ilan ara...", color = Color(0xFF94A3B8), fontSize = 13.sp)
+                            Text("Ürün, şehir veya açıklama ara...", color = Color(0xFF94A3B8), fontSize = 13.sp)
                         },
                         leadingIcon = {
                             Icon(Icons.Default.Search, contentDescription = null, tint = Color(0xFF94A3B8))
                         },
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = Color(0xFF0F172A),
-                            unfocusedContainerColor = Color(0xFF0F172A),
+                            focusedContainerColor = Color(0xFF1E293B),
+                            unfocusedContainerColor = Color(0xFF1E293B),
                             focusedBorderColor = Color(0xFFFFD700),
                             unfocusedBorderColor = Color(0xFF334155),
                             focusedTextColor = Color.White,
@@ -235,7 +263,7 @@ fun MarketHomeScreen(
                                 colors = FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = Color(0xFFFFD700),
                                     selectedLabelColor = Color.Black,
-                                    containerColor = Color(0xFF0F172A),
+                                    containerColor = Color(0xFF1E293B),
                                     labelColor = Color(0xFFCBD5E1)
                                 ),
                                 border = FilterChipDefaults.filterChipBorder(
@@ -294,7 +322,6 @@ fun MarketHomeScreen(
                     }
                 }
             } else {
-                // 🚀 2'li Izgara Yapısı (2-Column Grid Layout)
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier.fillMaxSize(),
