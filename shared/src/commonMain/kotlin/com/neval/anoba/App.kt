@@ -36,6 +36,7 @@ import com.neval.anoba.drawer.DrawerSheetContent
 import com.neval.anoba.guide.GuideScreen
 import com.neval.anoba.home.ContentDetailScreen
 import com.neval.anoba.home.ContentType
+import com.neval.anoba.home.HomeAnimationOverlay
 import com.neval.anoba.home.PopularSheet
 import com.neval.anoba.home.QuarantineSheet
 import com.neval.anoba.home.SharedFeedCard
@@ -191,21 +192,11 @@ private fun AnobaHomeView(
         )
     }
 
-    // 🌸 Pembe Çiçek Animasyon Diyaloğu
-    if (showHomeAnimation) {
-        AlertDialog(
-            onDismissRequest = { showHomeAnimation = false },
-            confirmButton = {
-                TextButton(onClick = { showHomeAnimation = false }) {
-                    Text("Tamam", color = AnobaNavy, fontWeight = FontWeight.Bold)
-                }
-            },
-            title = { Text("🌸 Anoba Animasyon Efekti") },
-            text = { Text("Çiçek animasyonu başarıyla başlatıldı! ✨") },
-            shape = RoundedCornerShape(16.dp),
-            containerColor = Color.White
-        )
-    }
+    // 🌸 Pembe Çiçek Animasyon Efekti Overlay (Android Birebir Süzülen Efekt)
+    HomeAnimationOverlay(
+        isActive = showHomeAnimation,
+        onFinished = { showHomeAnimation = false }
+    )
 
     if (selectedItem != null) {
         ContentDetailScreen(
@@ -318,7 +309,7 @@ private fun AnobaHomeView(
                         color = Color.LightGray.copy(alpha = 0.5f)
                     )
 
-                    // 2. Satır: MOZAİK / Reklam İçerir (Açık ve Yükseklik Garantili)
+                    // 2. Satır: MOZAİK / Reklam İçerir
                     Row(
                         modifier = Modifier.fillMaxWidth().height(42.dp).padding(top = 2.dp, bottom = 2.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
