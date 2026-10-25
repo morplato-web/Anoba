@@ -25,36 +25,45 @@ fun AnobaBrandLogoIcon(
         modifier = modifier
             .size(size)
             .clip(CircleShape)
-            .background(Color(0xFFF1F5F9)),
+            .background(Color(0xFFF8FAFC)),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.fillMaxSize(0.75f)) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
             val w = this.size.width
             val h = this.size.height
 
             val greenColor = Color(0xFF2E7D32)
-            val strokeWidth = w * 0.05f
+            val lightGreen = Color(0xFF4CAF50)
+            val goldColor = Color(0xFFFFC107)
+            val strokeWidth = w * 0.06f
 
-            // Mountain 1 (Left Peak)
+            // Sun / Gold Circle
+            drawCircle(
+                color = goldColor,
+                radius = w * 0.15f,
+                center = androidx.compose.ui.geometry.Offset(w * 0.72f, h * 0.32f)
+            )
+
+            // Mountain 1 (Left Main Peak)
             val m1 = Path().apply {
-                moveTo(w * 0.1f, h * 0.65f)
-                lineTo(w * 0.4f, h * 0.25f)
-                lineTo(w * 0.65f, h * 0.65f)
+                moveTo(w * 0.12f, h * 0.68f)
+                lineTo(w * 0.42f, h * 0.28f)
+                lineTo(w * 0.68f, h * 0.68f)
             }
             drawPath(m1, greenColor, style = Stroke(width = strokeWidth))
 
             // Mountain 2 (Right Peak)
             val m2 = Path().apply {
-                moveTo(w * 0.45f, h * 0.65f)
-                lineTo(w * 0.75f, h * 0.35f)
-                lineTo(w * 0.95f, h * 0.65f)
+                moveTo(w * 0.45f, h * 0.68f)
+                lineTo(w * 0.76f, h * 0.38f)
+                lineTo(w * 0.92f, h * 0.68f)
             }
-            drawPath(m2, greenColor, style = Stroke(width = strokeWidth))
+            drawPath(m2, lightGreen, style = Stroke(width = strokeWidth))
 
-            // River Line below
+            // River Wavy Path below
             val river = Path().apply {
-                moveTo(w * 0.15f, h * 0.8f)
-                cubicTo(w * 0.35f, h * 0.75f, w * 0.6f, h * 0.85f, w * 0.85f, h * 0.8f)
+                moveTo(w * 0.12f, h * 0.82f)
+                cubicTo(w * 0.35f, h * 0.76f, w * 0.65f, h * 0.88f, w * 0.88f, h * 0.82f)
             }
             drawPath(river, greenColor, style = Stroke(width = strokeWidth))
         }

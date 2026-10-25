@@ -296,15 +296,15 @@ private fun AnobaHomeView(
                         Surface(
                             shape = RoundedCornerShape(10.dp),
                             color = Color(0xFF2C3E50),
-                            modifier = Modifier.width(82.dp).height(36.dp).clickable { showMosaicSheet = true }
+                            modifier = Modifier.width(82.dp).height(38.dp).clickable { showMosaicSheet = true }
                         ) {
                             Column(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier.fillMaxSize().padding(vertical = 1.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 10.sp, letterSpacing = 0.5.sp)
-                                Text("Reklam İçerir", color = Color(0xFFCFD8DC), fontSize = 7.sp, fontWeight = FontWeight.Bold)
+                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 10.sp, lineHeight = 11.sp, letterSpacing = 0.5.sp)
+                                Text("Reklam İçerir", color = Color(0xFFB0BEC5), fontSize = 7.sp, lineHeight = 8.sp, fontWeight = FontWeight.Bold)
                             }
                         }
 

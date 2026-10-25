@@ -39,7 +39,7 @@ fun ProfileScreen(
     var followerCount by remember { mutableStateOf(2) }
     var followingCount by remember { mutableStateOf(15) }
 
-    val anobaLogoUrl = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"
+    val anobaLogoUrl: String? = null
 
     when (activeSubScreen) {
         "MY_CONTENT" -> MyContentScreen(onNavigateBack = { activeSubScreen = null })

@@ -32,7 +32,7 @@ fun DrawerSheetContent(
 ) {
     if (!isOpen) return
 
-    val anobaPhotoUrl = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200"
+    val anobaPhotoUrl: String? = null
 
     Box(
         modifier = Modifier
