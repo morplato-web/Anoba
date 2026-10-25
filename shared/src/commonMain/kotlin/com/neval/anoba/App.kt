@@ -287,7 +287,7 @@ private fun AnobaHomeView(
                         color = Color.LightGray.copy(alpha = 0.5f)
                     )
 
-                    // 2. Satır: MOZAİK / Reklam İçerir (Android Birebir Buton Boyutu)
+                    // 2. Satır: MOZAİK / Reklam İçerir (Dinamik Esnek Dolgu)
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(top = 2.dp, bottom = 4.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -296,20 +296,20 @@ private fun AnobaHomeView(
                         Surface(
                             shape = RoundedCornerShape(10.dp),
                             color = Color(0xFF2C3E50),
-                            modifier = Modifier.width(76.dp).height(34.dp).clickable { showMosaicSheet = true }
+                            modifier = Modifier.clickable { showMosaicSheet = true }
                         ) {
                             Column(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 3.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.Black, fontSize = 9.sp, letterSpacing = 0.5.sp)
+                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 10.sp, letterSpacing = 0.5.sp)
                                 Text("Reklam İçerir", color = Color(0xFFCFD8DC), fontSize = 7.sp, fontWeight = FontWeight.Bold)
                             }
                         }
 
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             SquareActionCard(
@@ -371,10 +371,10 @@ private fun SquareActionCard(
     Surface(
         shape = RoundedCornerShape(8.dp),
         color = bgColor,
-        modifier = Modifier.size(34.dp).clickable { onClick() }
+        modifier = Modifier.size(32.dp).clickable { onClick() }
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Icon(imageVector = icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(18.dp))
+            Icon(imageVector = icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(17.dp))
         }
     }
 }
