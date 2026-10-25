@@ -79,7 +79,7 @@ private fun MainAppScreen(
             when (activeView) {
                 "MARKET" -> MarketContainerView()
                 "CHAT" -> ChatHomeScreen()
-                "PROFILE" -> ProfileScreen()
+                "PROFILE" -> ProfileScreen(onNavigateBack = { activeView = "HOME" })
                 "GUIDE" -> GuideScreen(onNavigateBack = { activeView = "HOME" })
                 "METE" -> MeteHomeScreen(onNavigateBack = { activeView = "HOME" })
                 else -> AnobaHomeView(
@@ -287,7 +287,7 @@ private fun AnobaHomeView(
                         color = Color.LightGray.copy(alpha = 0.5f)
                     )
 
-                    // 2. Satır: MOZAİK / Reklam İçerir (Belirgin Yazı)
+                    // 2. Satır: MOZAİK / Reklam İçerir (Android Birebir Buton Boyutu)
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(top = 2.dp, bottom = 4.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -296,14 +296,14 @@ private fun AnobaHomeView(
                         Surface(
                             shape = RoundedCornerShape(10.dp),
                             color = Color(0xFF2C3E50),
-                            modifier = Modifier.clickable { showMosaicSheet = true }
+                            modifier = Modifier.width(76.dp).height(34.dp).clickable { showMosaicSheet = true }
                         ) {
                             Column(
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 3.dp),
+                                modifier = Modifier.fillMaxSize(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 10.sp, letterSpacing = 0.5.sp)
+                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.Black, fontSize = 9.sp, letterSpacing = 0.5.sp)
                                 Text("Reklam İçerir", color = Color(0xFFCFD8DC), fontSize = 7.sp, fontWeight = FontWeight.Bold)
                             }
                         }
@@ -342,7 +342,7 @@ private fun AnobaHomeView(
                 }
             }
 
-            // Ana Akış Listesi (Yukarı/Aşağı Kaydırılabilir Akış)
+            // Ana Akış Listesi
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)

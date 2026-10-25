@@ -8,8 +8,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.DynamicFeed
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -35,6 +38,8 @@ fun ProfileScreen(
     var userBadgeType by remember { mutableStateOf("OFFICIAL") }
     var followerCount by remember { mutableStateOf(2) }
     var followingCount by remember { mutableStateOf(15) }
+
+    val anobaLogoUrl = "https://raw.githubusercontent.com/morplato-web/Anoba/main/app/src/main/res/drawable/ay_yildiz.png"
 
     when (activeSubScreen) {
         "MY_CONTENT" -> MyContentScreen(onNavigateBack = { activeSubScreen = null })
@@ -65,7 +70,7 @@ fun ProfileScreen(
                                 fontWeight = FontWeight.Bold
                             )
 
-                            // Sağda Home İkonu (Android Birebir)
+                            // Sağda Home İkonu (Tıklandığında Ana Sayfaya Dönüş)
                             IconButton(onClick = onNavigateBack) {
                                 Icon(Icons.Default.Home, contentDescription = "Ana Sayfa", tint = AnobaNavy)
                             }
@@ -84,7 +89,7 @@ fun ProfileScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     UserAvatar(
-                        photoUrl = null,
+                        photoUrl = anobaLogoUrl,
                         username = username,
                         size = 90.dp
                     )
@@ -107,7 +112,7 @@ fun ProfileScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Takipçi ve Takip (Android Birebir)
+                    // Takipçi ve Takip
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
@@ -146,7 +151,7 @@ fun ProfileScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // E-posta Bilgi Satırı (Android Birebir)
+                    // E-posta Bilgi Satırı
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = "E-posta",
@@ -185,7 +190,7 @@ fun ProfileScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // 2. ANOBA ABLASI PANELİ (Sadece Yetkili İçin Sarı Buton)
+                    // 2. ANOBA ABLASI PANELİ
                     Button(
                         onClick = { },
                         modifier = Modifier.fillMaxWidth().height(50.dp),
@@ -197,7 +202,7 @@ fun ProfileScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // 3. PROFİLİ DÜZENLE (Dark Navy)
+                    // 3. PROFİLİ DÜZENLE
                     Button(
                         onClick = { activeSubScreen = "EDIT" },
                         modifier = Modifier.fillMaxWidth().height(50.dp),
@@ -209,7 +214,7 @@ fun ProfileScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // 4. ENGELLENEN KULLANICILAR (Outlined Button)
+                    // 4. ENGELLENEN KULLANICILAR
                     OutlinedButton(
                         onClick = { activeSubScreen = "BLOCKED" },
                         modifier = Modifier.fillMaxWidth().height(50.dp),
@@ -223,7 +228,7 @@ fun ProfileScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // 5. UYGULAMAYI KAPAT (Outlined Red Button)
+                    // 5. UYGULAMAYI KAPAT
                     OutlinedButton(
                         onClick = onNavigateBack,
                         modifier = Modifier.fillMaxWidth().height(50.dp),
