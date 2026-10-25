@@ -42,6 +42,7 @@ import com.neval.anoba.home.SharedFeedItem
 import com.neval.anoba.login.AuthContainerView
 import com.neval.anoba.market.MarketContainerView
 import com.neval.anoba.mete.MeteHomeScreen
+import com.neval.anoba.mosaic.MosaicSheet
 import com.neval.anoba.profile.ProfileScreen
 import com.neval.anoba.ui.theme.AnobaNavy
 import com.neval.anoba.ui.theme.AnobaTheme
@@ -114,6 +115,7 @@ private fun AnobaHomeView(
     var selectedItem by remember { mutableStateOf<SharedFeedItem?>(null) }
     var showMoreMenu by remember { mutableStateOf(false) }
     var showQuarantineSheet by remember { mutableStateOf(false) }
+    var showMosaicSheet by remember { mutableStateOf(false) }
 
     val feedItems = remember {
         listOf(
@@ -157,6 +159,13 @@ private fun AnobaHomeView(
         )
     }
 
+    if (showMosaicSheet) {
+        MosaicSheet(
+            isVisible = true,
+            onDismiss = { showMosaicSheet = false }
+        )
+    }
+
     if (selectedItem != null) {
         ContentDetailScreen(
             item = selectedItem,
@@ -164,7 +173,7 @@ private fun AnobaHomeView(
         )
     } else {
         Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF8FAFC))) {
-            // 🚀 ANDROID İLE %100 BİREBİR TOP ACTION BAR (Sol Yan Menülü)
+            // 🚀 ANDROID İLE %100 BİREBİR TOP ACTION BAR
             Surface(
                 color = Color.White,
                 shadowElevation = 2.dp,
@@ -275,11 +284,11 @@ private fun AnobaHomeView(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // SOLDA: MOZAİK Butonu (Koyu Lacivert)
+                        // SOLDA: MOZAİK Butonu (Koyu Lacivert) -> Tıklandığında MOZAİK Havuzunu Açarsınız
                         Surface(
                             shape = RoundedCornerShape(12.dp),
                             color = AnobaNavy,
-                            modifier = Modifier.height(38.dp).clickable { }
+                            modifier = Modifier.height(38.dp).clickable { showMosaicSheet = true }
                         ) {
                             Column(
                                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 2.dp),
