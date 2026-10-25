@@ -32,6 +32,8 @@ fun DrawerSheetContent(
 ) {
     if (!isOpen) return
 
+    val anobaPhotoUrl = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200"
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -60,9 +62,9 @@ fun DrawerSheetContent(
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         UserAvatar(
-                            photoUrl = null,
+                            photoUrl = anobaPhotoUrl,
                             username = "Anoba",
-                            size = 40.dp
+                            size = 44.dp
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
