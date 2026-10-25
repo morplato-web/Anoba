@@ -139,7 +139,7 @@ private fun AnobaHomeView(
                 type = ContentType.PHOTO,
                 title = "Betty",
                 description = "Bahçede güneşli bir gün karesi.",
-                mediaUrl = null,
+                mediaUrl = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba",
                 ownerId = "u_betty",
                 username = "Betty",
                 userBadgeType = "NONE",
@@ -148,6 +148,21 @@ private fun AnobaHomeView(
                 reactionCount = 12,
                 viewCount = 104,
                 createdAtMillis = 1710000050000L
+            ),
+            SharedFeedItem(
+                id = "feed_3",
+                type = ContentType.PHOTO,
+                title = "E",
+                description = "Çiçeklerle dolu doğa manzarası.",
+                mediaUrl = "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+                ownerId = "u_e",
+                username = "E",
+                userBadgeType = "PIONEER",
+                isOfficial = false,
+                topEmoji = "❤️",
+                reactionCount = 45,
+                viewCount = 312,
+                createdAtMillis = 1710000100000L
             )
         )
     }
@@ -186,7 +201,6 @@ private fun AnobaHomeView(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // SOLA YATKIN İKONLAR
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Start
@@ -197,7 +211,6 @@ private fun AnobaHomeView(
 
                             Spacer(modifier = Modifier.width(4.dp))
 
-                            // Pembe Çiçek Yuvarlağı
                             Box(
                                 modifier = Modifier
                                     .size(12.dp)
@@ -237,13 +250,11 @@ private fun AnobaHomeView(
                                 }
                             }
 
-                            // İÇİ BOŞ MAĞAZA İKONU 🛍️
                             IconButton(onClick = onOpenMarket, modifier = Modifier.size(32.dp)) {
                                 Icon(Icons.Outlined.ShoppingBag, contentDescription = "Pazar Yeri", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
                         }
 
-                        // SAĞA YATKIN İKONLAR
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(1.dp)
@@ -264,43 +275,39 @@ private fun AnobaHomeView(
                                 Icon(Icons.Default.Language, contentDescription = "Dünya Haritası", tint = AnobaNavy, modifier = Modifier.size(22.dp))
                             }
 
-                            // YEŞİL CHAT İKONU 💬
                             IconButton(onClick = onOpenChat, modifier = Modifier.size(32.dp)) {
                                 Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = "Sohbet", tint = Color(0xFF2E7D32), modifier = Modifier.size(22.dp))
                             }
                         }
                     }
 
-                    // SATIRLAR ARASI ÇİZGİ (Divider)
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = 2.dp),
                         thickness = 0.5.dp,
                         color = Color.LightGray.copy(alpha = 0.5f)
                     )
 
-                    // 2. Satır: SOLDA "MOZAİK / Reklam İçerir", SAĞDA 5 Renkli Kare Kart
+                    // 2. Satır: MOZAİK / Reklam İçerir (Belirgin Yazı)
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(top = 2.dp, bottom = 4.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // SOLDA: MOZAİK Butonu (Koyu Lacivert) -> Tıklandığında MOZAİK Havuzunu Açarsınız
                         Surface(
-                            shape = RoundedCornerShape(12.dp),
-                            color = AnobaNavy,
-                            modifier = Modifier.height(38.dp).clickable { showMosaicSheet = true }
+                            shape = RoundedCornerShape(10.dp),
+                            color = Color(0xFF2C3E50),
+                            modifier = Modifier.clickable { showMosaicSheet = true }
                         ) {
                             Column(
-                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 2.dp),
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 3.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 11.sp, letterSpacing = 0.5.sp)
-                                Text("Reklam İçerir", color = Color(0xFFB0BEC5), fontSize = 8.sp, fontWeight = FontWeight.Normal)
+                                Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 10.sp, letterSpacing = 0.5.sp)
+                                Text("Reklam İçerir", color = Color(0xFFCFD8DC), fontSize = 7.sp, fontWeight = FontWeight.Bold)
                             }
                         }
 
-                        // SAĞDA: 5 Renkli Kare Kart (Zil, Kamera, Kalem, Galeri, İçeriklerim)
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(6.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -335,9 +342,11 @@ private fun AnobaHomeView(
                 }
             }
 
-            // Ana Akış Listesi
+            // Ana Akış Listesi (Yukarı/Aşağı Kaydırılabilir Akış)
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
                 contentPadding = PaddingValues(12.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
