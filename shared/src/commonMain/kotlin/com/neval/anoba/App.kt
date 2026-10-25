@@ -287,24 +287,24 @@ private fun AnobaHomeView(
                         color = Color.LightGray.copy(alpha = 0.5f)
                     )
 
-                    // 2. Satır: MOZAİK / Reklam İçerir (Genişletilmiş ve Sıkışmayan Boyut)
+                    // 2. Satır: MOZAİK / Reklam İçerir (Açık ve Yükseklik Garantili)
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(top = 2.dp, bottom = 4.dp),
+                        modifier = Modifier.fillMaxWidth().height(42.dp).padding(top = 2.dp, bottom = 2.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Surface(
                             shape = RoundedCornerShape(10.dp),
                             color = Color(0xFF2C3E50),
-                            modifier = Modifier.width(82.dp).height(38.dp).clickable { showMosaicSheet = true }
+                            modifier = Modifier.width(82.dp).fillMaxHeight().clickable { showMosaicSheet = true }
                         ) {
                             Column(
-                                modifier = Modifier.fillMaxSize().padding(vertical = 1.dp),
+                                modifier = Modifier.fillMaxSize(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
                                 Text("MOZAİK", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 10.sp, lineHeight = 11.sp, letterSpacing = 0.5.sp)
-                                Text("Reklam İçerir", color = Color(0xFFB0BEC5), fontSize = 7.sp, lineHeight = 8.sp, fontWeight = FontWeight.Bold)
+                                Text("Reklam İçerir", color = Color(0xFFCFD8DC), fontSize = 8.sp, lineHeight = 9.sp, fontWeight = FontWeight.Bold)
                             }
                         }
 
@@ -371,7 +371,7 @@ private fun SquareActionCard(
     Surface(
         shape = RoundedCornerShape(8.dp),
         color = bgColor,
-        modifier = Modifier.size(30.dp).clickable { onClick() }
+        modifier = Modifier.size(32.dp).clickable { onClick() }
     ) {
         Box(contentAlignment = Alignment.Center) {
             Icon(imageVector = icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(17.dp))
