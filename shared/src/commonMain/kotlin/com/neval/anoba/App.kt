@@ -299,10 +299,11 @@ private fun AnobaHomeView(
                             }
                         }
 
+                        // 🚀 SATIRLAR ARASI NET VE BELİRGİN ARAMA/AYRAÇ ÇİZGİSİ (DIVIDER 1)
                         HorizontalDivider(
-                            modifier = Modifier.padding(vertical = 2.dp),
-                            thickness = 0.5.dp,
-                            color = Color.LightGray.copy(alpha = 0.5f)
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp),
+                            thickness = 1.dp,
+                            color = Color(0xFFE0E0E0)
                         )
 
                         // 2. Satır: MOZAİK / Reklam İçerir
@@ -357,6 +358,13 @@ private fun AnobaHomeView(
                                 )
                             }
                         }
+
+                        // 🚀 İKİNCİ SATIR ALTINDAKİ AYRAÇ ÇİZGİSİ (DIVIDER 2)
+                        HorizontalDivider(
+                            modifier = Modifier.fillMaxWidth().padding(top = 3.dp),
+                            thickness = 1.dp,
+                            color = Color(0xFFE0E0E0)
+                        )
                     }
                 }
 
@@ -378,7 +386,7 @@ private fun AnobaHomeView(
             }
         }
 
-        // 🌸 Pembe Çiçek Animasyon Efekti Overlay (Ekranın En Üst Katmanında Oynatılır)
+        // 🌸 Pembe Çiçek Animasyon Efekti Overlay
         HomeAnimationOverlay(
             isActive = showHomeAnimation,
             onFinished = { showHomeAnimation = false },
