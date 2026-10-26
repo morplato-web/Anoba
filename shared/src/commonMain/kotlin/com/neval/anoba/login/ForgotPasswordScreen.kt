@@ -51,7 +51,7 @@ fun ForgotPasswordScreen(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
     var internalEmail by remember { mutableStateOf(email) }
-    val currentEmail = if (email.isNotEmpty()) email else internalEmail
+    val currentEmail = email.ifEmpty { internalEmail }
     val focusManager = LocalFocusManager.current
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
