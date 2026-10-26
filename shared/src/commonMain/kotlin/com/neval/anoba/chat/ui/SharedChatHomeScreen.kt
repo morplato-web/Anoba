@@ -37,6 +37,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.CircularProgressIndicator
@@ -65,10 +66,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.neval.anoba.ui.theme.AnobaNavy
 
 data class SharedChatMessage(
@@ -416,12 +419,7 @@ private fun ChatBubbleItem(
     onLongClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
-            ),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = if (isSentByMe) Arrangement.End else Arrangement.Start
     ) {
         Surface(
@@ -433,9 +431,23 @@ private fun ChatBubbleItem(
             ),
             color = if (isSentByMe) AnobaNavy else Color.White,
             shadowElevation = 1.5.dp,
-            modifier = Modifier.fillMaxWidth(0.78f)
+            modifier = Modifier
+                .fillMaxWidth(0.82f)
+                .clip(
+                    RoundedCornerShape(
+                        topStart = 16.dp,
+                        topEnd = 16.dp,
+                        bottomStart = if (isSentByMe) 16.dp else 4.dp,
+                        bottomEnd = if (isSentByMe) 4.dp else 16.dp
+                    )
+                )
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick
+                )
         ) {
-            Column(modifier = Modifier.padding(12.dp)) {
+            Column(modifier = Modifier.padding(10.dp)) {
+                // Gönderici Adı (Gelen mesajlar için)
                 if (!isSentByMe) {
                     Text(
                         text = message.senderName,
@@ -443,12 +455,74 @@ private fun ChatBubbleItem(
                         fontSize = 12.sp,
                         color = Color(0xFF1565C0)
                     )
-                    Spacer(modifier = Modifier.height(2.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
 
-                message.content?.let {
+                // Fotoğraf Medyası
+                if (!message.imageUrl.isNullOrBlank()) {
+                    AsyncImage(
+                        model = message.imageUrl,
+                        contentDescription = "Fotoğraf",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .clip(RoundedCornerShape(10.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
+
+                // Video Medyası
+                if (!message.videoUrl.isNullOrBlank()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(Color.Black),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PlayCircle,
+                            contentDescription = "Videoyu Oynat",
+                            tint = Color.White,
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
+
+                // Ses Medyası
+                if (!message.audioUrl.isNullOrBlank()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(if (isSentByMe) Color.White.copy(alpha = 0.15f) else Color(0xFFF1F5F9))
+                            .padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Mic,
+                            contentDescription = "Ses Kaydı",
+                            tint = if (isSentByMe) Color.White else AnobaNavy,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "Sesli Mesaj",
+                            fontSize = 13.sp,
+                            color = if (isSentByMe) Color.White else AnobaNavy,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
+
+                // Metin İçeriği
+                if (!message.content.isNullOrBlank()) {
                     Text(
-                        text = it,
+                        text = message.content,
                         fontSize = 14.sp,
                         color = if (isSentByMe) Color.White else Color(0xFF1E293B),
                         lineHeight = 18.sp
