@@ -38,6 +38,7 @@ import com.neval.anoba.guide.GuideScreen
 import com.neval.anoba.home.ContentDetailScreen
 import com.neval.anoba.home.ContentType
 import com.neval.anoba.home.HomeAnimationOverlay
+import com.neval.anoba.home.HomeScreen
 import com.neval.anoba.home.PopularSheet
 import com.neval.anoba.home.QuarantineSheet
 import com.neval.anoba.home.SharedFeedCard
@@ -85,7 +86,7 @@ private fun MainAppScreen(
                 "PROFILE" -> ProfileScreen(onNavigateBack = { activeView = "HOME" })
                 "GUIDE" -> GuideScreen(onNavigateBack = { activeView = "HOME" })
                 "METE" -> MeteHomeScreen(onNavigateBack = { activeView = "HOME" })
-                else -> AnobaHomeView(
+                else -> HomeScreen(
                     onOpenDrawer = { isDrawerOpen = true },
                     onOpenMarket = { activeView = "MARKET" },
                     onOpenChat = { activeView = "CHAT" },
