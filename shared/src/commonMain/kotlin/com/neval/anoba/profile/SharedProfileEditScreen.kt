@@ -259,6 +259,19 @@ fun ProfileEditScreen(
                 })
             )
 
+            // E-posta Alanı (Varsa Kilitli Gösterim)
+            if (currentEmail.isNotBlank()) {
+                Spacer(modifier = Modifier.height(16.dp))
+                OutlinedTextField(
+                    value = currentEmail,
+                    onValueChange = {},
+                    label = { Text("E-posta (Kilitli)") },
+                    enabled = false,
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
 
             // 3. Değişiklikleri Kaydet Butonu
