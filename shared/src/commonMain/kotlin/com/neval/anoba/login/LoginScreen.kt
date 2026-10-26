@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -61,6 +60,8 @@ fun LoginScreen(
     var isLoading by remember { mutableStateOf(false) }
 
     val primaryColor = Color(0xFF232066)
+    val anobaGold = Color(0xFFFFD700)
+    val isFormValid = email.isNotBlank() && password.isNotBlank()
 
     Scaffold(containerColor = Color.White) { paddingValues ->
         Column(
@@ -124,7 +125,7 @@ fun LoginScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("E-Posta Adresi") },
+                label = { Text("E-posta") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -155,7 +156,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 🚀 BENİ HATIRLA & ŞİFREMİ UNUTTUM SATIRI (Android Birebir)
+            // 🚀 BENİ HATIRLA & ŞİFREMİ UNUTTUM SATIRI
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -167,7 +168,7 @@ fun LoginScreen(
                         onCheckedChange = { rememberMe = it },
                         colors = CheckboxDefaults.colors(checkedColor = primaryColor)
                     )
-                    Text("Beni Hatırla", style = MaterialTheme.typography.bodyMedium, color = primaryColor)
+                    Text("Beni Hatırla", style = MaterialTheme.typography.bodyMedium)
                 }
                 TextButton(onClick = { }) {
                     Text(
@@ -178,53 +179,56 @@ fun LoginScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
+            // 🚀 GİRİŞ YAP BUTONU (enabled = isFormValid, Pasif/Aktif Renkleri Android ile Birebir)
             Button(
                 onClick = {
-                    if (email.isNotBlank() && password.isNotBlank()) {
+                    if (isFormValid) {
                         isLoading = true
                         onLoginSuccess()
                     }
                 },
+                enabled = isFormValid && !isLoading,
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = primaryColor,
+                    disabledContainerColor = Color(0xFFE0E0E0),
+                    disabledContentColor = Color(0xFF888888)
+                )
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
-                    Text("Giriş Yap", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text("Giriş Yap", fontWeight = FontWeight.Bold)
                 }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 🚀 MİSAFİR GİRİŞİ BUTONU
+            // 🚀 MİSAFİR GİRİŞİ BUTONU (İkonlar kaldırıldı, sadece "Misafir Girişi")
             OutlinedButton(
                 onClick = onGuestLogin,
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(1.dp, primaryColor),
-                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFFFD700))
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = anobaGold)
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Person, contentDescription = null, tint = primaryColor)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Misafir Olarak Devam Et 👤", color = primaryColor, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                }
+                Text("Misafir Girişi", color = primaryColor, fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
+            // 🚀 KAYIT OL LİNKİ (Sadece "Kayıt Ol")
             TextButton(onClick = onNavigateSignUp) {
                 Text(
-                    text = "Hesabınız yok mu? Kayıt Olun",
-                    color = primaryColor,
-                    fontSize = 14.sp,
-                    textDecoration = TextDecoration.Underline
+                    text = "Kayıt Ol",
+                    color = primaryColor
                 )
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

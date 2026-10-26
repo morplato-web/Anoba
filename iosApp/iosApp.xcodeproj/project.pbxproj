@@ -192,8 +192,13 @@
 					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CADisableMinimumFrameDurationOnPhone = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Anoba";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Anoba, fotoğraf ve video çekip paylaşabilmeniz için kameranıza erişim izinleri gerektirir.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Anoba, sesli mesaj ve video kaydı alabilmeniz için mikrofonunuza erişim izinleri gerektirir.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Anoba, medyanızı paylaşabilmeniz için fotoğraf galerinize erişim izinleri gerektirir.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Anoba, indirilen görselleri kaydetmeniz için galeriye yazma izni gerektirir.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -234,8 +239,13 @@
 					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CADisableMinimumFrameDurationOnPhone = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Anoba";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Anoba, fotoğraf ve video çekip paylaşabilmeniz için kameranıza erişim izinleri gerektirir.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Anoba, sesli mesaj ve video kaydı alabilmeniz için mikrofonunuza erişim izinleri gerektirir.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Anoba, medyanızı paylaşabilmeniz için fotoğraf galerinize erişim izinleri gerektirir.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Anoba, indirilen görselleri kaydetmeniz için galeriye yazma izni gerektirir.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

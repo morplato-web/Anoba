@@ -71,7 +71,7 @@ xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk ip
 cd "$HOME/Anoba" || exit 1
 
 # 5. Derlenen .app paketini bul
-APP_PATH=$(find "$HOME/Library/Developer/Xcode/DerivedData" -name "Anoba.app" -o -name "iosApp.app" | head -n 1)
+APP_PATH=$(find "$HOME/Library/Developer/Xcode/DerivedData" -path "*/Build/Products/Debug-iphonesimulator/*.app" | head -n 1)
 
 if [ -z "$APP_PATH" ]; then
     echo "❌ HATA: Derlenen .app paketi bulunamadı!"

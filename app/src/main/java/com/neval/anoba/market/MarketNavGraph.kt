@@ -33,7 +33,8 @@ fun NavGraphBuilder.marketNavGraph(navController: NavController) {
         composable(Constants.MARKET_CREATE_SCREEN) {
             MarketCreateScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onSuccess = { navController.popBackStack() }
+                onSuccess = { navController.popBackStack() },
+                viewModel = org.koin.androidx.compose.koinViewModel()
             )
         }
 

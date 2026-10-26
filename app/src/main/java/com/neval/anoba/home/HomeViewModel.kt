@@ -102,6 +102,7 @@ class HomeViewModel(
     private val freshPoolLimit = 10
     private val _refreshTrigger = MutableStateFlow(0)
 
+    private val _packageFlower = MutableStateFlow<AnimationPackage?>(null)
     private val _packageFall = MutableStateFlow<AnimationPackage?>(null)
     private val _packageFloat = MutableStateFlow<AnimationPackage?>(null)
     private val _packageFly = MutableStateFlow<AnimationPackage?>(null)
@@ -593,11 +594,13 @@ class HomeViewModel(
         }
 
         viewModelScope.launch {
+            val flowerDef = async { fetchPackageFromFirestore(listOf("flowers"), AnimationType.FALL) }
             val fallDef = async { fetchPackageFromFirestore(listOf("flowers", "anim_fall"), AnimationType.FALL) }
             val floatDef = async { fetchPackageFromFirestore(listOf("anim_float"), AnimationType.FLOAT) }
             val flyDef = async { fetchPackageFromFirestore(listOf("anim_fly"), AnimationType.FLY) }
             val popDef = async { fetchPackageFromFirestore(listOf("anim_pop"), AnimationType.POP) }
 
+            _packageFlower.value = flowerDef.await()
             _packageFall.value = fallDef.await()
             _packageFloat.value = floatDef.await()
             _packageFly.value = flyDef.await()
@@ -633,8 +636,12 @@ class HomeViewModel(
         return if (allAssets.isEmpty()) null else AnimationPackage(allAssets, foundSoundUrl)
     }
 
+    fun getFlowerAnimationPackage(): AnimationPackage? {
+        return _packageFlower.value ?: _packageFall.value
+    }
+
     fun getRandomAnimationPackage(): AnimationPackage? {
-        val packages = listOfNotNull(_packageFall.value, _packageFloat.value, _packageFly.value, _packagePop.value)
+        val packages = listOfNotNull(_packageFlower.value, _packageFall.value, _packageFloat.value, _packageFly.value, _packagePop.value)
         return if (packages.isNotEmpty()) packages.random() else null
     }
 

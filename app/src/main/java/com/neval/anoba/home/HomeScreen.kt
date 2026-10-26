@@ -569,7 +569,7 @@ fun HomeScreen(
                                                 .background(Color(0xFFF06292))
                                                 .onGloballyPositioned { flowerDotRect = it.boundsInWindow() }
                                                 .clickable {
-                                                    val pkg = homeViewModel.getRandomAnimationPackage()
+                                                    val pkg = homeViewModel.getFlowerAnimationPackage() ?: homeViewModel.getRandomAnimationPackage()
                                                     if (pkg != null) {
                                                         activeAnimationAssets = pkg.assets
                                                         activeSoundUrl = pkg.soundUrl

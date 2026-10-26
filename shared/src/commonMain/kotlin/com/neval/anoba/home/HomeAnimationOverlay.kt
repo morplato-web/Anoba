@@ -1,52 +1,70 @@
 package com.neval.anoba.home
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import coil3.compose.AsyncImage
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
-private data class MultiplatformParticleData(
+private data class FlowerParticleData(
     val id: Int,
-    val emoji: String,
+    val imageUrl: String,
     val startXRatio: Float,
-    val sizeSp: Int,
+    val sizeDp: Dp,
     val durationMillis: Int,
-    val delayMillis: Int
+    val delayMillis: Int,
+    val targetRotation: Float
 )
 
 @Composable
 fun HomeAnimationOverlay(
     isActive: Boolean,
     onFinished: () -> Unit,
+    flowerImageUrls: List<String> = emptyList(),
     modifier: Modifier = Modifier
 ) {
     if (!isActive) return
 
-    val particleEmojis = remember { listOf("🌸", "❤️", "⭐", "🌺", "💖", "✨", "🌸", "🌹") }
-
-    val particles = remember(isActive) {
-        List(20) { index ->
-            MultiplatformParticleData(
-                id = index,
-                emoji = particleEmojis[index % particleEmojis.size],
-                startXRatio = Random.nextFloat(), // 0.0f to 1.0f
-                sizeSp = Random.nextInt(24, 38),
-                durationMillis = Random.nextInt(3000, 5000),
-                delayMillis = Random.nextInt(0, 1500)
-            )
+    val particles = remember(isActive, flowerImageUrls) {
+        if (flowerImageUrls.isEmpty()) {
+            emptyList()
+        } else {
+            List(20) { index ->
+                FlowerParticleData(
+                    id = index,
+                    imageUrl = flowerImageUrls[index % flowerImageUrls.size],
+                    startXRatio = Random.nextFloat(),
+                    sizeDp = Random.nextInt(45, 65).dp,
+                    durationMillis = Random.nextInt(5000, 8000),
+                    delayMillis = Random.nextInt(0, 1500),
+                    targetRotation = Random.nextInt(-180, 180).toFloat()
+                )
+            }
         }
     }
 
     LaunchedEffect(isActive) {
-        delay(6500)
+        delay(8500)
         onFinished()
     }
 
@@ -59,7 +77,7 @@ fun HomeAnimationOverlay(
         val screenHeightPx = maxHeight
 
         particles.forEach { particle ->
-            SingleFallingParticle(
+            SingleFallingFlowerParticle(
                 particle = particle,
                 screenWidth = screenWidthPx,
                 screenHeight = screenHeightPx
@@ -69,8 +87,8 @@ fun HomeAnimationOverlay(
 }
 
 @Composable
-private fun SingleFallingParticle(
-    particle: MultiplatformParticleData,
+private fun SingleFallingFlowerParticle(
+    particle: FlowerParticleData,
     screenWidth: Dp,
     screenHeight: Dp
 ) {
@@ -81,10 +99,10 @@ private fun SingleFallingParticle(
         hasStarted = true
     }
 
-    val startX = (particle.startXRatio * (screenWidth.value - 40)).dp
+    val startX = (particle.startXRatio * (screenWidth.value - 60).coerceAtLeast(0f)).dp
 
     val offsetY by animateDpAsState(
-        targetValue = if (hasStarted) screenHeight + 60.dp else (-60).dp,
+        targetValue = if (hasStarted) screenHeight + 100.dp else (-100).dp,
         animationSpec = tween(
             durationMillis = particle.durationMillis,
             easing = LinearEasing
@@ -92,20 +110,33 @@ private fun SingleFallingParticle(
         label = "yAnim"
     )
 
+    val rotation by animateFloatAsState(
+        targetValue = if (hasStarted) particle.targetRotation else 0f,
+        animationSpec = tween(
+            durationMillis = particle.durationMillis,
+            easing = LinearEasing
+        ),
+        label = "rotationAnim"
+    )
+
     val alphaVal by animateFloatAsState(
         targetValue = if (hasStarted) 1f else 0f,
-        animationSpec = tween(durationMillis = 800),
+        animationSpec = tween(durationMillis = 600),
         label = "alphaAnim"
     )
 
     Box(
         modifier = Modifier
             .offset(x = startX, y = offsetY)
+            .size(particle.sizeDp)
             .alpha(alphaVal)
+            .rotate(rotation)
     ) {
-        Text(
-            text = particle.emoji,
-            fontSize = particle.sizeSp.sp
+        AsyncImage(
+            model = particle.imageUrl,
+            contentDescription = "Çiçek",
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.fillMaxSize()
         )
     }
 }

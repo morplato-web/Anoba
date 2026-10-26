@@ -2,6 +2,7 @@ package com.neval.anoba.home
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -213,8 +215,9 @@ private fun HomeEntityParticle(entity: HomeEntityData, allAssets: List<Animation
 
     val xPos by animateDpAsState(targetValue = if (hasStarted) entity.targetX else entity.startX, animationSpec = tween(entity.animationDuration.toInt(), easing = LinearEasing), label = "x")
     val yPos by animateDpAsState(targetValue = if (hasStarted) entity.targetY + yBobbingOffset else entity.startY, animationSpec = tween(entity.animationDuration.toInt(), easing = LinearEasing), label = "y")
+    val rotationAngle by animateFloatAsState(targetValue = if (hasStarted && entity.asset.type == AnimationType.FALL) 180f else 0f, animationSpec = tween(entity.animationDuration.toInt(), easing = LinearEasing), label = "rotation")
 
-    Box(modifier = Modifier.offset(x = xPos, y = yPos).size(entity.size)) {
+    Box(modifier = Modifier.offset(x = xPos, y = yPos).size(entity.size).rotate(if (entity.asset.type == AnimationType.FALL) rotationAngle else 0f)) {
         if (isLottie) {
             LottieAnimation(
                 composition = composition,
