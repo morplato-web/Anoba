@@ -47,6 +47,7 @@ data class SampleGroupChatItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatHomeScreen(
+    onNavigateBack: () -> Unit = {},
     onOpenPrivateChat: (String, String) -> Unit = { _, _ -> },
     onOpenGroupChat: (String, String) -> Unit = { _, _ -> }
 ) {

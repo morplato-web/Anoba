@@ -51,7 +51,7 @@ private fun MainAppScreen(
         ) {
             when (activeView) {
                 "MARKET" -> MarketContainerView(onNavigateHome = { activeView = "HOME" })
-                "CHAT" -> ChatHomeScreen()
+                "CHAT" -> ChatHomeScreen(onNavigateBack = { activeView = "HOME" })
                 "PROFILE" -> ProfileScreen(onNavigateBack = { activeView = "HOME" })
                 "GUIDE" -> GuideScreen(onNavigateBack = { activeView = "HOME" })
                 "METE" -> MeteHomeScreen(onNavigateBack = { activeView = "HOME" })
@@ -65,13 +65,22 @@ private fun MainAppScreen(
             }
         }
 
-        // 🚀 Orijinal Android Sol Yan Menü (Drawer)
+        // Sol Yan Menü (Drawer)
         DrawerSheetContent(
             isOpen = isDrawerOpen,
             onDismiss = { isDrawerOpen = false },
-            onNavigateProfile = { activeView = "PROFILE" },
-            onNavigateGuide = { activeView = "GUIDE" },
-            onLogout = onLogout
+            onNavigateProfile = {
+                isDrawerOpen = false
+                activeView = "PROFILE"
+            },
+            onNavigateGuide = {
+                isDrawerOpen = false
+                activeView = "GUIDE"
+            },
+            onLogout = {
+                isDrawerOpen = false
+                onLogout()
+            }
         )
     }
 }
