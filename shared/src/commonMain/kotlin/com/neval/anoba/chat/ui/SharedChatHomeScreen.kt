@@ -1,6 +1,11 @@
+@file:kotlin.jvm.JvmName("SharedChatHomeScreenKt")
+
 package com.neval.anoba.chat.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,272 +22,285 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.AttachFile
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.neval.anoba.common.ui.AnobaBadge
-import com.neval.anoba.common.ui.UserAvatar
+import com.neval.anoba.ui.theme.AnobaNavy
 
-data class SamplePrivateChatItem(
+data class SharedChatMessage(
     val id: String,
-    val userId: String,
-    val username: String,
-    val userPhotoUrl: String?,
-    val lastMessage: String,
-    val badgeType: String?,
-    val isOfficial: Boolean,
-    val timeAgo: String,
-    val unreadCount: Int = 0
-)
-
-data class SampleGroupChatItem(
-    val id: String,
-    val name: String,
-    val description: String,
-    val memberCount: Int,
-    val isPrivate: Boolean,
-    val lastMessage: String
+    val senderId: String,
+    val senderName: String,
+    val senderPhotoUrl: String? = null,
+    val senderBadgeType: String? = null,
+    val content: String? = null,
+    val imageUrl: String? = null,
+    val videoUrl: String? = null,
+    val audioUrl: String? = null,
+    val timestampMillis: Long = 0L
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatHomeScreen(
+    messages: List<SharedChatMessage> = emptyList(),
+    currentUserId: String = "me",
+    isLoading: Boolean = false,
     onNavigateBack: () -> Unit = {},
-    onOpenPrivateChat: (String, String) -> Unit = { _, _ -> },
-    onOpenGroupChat: (String, String) -> Unit = { _, _ -> }
+    onHomeClick: () -> Unit = onNavigateBack,
+    onOpenGroupsClick: () -> Unit = {},
+    onOpenPrivateChatClick: () -> Unit = {},
+    onSendMessage: (String) -> Unit = {},
+    onSendMediaClick: (mediaType: String) -> Unit = {},
+    onRecordAudioClick: () -> Unit = {},
+    onMessageClick: (SharedChatMessage) -> Unit = {},
+    onMessageLongClick: (SharedChatMessage) -> Unit = {}
 ) {
-    var selectedTab by remember { mutableStateOf(0) }
-    var inputMessageText by remember { mutableStateOf("") }
+    val listState = rememberLazyListState()
+    var inputMessage by remember { mutableStateOf("") }
+    var isSearchActive by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
+    var showAttachmentSheet by remember { mutableStateOf(false) }
 
-    val sampleGeneralMessages = remember {
-        mutableStateListOf(
-            GeneralChatMessageEntity(
-                id = "gen_1",
-                senderId = "admin",
-                senderName = "Anoba",
-                senderPhotoUrl = null,
-                senderBadgeType = "OFFICIAL",
-                content = "Anoba küresel topluluğuna hoş geldiniz! 🌍",
-                timestampMillis = 1710000000000L
-            ),
-            GeneralChatMessageEntity(
-                id = "gen_2",
-                senderId = "u1",
-                senderName = "Mehmet K.",
-                senderPhotoUrl = null,
-                senderBadgeType = "PIONEER",
-                content = "Selamlar! iOS sürümü harika görünüyor 🚀",
-                timestampMillis = 1710000050000L
-            )
-        )
+    val filteredMessages = remember(messages, searchQuery) {
+        if (searchQuery.isBlank()) {
+            messages
+        } else {
+            val q = searchQuery.trim().lowercase()
+            messages.filter {
+                it.content?.lowercase()?.contains(q) == true || it.senderName.lowercase().contains(q)
+            }
+        }
     }
 
-    val samplePrivateChats = remember {
-        listOf(
-            SamplePrivateChatItem(
-                id = "p1",
-                userId = "seller_1",
-                username = "Ahmet Y. (Satıcı)",
-                userPhotoUrl = null,
-                lastMessage = "iPhone 15 Pro Max ilanı hakkında konuşalım.",
-                badgeType = "PIONEER",
-                isOfficial = false,
-                timeAgo = "10 dk",
-                unreadCount = 1
-            ),
-            SamplePrivateChatItem(
-                id = "p2",
-                userId = "anoba_official",
-                username = "Anoba Destek",
-                userPhotoUrl = null,
-                lastMessage = "Talebiniz başarıyla alındı.",
-                badgeType = "OFFICIAL",
-                isOfficial = true,
-                timeAgo = "1 sa"
-            )
-        )
-    }
-
-    val sampleGroups = remember {
-        listOf(
-            SampleGroupChatItem(
-                id = "g1",
-                name = "Pazar Yeri & Takas Kulübü 🛍️",
-                description = "İkinci el alım, satım ve takas sohbet grubu.",
-                memberCount = 124,
-                isPrivate = false,
-                lastMessage = "Zeynep: Yeni ilan ekledim arkadaşlar."
-            ),
-            SampleGroupChatItem(
-                id = "g2",
-                name = "Anoba Yazılım & Teknoloji 💻",
-                description = "Yazılım, mobil ve KMP dünyasından gelişmeler.",
-                memberCount = 89,
-                isPrivate = false,
-                lastMessage = "KMP iOS derlemesi tamamlandı!"
-            )
-        )
+    LaunchedEffect(filteredMessages.size) {
+        if (filteredMessages.isNotEmpty()) {
+            listState.animateScrollToItem(0)
+        }
     }
 
     Scaffold(
-        containerColor = Color(0xFF0F172A),
+        containerColor = Color(0xFFF1F5F9),
         topBar = {
-            Surface(color = Color(0xFF1E293B), shadowElevation = 4.dp) {
-                Column(modifier = Modifier.fillMaxWidth().statusBarsPadding()) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp)
-                            .padding(horizontal = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (isSearchActive) {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color.White,
+                    shadowElevation = 4.dp
+                ) {
+                    TopAppBar(
+                        title = {
+                            TextField(
+                                value = searchQuery,
+                                onValueChange = { searchQuery = it },
+                                placeholder = { Text("Mesajlarda ara...", color = Color.Gray, fontSize = 14.sp) },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                    cursorColor = AnobaNavy
+                                ),
+                                singleLine = true,
+                                trailingIcon = {
+                                    IconButton(onClick = {
+                                        searchQuery = ""
+                                        isSearchActive = false
+                                    }) {
+                                        Icon(Icons.Default.Close, contentDescription = "Kapat", tint = AnobaNavy)
+                                    }
+                                }
+                            )
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                searchQuery = ""
+                                isSearchActive = false
+                            }) {
+                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = AnobaNavy)
+                            }
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+                    )
+                }
+            } else {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color.White.copy(alpha = 0.95f),
+                    shadowElevation = 6.dp,
+                    shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+                ) {
+                    TopAppBar(
+                        modifier = Modifier.statusBarsPadding().padding(horizontal = 4.dp),
+                        title = {
+                            Surface(
+                                color = Color(0xFF1565C0),
+                                shape = RoundedCornerShape(10.dp),
+                                shadowElevation = 3.dp
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "Polis\nKarakolu",
+                                        color = Color.White,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        fontSize = 10.sp,
+                                        lineHeight = 11.sp,
+                                        textAlign = TextAlign.Center,
+                                        letterSpacing = 0.5.sp
+                                    )
+                                }
+                            }
+                        },
+                        navigationIcon = {
                             IconButton(onClick = onNavigateBack) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = "Geri",
-                                    tint = Color.White
+                                    tint = AnobaNavy
                                 )
                             }
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "💬 Sohbet Odaları",
-                                color = Color.White,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            color = Color(0xFFFFD700).copy(alpha = 0.2f)
-                        ) {
-                            Text(
-                                text = "Canlı 🟢",
-                                color = Color(0xFFFFD700),
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
-                            )
-                        }
-                    }
-
-                    TabRow(
-                        selectedTabIndex = selectedTab,
-                        containerColor = Color(0xFF1E293B),
-                        contentColor = Color(0xFFFFD700),
-                        indicator = { tabPositions ->
-                            TabRowDefaults.SecondaryIndicator(
-                                Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-                                color = Color(0xFFFFD700)
-                            )
-                        }
-                    ) {
-                        Tab(
-                            selected = selectedTab == 0,
-                            onClick = { selectedTab = 0 },
-                            text = { Text("Genel 🌍", fontWeight = if (selectedTab == 0) FontWeight.Bold else FontWeight.Normal) }
-                        )
-                        Tab(
-                            selected = selectedTab == 1,
-                            onClick = { selectedTab = 1 },
-                            text = { Text("Özel 👤", fontWeight = if (selectedTab == 1) FontWeight.Bold else FontWeight.Normal) }
-                        )
-                        Tab(
-                            selected = selectedTab == 2,
-                            onClick = { selectedTab = 2 },
-                            text = { Text("Gruplar 👥", fontWeight = if (selectedTab == 2) FontWeight.Bold else FontWeight.Normal) }
-                        )
-                    }
+                        },
+                        actions = {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(end = 4.dp)
+                            ) {
+                                IconButton(onClick = { isSearchActive = true }, modifier = Modifier.size(38.dp)) {
+                                    Icon(Icons.Default.Search, contentDescription = "Ara", modifier = Modifier.size(24.dp), tint = AnobaNavy)
+                                }
+                                IconButton(onClick = onOpenGroupsClick, modifier = Modifier.size(38.dp)) {
+                                    Icon(Icons.Filled.Groups, contentDescription = "Gruplar", modifier = Modifier.size(24.dp), tint = AnobaNavy)
+                                }
+                                IconButton(onClick = onOpenPrivateChatClick, modifier = Modifier.size(38.dp)) {
+                                    Icon(Icons.Default.Person, contentDescription = "Özel", modifier = Modifier.size(24.dp), tint = AnobaNavy)
+                                }
+                                IconButton(onClick = onHomeClick, modifier = Modifier.size(38.dp)) {
+                                    Icon(Icons.Filled.Home, contentDescription = "Ana Sayfa", modifier = Modifier.size(24.dp), tint = AnobaNavy)
+                                }
+                            }
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+                    )
                 }
             }
         },
         bottomBar = {
-            if (selectedTab == 0) {
-                Surface(
-                    color = Color(0xFF1E293B),
-                    shadowElevation = 12.dp,
-                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().imePadding()
+            Surface(
+                color = Color.White,
+                shadowElevation = 8.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .imePadding()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                    IconButton(
+                        onClick = { showAttachmentSheet = true },
+                        modifier = Modifier.size(40.dp)
                     ) {
-                        OutlinedTextField(
-                            value = inputMessageText,
-                            onValueChange = { inputMessageText = it },
-                            placeholder = { Text("Genel sohbet odasına yaz...", color = Color(0xFF94A3B8), fontSize = 14.sp) },
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(24.dp),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = Color(0xFF0F172A),
-                                unfocusedContainerColor = Color(0xFF0F172A),
-                                focusedBorderColor = Color(0xFFFFD700),
-                                unfocusedBorderColor = Color(0xFF334155),
-                                focusedTextColor = Color.White,
-                                unfocusedTextColor = Color.White
-                            ),
-                            singleLine = true
+                        Icon(
+                            imageVector = Icons.Default.AttachFile,
+                            contentDescription = "Medya Ekle",
+                            tint = AnobaNavy
                         )
+                    }
 
-                        Spacer(modifier = Modifier.width(8.dp))
+                    OutlinedTextField(
+                        value = inputMessage,
+                        onValueChange = { inputMessage = it },
+                        placeholder = { Text("Bir mesaj yazın...", color = Color.Gray, fontSize = 14.sp) },
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(24.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = Color(0xFFF8FAFC),
+                            unfocusedContainerColor = Color(0xFFF8FAFC),
+                            focusedBorderColor = AnobaNavy,
+                            unfocusedBorderColor = Color(0xFFCBD5E1),
+                            focusedTextColor = AnobaNavy,
+                            unfocusedTextColor = AnobaNavy
+                        ),
+                        singleLine = true
+                    )
 
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    if (inputMessage.isNotBlank()) {
                         FloatingActionButton(
                             onClick = {
-                                if (inputMessageText.isNotBlank()) {
-                                    sampleGeneralMessages.add(
-                                        GeneralChatMessageEntity(
-                                            id = "gen_${sampleGeneralMessages.size + 1}",
-                                            senderId = "me",
-                                            senderName = "Siz",
-                                            senderPhotoUrl = null,
-                                            senderBadgeType = "NONE",
-                                            content = inputMessageText,
-                                            timestampMillis = 1710000100000L
-                                        )
-                                    )
-                                    inputMessageText = ""
-                                }
+                                onSendMessage(inputMessage.trim())
+                                inputMessage = ""
                             },
-                            containerColor = Color(0xFFFFD700),
-                            contentColor = Color.Black,
+                            containerColor = AnobaNavy,
+                            contentColor = Color.White,
                             shape = CircleShape,
-                            modifier = Modifier.size(48.dp)
+                            modifier = Modifier.size(44.dp)
                         ) {
-                            Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Gönder", modifier = Modifier.size(20.dp))
+                            Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Gönder", modifier = Modifier.size(18.dp))
+                        }
+                    } else {
+                        IconButton(
+                            onClick = onRecordAudioClick,
+                            modifier = Modifier
+                                .size(44.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFE2E8F0))
+                        ) {
+                            Icon(Icons.Default.Mic, contentDescription = "Ses Kaydı", tint = AnobaNavy)
                         }
                     }
                 }
@@ -294,153 +312,147 @@ fun ChatHomeScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            when (selectedTab) {
-                0 -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(sampleGeneralMessages, key = { it.id }) { msg ->
-                            ChatMessageItem(
-                                message = msg,
-                                isSentByCurrentUser = msg.senderId == "me",
-                                isSelected = false,
-                                onLongPress = {},
-                                onClick = {}
-                            )
-                        }
+            if (isLoading && filteredMessages.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = AnobaNavy)
+                }
+            } else if (filteredMessages.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("Henüz mesaj bulunmuyor. İlk mesajı siz yazın! 🕊️", color = Color.Gray, fontSize = 14.sp)
+                }
+            } else {
+                LazyColumn(
+                    state = listState,
+                    reverseLayout = true,
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    itemsIndexed(filteredMessages, key = { _, item -> item.id }) { _, msg ->
+                        ChatBubbleItem(
+                            message = msg,
+                            isSentByMe = msg.senderId == currentUserId,
+                            onClick = { onMessageClick(msg) },
+                            onLongClick = { onMessageLongClick(msg) }
+                        )
                     }
                 }
-                1 -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(samplePrivateChats, key = { it.id }) { item ->
-                            Surface(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { onOpenPrivateChat(item.userId, item.username) },
-                                shape = RoundedCornerShape(16.dp),
-                                color = Color(0xFF1E293B)
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(14.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    UserAvatar(
-                                        photoUrl = item.userPhotoUrl,
-                                        username = item.username,
-                                        size = 48.dp
-                                    )
-                                    Spacer(modifier = Modifier.width(12.dp))
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Text(
-                                                text = item.username,
-                                                color = Color.White,
-                                                fontSize = 15.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis
-                                            )
-                                            Spacer(Modifier.width(6.dp))
-                                            AnobaBadge(
-                                                badgeType = item.badgeType,
-                                                isOfficial = item.isOfficial
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(
-                                            text = item.lastMessage,
-                                            color = Color(0xFF94A3B8),
-                                            fontSize = 13.sp,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis
-                                        )
-                                    }
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Column(horizontalAlignment = Alignment.End) {
-                                        Text(item.timeAgo, color = Color(0xFF64748B), fontSize = 11.sp)
-                                        if (item.unreadCount > 0) {
-                                            Spacer(modifier = Modifier.height(4.dp))
-                                            Surface(
-                                                shape = CircleShape,
-                                                color = Color(0xFFFFD700)
-                                            ) {
-                                                Text(
-                                                    text = "${item.unreadCount}",
-                                                    color = Color.Black,
-                                                    fontWeight = FontWeight.Bold,
-                                                    fontSize = 11.sp,
-                                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+            }
+        }
+    }
+
+    if (showAttachmentSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showAttachmentSheet = false },
+            containerColor = Color.White
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    text = "Medya Paylaş 📎",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = AnobaNavy
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    AttachmentOptionItem(icon = Icons.Default.PhotoLibrary, title = "Galeri", color = Color(0xFFE11D48)) {
+                        showAttachmentSheet = false
+                        onSendMediaClick("GALLERY")
+                    }
+                    AttachmentOptionItem(icon = Icons.Default.CameraAlt, title = "Fotoğraf Çek", color = Color(0xFF2563EB)) {
+                        showAttachmentSheet = false
+                        onSendMediaClick("CAMERA")
+                    }
+                    AttachmentOptionItem(icon = Icons.Default.Videocam, title = "Video Çek", color = Color(0xFF059669)) {
+                        showAttachmentSheet = false
+                        onSendMediaClick("VIDEO")
                     }
                 }
-                2 -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(sampleGroups, key = { it.id }) { group ->
-                            Surface(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { onOpenGroupChat(group.id, group.name) },
-                                shape = RoundedCornerShape(16.dp),
-                                color = Color(0xFF1E293B)
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(14.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Surface(
-                                        shape = CircleShape,
-                                        color = Color(0xFFFFD700),
-                                        modifier = Modifier.size(48.dp)
-                                    ) {
-                                        Box(contentAlignment = Alignment.Center) {
-                                            Icon(Icons.Default.Group, contentDescription = null, tint = Color.Black)
-                                        }
-                                    }
-                                    Spacer(modifier = Modifier.width(12.dp))
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Text(
-                                            text = group.name,
-                                            color = Color.White,
-                                            fontSize = 15.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                        Spacer(modifier = Modifier.height(2.dp))
-                                        Text(
-                                            text = "${group.memberCount} üye • ${group.description}",
-                                            color = Color(0xFF94A3B8),
-                                            fontSize = 12.sp,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis
-                                        )
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(
-                                            text = group.lastMessage,
-                                            color = Color(0xFFCBD5E1),
-                                            fontSize = 13.sp,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun AttachmentOptionItem(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    color: Color,
+    onClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable { onClick() }
+    ) {
+        Box(
+            modifier = Modifier
+                .size(54.dp)
+                .clip(CircleShape)
+                .background(color.copy(alpha = 0.12f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(imageVector = icon, contentDescription = title, tint = color, modifier = Modifier.size(26.dp))
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(text = title, fontSize = 12.sp, color = AnobaNavy, fontWeight = FontWeight.Medium)
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun ChatBubbleItem(
+    message: SharedChatMessage,
+    isSentByMe: Boolean,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            ),
+        horizontalArrangement = if (isSentByMe) Arrangement.End else Arrangement.Start
+    ) {
+        Surface(
+            shape = RoundedCornerShape(
+                topStart = 16.dp,
+                topEnd = 16.dp,
+                bottomStart = if (isSentByMe) 16.dp else 4.dp,
+                bottomEnd = if (isSentByMe) 4.dp else 16.dp
+            ),
+            color = if (isSentByMe) AnobaNavy else Color.White,
+            shadowElevation = 1.5.dp,
+            modifier = Modifier.fillMaxWidth(0.78f)
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                if (!isSentByMe) {
+                    Text(
+                        text = message.senderName,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp,
+                        color = Color(0xFF1565C0)
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                }
+
+                message.content?.let {
+                    Text(
+                        text = it,
+                        fontSize = 14.sp,
+                        color = if (isSentByMe) Color.White else Color(0xFF1E293B),
+                        lineHeight = 18.sp
+                    )
                 }
             }
         }
