@@ -1,6 +1,6 @@
 package com.neval.anoba.home
 
-import com.neval.anoba.market.MarketItemModel
+import com.neval.anoba.market.SharedMarketItemModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -28,5 +28,5 @@ data class SharedFeedItem(
     val reactionCount: Int = 0,
     val viewCount: Long = 0L,
     val createdAtMillis: Long = 0L,
-    val marketItem: MarketItemModel? = null
+    val marketItem: SharedMarketItemModel? = null
 )

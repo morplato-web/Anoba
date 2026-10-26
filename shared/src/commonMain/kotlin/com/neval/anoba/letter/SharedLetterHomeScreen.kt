@@ -32,11 +32,11 @@ import com.neval.anoba.common.utils.getRelativeTimeString
 fun LetterHomeScreen(
     onNavigateBack: () -> Unit = {},
     onCreateLetterClick: () -> Unit = {},
-    onLetterClick: (LetterModel) -> Unit = {}
+    onLetterClick: (SharedLetterModel) -> Unit = {}
 ) {
     val sampleLetters = remember {
         listOf(
-            LetterModel(
+            SharedLetterModel(
                 id = "let_1",
                 ownerId = "u1",
                 username = "Ahmet Y.",
@@ -48,7 +48,7 @@ fun LetterHomeScreen(
                 userBadgeType = "PIONEER",
                 reactionCount = 128
             ),
-            LetterModel(
+            SharedLetterModel(
                 id = "let_2",
                 ownerId = "anoba_official",
                 username = "Anoba",

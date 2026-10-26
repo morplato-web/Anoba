@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedMarketCardKt")
+
 package com.neval.anoba.market
 
 import androidx.compose.foundation.background
@@ -28,7 +30,7 @@ import com.neval.anoba.common.utils.getRelativeTimeString
 
 @Composable
 fun MarketCard(
-    item: MarketItemModel,
+    item: SharedMarketItemModel,
     onClick: () -> Unit
 ) {
     Card(

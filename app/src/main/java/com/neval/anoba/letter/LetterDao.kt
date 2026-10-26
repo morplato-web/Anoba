@@ -1,28 +1,40 @@
 package com.neval.anoba.letter
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LetterDao {
-    @Query("SELECT * FROM letter_table WHERE is_published = 1 OR is_published = 'true' ORDER BY publish_timestamp DESC")
+    @Query("SELECT * FROM letter_table WHERE is_published = 1 ORDER BY publish_timestamp DESC")
     fun getAllPublishedLetters(): Flow<List<LetterModel>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLetter(letter: LetterModel)
+    @Query("SELECT * FROM letter_table WHERE ownerId = :userId ORDER BY publish_timestamp DESC")
+    fun getUserLetters(userId: String): Flow<List<LetterModel>>
+
+    @Query("SELECT * FROM letter_table WHERE id = :id")
+    suspend fun getLetterById(id: String): LetterModel?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(letters: List<LetterModel>)
 
-    @Query("SELECT * FROM letter_table WHERE id = :letterId LIMIT 1")
-    suspend fun getLetterById(letterId: String): LetterModel?
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLetter(letter: LetterModel)
 
-    @Query("UPDATE letter_table SET viewCount = viewCount + 1 WHERE id = :letterId")
-    suspend fun incrementLocalViewCount(letterId: String)
+    @Query("DELETE FROM letter_table WHERE id = :id")
+    suspend fun deleteLetterById(id: String)
 
-    @Query("DELETE FROM letter_table WHERE id = :letterId")
-    suspend fun deleteLetterById(letterId: String)
+    @Query("DELETE FROM letter_table WHERE is_published = 1")
+    suspend fun clearPublishedLetters()
 
-    @Query("UPDATE letter_table SET is_published = 0")
-    suspend fun resetPublishedLetters()
+    @Transaction
+    suspend fun resetPublishedLetters() {
+        clearPublishedLetters()
+    }
+
+    @Query("UPDATE letter_table SET viewCount = viewCount + 1 WHERE id = :id")
+    suspend fun incrementLocalViewCount(id: String)
 }

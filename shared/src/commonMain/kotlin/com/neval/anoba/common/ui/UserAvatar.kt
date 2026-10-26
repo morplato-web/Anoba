@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil3.ImageLoader
 import coil3.compose.AsyncImage
 import com.neval.anoba.chat.ui.InitialsAvatar
 
@@ -21,7 +22,8 @@ fun UserAvatar(
     photoUrl: String?,
     username: String?,
     modifier: Modifier = Modifier,
-    size: Dp = 32.dp
+    size: Dp = 32.dp,
+    imageLoader: ImageLoader? = null
 ) {
     val isAnobaBrand = username?.contains("anoba", ignoreCase = true) == true
 
@@ -33,12 +35,22 @@ fun UserAvatar(
         contentAlignment = Alignment.Center
     ) {
         if (!photoUrl.isNullOrBlank()) {
-            AsyncImage(
-                model = photoUrl,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
+            if (imageLoader != null) {
+                AsyncImage(
+                    model = photoUrl,
+                    contentDescription = null,
+                    imageLoader = imageLoader,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                AsyncImage(
+                    model = photoUrl,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
         } else if (isAnobaBrand) {
             AnobaBrandLogoIcon(
                 modifier = Modifier.fillMaxSize(),

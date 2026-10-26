@@ -7,25 +7,25 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MarketDao {
-    @Query("SELECT * FROM market_table WHERE is_sold = 0 ORDER BY createdAtMillis DESC")
-    fun getAllActiveItems(): Flow<List<MarketItemModel>>
+interface SharedMarketDao {
+    @Query("SELECT * FROM shared_market_table WHERE is_sold = 0 ORDER BY createdAtMillis DESC")
+    fun getAllActiveItems(): Flow<List<SharedMarketItemModel>>
 
-    @Query("SELECT * FROM market_table ORDER BY createdAtMillis DESC")
-    fun getAllItems(): Flow<List<MarketItemModel>>
+    @Query("SELECT * FROM shared_market_table ORDER BY createdAtMillis DESC")
+    fun getAllItems(): Flow<List<SharedMarketItemModel>>
 
-    @Query("SELECT * FROM market_table WHERE id = :id")
-    suspend fun getItemById(id: String): MarketItemModel?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(items: List<MarketItemModel>)
+    @Query("SELECT * FROM shared_market_table WHERE id = :id")
+    suspend fun getItemById(id: String): SharedMarketItemModel?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(item: MarketItemModel)
+    suspend fun insertAll(items: List<SharedMarketItemModel>)
 
-    @Query("DELETE FROM market_table WHERE id = :id")
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(item: SharedMarketItemModel)
+
+    @Query("DELETE FROM shared_market_table WHERE id = :id")
     suspend fun deleteById(id: String)
 
-    @Query("DELETE FROM market_table")
+    @Query("DELETE FROM shared_market_table")
     suspend fun clearAll()
 }

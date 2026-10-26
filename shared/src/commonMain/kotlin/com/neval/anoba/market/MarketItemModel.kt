@@ -6,10 +6,9 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Entity(tableName = "market_table")
-data class MarketItemModel(
-    @PrimaryKey
-    var id: String = "",
+@Entity(tableName = "shared_market_table")
+data class SharedMarketItemModel(
+    @PrimaryKey var id: String = "",
     var title: String = "",
     var description: String = "",
     var price: Double = 0.0,
@@ -29,6 +28,5 @@ data class MarketItemModel(
     @ColumnInfo(name = "is_official")
     var isOfficial: Boolean = false,
 
-    var userBadgeType: String? = "NONE",
-    var countryCode: String? = null
+    var userBadgeType: String? = "NONE"
 )

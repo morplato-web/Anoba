@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedLoginScreenKt")
+
 package com.neval.anoba.login
 
 import androidx.compose.foundation.BorderStroke

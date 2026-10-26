@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Entity(tableName = "letter_table")
-data class LetterModel(
+@Entity(tableName = "shared_letter_table")
+data class SharedLetterModel(
     @PrimaryKey var id: String = "",
     var ownerId: String = "",
     var username: String = "",

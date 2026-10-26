@@ -45,9 +45,9 @@ private val GLOBAL_CITIES = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarketEditScreen(
-    item: MarketItemModel?,
+    item: SharedMarketItemModel?,
     onNavigateBack: () -> Unit = {},
-    onSaveSuccess: (MarketItemModel) -> Unit = {}
+    onSaveSuccess: (SharedMarketItemModel) -> Unit = {}
 ) {
     var title by remember(item) { mutableStateOf(item?.title ?: "") }
     var priceText by remember(item) { mutableStateOf(item?.price?.toInt()?.toString() ?: "") }

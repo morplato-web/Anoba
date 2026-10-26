@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedDrawerContentKt")
+
 package com.neval.anoba.drawer
 
 import androidx.compose.foundation.background

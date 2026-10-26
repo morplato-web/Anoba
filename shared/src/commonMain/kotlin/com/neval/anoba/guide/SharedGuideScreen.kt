@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedGuideScreenKt")
+
 package com.neval.anoba.guide
 
 import androidx.compose.foundation.clickable

@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedMosaicSheetKt")
+
 package com.neval.anoba.mosaic
 
 import androidx.compose.animation.AnimatedVisibility

@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedMarketDetailScreenKt")
+
 package com.neval.anoba.market
 
 import androidx.compose.foundation.background
@@ -32,7 +34,7 @@ import com.neval.anoba.common.utils.getRelativeTimeString
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarketDetailScreen(
-    item: MarketItemModel?,
+    item: SharedMarketItemModel?,
     onNavigateBack: () -> Unit,
     onEditClick: (String) -> Unit = {},
     onSellerClick: (String) -> Unit = {},

@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedMarketHomeScreenKt")
+
 package com.neval.anoba.market
 
 import androidx.compose.foundation.layout.*
@@ -28,11 +30,11 @@ fun MarketContainerView(
     onNavigateHome: () -> Unit = {}
 ) {
     var activeView by remember { mutableStateOf("LIST") }
-    var selectedItem by remember { mutableStateOf<MarketItemModel?>(null) }
+    var selectedItem by remember { mutableStateOf<SharedMarketItemModel?>(null) }
 
     val sampleItems = remember {
         mutableStateListOf(
-            MarketItemModel(
+            SharedMarketItemModel(
                 id = "1",
                 title = "iPhone 15 Pro Max 256GB Gold",
                 description = "Kutusunda sıfır gibi, garantisi devam ediyor.",
@@ -46,7 +48,7 @@ fun MarketContainerView(
                 username = "Ahmet Y.",
                 isSold = false
             ),
-            MarketItemModel(
+            SharedMarketItemModel(
                 id = "2",
                 title = "Sony PlayStation 5 Slim 1TB",
                 description = "Çift kol + 3 orijinal oyun dahil.",
@@ -60,7 +62,7 @@ fun MarketContainerView(
                 username = "Zeynep K.",
                 isSold = false
             ),
-            MarketItemModel(
+            SharedMarketItemModel(
                 id = "3",
                 title = "Ahşap Çalışma Masası ve Sandalye Seti",
                 description = "Masif çam ağacından el yapımı özel tasarım.",
@@ -75,7 +77,7 @@ fun MarketContainerView(
                 isSold = false,
                 isOfficial = true
             ),
-            MarketItemModel(
+            SharedMarketItemModel(
                 id = "4",
                 title = "Deri Ceket (L Beden Black)",
                 description = "Orijinal hakiki deri mont, hiç giyilmedi.",
@@ -125,10 +127,10 @@ fun MarketContainerView(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarketHomeScreen(
-    itemsList: List<MarketItemModel> = emptyList(),
+    itemsList: List<SharedMarketItemModel> = emptyList(),
     onNavigateHome: () -> Unit = {},
     onCreateItemClick: () -> Unit = {},
-    onItemClick: (MarketItemModel) -> Unit = {}
+    onItemClick: (SharedMarketItemModel) -> Unit = {}
 ) {
     val categories = remember {
         listOf("Tümü", "Elektronik", "Giyim & Moda", "Ev & Yaşam", "Araç & Vasıta", "Spor & Hobi", "Kitap & Oyun", "Diğer")

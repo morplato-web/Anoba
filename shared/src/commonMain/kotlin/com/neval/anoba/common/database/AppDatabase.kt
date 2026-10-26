@@ -11,10 +11,10 @@ import com.neval.anoba.chat.ui.GroupMessageEntity
 import com.neval.anoba.chat.ui.PrivateMessageEntity
 import com.neval.anoba.follow.FollowedUserDao
 import com.neval.anoba.follow.FollowedUserEntity
-import com.neval.anoba.letter.LetterDao
-import com.neval.anoba.letter.LetterModel
-import com.neval.anoba.market.MarketDao
-import com.neval.anoba.market.MarketItemModel
+import com.neval.anoba.letter.SharedLetterDao
+import com.neval.anoba.letter.SharedLetterModel
+import com.neval.anoba.market.SharedMarketDao
+import com.neval.anoba.market.SharedMarketItemModel
 
 @Database(
     entities = [
@@ -23,8 +23,8 @@ import com.neval.anoba.market.MarketItemModel
         PrivateMessageEntity::class,
         PinnedItemEntity::class,
         FollowedUserEntity::class,
-        MarketItemModel::class,
-        LetterModel::class
+        SharedMarketItemModel::class,
+        SharedLetterModel::class
     ],
     version = 21,
     exportSchema = false
@@ -35,8 +35,8 @@ abstract class SharedAppDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
     abstract fun pinnedItemDao(): PinnedItemDao
     abstract fun followedUserDao(): FollowedUserDao
-    abstract fun marketDao(): MarketDao
-    abstract fun letterDao(): LetterDao
+    abstract fun marketDao(): SharedMarketDao
+    abstract fun letterDao(): SharedLetterDao
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")

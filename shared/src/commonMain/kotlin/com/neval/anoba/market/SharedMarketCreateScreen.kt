@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedMarketCreateScreenKt")
+
 package com.neval.anoba.market
 
 import androidx.compose.foundation.background
@@ -50,7 +52,7 @@ private val GLOBAL_CITIES = listOf(
 @Composable
 fun MarketCreateScreen(
     onNavigateBack: () -> Unit,
-    onSuccess: (MarketItemModel) -> Unit = {}
+    onSuccess: (SharedMarketItemModel) -> Unit = {}
 ) {
     var showLocationSheet by remember { mutableStateOf(false) }
 
@@ -337,7 +339,7 @@ fun MarketCreateScreen(
                 onClick = {
                     if (title.isBlank()) return@Button
                     isSubmitting = true
-                    val newItem = MarketItemModel(
+                    val newItem = SharedMarketItemModel(
                         id = "item_${kotlin.random.Random.nextLong(100000, 999999)}",
                         title = title,
                         description = description,

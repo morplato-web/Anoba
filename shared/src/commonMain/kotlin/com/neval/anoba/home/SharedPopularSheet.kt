@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedPopularSheetKt")
+
 package com.neval.anoba.home
 
 import androidx.compose.foundation.background

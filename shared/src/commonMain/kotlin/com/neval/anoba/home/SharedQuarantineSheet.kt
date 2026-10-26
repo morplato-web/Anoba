@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedQuarantineSheetKt")
+
 package com.neval.anoba.home
 
 import androidx.compose.foundation.background
