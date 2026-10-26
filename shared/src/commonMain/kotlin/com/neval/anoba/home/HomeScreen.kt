@@ -274,7 +274,6 @@ fun HomeScreen(
                                         },
                                         onClick = {
                                             showMoreMenu = false
-                                            showQuarantineSheet = false
                                             showQuarantineSheet = true
                                         }
                                     )
@@ -454,7 +453,7 @@ fun HomeScreen(
                         Card(
                             modifier = Modifier
                                 .height(38.dp)
-                                .weight(0.12f)
+                                .weight(1f)
                                 .clip(RoundedCornerShape(8.dp))
                                 .clickable { showMosaicSheet = true },
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF37474F)),
@@ -490,7 +489,6 @@ fun HomeScreen(
 
                         // Sağda: 5 Adet Aksiyon Kartı
                         Row(
-                            modifier = Modifier.weight(0.33f),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.End
                         ) {
