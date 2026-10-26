@@ -245,7 +245,15 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        MainAppNavHost(navController, Constants.LOGIN_NAV_GRAPH)
+                        val isBanned = (authState as? com.neval.anoba.login.state.AuthState.Authenticated)?.isBanned == true
+
+                        if (isBanned) {
+                            com.neval.anoba.common.ui.BannedUserScreen(
+                                onLogoutClick = { authViewModel.logout() }
+                            )
+                        } else {
+                            MainAppNavHost(navController, Constants.LOGIN_NAV_GRAPH)
+                        }
                     }
                 }
             }

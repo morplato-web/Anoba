@@ -11,7 +11,8 @@ sealed class AuthState {
         val isOfficial: Boolean = false,
         val badgeType: String? = "NONE",
         val followerCount: Int = 0,
-        val followingCount: Int = 0
+        val followingCount: Int = 0,
+        val isBanned: Boolean = false
     ) : AuthState()
 
     data object Unauthenticated : AuthState()

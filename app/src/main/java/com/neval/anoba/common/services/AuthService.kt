@@ -93,6 +93,7 @@ class AuthService(
                         val badge = fsDoc.getString("badgeType") ?: "NONE"
                         val followers = fsDoc.getLong("followerCount")?.toInt() ?: 0
                         val following = fsDoc.getLong("followingCount")?.toInt() ?: 0
+                        val isBanned = fsDoc.getBoolean("isBanned") ?: fsDoc.getBoolean("is_banned") ?: false
 
                         val firestorePhoto = fsDoc.getString("photoURL") ?: fsDoc.getString("photoUrl")
                         val finalPhotoUrl = firestorePhoto ?: firebaseUser.photoUrl?.toString()
@@ -103,7 +104,8 @@ class AuthService(
                             isOfficial = isOfficial,
                             badgeType = badge,
                             followerCount = followers,
-                            followingCount = following
+                            followingCount = following,
+                            isBanned = isBanned
                         )
                     }
             } else {
@@ -548,6 +550,7 @@ class AuthService(
                         val badge = fsDoc.getString("badgeType") ?: "NONE"
                         val followers = fsDoc.getLong("followerCount")?.toInt() ?: 0
                         val following = fsDoc.getLong("followingCount")?.toInt() ?: 0
+                        val isBanned = fsDoc.getBoolean("isBanned") ?: fsDoc.getBoolean("is_banned") ?: false
 
                         val firestorePhoto = fsDoc.getString("photoURL") ?: fsDoc.getString("photoUrl")
                         val finalPhotoUrl = firestorePhoto ?: user.photoUrl?.toString()
@@ -558,7 +561,8 @@ class AuthService(
                             isOfficial = isOfficial,
                             badgeType = badge,
                             followerCount = followers,
-                            followingCount = following
+                            followingCount = following,
+                            isBanned = isBanned
                         )
                     } else {
                         _authState.value = baseState
