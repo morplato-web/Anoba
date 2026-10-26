@@ -88,6 +88,17 @@ fun AuthContainerView(
                 onGoogleSignUpClick = onLoginSuccess
             )
         }
+        "FORGOT_PASSWORD" -> {
+            var forgotEmail by remember { mutableStateOf("") }
+            ForgotPasswordScreen(
+                email = forgotEmail,
+                onEmailChange = { forgotEmail = it },
+                onNavigateBack = { authMode = "LOGIN" },
+                onResetPasswordClick = {
+                    authMode = "LOGIN"
+                }
+            )
+        }
         else -> {
             LoginScreen(
                 email = email,
@@ -99,6 +110,7 @@ fun AuthContainerView(
                 onLoginClick = onLoginSuccess,
                 onGoogleLoginClick = onLoginSuccess,
                 onGuestLoginClick = onLoginSuccess,
+                onForgotPasswordClick = { authMode = "FORGOT_PASSWORD" },
                 onSignUpClick = { authMode = "SIGN_UP" }
             )
         }
