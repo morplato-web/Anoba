@@ -331,6 +331,7 @@
     <string name="drawer_logout_dialog_text">Apakah Anda yakin ingin keluar?</string>
     <string name="drawer_logout_dialog_confirm">Ya</string>
     <string name="drawer_logout_dialog_dismiss">Tidak</string>
+    <string name="user_banned_title">Akses Anda telah dilarang oleh Anoba</string>
     <string name="drawer_privacy_policy">Kebijakan Privasi</string>
     <string name="profilescreen_info_not_available">Informasi profil tidak tersedia.</string>
     <string name="profilescreen_try_again">Coba Lagi</string>

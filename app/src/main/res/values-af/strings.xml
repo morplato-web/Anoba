@@ -329,6 +329,7 @@
     <string name="drawer_logout_dialog_text">Is jy seker jy wil uitteken?</string>
     <string name="drawer_logout_dialog_confirm">Ja</string>
     <string name="drawer_logout_dialog_dismiss">Nee</string>
+    <string name="user_banned_title">Jou toegang is deur Anoba verban</string>
     <string name="drawer_privacy_policy">Privaatheidsbeleid</string>
     <string name="profilescreen_info_not_available">Profielinligting nie beskikbaar nie.</string>
     <string name="profilescreen_try_again">Probeer Weer</string>

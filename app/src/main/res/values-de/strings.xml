@@ -329,6 +329,7 @@
     <string name="drawer_logout_dialog_text">Sind Sie sicher, dass Sie sich abmelden möchten?</string>
     <string name="drawer_logout_dialog_confirm">Ja</string>
     <string name="drawer_logout_dialog_dismiss">Nein</string>
+    <string name="user_banned_title">Ihr Zugang wurde von Anoba gesperrt</string>
     <string name="drawer_privacy_policy">Datenschutz-Bestimmungen</string>
     <string name="profilescreen_info_not_available">Profilinformationen nicht verfügbar.</string>
     <string name="profilescreen_try_again">Erneut versuchen</string>

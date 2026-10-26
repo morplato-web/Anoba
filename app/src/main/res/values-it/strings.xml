@@ -316,6 +316,7 @@
     <string name="drawer_logout_dialog_text">Sei sicuro di voler uscire?</string>
     <string name="drawer_logout_dialog_confirm">Sì</string>
     <string name="drawer_logout_dialog_dismiss">No</string>
+    <string name="user_banned_title">Il tuo accesso è stato bloccato da Anoba</string>
     <string name="drawer_privacy_policy">Informativa sulla Privacy</string>
     <string name="profilescreen_info_not_available">Informazioni profilo non disponibili.</string>
     <string name="profilescreen_try_again">Riprova</string>

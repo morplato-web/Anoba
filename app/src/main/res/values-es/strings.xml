@@ -329,6 +329,7 @@
     <string name="drawer_logout_dialog_text">¿Está seguro de que desea cerrar sesión?</string>
     <string name="drawer_logout_dialog_confirm">Sí</string>
     <string name="drawer_logout_dialog_dismiss">No</string>
+    <string name="user_banned_title">Su acceso ha sido prohibido por Anoba</string>
     <string name="drawer_privacy_policy">Política de Privacidad</string>
     <string name="profilescreen_info_not_available">Información de perfil no disponible.</string>
     <string name="profilescreen_try_again">Reintentar</string>

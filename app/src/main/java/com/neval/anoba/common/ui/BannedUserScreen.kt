@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.neval.anoba.R
 
 @Composable
 fun BannedUserScreen(
@@ -39,30 +41,20 @@ fun BannedUserScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Block,
-                    contentDescription = "Engellendi",
+                    contentDescription = null,
                     tint = Color(0xFFD32F2F),
                     modifier = Modifier.size(48.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             Text(
-                text = "Anoba Tarafından Girişiniz Yasaklandı",
+                text = stringResource(id = R.string.user_banned_title),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF232066),
                 textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "Hesabınız topluluk kurallarına aykırı hareket tespiti sebebiyle askıya alınmıştır. Detaylı bilgi için destek ekibi ile iletişime geçebilirsiniz.",
-                fontSize = 14.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center,
-                lineHeight = 20.sp
             )
 
             Spacer(modifier = Modifier.height(36.dp))
@@ -76,7 +68,7 @@ fun BannedUserScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F))
             ) {
                 Text(
-                    text = "Çıkış Yap",
+                    text = stringResource(id = R.string.drawer_logout),
                     color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold

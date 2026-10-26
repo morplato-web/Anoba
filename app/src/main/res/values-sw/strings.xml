@@ -329,6 +329,7 @@
     <string name="drawer_logout_dialog_text">Una uhakika unataka kuondoka?</string>
     <string name="drawer_logout_dialog_confirm">Ndiyo</string>
     <string name="drawer_logout_dialog_dismiss">Hapana</string>
+    <string name="user_banned_title">Ufikiaji wako umebanwa na Anoba</string>
     <string name="drawer_privacy_policy">Sera ya Faragha</string>
     <string name="profilescreen_info_not_available">Maelezo ya wasifu hayapatikani.</string>
     <string name="profilescreen_try_again">Jaribu Tena</string>

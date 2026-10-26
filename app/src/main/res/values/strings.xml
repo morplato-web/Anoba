@@ -331,6 +331,7 @@
     <string name="drawer_logout_dialog_text">Çıkış yapmak istediğinizden emin misiniz?</string>
     <string name="drawer_logout_dialog_confirm">Evet</string>
     <string name="drawer_logout_dialog_dismiss">Hayır</string>
+    <string name="user_banned_title">Anoba Tarafından Girişiniz Yasaklandı</string>
     <string name="drawer_privacy_policy">Gizlilik Politikası</string>
     <string name="profilescreen_info_not_available">Profil bilgisi mevcut değil.</string>
     <string name="profilescreen_try_again">Tekrar Dene</string>

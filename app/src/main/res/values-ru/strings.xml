@@ -329,6 +329,7 @@
     <string name="drawer_logout_dialog_text">Вы уверены, что хотите выйти?</string>
     <string name="drawer_logout_dialog_confirm">Да</string>
     <string name="drawer_logout_dialog_dismiss">Нет</string>
+    <string name="user_banned_title">Ваш доступ заблокирован Anoba</string>
     <string name="drawer_privacy_policy">Политика конфиденциальности</string>
     <string name="profilescreen_info_not_available">Информация о профиле недоступна.</string>
     <string name="profilescreen_try_again">Повторить попытку</string>

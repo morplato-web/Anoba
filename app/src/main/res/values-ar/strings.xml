@@ -329,6 +329,7 @@
     <string name="drawer_logout_dialog_text">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
     <string name="drawer_logout_dialog_confirm">نعم</string>
     <string name="drawer_logout_dialog_dismiss">لا</string>
+    <string name="user_banned_title">تم حظر وصولك بواسطة Anoba</string>
     <string name="drawer_privacy_policy">سياسة الخصوصية</string>
     <string name="profilescreen_info_not_available">معلومات الملف الشخصي غير متوفرة.</string>
     <string name="profilescreen_try_again">حاول مرة أخرى</string>

@@ -316,6 +316,7 @@
     <string name="drawer_logout_dialog_text">Êtes-vous sûr de vouloir vous déconnecter ?</string>
     <string name="drawer_logout_dialog_confirm">Oui</string>
     <string name="drawer_logout_dialog_dismiss">Non</string>
+    <string name="user_banned_title">Votre accès a été banni par Anoba</string>
     <string name="drawer_privacy_policy">Politique de confidentialité</string>
     <string name="profilescreen_info_not_available">Infos de profil non disponibles.</string>
     <string name="profilescreen_try_again">Réessayer</string>

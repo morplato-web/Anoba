@@ -335,6 +335,7 @@
   <string name="drawer_logout_dialog_text">Are you sure you want to log out?</string>
   <string name="drawer_logout_dialog_confirm">Yes</string>
   <string name="drawer_logout_dialog_dismiss">No</string>
+  <string name="user_banned_title">Seu acesso foi banido pelo Anoba</string>
   <string name="drawer_privacy_policy">Privacy Policy</string>
   <string name="profilescreen_info_not_available">Profile info not available.</string>
   <string name="profilescreen_try_again">Try Again</string>
