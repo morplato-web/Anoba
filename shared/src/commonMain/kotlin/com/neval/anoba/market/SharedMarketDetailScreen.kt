@@ -24,8 +24,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.AlertDialog
@@ -59,13 +61,20 @@ import com.neval.anoba.common.utils.getRelativeTimeString
 @Composable
 fun MarketDetailScreen(
     item: SharedMarketItemModel?,
+    currentUserId: String = "",
+    isAdmin: Boolean = false,
     onNavigateBack: () -> Unit,
+    onHomeClick: () -> Unit = onNavigateBack,
     onEditClick: (String) -> Unit = {},
+    onDeleteClick: (String) -> Unit = {},
     onSellerClick: (String) -> Unit = {},
-    onSendMessageClick: (String, String) -> Unit = { _, _ -> }
+    onSendMessageClick: (String, String) -> Unit = { _, _ -> },
+    onReportClick: (String, String) -> Unit = { _, _ -> }
 ) {
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
     var showReportDialog by remember { mutableStateOf(false) }
+
+    val canManage = item != null && (isAdmin || item.ownerId == currentUserId || currentUserId == "me")
 
     if (showDeleteConfirmDialog && item != null) {
         AlertDialog(
@@ -76,6 +85,7 @@ fun MarketDetailScreen(
                 Button(
                     onClick = {
                         showDeleteConfirmDialog = false
+                        onDeleteClick(item.id)
                         onNavigateBack()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEF4444)),
@@ -93,7 +103,7 @@ fun MarketDetailScreen(
         )
     }
 
-    if (showReportDialog) {
+    if (showReportDialog && item != null) {
         AlertDialog(
             onDismissRequest = { showReportDialog = false },
             title = { Text("İlanı Şikayet Et", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp) },
@@ -104,7 +114,10 @@ fun MarketDetailScreen(
                         Surface(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { showReportDialog = false },
+                                .clickable {
+                                    showReportDialog = false
+                                    onReportClick(item.id, reason)
+                                },
                             shape = RoundedCornerShape(10.dp),
                             color = Color(0xFF0F172A)
                         ) {
@@ -150,19 +163,29 @@ fun MarketDetailScreen(
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         if (item != null) {
-                            IconButton(onClick = { onEditClick(item.id) }) {
-                                Icon(Icons.Default.Edit, contentDescription = "Düzenle", tint = Color(0xFFFFD700))
+                            if (canManage) {
+                                IconButton(onClick = { onEditClick(item.id) }) {
+                                    Icon(Icons.Default.Edit, contentDescription = "Düzenle", tint = Color(0xFFFFD700))
+                                }
+                                IconButton(onClick = { showDeleteConfirmDialog = true }) {
+                                    Icon(Icons.Default.Delete, contentDescription = "Sil", tint = Color(0xFFEF4444))
+                                }
+                            } else {
+                                IconButton(onClick = { showReportDialog = true }) {
+                                    Icon(Icons.Default.Flag, contentDescription = "Şikayet Et", tint = Color(0xFFFFD700))
+                                }
                             }
-                            IconButton(onClick = { showReportDialog = true }) {
-                                Icon(Icons.Default.Flag, contentDescription = "Şikayet Et", tint = Color(0xFFFFD700))
-                            }
+                        }
+
+                        IconButton(onClick = onHomeClick) {
+                            Icon(Icons.Default.Home, contentDescription = "Ana Sayfa", tint = Color.White)
                         }
                     }
                 }
             }
         },
         bottomBar = {
-            if (item != null) {
+            if (item != null && item.ownerId != currentUserId) {
                 Surface(
                     color = Color(0xFF1E293B),
                     shadowElevation = 12.dp,
@@ -222,6 +245,8 @@ fun MarketDetailScreen(
                         )
                     }
 
+                    val priceDisplay = if (item.price % 1.0 == 0.0) item.price.toLong().toString() else item.price.toString()
+
                     Surface(
                         modifier = Modifier
                             .padding(16.dp)
@@ -230,7 +255,7 @@ fun MarketDetailScreen(
                         color = Color(0xFF10B981)
                     ) {
                         Text(
-                            text = "${item.price.toInt()} ${item.currency}",
+                            text = "$priceDisplay ${item.currency}",
                             color = Color.White,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
