@@ -24,9 +24,10 @@ fun NavGraphBuilder.marketNavGraph(navController: NavController) {
                     }
                 },
                 onCreateItemClick = { navController.navigate(Constants.MARKET_CREATE_SCREEN) },
-                onItemClick = { itemId ->
+                onItemClick = { itemId: String ->
                     navController.navigate("market_detail_screen/$itemId")
-                }
+                },
+                viewModel = org.koin.androidx.compose.koinViewModel()
             )
         }
 
