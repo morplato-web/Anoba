@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,14 +23,17 @@ import androidx.compose.ui.unit.sp
 import com.neval.anoba.common.ui.AnobaBrandLogoIcon
 import kotlinx.coroutines.delay
 
+private val SplashPrimaryColor = Color(0xFF232066)
+private val SplashFooterColor = Color.Gray
+
 @Composable
 fun SplashScreen(
-    onSplashFinished: () -> Unit = {}
+    onSplashFinished: () -> Unit = {},
+    footerText: String = "Türkiye'de Üretildi 🇹🇷",
+    delayMillis: Long = 2000L
 ) {
-    val primaryColor = Color(0xFF232066)
-
     LaunchedEffect(Unit) {
-        delay(2000)
+        delay(delayMillis)
         onSplashFinished()
     }
 
@@ -46,6 +48,7 @@ fun SplashScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Anoba Logo (120dp)
             AnobaBrandLogoIcon(
                 size = 120.dp,
                 modifier = Modifier.size(120.dp)
@@ -53,12 +56,14 @@ fun SplashScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
+            // Yükleme Göstergesi
             CircularProgressIndicator(
-                color = primaryColor,
+                color = SplashPrimaryColor,
                 strokeWidth = 3.dp
             )
         }
 
+        // Alt Kısımdaki Marka & Menşei Metni
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -73,15 +78,15 @@ fun SplashScreen(
                     text = "Anoba",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = primaryColor,
+                    color = SplashPrimaryColor,
                     letterSpacing = 2.sp
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Türkiye'de Üretildi 🇹🇷",
+                    text = footerText,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Light,
-                    color = Color.Gray
+                    color = SplashFooterColor
                 )
             }
         }
