@@ -3,7 +3,16 @@
 package com.neval.anoba.login
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,12 +20,31 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -26,11 +54,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neval.anoba.common.ui.GoogleLogoIcon
 
+private val LoginPrimaryColor = Color(0xFF232066)
+private val AnobaGoldColor = Color(0xFFFFD700)
+
 @Composable
 fun AuthContainerView(
     onLoginSuccess: () -> Unit = {}
 ) {
     var authMode by remember { mutableStateOf("LOGIN") }
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var rememberMe by remember { mutableStateOf(false) }
 
     when (authMode) {
         "SIGN_UP" -> {
@@ -41,9 +76,16 @@ fun AuthContainerView(
         }
         else -> {
             LoginScreen(
-                onLoginSuccess = onLoginSuccess,
-                onGuestLogin = onLoginSuccess,
-                onNavigateSignUp = { authMode = "SIGN_UP" }
+                email = email,
+                onEmailChange = { email = it },
+                password = password,
+                onPasswordChange = { password = it },
+                rememberMe = rememberMe,
+                onRememberMeChange = { rememberMe = it },
+                onLoginClick = onLoginSuccess,
+                onGoogleLoginClick = onLoginSuccess,
+                onGuestLoginClick = onLoginSuccess,
+                onSignUpClick = { authMode = "SIGN_UP" }
             )
         }
     }
@@ -51,21 +93,27 @@ fun AuthContainerView(
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit = {},
-    onGuestLogin: () -> Unit = {},
-    onNavigateSignUp: () -> Unit = {}
+    email: String = "",
+    onEmailChange: (String) -> Unit = {},
+    password: String = "",
+    onPasswordChange: (String) -> Unit = {},
+    rememberMe: Boolean = false,
+    onRememberMeChange: (Boolean) -> Unit = {},
+    isLoading: Boolean = false,
+    onLoginClick: () -> Unit = {},
+    onGoogleLoginClick: () -> Unit = {},
+    onGuestLoginClick: () -> Unit = {},
+    onForgotPasswordClick: () -> Unit = {},
+    onSignUpClick: () -> Unit = {},
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var rememberMe by remember { mutableStateOf(false) }
     var isPasswordVisible by remember { mutableStateOf(false) }
-    var isLoading by remember { mutableStateOf(false) }
-
-    val primaryColor = Color(0xFF232066)
-    val anobaGold = Color(0xFFFFD700)
     val isFormValid = email.isNotBlank() && password.isNotBlank()
 
-    Scaffold(containerColor = Color.White) { paddingValues ->
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        containerColor = Color.White
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -79,17 +127,17 @@ fun LoginScreen(
 
             Text(
                 text = "Anoba'ya Hoş Geldiniz",
-                style = MaterialTheme.typography.displaySmall,
-                color = primaryColor,
+                style = MaterialTheme.typography.displaySmall.copy(letterSpacing = 1.sp),
+                color = LoginPrimaryColor,
                 fontWeight = FontWeight.ExtraBold,
                 textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 🚀 GOOGLE İLE DEVAM ET BUTONU
+            // Google ile Giriş
             OutlinedButton(
-                onClick = onLoginSuccess,
+                onClick = onGoogleLoginClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
@@ -97,68 +145,85 @@ fun LoginScreen(
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
                 border = BorderStroke(1.dp, Color.LightGray)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     GoogleLogoIcon(size = 20.dp)
                     Spacer(modifier = Modifier.width(12.dp))
-                    Text("Google ile Devam Et", color = Color.Black, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = "Google ile Devam Et",
+                        color = Color.Black,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            // Ayraç
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
+                HorizontalDivider(
+                    modifier = Modifier.weight(1f),
+                    color = Color.LightGray.copy(alpha = 0.6f)
+                )
                 Text(
                     text = "  veya  ",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
-                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
+                HorizontalDivider(
+                    modifier = Modifier.weight(1f),
+                    color = Color.LightGray.copy(alpha = 0.6f)
+                )
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            // E-posta Alanı
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = onEmailChange,
                 label = { Text("E-posta") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
                 singleLine = true
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Şifre Alanı
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = onPasswordChange,
                 label = { Text("Şifre") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
                 singleLine = true,
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
                     IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                         Icon(
                             imageVector = if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                            contentDescription = null,
-                            tint = primaryColor
+                            contentDescription = if (isPasswordVisible) "Şifreyi Gizle" else "Şifreyi Göster",
+                            tint = LoginPrimaryColor
                         )
                     }
                 }
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-            // 🚀 BENİ HATIRLA & ŞİFREMİ UNUTTUM SATIRI
+            // Beni Hatırla & Şifremi Unuttum
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -167,15 +232,18 @@ fun LoginScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = rememberMe,
-                        onCheckedChange = { rememberMe = it },
-                        colors = CheckboxDefaults.colors(checkedColor = primaryColor)
+                        onCheckedChange = onRememberMeChange,
+                        colors = CheckboxDefaults.colors(checkedColor = LoginPrimaryColor)
                     )
-                    Text("Beni Hatırla", style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        text = "Beni Hatırla",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
-                TextButton(onClick = { }) {
+                TextButton(onClick = onForgotPasswordClick) {
                     Text(
                         text = "Şifremi Unuttum?",
-                        color = primaryColor,
+                        color = LoginPrimaryColor,
                         textDecoration = TextDecoration.Underline
                     )
                 }
@@ -183,50 +251,55 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 🚀 GİRİŞ YAP BUTONU (enabled = isFormValid, Pasif/Aktif Renkleri Android ile Birebir)
+            // Giriş Yap Butonu
             Button(
-                onClick = {
-                    if (isFormValid) {
-                        isLoading = true
-                        onLoginSuccess()
-                    }
-                },
+                onClick = onLoginClick,
                 enabled = isFormValid && !isLoading,
-                modifier = Modifier.fillMaxWidth().height(50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = primaryColor,
+                    containerColor = LoginPrimaryColor,
                     disabledContainerColor = Color(0xFFE0E0E0),
                     disabledContentColor = Color(0xFF888888)
                 )
             ) {
-                if (isLoading) {
-                    CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
-                } else {
-                    Text("Giriş Yap", fontWeight = FontWeight.Bold)
-                }
+                Text(
+                    text = "Giriş Yap",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp
+                )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 🚀 MİSAFİR GİRİŞİ BUTONU (İkonlar kaldırıldı, sadece "Misafir Girişi")
+            // Misafir Girişi Butonu
             OutlinedButton(
-                onClick = onGuestLogin,
-                modifier = Modifier.fillMaxWidth().height(50.dp),
+                onClick = onGuestLoginClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(1.dp, primaryColor),
-                colors = ButtonDefaults.outlinedButtonColors(containerColor = anobaGold)
+                border = BorderStroke(1.dp, LoginPrimaryColor),
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = AnobaGoldColor)
             ) {
-                Text("Misafir Girişi", color = primaryColor, fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
+                Text(
+                    text = "Misafir Girişi",
+                    color = LoginPrimaryColor,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 15.sp
+                )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 🚀 KAYIT OL LİNKİ (Sadece "Kayıt Ol")
-            TextButton(onClick = onNavigateSignUp) {
+            // Kayıt Ol Butonu
+            TextButton(onClick = onSignUpClick) {
                 Text(
                     text = "Kayıt Ol",
-                    color = primaryColor
+                    color = LoginPrimaryColor,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
 
