@@ -69,9 +69,23 @@ fun AuthContainerView(
 
     when (authMode) {
         "SIGN_UP" -> {
+            var regUsername by remember { mutableStateOf("") }
+            var regEmail by remember { mutableStateOf("") }
+            var regPassword by remember { mutableStateOf("") }
+            var regConfirmPassword by remember { mutableStateOf("") }
+
             SignUpScreen(
+                username = regUsername,
+                onUsernameChange = { regUsername = it },
+                email = regEmail,
+                onEmailChange = { regEmail = it },
+                password = regPassword,
+                onPasswordChange = { regPassword = it },
+                confirmPassword = regConfirmPassword,
+                onConfirmPasswordChange = { regConfirmPassword = it },
                 onNavigateBack = { authMode = "LOGIN" },
-                onSignUpSuccess = onLoginSuccess
+                onSignUpClick = onLoginSuccess,
+                onGoogleSignUpClick = onLoginSuccess
             )
         }
         else -> {
