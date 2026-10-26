@@ -2,6 +2,9 @@
 
 package com.neval.anoba.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,110 +22,100 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DynamicFeed
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material.icons.outlined.ShoppingBag
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.neval.anoba.mosaic.MosaicSheet
+import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    countryCode: String? = null,
+    onClearCountryFilter: () -> Unit = {},
     onOpenDrawer: () -> Unit = {},
     onOpenMarket: () -> Unit = {},
     onOpenChat: () -> Unit = {},
+    onOpenMap: () -> Unit = {},
+    onOpenSearch: () -> Unit = {},
+    onTogglePinFilter: () -> Unit = {},
+    onToggleFollowingFilter: () -> Unit = {},
+    onOpenNotifications: () -> Unit = {},
+    onOpenCamera: () -> Unit = {},
+    onOpenLetterCreate: () -> Unit = {},
+    onOpenGallery: () -> Unit = {},
+    onOpenMyContents: () -> Unit = {},
+    onOpenMete: () -> Unit = {},
     onOpenProfile: () -> Unit = {},
-    onOpenMete: () -> Unit = {}
+    hasUnreadNotifications: Boolean = false,
+    isPinnedFilterActive: Boolean = false,
+    hasPinnedItems: Boolean = false,
+    isFollowingFilterActive: Boolean = false,
+    feedItems: List<SharedFeedItem> = emptyList(),
+    onItemClick: (SharedFeedItem) -> Unit = {}
 ) {
-    var selectedItem by remember { mutableStateOf<SharedFeedItem?>(null) }
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+
     var showMoreMenu by remember { mutableStateOf(false) }
     var showQuarantineSheet by remember { mutableStateOf(false) }
     var showPopularSheet by remember { mutableStateOf(false) }
     var showMosaicSheet by remember { mutableStateOf(false) }
     var showHomeAnimation by remember { mutableStateOf(false) }
 
-    val feedItems = remember {
-        listOf(
-            SharedFeedItem(
-                id = "feed_1",
-                type = ContentType.LETTER,
-                title = "*Anoba'ya Hoş Geldiniz! 🌍✨",
-                description = "Bu uygulama, sınırları ortadan kaldırarak iletişimi daha canlı kılan dijital bir köprü olması için tasarlandı.\n• 📜 İçeriklerinizi taslak olarak kaydedebilir; istediğiniz zaman...",
-                mediaUrl = null,
-                ownerId = "anoba_official",
-                username = "Anoba",
-                userBadgeType = "OFFICIAL",
-                isOfficial = true,
-                topEmoji = "❤️",
-                reactionCount = 1,
-                viewCount = 27,
-                createdAtMillis = 1710000000000L
-            ),
-            SharedFeedItem(
-                id = "feed_2",
-                type = ContentType.PHOTO,
-                title = "Betty",
-                description = "Bahçede güneşli bir gün karesi.",
-                mediaUrl = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba",
-                ownerId = "u_betty",
-                username = "Betty",
-                userBadgeType = "NONE",
-                isOfficial = false,
-                topEmoji = "❤️",
-                reactionCount = 12,
-                viewCount = 104,
-                createdAtMillis = 1710000050000L
-            ),
-            SharedFeedItem(
-                id = "feed_3",
-                type = ContentType.PHOTO,
-                title = "E",
-                description = "Çiçeklerle dolu doğa manzarası.",
-                mediaUrl = "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
-                ownerId = "u_e",
-                username = "E",
-                userBadgeType = "PIONEER",
-                isOfficial = false,
-                topEmoji = "❤️",
-                reactionCount = 45,
-                viewCount = 312,
-                createdAtMillis = 1710000100000L
-            )
-        )
+    val showBackToTop by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 2 }
     }
 
     if (showQuarantineSheet) {
@@ -146,159 +139,486 @@ fun HomeScreen(
         )
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (selectedItem != null) {
-            ContentDetailScreen(
-                item = selectedItem,
-                onNavigateBack = { selectedItem = null }
-            )
-        } else {
-            Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF8FAFC))) {
-                // Top Bar
-                Surface(
-                    color = Color.White,
-                    shadowElevation = 2.dp,
-                    modifier = Modifier.fillMaxWidth()
+    Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
+        Column(modifier = Modifier.fillMaxSize()) {
+
+            // --- 1. ÜST BAR ALANI ---
+            Surface(
+                color = Color.White,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding()
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 6.dp, vertical = 2.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp)
+                            .padding(horizontal = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // SOL KISIM: Menü, Çiçek Noktası, 3 Nokta, Pazar Yeri
                         Row(
-                            modifier = Modifier.fillMaxWidth().height(44.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start
-                            ) {
-                                IconButton(onClick = onOpenDrawer, modifier = Modifier.size(32.dp)) {
-                                    Icon(Icons.Default.Menu, contentDescription = "Menü", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                                }
-
-                                Spacer(modifier = Modifier.width(4.dp))
-
-                                Box(
-                                    modifier = Modifier
-                                        .size(14.dp)
-                                        .clip(CircleShape)
-                                        .background(Color(0xFFF06292))
-                                        .clickable { showHomeAnimation = true }
+                            IconButton(onClick = onOpenDrawer) {
+                                Icon(
+                                    imageVector = Icons.Filled.Menu,
+                                    contentDescription = "Menü",
+                                    tint = AnobaNavy
                                 )
+                            }
 
-                                Spacer(modifier = Modifier.width(4.dp))
+                            Box(
+                                modifier = Modifier
+                                    .size(14.dp)
+                                    .clip(CircleShape)
+                                    .background(Color(0xFFF06292))
+                                    .clickable { showHomeAnimation = true }
+                            )
 
-                                Box {
-                                    IconButton(onClick = { showMoreMenu = true }, modifier = Modifier.size(32.dp)) {
-                                        Icon(Icons.Default.MoreVert, contentDescription = "3 Nokta", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                                    }
+                            Spacer(modifier = Modifier.width(2.dp))
 
-                                    DropdownMenu(
-                                        expanded = showMoreMenu,
-                                        onDismissRequest = { showMoreMenu = false }
-                                    ) {
-                                        DropdownMenuItem(
-                                            text = { Text("⭐ 1000+ Popüler") },
-                                            onClick = {
-                                                showMoreMenu = false
-                                                showPopularSheet = true
-                                            }
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text("🛡️ Karantina Havuzu") },
-                                            onClick = {
-                                                showMoreMenu = false
-                                                showQuarantineSheet = true
-                                            }
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text("🇹🇷 Mete Ses & Metin") },
-                                            onClick = {
-                                                showMoreMenu = false
-                                                onOpenMete()
-                                            }
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text("👤 Profilim") },
-                                            onClick = {
-                                                showMoreMenu = false
-                                                onOpenProfile()
-                                            }
-                                        )
-                                    }
+                            // 3 Nokta Menüsü
+                            Box {
+                                IconButton(
+                                    modifier = Modifier.size(28.dp),
+                                    onClick = { showMoreMenu = true }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.MoreVert,
+                                        contentDescription = "Diğer Menü",
+                                        tint = AnobaNavy,
+                                        modifier = Modifier.size(20.dp)
+                                    )
                                 }
 
-                                Spacer(modifier = Modifier.width(4.dp))
+                                DropdownMenu(
+                                    expanded = showMoreMenu,
+                                    onDismissRequest = { showMoreMenu = false }
+                                ) {
+                                    // 1000+ Popüler İçerikler
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier.padding(vertical = 2.dp)
+                                            ) {
+                                                Surface(
+                                                    modifier = Modifier.size(20.dp),
+                                                    shape = CircleShape,
+                                                    color = AnobaGold,
+                                                    shadowElevation = 1.dp
+                                                ) {
+                                                    Box(contentAlignment = Alignment.Center) {
+                                                        Text(
+                                                            text = "1000+",
+                                                            color = Color.White,
+                                                            fontSize = 5.sp,
+                                                            fontWeight = FontWeight.Black,
+                                                            maxLines = 1,
+                                                            softWrap = false
+                                                        )
+                                                    }
+                                                }
+                                                Spacer(Modifier.width(10.dp))
+                                                Text(
+                                                    text = "1000+ Popüler",
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    color = AnobaNavy,
+                                                    fontWeight = FontWeight.SemiBold
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showMoreMenu = false
+                                            showPopularSheet = true
+                                        }
+                                    )
 
-                                IconButton(onClick = onOpenMarket, modifier = Modifier.size(32.dp)) {
-                                    Icon(Icons.Outlined.ShoppingBag, contentDescription = "Anoba Pazar Yeri", tint = AnobaNavy, modifier = Modifier.size(22.dp))
+                                    // Karantina Havuzu
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier.padding(vertical = 2.dp)
+                                            ) {
+                                                Box(
+                                                    contentAlignment = Alignment.Center,
+                                                    modifier = Modifier.size(20.dp)
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.Shield,
+                                                        contentDescription = "Karantina Havuzu",
+                                                        modifier = Modifier.size(20.dp),
+                                                        tint = Color(0xFF4CAF50).copy(alpha = 0.9f)
+                                                    )
+                                                    Icon(
+                                                        imageVector = Icons.Default.Check,
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(8.dp),
+                                                        tint = Color.White
+                                                    )
+                                                }
+                                                Spacer(Modifier.width(10.dp))
+                                                Text(
+                                                    text = "Karantina Havuzu",
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    color = AnobaNavy,
+                                                    fontWeight = FontWeight.SemiBold
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showMoreMenu = false
+                                            showQuarantineSheet = false
+                                            showQuarantineSheet = true
+                                        }
+                                    )
+
+                                    // Mete
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier.padding(vertical = 2.dp)
+                                            ) {
+                                                Text(text = "🇹🇷", fontSize = 16.sp)
+                                                Spacer(Modifier.width(10.dp))
+                                                Text(
+                                                    text = "Mete",
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    color = AnobaNavy,
+                                                    fontWeight = FontWeight.SemiBold
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showMoreMenu = false
+                                            onOpenMete()
+                                        }
+                                    )
+
+                                    // Profilim
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier.padding(vertical = 2.dp)
+                                            ) {
+                                                Text(text = "👤", fontSize = 16.sp)
+                                                Spacer(Modifier.width(10.dp))
+                                                Text(
+                                                    text = "Profilim",
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    color = AnobaNavy,
+                                                    fontWeight = FontWeight.SemiBold
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showMoreMenu = false
+                                            onOpenProfile()
+                                        }
+                                    )
                                 }
                             }
 
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.End
+                            Spacer(modifier = Modifier.width(4.dp))
+
+                            // Pazar Yeri Butonu
+                            IconButton(
+                                modifier = Modifier.size(28.dp),
+                                onClick = onOpenMarket
                             ) {
-                                IconButton(onClick = { }, modifier = Modifier.size(32.dp)) {
-                                    Icon(Icons.Default.Search, contentDescription = "Arama", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                                }
-                                IconButton(onClick = { }, modifier = Modifier.size(32.dp)) {
-                                    Icon(Icons.Outlined.PushPin, contentDescription = "İğnelenenler", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                                }
-                                IconButton(onClick = { }, modifier = Modifier.size(32.dp)) {
-                                    Icon(Icons.Default.People, contentDescription = "Takip Edilenler", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                                }
-                                IconButton(onClick = { }, modifier = Modifier.size(32.dp)) {
-                                    Icon(Icons.Default.Language, contentDescription = "Harita", tint = AnobaNavy, modifier = Modifier.size(22.dp))
-                                }
-                                IconButton(onClick = onOpenChat, modifier = Modifier.size(32.dp)) {
-                                    Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = "Chat", tint = Color(0xFF22C55E), modifier = Modifier.size(22.dp))
+                                Icon(
+                                    imageVector = Icons.Outlined.ShoppingBag,
+                                    contentDescription = "Pazar Yeri",
+                                    tint = AnobaNavy,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+
+                            // Varsa Ülke Filtresi Rozeti
+                            if (!countryCode.isNullOrBlank()) {
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Surface(
+                                    shape = RoundedCornerShape(8.dp),
+                                    color = AnobaNavy.copy(alpha = 0.08f),
+                                    modifier = Modifier.clickable { onClearCountryFilter() }
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                    ) {
+                                        Text(text = countryCode.uppercase(), style = MaterialTheme.typography.bodySmall, color = AnobaNavy, fontWeight = FontWeight.Bold)
+                                        Spacer(Modifier.width(4.dp))
+                                        Icon(imageVector = Icons.Default.Close, contentDescription = "Filtreyi Kaldır", modifier = Modifier.size(12.dp), tint = AnobaNavy.copy(alpha = 0.6f))
+                                    }
                                 }
                             }
                         }
 
-                        HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp), color = Color(0xFFE2E8F0), thickness = 1.dp)
-                        HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp), color = Color(0xFFE2E8F0), thickness = 1.dp)
-
+                        // SAĞ KISIM: Arama, Pin, Takip, Harita, Chat
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(end = 4.dp)
                         ) {
-                            SquareActionButton(icon = Icons.Default.DynamicFeed, bgColor = Color(0xFFEBF5FF), iconColor = Color(0xFF2563EB), label = "Tümü")
-                            SquareActionButton(icon = Icons.Default.PhotoLibrary, bgColor = Color(0xFFFDF2F8), iconColor = Color(0xFFDB2777), label = "Foto")
-                            SquareActionButton(icon = Icons.Default.CameraAlt, bgColor = Color(0xFFF0FDF4), iconColor = Color(0xFF16A34A), label = "Video")
-                            SquareActionButton(icon = Icons.Default.Edit, bgColor = Color(0xFFFFFBEB), iconColor = Color(0xFFD97706), label = "Mektup")
-
-                            Surface(
-                                modifier = Modifier.weight(1.2f).height(38.dp).clickable { showMosaicSheet = true },
-                                color = Color(0xFF8B5CF6),
-                                shape = RoundedCornerShape(8.dp)
+                            // 1. Arama
+                            IconButton(
+                                modifier = Modifier.size(32.dp),
+                                onClick = onOpenSearch
                             ) {
-                                Column(
-                                    modifier = Modifier.fillMaxSize(),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text("MOZAİK", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 11.sp)
-                                    Text("Reklam İçerir", color = Color.White.copy(alpha = 0.8f), fontSize = 8.sp)
-                                }
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = "Kullanıcı Filtresi",
+                                    modifier = Modifier.size(24.dp),
+                                    tint = Color(0xFF1E88E5)
+                                )
+                            }
+
+                            // 2. Pin
+                            val pinIcon = if (isPinnedFilterActive || hasPinnedItems) Icons.Filled.PushPin else Icons.Outlined.PushPin
+                            val pinTint = when {
+                                isPinnedFilterActive -> Color(0xFF2196F3)
+                                hasPinnedItems -> AnobaGold
+                                else -> AnobaNavy
+                            }
+                            IconButton(
+                                modifier = Modifier.size(32.dp),
+                                onClick = onTogglePinFilter
+                            ) {
+                                Icon(
+                                    imageVector = pinIcon,
+                                    contentDescription = "Pin Filtresi",
+                                    modifier = Modifier.size(24.dp),
+                                    tint = pinTint
+                                )
+                            }
+
+                            // 3. Takip Edilenler
+                            IconButton(
+                                modifier = Modifier.size(32.dp),
+                                onClick = onToggleFollowingFilter
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.People,
+                                    contentDescription = "Takip Filtresi",
+                                    modifier = Modifier.size(25.dp),
+                                    tint = if (isFollowingFilterActive) Color(0xFF4CAF50) else AnobaNavy
+                                )
+                            }
+
+                            // 4. Harita
+                            IconButton(
+                                modifier = Modifier.size(32.dp),
+                                onClick = onOpenMap
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Language,
+                                    contentDescription = "Harita",
+                                    modifier = Modifier.size(24.dp),
+                                    tint = AnobaNavy
+                                )
+                            }
+
+                            // 5. Sohbet
+                            IconButton(
+                                modifier = Modifier.size(32.dp),
+                                onClick = onOpenChat
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.Chat,
+                                    contentDescription = "Sohbet",
+                                    modifier = Modifier.size(24.dp),
+                                    tint = Color(0xFF2E7D32)
+                                )
                             }
                         }
                     }
-                }
 
-                // Ana Akış Listesi
-                LazyColumn(
-                    modifier = Modifier.weight(1f).fillMaxWidth(),
-                    contentPadding = PaddingValues(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
+                    HorizontalDivider(modifier = Modifier.fillMaxWidth(), color = Color.LightGray, thickness = 1.dp)
+
+                    // --- 2. MOZAİK VE SAĞ AKSİYON KARTLARI SATIRI ---
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.White)
+                            .padding(vertical = 10.dp, horizontal = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Solda: Mozaik Kartı
+                        Card(
+                            modifier = Modifier
+                                .height(38.dp)
+                                .weight(0.12f)
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable { showMosaicSheet = true },
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF37474F)),
+                            elevation = CardDefaults.cardElevation(2.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "MOZAİK",
+                                    color = Color.White,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    fontSize = 8.sp
+                                )
+                                Text(
+                                    text = "Reklam İçerir",
+                                    color = Color.LightGray.copy(alpha = 0.7f),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = 8.sp,
+                                    fontWeight = FontWeight.Normal
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        val iconSize = 20.dp
+                        val cardHeight = 30.dp
+                        val cardWidth = 32.dp
+
+                        // Sağda: 5 Adet Aksiyon Kartı
+                        Row(
+                            modifier = Modifier.weight(0.33f),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                // 1. Bildirim (Zil)
+                                BadgedBox(
+                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                    badge = {
+                                        if (hasUnreadNotifications) {
+                                            Badge(containerColor = Color.Red, modifier = Modifier.size(7.dp))
+                                        }
+                                    }
+                                ) {
+                                    IconInCardButton(
+                                        modifier = Modifier.fillMaxSize(),
+                                        onClick = onOpenNotifications,
+                                        icon = Icons.Default.Notifications,
+                                        cardColor = if (hasUnreadNotifications) Color(0xFFFFF3CD) else Color(0xFFECEFF1),
+                                        iconColor = if (hasUnreadNotifications) Color(0xFFE65100) else Color(0xFF455A64),
+                                        size = iconSize
+                                    )
+                                }
+
+                                // 2. Video / Kamera
+                                IconInCardButton(
+                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                    onClick = onOpenCamera,
+                                    icon = Icons.Filled.CameraAlt,
+                                    cardColor = Color(0xFFF3E5F5),
+                                    iconColor = Color(0xFF8E24AA),
+                                    size = iconSize
+                                )
+
+                                // 3. Mektup / Kalem
+                                IconInCardButton(
+                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                    onClick = onOpenLetterCreate,
+                                    icon = Icons.Filled.Edit,
+                                    cardColor = Color(0xFFE1F5FE),
+                                    iconColor = Color(0xFF0288D1),
+                                    size = iconSize
+                                )
+
+                                // 4. Galeri
+                                IconInCardButton(
+                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                    onClick = onOpenGallery,
+                                    icon = Icons.Filled.PhotoLibrary,
+                                    cardColor = Color(0xFFFFEBEE),
+                                    iconColor = Color(0xFFE53935),
+                                    size = iconSize
+                                )
+
+                                // 5. İçeriklerim
+                                IconInCardButton(
+                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                    onClick = onOpenMyContents,
+                                    icon = Icons.Filled.DynamicFeed,
+                                    cardColor = Color(0xFFECEFF1),
+                                    iconColor = Color(0xFF37474F),
+                                    size = iconSize
+                                )
+                            }
+                        }
+                    }
+
+                    HorizontalDivider(modifier = Modifier.fillMaxWidth(), color = Color.LightGray, thickness = 1.dp)
+                }
+            }
+
+            // --- 3. ANA AKIŞ LİSTESİ ---
+            LazyColumn(
+                state = listState,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(top = 6.dp, bottom = 80.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                if (feedItems.isEmpty()) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(300.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("Henüz içerik bulunmuyor", color = Color.Gray)
+                        }
+                    }
+                } else {
                     items(feedItems, key = { it.id }) { item ->
                         SharedFeedCard(
                             item = item,
-                            onItemClick = { selectedItem = it }
+                            onItemClick = { onItemClick(item) }
                         )
                     }
                 }
+            }
+        }
+
+        // Yukarı Çık Butonu (Back To Top)
+        AnimatedVisibility(
+            visible = showBackToTop,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 16.dp, bottom = 100.dp)
+        ) {
+            SmallFloatingActionButton(
+                onClick = {
+                    scope.launch {
+                        if (listState.firstVisibleItemIndex > 10) {
+                            listState.scrollToItem(5)
+                        }
+                        listState.animateScrollToItem(0)
+                    }
+                },
+                shape = CircleShape,
+                containerColor = AnobaNavy,
+                contentColor = Color.White,
+                modifier = Modifier.shadow(8.dp, CircleShape)
+            ) {
+                Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Yukarı Çık")
             }
         }
 
@@ -311,20 +631,29 @@ fun HomeScreen(
 }
 
 @Composable
-private fun SquareActionButton(
+fun IconInCardButton(
+    onClick: () -> Unit,
     icon: ImageVector,
-    bgColor: Color,
+    cardColor: Color,
     iconColor: Color,
-    label: String,
-    onClick: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    size: Dp = 20.dp
 ) {
-    Surface(
-        modifier = Modifier.size(38.dp).clickable { onClick() },
-        color = bgColor,
-        shape = RoundedCornerShape(8.dp)
+    Card(
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = cardColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            Icon(icon, contentDescription = label, tint = iconColor, modifier = Modifier.size(20.dp))
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = iconColor,
+                modifier = Modifier.size(size)
+            )
         }
     }
 }
