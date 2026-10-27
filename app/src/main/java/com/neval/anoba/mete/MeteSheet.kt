@@ -34,10 +34,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.filled.PlayArrow
@@ -49,21 +47,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import com.neval.anoba.common.utils.Constants
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -92,71 +83,78 @@ import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.ui.PlayerView
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil3.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.neval.anoba.R
+import com.neval.anoba.common.utils.Constants
 import com.neval.anoba.common.utils.MediaCacheManager
-import com.neval.anoba.ui.theme.AnobaNavy
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeteScreen(navController: NavController) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Mete",
-                        fontWeight = FontWeight.Bold,
-                        color = AnobaNavy
+    val meteSesViewModel: MeteSesViewModel = koinViewModel()
+    val sectionGroups by meteSesViewModel.sectionGroups.collectAsState()
+    val storyVideos by meteSesViewModel.storyVideos.collectAsState()
+    val selectedLang by meteSesViewModel.selectedLanguage.collectAsState()
+    val unlockedSections by meteSesViewModel.unlockedSections.collectAsState()
+    val isSystemAudioPlaying by meteSesViewModel.isSystemAudioPlaying.collectAsState()
+    val context = LocalContext.current
+
+    val kmpLanguage = SharedMeteLanguage.entries.find { it.name == selectedLang.name } ?: SharedMeteLanguage.TR
+
+    SharedMeteHomeScreen(
+        sectionGroups = sectionGroups.map { group ->
+            SharedMeteSectionGroup(
+                sectionName = group.sectionName,
+                words = group.words.map {
+                    SharedMeteWordItem(
+                        id = it.id,
+                        word = group.sectionName,
+                        sectionName = it.sectionName,
+                        boxColor = it.boxColor ?: Color(0xFF80DEEA),
+                        imageUrl = it.imageUrl,
+                        videoUrl = it.videoUrl,
+                        audioUrl = it.audioUrl
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Geri",
-                            tint = AnobaNavy
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            navController.navigate(Constants.HOME_SCREEN) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    inclusive = true
-                                }
-                                launchSingleTop = true
-                            }
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Home,
-                            contentDescription = "Ana Sayfa",
-                            tint = AnobaNavy
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
+                }
             )
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            MeteSheet()
-        }
-    }
+        },
+        storyVideos = storyVideos.map { story ->
+            SharedMeteStoryItem(
+                id = story.title,
+                title = story.title,
+                imageUrl = story.imageUrl,
+                videoUrl = story.videoUrl,
+                isUnlocked = unlockedSections.contains(story.title) || story.title.contains("1")
+            )
+        },
+        selectedLanguage = kmpLanguage,
+        isSystemAudioPlaying = isSystemAudioPlaying,
+        onNavigateBack = { navController.popBackStack() },
+        onHomeClick = {
+            navController.navigate(Constants.HOME_SCREEN) {
+                popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
+                launchSingleTop = true
+            }
+        },
+        onSelectLanguage = { kmpLang ->
+            MeteLanguage.entries.find { it.name == kmpLang.name }?.let { meteSesViewModel.selectLanguage(it) }
+        },
+        onPlayWordAudio = { item ->
+            item.audioUrl?.let { meteSesViewModel.playSound(context, it) }
+        },
+        onStopAudio = { meteSesViewModel.stopSound() },
+        onAddNewSection = { name -> meteSesViewModel.addNewSection(name) },
+        onUnlockSectionStory = { section -> meteSesViewModel.unlockSection(context, section) }
+    )
 }
 
 @Composable
