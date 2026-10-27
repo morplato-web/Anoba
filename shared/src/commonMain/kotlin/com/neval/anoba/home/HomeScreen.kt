@@ -93,6 +93,7 @@ fun HomeScreen(
     onToggleFollowingFilter: () -> Unit = {},
     onOpenNotifications: () -> Unit = {},
     onOpenCamera: () -> Unit = {},
+    onOpenLetter: () -> Unit = {},
     onOpenLetterCreate: () -> Unit = {},
     onOpenGallery: () -> Unit = {},
     onOpenMyContents: () -> Unit = {},
@@ -298,6 +299,29 @@ fun HomeScreen(
                                         onClick = {
                                             showMoreMenu = false
                                             onOpenMete()
+                                        }
+                                    )
+
+                                    // Mektuplar (Zaman Kapsülü)
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier.padding(vertical = 2.dp)
+                                            ) {
+                                                Text(text = "✉️", fontSize = 16.sp)
+                                                Spacer(Modifier.width(10.dp))
+                                                Text(
+                                                    text = "Mektuplar",
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    color = AnobaNavy,
+                                                    fontWeight = FontWeight.SemiBold
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showMoreMenu = false
+                                            onOpenLetter()
                                         }
                                     )
 
