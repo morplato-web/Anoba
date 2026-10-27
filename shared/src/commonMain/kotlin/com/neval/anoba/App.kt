@@ -10,7 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.neval.anoba.chat.group.SharedGroupChatListScreen
 import com.neval.anoba.chat.ui.ChatHomeScreen
+import com.neval.anoba.chat.ui.SharedPrivateChatScreen
 import com.neval.anoba.drawer.DrawerSheetContent
 import com.neval.anoba.guide.SharedGuideScreen
 import com.neval.anoba.home.HomeScreen
@@ -50,11 +52,45 @@ private fun MainAppScreen(
             color = Color(0xFFF8FAFC)
         ) {
             when (activeView) {
-                "MARKET" -> MarketContainerView(onNavigateHome = { activeView = "HOME" })
-                "CHAT" -> ChatHomeScreen(onNavigateBack = { activeView = "HOME" })
-                "PROFILE" -> ProfileScreen(onNavigateBack = { activeView = "HOME" })
-                "GUIDE" -> SharedGuideScreen(onNavigateBack = { activeView = "HOME" })
-                "METE" -> MeteHomeScreen(onNavigateBack = { activeView = "HOME" })
+                "MARKET" -> MarketContainerView(
+                    onNavigateHome = { activeView = "HOME" }
+                )
+
+                "CHAT" -> ChatHomeScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onHomeClick = { activeView = "HOME" },
+                    onOpenGroupsClick = { activeView = "GROUP_CHAT" },
+                    onOpenPrivateChatClick = { activeView = "PRIVATE_CHAT" }
+                )
+
+                "PRIVATE_CHAT" -> SharedPrivateChatScreen(
+                    partner = null, // Başlangıçta kullanıcı arama listesini açar
+                    onNavigateBack = { activeView = "CHAT" },
+                    onHomeClick = { activeView = "HOME" }
+                )
+
+                "GROUP_CHAT" -> SharedGroupChatListScreen(
+                    onNavigateBack = { activeView = "CHAT" },
+                    onHomeClick = { activeView = "HOME" }
+                )
+
+                "PROFILE" -> ProfileScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onNavigateHome = { activeView = "HOME" },
+                    onCloseApp = onLogout
+                )
+
+                "GUIDE" -> SharedGuideScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onHomeClick = { activeView = "HOME" },
+                    onOpenMarket = { activeView = "MARKET" },
+                    onOpenMete = { activeView = "METE" }
+                )
+
+                "METE" -> MeteHomeScreen(
+                    onNavigateBack = { activeView = "HOME" }
+                )
+
                 else -> HomeScreen(
                     onOpenDrawer = { isDrawerOpen = true },
                     onOpenMarket = { activeView = "MARKET" },
