@@ -39,7 +39,7 @@ fun SesDetailScreen(
 
     val currentUserId = (authState as? AuthState.Authenticated)?.uid
     val isAdmin = userRoleState?.equals("ADMIN", ignoreCase = true) == true ||
-                  (authState as? AuthState.Authenticated)?.email == "morplato@gmail.com"
+            (authState as? AuthState.Authenticated)?.email == "morplato@gmail.com"
 
     val context = LocalContext.current
     var isPlaying by remember { mutableStateOf(false) }
@@ -133,6 +133,9 @@ fun SesDetailScreen(
         },
         onShareClick = {
             detailModel?.let { viewModel.shareSes(context, it.audioUrl, it.id) }
+        },
+        onEditClick = {
+            navController.navigate("ses_edit/$sesId")
         },
         onOpenComments = {
             navController.navigate(Constants.SES_COMMENTS_ROUTE.replace("{sesId}", sesId))
