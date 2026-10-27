@@ -33,6 +33,7 @@ import com.neval.anoba.photo.SharedPhotoHomeScreen
 import com.neval.anoba.photo.SharedPhotoModel
 import com.neval.anoba.profile.ProfileScreen
 import com.neval.anoba.ses.SharedSesCommentsScreen
+import com.neval.anoba.ses.SharedSesDetailModel
 import com.neval.anoba.ses.SharedSesDetailScreen
 import com.neval.anoba.ses.SharedSesEditScreen
 import com.neval.anoba.ses.SharedSesHomeScreen
@@ -274,9 +275,27 @@ private fun MainAppScreen(
                 )
 
                 "SES_DETAIL" -> SharedSesDetailScreen(
-                    ses = selectedSes,
+                    ses = selectedSes?.let { s ->
+                        SharedSesDetailModel(
+                            id = s.id,
+                            ownerId = s.ownerId,
+                            username = s.username,
+                            userProfileImageUrl = s.userProfileImageUrl,
+                            audioUrl = s.audioUrl,
+                            title = s.title,
+                            personalNote = s.personalNote,
+                            viewCount = s.viewCount,
+                            commentsCount = s.commentsCount,
+                            durationText = s.durationText,
+                            durationMillis = s.durationMillis,
+                            isOfficial = s.isOfficial,
+                            userBadgeType = s.userBadgeType,
+                            timeAgoText = "az önce"
+                        )
+                    },
                     onNavigateBack = { activeView = "SES" },
                     onHomeClick = { activeView = "HOME" },
+                    onEditClick = { activeView = "SES_EDIT" },
                     onOpenComments = { activeView = "SES_COMMENTS" }
                 )
 

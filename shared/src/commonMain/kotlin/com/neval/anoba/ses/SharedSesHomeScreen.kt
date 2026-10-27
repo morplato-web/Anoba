@@ -64,43 +64,10 @@ fun SharedSesHomeScreen(
     onCommentClick: (SharedSesModel) -> Unit = {},
     onPinClick: (String) -> Unit = {},
     onDeleteClick: (SharedSesModel) -> Unit = {},
+    onShareClick: (SharedSesModel) -> Unit = {},
     onReactionClick: (SharedSesModel) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    val sampleSesler = remember(sesler) {
-        sesler.ifEmpty {
-            listOf(
-                SharedSesModel(
-                    id = "ses_1",
-                    ownerId = "u1",
-                    username = "Merve T.",
-                    title = "Gece Sesli Notu 🎙️",
-                    personalNote = "Düşüncelerimi sesli olarak paylaşmak istedim.",
-                    createdAtMillis = 1710000000000L,
-                    reactionCount = 95,
-                    commentsCount = 8,
-                    viewCount = 310,
-                    durationText = "01:45",
-                    userBadgeType = "PIONEER"
-                ),
-                SharedSesModel(
-                    id = "ses_2",
-                    ownerId = "anoba_official",
-                    username = "Anoba",
-                    title = "Topluluk Duyurusu 📢",
-                    personalNote = "Yeni sürüm güncellemeleri hakkında sesli bilgilendirme.",
-                    createdAtMillis = 1710000050000L,
-                    reactionCount = 210,
-                    commentsCount = 15,
-                    viewCount = 780,
-                    durationText = "02:10",
-                    isOfficial = true,
-                    userBadgeType = "OFFICIAL"
-                )
-            )
-        }
-    }
-
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -215,13 +182,14 @@ fun SharedSesHomeScreen(
                             contentPadding = PaddingValues(horizontal = 14.dp, vertical = 12.dp),
                             verticalArrangement = Arrangement.spacedBy(14.dp)
                         ) {
-                            items(sampleSesler, key = { it.id }) { ses ->
+                            items(sesler, key = { it.id }) { ses ->
                                 SharedSesCard(
                                     ses = ses,
                                     isPinned = pinnedIds.contains(ses.id),
                                     canDelete = isAdmin,
                                     onPinClick = { onPinClick(ses.id) },
                                     onDeleteClick = { onDeleteClick(ses) },
+                                    onShareClick = { onShareClick(ses) },
                                     onSesClick = { onSesClick(ses) },
                                     onCommentClick = { onCommentClick(ses) },
                                     onLikeClick = { onReactionClick(ses) }

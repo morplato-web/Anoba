@@ -21,17 +21,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Comment
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.filled.RemoveRedEye
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -43,6 +46,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,11 +67,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.neval.anoba.common.ui.AnobaBadge
-import com.neval.anoba.common.ui.UserAvatar
-import com.neval.anoba.ui.theme.AnobaGold
-import com.neval.anoba.ui.theme.AnobaNavy
-import kotlinx.coroutines.delay
+import coil3.compose.AsyncImage
+import com.neval.anoba.photo.SharedReactionUser
+import com.neval.anoba.video.SharedVideoEmojiReactionRow
+import com.neval.anoba.video.SharedVideoReactionUsersBottomSheet
+import com.neval.anoba.video.formatDurationMillis
+
+private val AnobaGold = Color(0xFFFFD700)
+private val AnobaBackgroundDark = Color(0xFF0F172A)
+private val AnobaTopBarNavy = Color(0xFF1E293B)
+private val SesPinkAccent = Color(0xFFE11D48)
 
 @Composable
 fun SoundWaveAnimation(
@@ -91,23 +100,23 @@ fun SoundWaveAnimation(
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(84.dp)
             .padding(vertical = 8.dp)
     ) {
-        val barCount = 40
-        val barWidth = size.width / (barCount * 2)
-        val maxBarHeight = size.height * 0.8f
+        val barCount = 42
+        val barWidth = size.width / (barCount * 2f)
+        val maxBarHeight = size.height * 0.85f
 
         for (i in 0 until barCount) {
             val waveIndex = i % waveHeights.size
-            val currentHeight = maxBarHeight * if (isPlaying) waveHeights[waveIndex].value else 0.15f
-            val yOffset = (size.height - currentHeight) / 2
+            val currentHeight = maxBarHeight * (if (isPlaying) waveHeights[waveIndex].value else 0.15f)
+            val yOffset = (size.height - currentHeight) / 2f
 
             drawRoundRect(
-                color = if (isPlaying) Color(0xFFE11D48) else Color.LightGray,
-                topLeft = Offset(x = i * barWidth * 2 + barWidth / 2, y = yOffset),
+                color = if (isPlaying) SesPinkAccent else Color.LightGray.copy(alpha = 0.6f),
+                topLeft = Offset(x = i * barWidth * 2f + barWidth / 2f, y = yOffset),
                 size = Size(width = barWidth, height = currentHeight),
-                cornerRadius = CornerRadius(barWidth / 2)
+                cornerRadius = CornerRadius(barWidth / 2f)
             )
         }
     }
@@ -116,54 +125,53 @@ fun SoundWaveAnimation(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SharedSesDetailScreen(
-    ses: SharedSesModel? = null,
+    ses: SharedSesDetailModel? = null,
     isLoading: Boolean = false,
     errorMessage: String? = null,
+    currentUserId: String? = null,
+    isAdminOrModerator: Boolean = false,
+    userReactions: Map<String, String> = emptyMap(),
+    reactionUsers: List<SharedReactionUser> = emptyList(),
+    isFollowingAuthor: Boolean = false,
+    isPlaying: Boolean = false,
+    currentPositionMillis: Long = 0L,
+    totalDurationMillis: Long = 0L,
     onNavigateBack: () -> Unit = {},
     onHomeClick: () -> Unit = onNavigateBack,
+    onShareClick: () -> Unit = {},
+    onEditClick: () -> Unit = {},
     onOpenComments: () -> Unit = {},
-    onLikeClick: () -> Unit = {},
-    audioPlayerContent: (@Composable () -> Unit)? = null,
-    modifier: Modifier = Modifier
+    onReactionClick: (String) -> Unit = {},
+    onToggleFollow: () -> Unit = {},
+    onUnflagSes: () -> Unit = {},
+    onRequestReactionUsers: () -> Unit = {},
+    onPlayPauseToggle: () -> Unit = {},
+    onSeekTo: (Long) -> Unit = {},
+    modifier: Modifier = Modifier,
+    audioPlayerContent: (@Composable () -> Unit)? = null
 ) {
-    val sampleSes = remember(ses) {
-        ses ?: SharedSesModel(
-            id = "ses_detail_1",
-            ownerId = "user_1",
-            username = "Merve T.",
-            title = "Gece Sesli Notu 🎙️",
-            personalNote = "Düşüncelerimi sesli olarak paylaşmak istedim.",
-            createdAtMillis = 1710000000000L,
-            reactionCount = 120,
-            commentsCount = 14,
-            viewCount = 450,
-            durationText = "01:45",
-            userBadgeType = "PIONEER"
-        )
-    }
+    var showReactionsSheet by remember { mutableStateOf(false) }
+    var isSeeking by remember { mutableStateOf(false) }
+    var sliderPosition by remember { mutableFloatStateOf(0f) }
 
-    var isPlaying by remember { mutableStateOf(false) }
-    var currentPositionMs by remember { mutableFloatStateOf(0f) }
-    val totalDurationMs = 105000f
-
-    LaunchedEffect(isPlaying) {
-        if (isPlaying) {
-            while (isPlaying && currentPositionMs < totalDurationMs) {
-                delay(200L)
-                currentPositionMs += 200f
-            }
-            if (currentPositionMs >= totalDurationMs) {
-                isPlaying = false
-                currentPositionMs = 0f
-            }
+    LaunchedEffect(currentPositionMillis, isSeeking) {
+        if (!isSeeking) {
+            sliderPosition = currentPositionMillis.toFloat()
         }
     }
 
+    if (showReactionsSheet) {
+        SharedVideoReactionUsersBottomSheet(
+            reactionUsers = reactionUsers,
+            onDismiss = { showReactionsSheet = false }
+        )
+    }
+
     Scaffold(
-        containerColor = Color(0xFF0F172A),
+        containerColor = AnobaBackgroundDark,
         topBar = {
             Surface(
-                color = Color(0xFF1E293B),
+                color = AnobaTopBarNavy,
                 shadowElevation = 4.dp
             ) {
                 Row(
@@ -175,28 +183,45 @@ fun SharedSesDetailScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = onNavigateBack) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Geri",
-                                tint = Color.White
-                            )
-                        }
-                        Text(
-                            text = "🎙️ Ses Detayı",
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Geri",
+                            tint = Color.White
                         )
                     }
 
-                    IconButton(onClick = onHomeClick) {
-                        Icon(
-                            imageVector = Icons.Default.Home,
-                            contentDescription = "Ana Sayfa",
-                            tint = Color.White
-                        )
+                    Text(
+                        text = "🎙️ Sesli Not",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (ses != null && (currentUserId == ses.ownerId || isAdminOrModerator)) {
+                            IconButton(onClick = onEditClick) {
+                                Icon(
+                                    imageVector = Icons.Default.Edit,
+                                    contentDescription = "Düzenle",
+                                    tint = Color.White
+                                )
+                            }
+                        }
+                        IconButton(onClick = onShareClick) {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = "Paylaş",
+                                tint = Color.White
+                            )
+                        }
+                        IconButton(onClick = onHomeClick) {
+                            Icon(
+                                imageVector = Icons.Default.Home,
+                                contentDescription = "Ana Sayfa",
+                                tint = Color.White
+                            )
+                        }
                     }
                 }
             }
@@ -209,78 +234,175 @@ fun SharedSesDetailScreen(
                 .padding(innerPadding)
         ) {
             when {
-                isLoading -> {
+                isLoading && ses == null -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                     }
                 }
 
-                errorMessage != null -> {
+                errorMessage != null && ses == null -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(errorMessage, color = MaterialTheme.colorScheme.error)
+                        Text(text = errorMessage, color = Color.Red, fontSize = 14.sp)
                     }
                 }
 
-                else -> {
+                ses != null -> {
+                    val topReaction = ses.reactions.maxByOrNull { it.value }
+                    val activeDurationMs = if (totalDurationMillis > 0L) totalDurationMillis else ses.durationMillis
+
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
                             .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // Profil ve Başlık Kartı
+                        if (ses.isFlagged) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(Color(0xFFDC2626).copy(alpha = 0.9f))
+                                    .padding(12.dp)
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Default.Warning, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = ses.flagReason ?: "Bu ses kaydı inceleme altındadır.",
+                                        color = Color.White,
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Medium
+                                    )
+                                }
+                                if (isAdminOrModerator) {
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Button(
+                                        onClick = onUnflagSes,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF16A34A)),
+                                        shape = RoundedCornerShape(6.dp)
+                                    ) {
+                                        Text("Karantinadan Çıkar", fontWeight = FontWeight.Bold, color = Color.White)
+                                    }
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(14.dp))
+                        }
+
                         Card(
                             shape = RoundedCornerShape(16.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFE4E6)),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    UserAvatar(
-                                        photoUrl = sampleSes.userProfileImageUrl,
-                                        username = sampleSes.username,
-                                        size = 44.dp
-                                    )
-                                    Spacer(modifier = Modifier.width(12.dp))
-                                    Column {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(44.dp)
+                                                .clip(CircleShape)
+                                                .background(Color(0xFF334155)),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            if (!ses.userProfileImageUrl.isNullOrBlank()) {
+                                                AsyncImage(
+                                                    model = ses.userProfileImageUrl,
+                                                    contentDescription = ses.username,
+                                                    modifier = Modifier.matchParentSize()
+                                                )
+                                            } else {
+                                                Text(
+                                                    text = ses.username.take(1).uppercase(),
+                                                    color = Color.White,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 16.sp
+                                                )
+                                            }
+                                        }
+
+                                        Spacer(modifier = Modifier.width(12.dp))
+
+                                        Column {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Text(
+                                                    text = ses.username,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 15.sp,
+                                                    color = if (ses.isOfficial) AnobaGold else Color.White
+                                                )
+                                                if (ses.isOfficial) {
+                                                    Spacer(modifier = Modifier.width(4.dp))
+                                                    Surface(
+                                                        color = AnobaGold.copy(alpha = 0.2f),
+                                                        shape = RoundedCornerShape(4.dp)
+                                                    ) {
+                                                        Text(
+                                                            text = "RESMİ",
+                                                            color = AnobaGold,
+                                                            fontSize = 9.sp,
+                                                            fontWeight = FontWeight.Bold,
+                                                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                            if (ses.title.isNotBlank()) {
+                                                Text(
+                                                    text = ses.title,
+                                                    fontSize = 13.sp,
+                                                    color = Color.LightGray,
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis
+                                                )
+                                            }
+                                        }
+                                    }
+
+                                    if (currentUserId != null && currentUserId != ses.ownerId) {
+                                        Surface(
+                                            color = if (isFollowingAuthor) Color.White.copy(alpha = 0.2f) else AnobaGold,
+                                            shape = RoundedCornerShape(14.dp),
+                                            modifier = Modifier
+                                                .clip(RoundedCornerShape(14.dp))
+                                                .clickable { onToggleFollow() }
+                                        ) {
                                             Text(
-                                                text = sampleSes.username,
+                                                text = if (isFollowingAuthor) "Takipte" else "Takip Et",
+                                                color = if (isFollowingAuthor) Color.White else Color.Black,
+                                                fontSize = 11.sp,
                                                 fontWeight = FontWeight.Bold,
-                                                fontSize = 15.sp,
-                                                color = Color(0xFF1E293B)
-                                            )
-                                            Spacer(modifier = Modifier.width(4.dp))
-                                            AnobaBadge(
-                                                badgeType = sampleSes.userBadgeType,
-                                                isOfficial = sampleSes.isOfficial
+                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
                                             )
                                         }
-                                        Text(
-                                            text = sampleSes.title,
-                                            fontSize = 13.sp,
-                                            color = Color.DarkGray
-                                        )
                                     }
                                 }
 
-                                if (sampleSes.personalNote.isNotBlank()) {
-                                    Spacer(modifier = Modifier.height(10.dp))
+                                if (ses.personalNote.isNotBlank()) {
+                                    Spacer(modifier = Modifier.height(12.dp))
                                     Text(
-                                        text = sampleSes.personalNote,
-                                        fontSize = 14.sp,
-                                        color = Color(0xFF334155)
+                                        text = ses.personalNote,
+                                        fontSize = 13.sp,
+                                        color = Color.White.copy(alpha = 0.9f),
+                                        lineHeight = 18.sp
                                     )
                                 }
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
-                        // Oynatıcı & Ses Dalgası Kartı
                         Card(
                             shape = RoundedCornerShape(20.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Column(
@@ -297,15 +419,15 @@ fun SharedSesDetailScreen(
                                     audioPlayerContent()
                                 } else {
                                     IconButton(
-                                        onClick = { isPlaying = !isPlaying },
+                                        onClick = onPlayPauseToggle,
                                         modifier = Modifier
                                             .size(64.dp)
                                             .clip(CircleShape)
-                                            .background(Color(0xFFE11D48))
+                                            .background(SesPinkAccent)
                                     ) {
                                         Icon(
                                             imageVector = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
-                                            contentDescription = "Oynat / Durdur",
+                                            contentDescription = if (isPlaying) "Durdur" else "Oynat",
                                             tint = Color.White,
                                             modifier = Modifier.size(36.dp)
                                         )
@@ -314,9 +436,21 @@ fun SharedSesDetailScreen(
                                     Spacer(modifier = Modifier.height(12.dp))
 
                                     Slider(
-                                        value = currentPositionMs,
-                                        onValueChange = { currentPositionMs = it },
-                                        valueRange = 0f..totalDurationMs,
+                                        value = sliderPosition,
+                                        onValueChange = {
+                                            isSeeking = true
+                                            sliderPosition = it
+                                        },
+                                        onValueChangeFinished = {
+                                            onSeekTo(sliderPosition.toLong())
+                                            isSeeking = false
+                                        },
+                                        valueRange = 0f..activeDurationMs.toFloat().coerceAtLeast(1f),
+                                        colors = SliderDefaults.colors(
+                                            thumbColor = SesPinkAccent,
+                                            activeTrackColor = SesPinkAccent,
+                                            inactiveTrackColor = Color.DarkGray
+                                        ),
                                         modifier = Modifier.fillMaxWidth()
                                     )
 
@@ -325,12 +459,12 @@ fun SharedSesDetailScreen(
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(
-                                            text = "${(currentPositionMs / 1000).toInt()}s",
+                                            text = formatDurationMillis(sliderPosition.toLong()),
                                             fontSize = 12.sp,
                                             color = Color.Gray
                                         )
                                         Text(
-                                            text = sampleSes.durationText.ifNotBlank { "01:45" },
+                                            text = formatDurationMillis(activeDurationMs),
                                             fontSize = 12.sp,
                                             color = Color.Gray
                                         )
@@ -339,51 +473,96 @@ fun SharedSesDetailScreen(
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
-                        // Etkileşim Butonları
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Button(
-                                onClick = onLikeClick,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE11D48)),
-                                shape = RoundedCornerShape(12.dp)
-                            ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
-                                    imageVector = if (sampleSes.isLikedByMe) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                                    contentDescription = "Beğen",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(20.dp)
+                                    imageVector = Icons.Default.RemoveRedEye,
+                                    contentDescription = null,
+                                    tint = Color.White.copy(alpha = 0.7f),
+                                    modifier = Modifier.size(16.dp)
                                 )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text("${sampleSes.reactionCount}")
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = "${ses.viewCount} · ${ses.timeAgoText}",
+                                    color = Color.White.copy(alpha = 0.7f),
+                                    fontSize = 12.sp
+                                )
+
+                                if (topReaction != null && topReaction.value > 0) {
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(6.dp))
+                                            .clickable {
+                                                onRequestReactionUsers()
+                                                showReactionsSheet = true
+                                            }
+                                            .background(Color.White.copy(alpha = 0.15f))
+                                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                                    ) {
+                                        Text(topReaction.key, fontSize = 12.sp)
+                                        Spacer(modifier = Modifier.width(3.dp))
+                                        Text(
+                                            text = "${topReaction.value}",
+                                            color = Color.White,
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
                             }
 
-                            Button(
-                                onClick = onOpenComments,
-                                colors = ButtonDefaults.buttonColors(containerColor = AnobaNavy),
-                                shape = RoundedCornerShape(12.dp)
+                            Row(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(6.dp))
+                                    .background(Color.White.copy(alpha = 0.2f))
+                                    .clickable { onOpenComments() }
+                                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.Comment,
-                                    contentDescription = "Yorumlar",
+                                    contentDescription = null,
                                     tint = Color.White,
-                                    modifier = Modifier.size(20.dp)
+                                    modifier = Modifier.size(14.dp)
                                 )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text("Yorumlar (${sampleSes.commentsCount})")
+                                if (ses.commentsCount > 0) {
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text(
+                                        text = ses.commentsCount.toString(),
+                                        color = Color.White,
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
                             }
                         }
+
+                        Spacer(modifier = Modifier.height(14.dp))
+
+                        SharedVideoEmojiReactionRow(
+                            reactions = ses.reactions,
+                            selectedEmoji = userReactions[ses.id],
+                            onReact = onReactionClick
+                        )
+
+                        Spacer(modifier = Modifier.height(28.dp))
+                    }
+                }
+
+                else -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Ses kaydı bulunamadı.", color = Color.Gray, fontSize = 14.sp)
                     }
                 }
             }
         }
     }
-}
-
-private inline fun String.ifNotBlank(defaultValue: () -> String): String {
-    return if (this.isNotBlank()) this else defaultValue()
 }

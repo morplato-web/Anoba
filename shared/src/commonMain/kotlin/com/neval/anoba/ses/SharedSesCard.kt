@@ -2,82 +2,78 @@ package com.neval.anoba.ses
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Comment
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.GraphicEq
 import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material.icons.outlined.Visibility
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.neval.anoba.common.ui.AnobaBadge
-import com.neval.anoba.common.ui.UserAvatar
-import com.neval.anoba.common.utils.getRelativeTimeString
-import com.neval.anoba.ui.theme.AnobaGold
+import coil3.compose.AsyncImage
 
-private val CardBackgroundPink = Color(0xFFFFE4E6)
-private val DarkText = Color(0xFF1E293B)
+private val AnobaNavyLight = Color(0xFF1E293B)
+private val AnobaGold = Color(0xFFFFD700)
+private val SesPinkAccent = Color(0xFFFF8DA1)
+private val TextWhiteSubtle = Color(0xFFCBD5E1)
 
 @Composable
 fun SharedSesCard(
     ses: SharedSesModel,
-    modifier: Modifier = Modifier,
     isPinned: Boolean = false,
     canDelete: Boolean = false,
     onPinClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {},
+    onShareClick: () -> Unit = {},
     onSesClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
-    onLikeClick: () -> Unit = {}
+    onLikeClick: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
-    var showDeleteDialog by remember { mutableStateOf(false) }
-
-    if (showDeleteDialog) {
-        AlertDialog(
-            onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Ses Kaydını Sil") },
-            text = { Text("Bu ses kaydını silmek istediğinize emin misiniz?") },
-            confirmButton = {
-                TextButton(onClick = {
-                    showDeleteDialog = false
-                    onDeleteClick()
-                }) {
-                    Text("Sil", color = MaterialTheme.colorScheme.error)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("İptal")
-                }
-            }
-        )
-    }
-
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = CardBackgroundPink),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = AnobaNavyLight),
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
         modifier = modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(14.dp)) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             // Başlık & Profil Barı
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -85,11 +81,28 @@ fun SharedSesCard(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(1f)
                 ) {
-                    UserAvatar(
-                        photoUrl = ses.userProfileImageUrl,
-                        username = ses.username,
-                        size = 36.dp
-                    )
+                    Box(
+                        modifier = Modifier
+                            .size(38.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF334155)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (!ses.userProfileImageUrl.isNullOrBlank()) {
+                            AsyncImage(
+                                model = ses.userProfileImageUrl,
+                                contentDescription = ses.username,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.matchParentSize()
+                            )
+                        } else {
+                            Text(
+                                text = ses.username.take(1).uppercase(),
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
 
                     Spacer(modifier = Modifier.width(10.dp))
 
@@ -97,22 +110,32 @@ fun SharedSesCard(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = ses.username,
-                                color = DarkText,
+                                color = Color.White,
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.SemiBold,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            AnobaBadge(
-                                badgeType = ses.userBadgeType,
-                                isOfficial = ses.isOfficial
-                            )
+                            if (ses.isOfficial) {
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Surface(
+                                    color = AnobaGold.copy(alpha = 0.2f),
+                                    shape = RoundedCornerShape(4.dp)
+                                ) {
+                                    Text(
+                                        text = "RESMİ",
+                                        color = AnobaGold,
+                                        fontSize = 10.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                    )
+                                }
+                            }
                         }
                         if (ses.title.isNotBlank()) {
                             Text(
                                 text = ses.title,
-                                color = DarkText.copy(alpha = 0.7f),
+                                color = TextWhiteSubtle,
                                 fontSize = 12.sp,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -122,16 +145,24 @@ fun SharedSesCard(
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = onShareClick) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = "Paylaş",
+                            tint = Color.Gray,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
                     IconButton(onClick = onPinClick) {
                         Icon(
                             imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
                             contentDescription = "Sabitle",
-                            tint = if (isPinned) Color(0xFF2196F3) else Color.Gray,
+                            tint = if (isPinned) AnobaGold else Color.Gray,
                             modifier = Modifier.size(20.dp)
                         )
                     }
                     if (canDelete) {
-                        IconButton(onClick = { showDeleteDialog = true }) {
+                        IconButton(onClick = onDeleteClick) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Sil",
@@ -143,88 +174,84 @@ fun SharedSesCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // Ses Oynatıcı Kartı
+            // Ses Kartı Oynatma Gövdesi (Tıklanabilir Dalga Bandı)
             Surface(
-                color = Color.White,
+                color = Color(0xFF243046),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 14.dp)
+                    .clip(RoundedCornerShape(12.dp))
                     .clickable { onSesClick() }
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(horizontal = 14.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Surface(
-                        shape = CircleShape,
-                        color = Color(0xFFE11D48).copy(alpha = 0.15f),
-                        modifier = Modifier.size(44.dp)
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Icon(
-                                imageVector = Icons.Default.Mic,
-                                contentDescription = "Ses Kaydı",
-                                tint = Color(0xFFE11D48),
-                                modifier = Modifier.size(24.dp)
-                            )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Surface(
+                            color = SesPinkAccent.copy(alpha = 0.2f),
+                            shape = CircleShape,
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Default.Mic,
+                                    contentDescription = "Ses Kaydı",
+                                    tint = SesPinkAccent,
+                                    modifier = Modifier.size(22.dp)
+                                )
+                            }
                         }
-                    }
 
-                    Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(12.dp))
 
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = if (ses.title.isNotBlank()) ses.title else "Sesli Not",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 13.sp,
-                            color = DarkText
-                        )
-                        Text(
-                            text = if (ses.durationText.isNotBlank()) ses.durationText else "Sesli Not Dinle",
-                            fontSize = 11.sp,
-                            color = Color.Gray
-                        )
-                    }
-
-                    IconButton(
-                        onClick = onSesClick,
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFFE11D48))
-                    ) {
                         Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Oynat",
-                            tint = Color.White,
-                            modifier = Modifier.size(22.dp)
+                            imageVector = Icons.Default.GraphicEq,
+                            contentDescription = "Ses Dalgası",
+                            tint = SesPinkAccent.copy(alpha = 0.8f),
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+
+                    Surface(
+                        color = Color.Black.copy(alpha = 0.4f),
+                        shape = RoundedCornerShape(6.dp)
+                    ) {
+                        Text(
+                            text = ses.durationText,
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
                     }
                 }
             }
 
+            // Kişisel Not
             if (ses.personalNote.isNotBlank()) {
-                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = ses.personalNote,
-                    color = DarkText.copy(alpha = 0.85f),
+                    color = Color.White,
                     fontSize = 13.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    lineHeight = 18.sp,
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp)
                 )
+            } else {
+                Spacer(modifier = Modifier.height(6.dp))
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // Alt Bar
+            // Alt Bar (Beğeni, Yorum, Dinlenme)
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Row(
@@ -237,13 +264,13 @@ fun SharedSesCard(
                         Icon(
                             imageVector = if (ses.isLikedByMe) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                             contentDescription = "Beğen",
-                            tint = if (ses.isLikedByMe) Color(0xFFE11D48) else Color.Gray,
-                            modifier = Modifier.size(18.dp)
+                            tint = if (ses.isLikedByMe) Color(0xFFEF4444) else TextWhiteSubtle,
+                            modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = "${ses.reactionCount}",
-                            color = DarkText,
+                            color = TextWhiteSubtle,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -259,15 +286,15 @@ fun SharedSesCard(
                             .padding(4.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.Comment,
+                            imageVector = Icons.Outlined.ChatBubbleOutline,
                             contentDescription = "Yorumlar",
-                            tint = DarkText,
-                            modifier = Modifier.size(18.dp)
+                            tint = TextWhiteSubtle,
+                            modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = "${ses.commentsCount}",
-                            color = DarkText,
+                            color = TextWhiteSubtle,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -277,7 +304,7 @@ fun SharedSesCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Outlined.Visibility,
-                        contentDescription = "Görüntülenme",
+                        contentDescription = "Dinlenme",
                         tint = Color.Gray,
                         modifier = Modifier.size(16.dp)
                     )
