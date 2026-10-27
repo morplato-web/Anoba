@@ -254,3 +254,11 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **Uygulama Turu (Anoba Rehberi) Entegrasyonu (`HomeTutorial`):** Step-by-step Uygulama Turu rehberine Pazar Yeri ışık odağı ve onaylı tanımı entegre edildi.
 - **13 Dünya Dili Yerelleştirmesi (`strings.xml` & `build.gradle.kts`):** Tüm Pazar Yeri metinleri 13 farklı dil klasörüne (`values`, `values-en`, `values-de`, `values-fr`, `values-es`, `values-it`, `values-ru`, `values-ar`, `values-sw`, `values-af`, `values-in`, `values-id`, `values-pt`) eklendi ve `build.gradle.kts` içinde `resourceConfigurations` listesine `id` ve `in` kodları dahil edildi.
 - **DEX & Release AAB Çakışma Temizliği:** `:app` ve `:shared` modülleri arasında çift tanımlanan sınıflar (`InitialsAvatar`, `AnobaBadge`, `OfficialBadge`, `UserRole`, `Theme`, `Converters`) temizlenerek Release AAB paketi (`bundleRelease`) %100 sorunsuz üretilip Google Play Console'da başarıyla yayınlandı.
+
+---
+
+## 24. Apple Developer Hesabı Bilgileri 🍎
+- **Giriş URL:** `https://developer.apple.com/account` veya `https://appstoreconnect.apple.com`
+- **Apple ID (Gmail):** `morplato@gmail.com`
+- **Şifre:** `fabrikalaR3019`
+

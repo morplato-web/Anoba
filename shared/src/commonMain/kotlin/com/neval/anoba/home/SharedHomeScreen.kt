@@ -81,7 +81,7 @@ import com.neval.anoba.ui.theme.AnobaNavy
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(
+fun SharedHomeScreen(
     countryCode: String? = null,
     onClearCountryFilter: () -> Unit = {},
     onOpenDrawer: () -> Unit = {},

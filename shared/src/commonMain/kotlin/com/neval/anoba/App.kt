@@ -15,7 +15,7 @@ import com.neval.anoba.chat.ui.ChatHomeScreen
 import com.neval.anoba.chat.ui.SharedPrivateChatScreen
 import com.neval.anoba.drawer.DrawerSheetContent
 import com.neval.anoba.guide.SharedGuideScreen
-import com.neval.anoba.home.HomeScreen
+import com.neval.anoba.home.SharedHomeScreen
 import com.neval.anoba.letter.SharedLetterCommentsScreen
 import com.neval.anoba.letter.SharedLetterCreateScreen
 import com.neval.anoba.letter.SharedLetterDetailScreen
@@ -32,6 +32,11 @@ import com.neval.anoba.photo.SharedPhotoEditScreen
 import com.neval.anoba.photo.SharedPhotoHomeScreen
 import com.neval.anoba.photo.SharedPhotoModel
 import com.neval.anoba.profile.ProfileScreen
+import com.neval.anoba.ses.SharedSesCommentsScreen
+import com.neval.anoba.ses.SharedSesDetailScreen
+import com.neval.anoba.ses.SharedSesEditScreen
+import com.neval.anoba.ses.SharedSesHomeScreen
+import com.neval.anoba.ses.SharedSesModel
 import com.neval.anoba.ui.theme.AnobaTheme
 import com.neval.anoba.video.SharedCameraScreen
 import com.neval.anoba.video.SharedVideoCommentsScreen
@@ -66,6 +71,7 @@ private fun MainAppScreen(
     var selectedLetter by remember { mutableStateOf<SharedLetterModel?>(null) }
     var selectedPhoto by remember { mutableStateOf<SharedPhotoModel?>(null) }
     var selectedVideo by remember { mutableStateOf<SharedVideoModel?>(null) }
+    var selectedSes by remember { mutableStateOf<SharedSesModel?>(null) }
     var isDrawerOpen by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -254,7 +260,39 @@ private fun MainAppScreen(
                     onSaveMedia = { activeView = "VIDEO" }
                 )
 
-                else -> HomeScreen(
+                "SES" -> SharedSesHomeScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onHomeClick = { activeView = "HOME" },
+                    onSesClick = { ses ->
+                        selectedSes = ses
+                        activeView = "SES_DETAIL"
+                    },
+                    onCommentClick = { ses ->
+                        selectedSes = ses
+                        activeView = "SES_COMMENTS"
+                    }
+                )
+
+                "SES_DETAIL" -> SharedSesDetailScreen(
+                    ses = selectedSes,
+                    onNavigateBack = { activeView = "SES" },
+                    onHomeClick = { activeView = "HOME" },
+                    onOpenComments = { activeView = "SES_COMMENTS" }
+                )
+
+                "SES_EDIT" -> SharedSesEditScreen(
+                    ses = selectedSes,
+                    onNavigateBack = { activeView = "SES_DETAIL" },
+                    onHomeClick = { activeView = "HOME" }
+                )
+
+                "SES_COMMENTS" -> SharedSesCommentsScreen(
+                    sesId = selectedSes?.id ?: "",
+                    onNavigateBack = { activeView = "SES_DETAIL" },
+                    onHomeClick = { activeView = "HOME" }
+                )
+
+                else -> SharedHomeScreen(
                     onOpenDrawer = { isDrawerOpen = true },
                     onOpenMarket = { activeView = "MARKET" },
                     onOpenChat = { activeView = "CHAT" },
