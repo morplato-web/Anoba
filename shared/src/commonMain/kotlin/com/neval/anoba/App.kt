@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.neval.anoba.chat.ui.ChatHomeScreen
 import com.neval.anoba.drawer.DrawerSheetContent
-import com.neval.anoba.guide.GuideScreen
+import com.neval.anoba.guide.SharedGuideScreen
 import com.neval.anoba.home.HomeScreen
 import com.neval.anoba.login.AuthContainerView
 import com.neval.anoba.market.MarketContainerView
@@ -53,7 +53,7 @@ private fun MainAppScreen(
                 "MARKET" -> MarketContainerView(onNavigateHome = { activeView = "HOME" })
                 "CHAT" -> ChatHomeScreen(onNavigateBack = { activeView = "HOME" })
                 "PROFILE" -> ProfileScreen(onNavigateBack = { activeView = "HOME" })
-                "GUIDE" -> GuideScreen(onNavigateBack = { activeView = "HOME" })
+                "GUIDE" -> SharedGuideScreen(onNavigateBack = { activeView = "HOME" })
                 "METE" -> MeteHomeScreen(onNavigateBack = { activeView = "HOME" })
                 else -> HomeScreen(
                     onOpenDrawer = { isDrawerOpen = true },
