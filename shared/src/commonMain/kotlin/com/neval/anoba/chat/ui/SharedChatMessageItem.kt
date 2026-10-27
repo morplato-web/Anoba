@@ -184,9 +184,17 @@ fun <T : Messageable> ChatMessageItem(
                                     .background(Color(0xFF0F172A)),
                                 contentAlignment = Alignment.Center
                             ) {
+                                val videoThumbModel = message.imageUrl.takeIf { !it.isNullOrBlank() } ?: message.videoUrl
+                                AsyncImage(
+                                    model = videoThumbModel,
+                                    contentDescription = "Video Önizleme",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+
                                 androidx.compose.material3.Surface(
                                     shape = CircleShape,
-                                    color = Color.White.copy(alpha = 0.3f),
+                                    color = Color.Black.copy(alpha = 0.5f),
                                     modifier = Modifier.size(48.dp)
                                 ) {
                                     Box(contentAlignment = Alignment.Center) {
