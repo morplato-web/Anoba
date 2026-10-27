@@ -33,6 +33,13 @@ import com.neval.anoba.photo.SharedPhotoHomeScreen
 import com.neval.anoba.photo.SharedPhotoModel
 import com.neval.anoba.profile.ProfileScreen
 import com.neval.anoba.ui.theme.AnobaTheme
+import com.neval.anoba.video.SharedCameraScreen
+import com.neval.anoba.video.SharedVideoCommentsScreen
+import com.neval.anoba.video.SharedVideoDetailModel
+import com.neval.anoba.video.SharedVideoDetailScreen
+import com.neval.anoba.video.SharedVideoEditScreen
+import com.neval.anoba.video.SharedVideoHomeScreen
+import com.neval.anoba.video.SharedVideoModel
 
 @Composable
 fun App() {
@@ -58,6 +65,7 @@ private fun MainAppScreen(
     var activeView by remember { mutableStateOf("HOME") }
     var selectedLetter by remember { mutableStateOf<SharedLetterModel?>(null) }
     var selectedPhoto by remember { mutableStateOf<SharedPhotoModel?>(null) }
+    var selectedVideo by remember { mutableStateOf<SharedVideoModel?>(null) }
     var isDrawerOpen by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -191,6 +199,61 @@ private fun MainAppScreen(
                     onHomeClick = { activeView = "HOME" }
                 )
 
+                "VIDEO" -> SharedVideoHomeScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onHomeClick = { activeView = "HOME" },
+                    onVideoClick = { video ->
+                        selectedVideo = video
+                        activeView = "VIDEO_DETAIL"
+                    },
+                    onCommentClick = { video ->
+                        selectedVideo = video
+                        activeView = "VIDEO_COMMENTS"
+                    }
+                )
+
+                "VIDEO_DETAIL" -> SharedVideoDetailScreen(
+                    video = selectedVideo?.let { v ->
+                        SharedVideoDetailModel(
+                            id = v.id,
+                            ownerId = v.ownerId,
+                            username = v.username,
+                            userProfileImageUrl = v.userProfileImageUrl,
+                            videoUrl = v.videoUrl,
+                            thumbnailUrl = v.thumbnailUrl,
+                            title = v.title,
+                            personalNote = v.personalNote,
+                            viewCount = v.viewCount,
+                            commentsCount = v.commentsCount,
+                            isOfficial = v.isOfficial,
+                            userBadgeType = v.userBadgeType,
+                            timeAgoText = "az önce"
+                        )
+                    },
+                    onNavigateBack = { activeView = "VIDEO" },
+                    onHomeClick = { activeView = "HOME" },
+                    onEditClick = { activeView = "VIDEO_EDIT" },
+                    onOpenComments = { activeView = "VIDEO_COMMENTS" }
+                )
+
+                "VIDEO_EDIT" -> SharedVideoEditScreen(
+                    video = selectedVideo,
+                    onNavigateBack = { activeView = "VIDEO_DETAIL" },
+                    onHomeClick = { activeView = "HOME" }
+                )
+
+                "VIDEO_COMMENTS" -> SharedVideoCommentsScreen(
+                    videoId = selectedVideo?.id ?: "",
+                    onNavigateBack = { activeView = "VIDEO_DETAIL" },
+                    onHomeClick = { activeView = "HOME" }
+                )
+
+                "CAMERA" -> SharedCameraScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onHomeClick = { activeView = "HOME" },
+                    onSaveMedia = { activeView = "VIDEO" }
+                )
+
                 else -> HomeScreen(
                     onOpenDrawer = { isDrawerOpen = true },
                     onOpenMarket = { activeView = "MARKET" },
@@ -199,7 +262,8 @@ private fun MainAppScreen(
                     onOpenMete = { activeView = "METE" },
                     onOpenLetter = { activeView = "LETTER" },
                     onOpenLetterCreate = { activeView = "LETTER_CREATE" },
-                    onOpenGallery = { activeView = "PHOTO" }
+                    onOpenGallery = { activeView = "PHOTO" },
+                    onOpenCamera = { activeView = "CAMERA" }
                 )
             }
         }
