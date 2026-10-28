@@ -29,7 +29,8 @@ data class GroupMessage(
     @ServerTimestamp
     val timestamp: Date? = null,
     override val readBy: List<String> = emptyList(),
-    
+    override val status: String? = null,
+
     override val replyToId: String? = null,
     override val replyToName: String? = null,
     override val replyToContent: String? = null

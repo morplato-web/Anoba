@@ -2,25 +2,29 @@ package com.neval.anoba.chat.group
 
 import android.net.Uri
 import android.util.Log
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.firestore.ListenerRegistration
-import com.neval.anoba.chat.general.GeneralChatUser
 import com.neval.anoba.chat.data.ChatDao
 import com.neval.anoba.chat.data.GroupMessageEntity
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import com.neval.anoba.chat.general.GeneralChatUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 class GroupChatRepository(
     private val db: FirebaseFirestore,
@@ -30,7 +34,7 @@ class GroupChatRepository(
     private val tag = "GroupChatRepository"
     private val repositoryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val historyMutex = Mutex()
-    private val activeListeners = mutableMapOf<String, ListenerRegistration>()
+    private val activeListeners = ConcurrentHashMap<String, ListenerRegistration>()
 
     fun getGroupsStreamForUser(userId: String): Flow<List<ChatGroup>> {
         val memberGroupsFlow = db.collection("groups")
@@ -114,8 +118,13 @@ class GroupChatRepository(
     }
 
     fun stopRealtimeSync(groupId: String) {
-        activeListeners[groupId]?.remove()
-        activeListeners.remove(groupId)
+        activeListeners.remove(groupId)?.remove()
+    }
+
+    @Suppress("unused")
+    fun stopAllRealtimeSync() {
+        activeListeners.forEach { (_, listener) -> listener.remove() }
+        activeListeners.clear()
     }
 
     private fun GroupMessage.toEntity(groupId: String) = GroupMessageEntity(
@@ -134,7 +143,8 @@ class GroupChatRepository(
         readBy = this.readBy,
         replyToId = this.replyToId,
         replyToName = this.replyToName,
-        replyToContent = this.replyToContent
+        replyToContent = this.replyToContent,
+        status = this.status
     )
 
     private fun GroupMessageEntity.toDomain() = GroupMessage(
@@ -152,7 +162,8 @@ class GroupChatRepository(
         readBy = this.readBy,
         replyToId = this.replyToId,
         replyToName = this.replyToName,
-        replyToContent = this.replyToContent
+        replyToContent = this.replyToContent,
+        status = this.status
     )
 
     suspend fun createGroup(group: ChatGroup): ChatGroup {
@@ -192,7 +203,6 @@ class GroupChatRepository(
                     else -> "$senderUsername yeni bir mesaj gönderdi."
                 }
 
-                // 🚀 BİLDİRİM: type=CHAT korundu, isGroup=true ve groupId eklendi
                 members.filter { it != message.senderId }.forEach { memberId ->
                     val notificationData = mapOf(
                         "type" to "CHAT",
@@ -281,6 +291,7 @@ class GroupChatRepository(
 
     suspend fun deleteGroup(groupId: String) {
         db.collection("groups").document(groupId).delete().await()
+        chatDao.clearGroupMessagesByGroupId(groupId)
     }
 
     suspend fun getGroupDetails(groupId: String): ChatGroup? {
