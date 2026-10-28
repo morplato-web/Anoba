@@ -84,8 +84,13 @@ data class SharedChatMessage(
     val imageUrl: String? = null,
     val videoUrl: String? = null,
     val audioUrl: String? = null,
+    val audioDuration: Long? = null,
     val timestampMillis: Long = 0L,
-    val dateText: String? = null
+    val dateText: String? = null,
+    val replyToId: String? = null,
+    val replyToName: String? = null,
+    val replyToContent: String? = null,
+    val status: String? = null
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

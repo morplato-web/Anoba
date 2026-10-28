@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neval.anoba.chat.group
 
 import android.net.Uri
@@ -47,6 +49,16 @@ class GroupChatViewModel(
 
     private val _activeGroup = MutableStateFlow<ChatGroup?>(null)
     val activeGroup: StateFlow<ChatGroup?> = _activeGroup.asStateFlow()
+
+    val messages: StateFlow<List<GroupMessage>> = _activeGroup
+        .flatMapLatest { group ->
+            if (group == null || group.id.isBlank()) {
+                flowOf(emptyList())
+            } else {
+                groupChatRepository.getMessagesStream(group.id)
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _isMuted = MutableStateFlow(false)
     val isMuted: StateFlow<Boolean> = _isMuted.asStateFlow()

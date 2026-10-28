@@ -52,6 +52,13 @@ class GroupChatRepository(
         }
     }
 
+    fun getMessagesStream(groupId: String): Flow<List<GroupMessage>> {
+        startRealtimeSync(groupId)
+        return chatDao.getGroupMessages(groupId).map { list ->
+            list.map { it.toDomain() }
+        }
+    }
+
     fun getMessagesPaging(groupId: String): Flow<PagingData<GroupMessage>> {
         startRealtimeSync(groupId)
 

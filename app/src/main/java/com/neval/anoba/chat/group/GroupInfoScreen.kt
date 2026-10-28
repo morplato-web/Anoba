@@ -62,6 +62,9 @@ fun GroupInfoScreen(
         onTogglePrivacy = { isPrivate ->
             groupChatViewModel.setGroupPrivacy(groupId, isPrivate)
         },
+        onAddMember = {
+            // Kullanıcı ekleme diyaloğu veya arkadaş listesi yönlendirmesi
+        },
         onRemoveMember = { memberId ->
             groupChatViewModel.removeUserFromGroup(groupId, memberId, "")
         },

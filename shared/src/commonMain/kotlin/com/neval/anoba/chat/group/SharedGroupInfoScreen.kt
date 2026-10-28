@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("SharedGroupInfoScreenKt")
+
 package com.neval.anoba.chat.group
 
 import androidx.compose.foundation.background
@@ -22,11 +24,14 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.NotificationsOff
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Security
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -43,6 +48,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -53,9 +59,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
@@ -90,7 +98,59 @@ fun SharedGroupInfoScreen(
     var groupDescriptionInput by remember(group) { mutableStateOf(group?.description ?: "") }
     var isPrivateState by remember(group) { mutableStateOf(group?.isPrivate ?: false) }
 
-    val isGroupOwner = group?.id != null && currentUserId.isNotBlank()
+    var showDeleteConfirmDialog by remember { mutableStateOf(false) }
+    var showLeaveConfirmDialog by remember { mutableStateOf(false) }
+
+    // Gerçek grup kurucusu kontrolü
+    val isGroupOwner = group != null && group.ownerId.isNotBlank() && group.ownerId == currentUserId
+
+    if (showDeleteConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirmDialog = false },
+            containerColor = Color.White,
+            title = { Text("Grubu Sil", fontWeight = FontWeight.Bold, color = AnobaNavy) },
+            text = { Text("Bu grubu ve tüm sohbet geçmişini kalıcı olarak silmek istediğinizden emin misiniz?") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteConfirmDialog = false
+                        onDeleteGroup()
+                    }
+                ) {
+                    Text("Sil", color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirmDialog = false }) {
+                    Text("İptal", color = Color.Gray)
+                }
+            }
+        )
+    }
+
+    if (showLeaveConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = { showLeaveConfirmDialog = false },
+            containerColor = Color.White,
+            title = { Text("Gruptan Ayrıl", fontWeight = FontWeight.Bold, color = AnobaNavy) },
+            text = { Text("Bu gruptan ayrılmak istediğinizden emin misiniz?") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showLeaveConfirmDialog = false
+                        onLeaveGroup()
+                    }
+                ) {
+                    Text("Ayrıl", color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLeaveConfirmDialog = false }) {
+                    Text("İptal", color = Color.Gray)
+                }
+            }
+        )
+    }
 
     Scaffold(
         containerColor = Color(0xFFF1F5F9),
@@ -126,6 +186,24 @@ fun SharedGroupInfoScreen(
                             )
                         }
                     },
+                    actions = {
+                        if (isGroupOwner && !isEditing) {
+                            IconButton(onClick = { isEditing = true }) {
+                                Icon(
+                                    imageVector = Icons.Default.Edit,
+                                    contentDescription = "Düzenle",
+                                    tint = AnobaNavy
+                                )
+                            }
+                        }
+                        IconButton(onClick = onHomeClick) {
+                            Icon(
+                                imageVector = Icons.Default.Home,
+                                contentDescription = "Ana Sayfa",
+                                tint = AnobaNavy
+                            )
+                        }
+                    },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent)
                 )
             }
@@ -142,20 +220,29 @@ fun SharedGroupInfoScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 1. Grup Fotoğrafı
+            // 1. Grup Fotoğrafı (Coil 3 AsyncImage + Fallback)
             Box(
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(110.dp)
                     .clip(CircleShape)
                     .background(AnobaGold.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null,
-                    tint = AnobaNavy,
-                    modifier = Modifier.size(60.dp)
-                )
+                if (!group?.imageUrl.isNullOrBlank()) {
+                    AsyncImage(
+                        model = group?.imageUrl,
+                        contentDescription = "Grup Resmi",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Group,
+                        contentDescription = null,
+                        tint = AnobaNavy,
+                        modifier = Modifier.size(54.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -166,6 +253,7 @@ fun SharedGroupInfoScreen(
                     value = groupNameInput,
                     onValueChange = { groupNameInput = it },
                     label = { Text("Grup Adı") },
+                    singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -180,8 +268,11 @@ fun SharedGroupInfoScreen(
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(
                     onClick = {
-                        onUpdateGroupInfo(groupNameInput, groupDescriptionInput)
-                        isEditing = false
+                        val trimmedName = groupNameInput.trim()
+                        if (trimmedName.isNotBlank()) {
+                            onUpdateGroupInfo(trimmedName, groupDescriptionInput.trim())
+                            isEditing = false
+                        }
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = AnobaNavy)
@@ -199,7 +290,7 @@ fun SharedGroupInfoScreen(
                 if (!group?.description.isNullOrBlank()) {
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = group!!.description,
+                        text = group.description,
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray,
                         textAlign = TextAlign.Center
@@ -236,28 +327,30 @@ fun SharedGroupInfoScreen(
                         )
                     }
 
-                    HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f))
+                    if (isGroupOwner) {
+                        HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f))
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.Security, contentDescription = null, tint = Color.Gray)
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text("Gizli Grup", color = AnobaNavy)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Security, contentDescription = null, tint = Color.Gray)
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Text("Gizli Grup", color = AnobaNavy)
+                            }
+                            Switch(
+                                checked = isPrivateState,
+                                onCheckedChange = {
+                                    isPrivateState = it
+                                    onTogglePrivacy(it)
+                                },
+                                colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AnobaNavy)
+                            )
                         }
-                        Switch(
-                            checked = isPrivateState,
-                            onCheckedChange = {
-                                isPrivateState = it
-                                onTogglePrivacy(it)
-                            },
-                            colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AnobaNavy)
-                        )
                     }
                 }
             }
@@ -308,7 +401,7 @@ fun SharedGroupInfoScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             UserAvatar(photoUrl = member.photoUrl, username = member.username, size = 40.dp)
@@ -331,7 +424,7 @@ fun SharedGroupInfoScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // 5. Grup Çıkış / Silme Butonları
+            // 5. Grup Çıkış / Silme Butonları (Onay Tetikleyicili)
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -342,7 +435,7 @@ fun SharedGroupInfoScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { onDeleteGroup() }
+                            .clickable { showDeleteConfirmDialog = true }
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -354,7 +447,7 @@ fun SharedGroupInfoScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { onLeaveGroup() }
+                            .clickable { showLeaveConfirmDialog = true }
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {

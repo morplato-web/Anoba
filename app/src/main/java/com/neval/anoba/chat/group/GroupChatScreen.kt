@@ -16,6 +16,7 @@ fun GroupChatScreen(
 ) {
     val activeGroup by groupChatViewModel.activeGroup.collectAsStateWithLifecycle()
     val isUploading by groupChatViewModel.isUploading.collectAsStateWithLifecycle()
+    val rawMessages by groupChatViewModel.messages.collectAsStateWithLifecycle()
     val currentUserId = groupChatViewModel.currentUserId ?: ""
 
     LaunchedEffect(groupId) {
@@ -28,6 +29,10 @@ fun GroupChatScreen(
         activeGroup?.toSharedModel()
     }
 
+    val sharedMessages = remember(rawMessages) {
+        rawMessages.map { it.toSharedModel() }
+    }
+
     val typingUsers by remember(activeGroup) {
         derivedStateOf {
             activeGroup?.typingUsers?.filterKeys { it != currentUserId }?.values?.toList() ?: emptyList()
@@ -36,6 +41,7 @@ fun GroupChatScreen(
 
     SharedGroupChatScreen(
         group = sharedGroup,
+        messages = sharedMessages,
         currentUserId = currentUserId,
         isLoading = isUploading,
         typingUsers = typingUsers,

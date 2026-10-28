@@ -57,5 +57,30 @@ fun GroupMessage.toSharedModel(): SharedChatMessage = SharedChatMessage(
     imageUrl = this.imageUrl,
     videoUrl = this.videoUrl,
     audioUrl = this.audioUrl,
-    timestampMillis = this.timestampMillis ?: 0L
+    audioDuration = this.audioDuration,
+    timestampMillis = this.timestampMillis ?: 0L,
+    replyToId = this.replyToId,
+    replyToName = this.replyToName,
+    replyToContent = this.replyToContent,
+    status = this.status
+)
+
+@Suppress("unused")
+fun SharedChatMessage.toAndroidGroupMessage(groupId: String = ""): GroupMessage = GroupMessage(
+    documentId = this.id,
+    groupId = groupId,
+    senderId = this.senderId,
+    senderName = this.senderName,
+    senderPhotoUrl = this.senderPhotoUrl,
+    senderBadgeType = this.senderBadgeType,
+    content = this.content,
+    imageUrl = this.imageUrl,
+    videoUrl = this.videoUrl,
+    audioUrl = this.audioUrl,
+    audioDuration = this.audioDuration,
+    timestamp = if (this.timestampMillis > 0L) Date(this.timestampMillis) else null,
+    replyToId = this.replyToId,
+    replyToName = this.replyToName,
+    replyToContent = this.replyToContent,
+    status = this.status
 )
