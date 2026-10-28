@@ -1,4 +1,4 @@
-package com.neval.anoba.chat.ui
+package com.neval.anoba.chat.data
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -33,18 +33,24 @@ interface ChatDao {
     @Query("SELECT MIN(timestampMillis) FROM group_messages WHERE groupId = :groupId")
     suspend fun getOldestGroupMessageTimestamp(groupId: String): Long?
 
-    @Query("SELECT MIN(timestampMillis) FROM private_messages WHERE (senderId = :uid1 AND receiverId = :uid2) OR (senderId = :uid2 AND receiverId = :uid1)")
-    suspend fun getOldestPrivateMessageTimestamp(uid1: String, uid2: String): Long?
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGroupMessages(messages: List<GroupMessageEntity>)
 
     @Query("DELETE FROM group_messages WHERE id = :messageId")
     suspend fun deleteGroupMessageById(messageId: String)
 
+    @Query("DELETE FROM group_messages WHERE groupId = :groupId")
+    suspend fun clearGroupMessagesByGroupId(groupId: String)
+
+    @Query("DELETE FROM group_messages")
+    suspend fun clearAllGroupMessages()
+
     // --- ÖZEL SOHBET ---
     @Query("SELECT * FROM private_messages WHERE (senderId = :myId AND receiverId = :partnerId) OR (senderId = :partnerId AND receiverId = :myId) ORDER BY timestampMillis DESC")
     fun getPrivateMessages(myId: String, partnerId: String): Flow<List<PrivateMessageEntity>>
+
+    @Query("SELECT MIN(timestampMillis) FROM private_messages WHERE (senderId = :uid1 AND receiverId = :uid2) OR (senderId = :uid2 AND receiverId = :uid1)")
+    suspend fun getOldestPrivateMessageTimestamp(uid1: String, uid2: String): Long?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPrivateMessages(messages: List<PrivateMessageEntity>)
@@ -52,16 +58,17 @@ interface ChatDao {
     @Query("DELETE FROM private_messages WHERE id = :messageId")
     suspend fun deletePrivateMessageById(messageId: String)
 
+    @Query("DELETE FROM private_messages WHERE (senderId = :myId AND receiverId = :partnerId) OR (senderId = :partnerId AND receiverId = :myId)")
+    suspend fun clearPrivateMessagesByPartner(myId: String, partnerId: String)
+
+    @Query("DELETE FROM private_messages")
+    suspend fun clearAllPrivateMessages()
+
+    // --- TÜMÜNÜ TEMİZLEME (LOGOUT / RESET) ---
     @Transaction
     suspend fun clearAllMessages() {
         clearGeneralMessages()
         clearAllGroupMessages()
         clearAllPrivateMessages()
     }
-
-    @Query("DELETE FROM group_messages")
-    suspend fun clearAllGroupMessages()
-
-    @Query("DELETE FROM private_messages")
-    suspend fun clearAllPrivateMessages()
 }

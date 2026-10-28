@@ -7,8 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
-import com.neval.anoba.chat.ui.ChatDao
-import com.neval.anoba.chat.ui.GeneralChatMessageEntity
+import com.neval.anoba.chat.data.ChatDao
+import com.neval.anoba.chat.data.GeneralChatMessageEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

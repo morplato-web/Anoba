@@ -5,7 +5,7 @@ import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.ServerTimestamp
-import com.neval.anoba.chat.ui.Messageable
+import com.neval.anoba.chat.data.Messageable
 import java.util.Date
 
 @Keep

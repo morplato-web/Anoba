@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
-import com.neval.anoba.chat.ui.ChatDao
-import com.neval.anoba.chat.ui.GeneralChatMessageEntity
-import com.neval.anoba.chat.ui.GroupMessageEntity
-import com.neval.anoba.chat.ui.PrivateMessageEntity
+import com.neval.anoba.chat.data.ChatDao
+import com.neval.anoba.chat.data.GeneralChatMessageEntity
+import com.neval.anoba.chat.data.GroupMessageEntity
+import com.neval.anoba.chat.data.PrivateMessageEntity
 import com.neval.anoba.follow.FollowedUserDao
 import com.neval.anoba.follow.FollowedUserEntity
 import com.neval.anoba.letter.SharedLetterDao

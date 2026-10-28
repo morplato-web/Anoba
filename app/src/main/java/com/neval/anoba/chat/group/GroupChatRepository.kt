@@ -14,8 +14,8 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.firestore.ListenerRegistration
 import com.neval.anoba.chat.general.GeneralChatUser
-import com.neval.anoba.chat.ui.ChatDao
-import com.neval.anoba.chat.ui.GroupMessageEntity
+import com.neval.anoba.chat.data.ChatDao
+import com.neval.anoba.chat.data.GroupMessageEntity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex

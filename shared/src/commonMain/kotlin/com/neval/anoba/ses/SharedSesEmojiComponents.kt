@@ -47,7 +47,7 @@ fun SharedSesEmojiReactionRow(
         ) { emoji ->
             val count = reactions[emoji] ?: 0L
             val isSelected = selectedEmoji == emoji
-            val baseBackgroundColor = SharedStandardEmojis.emojiColors.getOrDefault(emoji, Color.White.copy(alpha = 0.1f))
+            val baseBackgroundColor = SharedStandardEmojis.emojiColors[emoji] ?: Color.White.copy(alpha = 0.1f)
 
             EmojiColumnItem(
                 emoji = emoji,

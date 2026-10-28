@@ -12,8 +12,8 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.firestore.ListenerRegistration
-import com.neval.anoba.chat.ui.ChatDao
-import com.neval.anoba.chat.ui.PrivateMessageEntity
+import com.neval.anoba.chat.data.ChatDao
+import com.neval.anoba.chat.data.PrivateMessageEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

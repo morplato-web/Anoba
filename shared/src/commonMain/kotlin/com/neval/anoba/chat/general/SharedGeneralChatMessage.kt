@@ -1,6 +1,6 @@
 package com.neval.anoba.chat.general
 
-import com.neval.anoba.chat.ui.Messageable
+import com.neval.anoba.chat.data.Messageable
 
 data class SharedGeneralChatMessage(
     override val id: String = "",

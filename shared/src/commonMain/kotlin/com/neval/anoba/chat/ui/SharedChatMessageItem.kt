@@ -1,5 +1,7 @@
 package com.neval.anoba.chat.ui
 
+import com.neval.anoba.chat.data.Messageable
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable

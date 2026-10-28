@@ -1,5 +1,7 @@
 package com.neval.anoba.chat.ui
 
+import com.neval.anoba.chat.data.Messageable
+
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager

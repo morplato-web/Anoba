@@ -1,4 +1,4 @@
-package com.neval.anoba.chat.ui
+package com.neval.anoba.chat.data
 
 interface Messageable {
     val id: String
