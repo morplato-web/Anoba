@@ -13,6 +13,7 @@ fun GroupChatListScreen(
     groupChatViewModel: GroupChatViewModel = koinViewModel()
 ) {
     val groups by groupChatViewModel.groups.collectAsStateWithLifecycle()
+    val isUploading by groupChatViewModel.isUploading.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
 
     val sharedGroups = remember(groups) {
@@ -21,6 +22,7 @@ fun GroupChatListScreen(
 
     SharedGroupChatListScreen(
         groups = sharedGroups,
+        isLoading = isUploading,
         onNavigateBack = { navController.popBackStack() },
         onHomeClick = {
             navController.navigate(Constants.HOME_SCREEN) {

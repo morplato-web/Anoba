@@ -3,7 +3,6 @@ package com.neval.anoba.chat.group
 import androidx.compose.runtime.*
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.neval.anoba.chat.general.SharedChatMessage
 import com.neval.anoba.common.utils.Constants
 import com.neval.anoba.common.viewmodel.AuthViewModel
 import org.koin.androidx.compose.koinViewModel

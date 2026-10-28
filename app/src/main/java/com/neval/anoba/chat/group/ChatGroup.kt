@@ -28,6 +28,7 @@ data class ChatGroup(
     constructor() : this("", "", "", "", false, emptyList(), null, emptyMap(), "", null)
 }
 
+@Suppress("unused")
 fun ChatGroup.toSharedModel(): SharedChatGroup = SharedChatGroup(
     id = this.id,
     name = this.name,
@@ -41,6 +42,7 @@ fun ChatGroup.toSharedModel(): SharedChatGroup = SharedChatGroup(
     createdAtMillis = this.createdAt?.time ?: 0L
 )
 
+@Suppress("unused")
 fun SharedChatGroup.toAndroidModel(): ChatGroup = ChatGroup(
     id = this.id,
     name = this.name,
