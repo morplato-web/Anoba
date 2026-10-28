@@ -72,3 +72,37 @@ data class GeneralChatUser(
             }
         }
 }
+
+@Suppress("unused")
+fun GeneralChatUser.toSharedModel(): SharedGeneralChatUser = SharedGeneralChatUser(
+    id = id,
+    displayName = displayName,
+    email = email,
+    photoUrl = photoUrl,
+    role = role,
+    uid = uid,
+    userId = userId,
+    username = username,
+    bio = bio,
+    createdAtMillis = createdAt?.time,
+    userNumber = userNumber,
+    badgeType = badgeType,
+    isOfficial = isOfficial,
+)
+
+@Suppress("unused")
+fun SharedGeneralChatUser.toAndroidModel(): GeneralChatUser = GeneralChatUser(
+    id = id,
+    displayName = displayName,
+    email = email,
+    photoUrl = photoUrl,
+    role = role,
+    uid = uid,
+    userId = userId,
+    username = username,
+    bio = bio,
+    createdAt = createdAtMillis?.let { Date(it) },
+    userNumber = userNumber,
+    badgeType = badgeType,
+    isOfficial = isOfficial,
+)

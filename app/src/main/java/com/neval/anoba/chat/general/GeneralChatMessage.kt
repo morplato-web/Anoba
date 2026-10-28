@@ -26,7 +26,9 @@ data class GeneralChatMessage(
     override val audioDuration: Long? = null,
     override val replyToId: String? = null,
     override val replyToName: String? = null,
-    override val replyToContent: String? = null
+    override val replyToContent: String? = null,
+    override val status: String? = null,
+    override val readBy: List<String>? = null
 ) : Messageable {
 
     @get:Exclude
@@ -37,3 +39,41 @@ data class GeneralChatMessage(
     override val timestampMillis: Long?
         get() = timestamp?.time
 }
+
+fun GeneralChatMessage.toSharedModel(): SharedGeneralChatMessage = SharedGeneralChatMessage(
+    id = id,
+    senderId = senderId,
+    senderName = senderName,
+    senderPhotoUrl = senderPhotoUrl,
+    content = content,
+    timestampMillis = timestampMillis,
+    imageUrl = imageUrl,
+    videoUrl = videoUrl,
+    audioUrl = audioUrl,
+    senderBadgeType = senderBadgeType,
+    audioDuration = audioDuration,
+    replyToId = replyToId,
+    replyToName = replyToName,
+    replyToContent = replyToContent,
+    status = status,
+    readBy = readBy
+)
+
+fun SharedGeneralChatMessage.toAndroidModel(): GeneralChatMessage = GeneralChatMessage(
+    documentId = id,
+    senderId = senderId,
+    content = content,
+    senderName = senderName,
+    senderPhotoUrl = senderPhotoUrl,
+    timestamp = timestampMillis?.let { Date(it) },
+    imageUrl = imageUrl,
+    videoUrl = videoUrl,
+    audioUrl = audioUrl,
+    senderBadgeType = senderBadgeType,
+    audioDuration = audioDuration,
+    replyToId = replyToId,
+    replyToName = replyToName,
+    replyToContent = replyToContent,
+    status = status,
+    readBy = readBy
+)

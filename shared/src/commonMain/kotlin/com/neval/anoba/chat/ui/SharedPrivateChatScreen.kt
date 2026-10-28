@@ -87,6 +87,7 @@ import coil3.compose.AsyncImage
 import com.neval.anoba.common.ui.AnobaBadge
 import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.ui.theme.AnobaGold
+import com.neval.anoba.chat.general.SharedChatMessage
 import com.neval.anoba.ui.theme.AnobaNavy
 
 data class SharedChatPartner(

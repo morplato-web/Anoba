@@ -2,18 +2,19 @@ package com.neval.anoba.chat.general
 
 import android.net.Uri
 import android.util.Log
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.neval.anoba.chat.ui.ChatDao
 import com.neval.anoba.chat.ui.GeneralChatMessageEntity
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
@@ -27,8 +28,12 @@ class GeneralChatRepository(
     private val repositoryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     private var activeListener: ListenerRegistration? = null
+    private var activeRoomId: String? = null
 
     fun getMessagesPaging(roomId: String, searchQuery: String = ""): Flow<PagingData<GeneralChatMessage>> {
+        if (activeRoomId != roomId) {
+            stopRealtimeSync()
+        }
         startRealtimeSync(roomId)
 
         val flow = if (searchQuery.isBlank()) {
@@ -42,7 +47,10 @@ class GeneralChatRepository(
     }
 
     private fun startRealtimeSync(roomId: String) {
-        if (activeListener != null) return
+        if (activeListener != null && activeRoomId == roomId) return
+
+        stopRealtimeSync()
+        activeRoomId = roomId
 
         activeListener = collection.document(roomId)
             .collection("messages")
@@ -66,6 +74,7 @@ class GeneralChatRepository(
     fun stopRealtimeSync() {
         activeListener?.remove()
         activeListener = null
+        activeRoomId = null
     }
 
     private fun GeneralChatMessage.toEntity() = GeneralChatMessageEntity(

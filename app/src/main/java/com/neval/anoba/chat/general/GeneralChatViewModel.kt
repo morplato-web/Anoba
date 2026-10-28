@@ -37,7 +37,7 @@ class GeneralChatViewModel(
 
     private fun resolveSenderName(badgeType: String?): String {
         val rawName = currentUserDisplayName.ifBlank { "Bir kullanıcı" }
-        return if (badgeType == "OFFICIAL" && !rawName.contains("anoba", ignoreCase = true)) {
+        return if ((badgeType == "OFFICIAL") && !rawName.contains("anoba", ignoreCase = true)) {
             "Anoba"
         } else {
             rawName
@@ -46,6 +46,16 @@ class GeneralChatViewModel(
 
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
+    }
+
+    @Suppress("unused")
+    fun sendMessage(content: String) {
+        sendMessage(
+            chatRoomId = "GeneralChat",
+            content = content,
+            photoUrl = currentUserPhotoUrl,
+            badgeType = null,
+        )
     }
 
     fun sendMessage(chatRoomId: String, content: String, photoUrl: String?, badgeType: String?) {
@@ -70,7 +80,7 @@ class GeneralChatViewModel(
                 senderBadgeType = badgeType,
                 replyToId = replyMessage?.id,
                 replyToName = replyMessage?.senderName,
-                replyToContent = replyText
+                replyToContent = replyText,
             )
             addMessage(chatRoomId, chatMessage)
             clearReplyingToMessage()
@@ -125,7 +135,7 @@ class GeneralChatViewModel(
                         content = message.trim().ifEmpty { null },
                         imageUrl = imageUrl,
                         senderPhotoUrl = photoUrl,
-                        senderBadgeType = badgeType
+                        senderBadgeType = badgeType,
                     )
                     addMessage(chatRoomId, chatMessage)
                 }
@@ -147,7 +157,7 @@ class GeneralChatViewModel(
                         content = message.trim().ifEmpty { null },
                         videoUrl = videoUrl,
                         senderPhotoUrl = photoUrl,
-                        senderBadgeType = badgeType
+                        senderBadgeType = badgeType,
                     )
                     addMessage(chatRoomId, chatMessage)
                 }
@@ -158,6 +168,10 @@ class GeneralChatViewModel(
     }
 
     fun sendAudioMessage(chatRoomId: String, audioFile: File, duration: Long, photoUrl: String?, badgeType: String?) {
+        if (!audioFile.exists() || (audioFile.length() == 0L)) {
+            Log.e("GeneralChatViewModel", "Audio file is empty or does not exist")
+            return
+        }
         viewModelScope.launch(Dispatchers.IO) {
             _isUploading.value = true
             try {
@@ -169,7 +183,7 @@ class GeneralChatViewModel(
                         audioUrl = audioUrl,
                         audioDuration = duration,
                         senderPhotoUrl = photoUrl,
-                        senderBadgeType = badgeType
+                        senderBadgeType = badgeType,
                     )
                     addMessage(chatRoomId, chatMessage)
                 }

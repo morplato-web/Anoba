@@ -25,6 +25,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -63,7 +64,7 @@ fun <T : Messageable> ChatMessageItem(
                 .padding(vertical = 6.dp, horizontal = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            androidx.compose.material3.Surface(
+            Surface(
                 shape = RoundedCornerShape(12.dp),
                 color = Color.Black.copy(alpha = 0.08f)
             ) {
@@ -192,14 +193,14 @@ fun <T : Messageable> ChatMessageItem(
                                     modifier = Modifier.fillMaxSize()
                                 )
 
-                                androidx.compose.material3.Surface(
+                                Surface(
                                     shape = CircleShape,
                                     color = Color.Black.copy(alpha = 0.5f),
                                     modifier = Modifier.size(48.dp)
                                 ) {
                                     Box(contentAlignment = Alignment.Center) {
                                         Icon(
-                                            imageVector = androidx.compose.material.icons.Icons.Default.PlayArrow,
+                                            imageVector = Icons.Default.PlayArrow,
                                             contentDescription = "Videoyu Oynat",
                                             tint = Color.White,
                                             modifier = Modifier.size(32.dp)
@@ -272,6 +273,26 @@ fun <T : Messageable> ChatMessageItem(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun InitialsAvatar(
+    name: String,
+    modifier: Modifier = Modifier
+) {
+    val initial = name.trim().firstOrNull()?.uppercaseChar()?.toString() ?: "?"
+    Box(
+        modifier = modifier
+            .background(AnobaNavy, CircleShape),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = initial,
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            fontSize = 14.sp
+        )
     }
 }
 

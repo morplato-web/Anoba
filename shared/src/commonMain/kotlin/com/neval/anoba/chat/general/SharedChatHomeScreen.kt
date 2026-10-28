@@ -1,6 +1,6 @@
 @file:kotlin.jvm.JvmName("SharedChatHomeScreenKt")
 
-package com.neval.anoba.chat.ui
+package com.neval.anoba.chat.general
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -57,7 +58,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -84,7 +84,8 @@ data class SharedChatMessage(
     val imageUrl: String? = null,
     val videoUrl: String? = null,
     val audioUrl: String? = null,
-    val timestampMillis: Long = 0L
+    val timestampMillis: Long = 0L,
+    val dateText: String? = null
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -117,12 +118,6 @@ fun SharedChatHomeScreen(
             messages.filter {
                 it.content?.lowercase()?.contains(q) == true || it.senderName.lowercase().contains(q)
             }
-        }
-    }
-
-    LaunchedEffect(filteredMessages.size) {
-        if (filteredMessages.isNotEmpty()) {
-            listState.animateScrollToItem(0)
         }
     }
 
@@ -332,12 +327,17 @@ fun SharedChatHomeScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     itemsIndexed(filteredMessages, key = { _, item -> item.id }) { _, msg ->
-                        ChatBubbleItem(
-                            message = msg,
-                            isSentByMe = msg.senderId == currentUserId,
-                            onClick = { onMessageClick(msg) },
-                            onLongClick = { onMessageLongClick(msg) }
-                        )
+                        Column {
+                            if (!msg.dateText.isNullOrBlank()) {
+                                SharedDateHeader(dateText = msg.dateText)
+                            }
+                            ChatBubbleItem(
+                                message = msg,
+                                isSentByMe = msg.senderId == currentUserId,
+                                onClick = { onMessageClick(msg) },
+                                onLongClick = { onMessageLongClick(msg) }
+                            )
+                        }
                     }
                 }
             }
@@ -381,6 +381,23 @@ fun SharedChatHomeScreen(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
+        }
+    }
+}
+
+@Composable
+fun SharedDateHeader(dateText: String) {
+    Box(modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp), contentAlignment = Alignment.Center) {
+        Surface(
+            color = Color.Black.copy(alpha = 0.06f),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Text(
+                text = dateText,
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                style = MaterialTheme.typography.labelMedium,
+                color = Color(0xFF475569)
+            )
         }
     }
 }
@@ -432,7 +449,7 @@ private fun ChatBubbleItem(
             color = if (isSentByMe) AnobaNavy else Color.White,
             shadowElevation = 1.5.dp,
             modifier = Modifier
-                .fillMaxWidth(0.82f)
+                .widthIn(min = 60.dp, max = 300.dp)
                 .clip(
                     RoundedCornerShape(
                         topStart = 16.dp,
@@ -447,7 +464,6 @@ private fun ChatBubbleItem(
                 )
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
-                // Gönderici Adı (Gelen mesajlar için)
                 if (!isSentByMe) {
                     Text(
                         text = message.senderName,
@@ -458,7 +474,6 @@ private fun ChatBubbleItem(
                     Spacer(modifier = Modifier.height(4.dp))
                 }
 
-                // Fotoğraf Medyası
                 if (!message.imageUrl.isNullOrBlank()) {
                     AsyncImage(
                         model = message.imageUrl,
@@ -472,7 +487,6 @@ private fun ChatBubbleItem(
                     Spacer(modifier = Modifier.height(6.dp))
                 }
 
-                // Video Medyası
                 if (!message.videoUrl.isNullOrBlank()) {
                     Box(
                         modifier = Modifier
@@ -492,7 +506,6 @@ private fun ChatBubbleItem(
                     Spacer(modifier = Modifier.height(6.dp))
                 }
 
-                // Ses Medyası
                 if (!message.audioUrl.isNullOrBlank()) {
                     Row(
                         modifier = Modifier
@@ -519,7 +532,6 @@ private fun ChatBubbleItem(
                     Spacer(modifier = Modifier.height(6.dp))
                 }
 
-                // Metin İçeriği
                 if (!message.content.isNullOrBlank()) {
                     Text(
                         text = message.content,
