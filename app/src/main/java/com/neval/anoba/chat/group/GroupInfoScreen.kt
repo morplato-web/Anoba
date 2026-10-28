@@ -25,15 +25,7 @@ fun GroupInfoScreen(
     }
 
     val sharedGroup = remember(currentGroup) {
-        currentGroup?.let { g ->
-            SharedGroupItem(
-                id = g.id,
-                name = g.name,
-                description = g.description,
-                memberCount = g.members.size,
-                isPrivate = g.isPrivate
-            )
-        }
+        currentGroup?.toSharedModel()
     }
 
     val sharedMembers = remember(groupMembers, currentGroup) {

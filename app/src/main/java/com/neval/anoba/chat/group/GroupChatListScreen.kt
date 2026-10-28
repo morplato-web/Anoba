@@ -16,15 +16,7 @@ fun GroupChatListScreen(
     val scope = rememberCoroutineScope()
 
     val sharedGroups = remember(groups) {
-        groups.map { g ->
-            SharedGroupItem(
-                id = g.id,
-                name = g.name,
-                description = g.description,
-                memberCount = g.members.size,
-                isPrivate = g.isPrivate
-            )
-        }
+        groups.map { it.toSharedModel() }
     }
 
     SharedGroupChatListScreen(

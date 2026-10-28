@@ -26,15 +26,7 @@ fun GroupChatScreen(
     }
 
     val sharedGroup = remember(activeGroup) {
-        activeGroup?.let { g ->
-            SharedGroupItem(
-                id = g.id,
-                name = g.name,
-                description = g.description,
-                memberCount = g.members.size,
-                isPrivate = g.isPrivate
-            )
-        }
+        activeGroup?.toSharedModel()
     }
 
     val typingUsers by remember(activeGroup) {

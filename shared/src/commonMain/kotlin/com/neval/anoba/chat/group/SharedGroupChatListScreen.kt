@@ -63,15 +63,6 @@ import androidx.compose.ui.unit.sp
 import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
 
-data class SharedGroupItem(
-    val id: String,
-    val name: String,
-    val description: String = "",
-    val memberCount: Int = 0,
-    val isPrivate: Boolean = false,
-    val lastMessage: String = ""
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SharedGroupChatListScreen(

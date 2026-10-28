@@ -26,3 +26,25 @@ data class ChatGroup(
     @Suppress("unused")
     constructor() : this("", "", "", "", false, emptyList(), null, emptyMap(), null)
 }
+
+fun ChatGroup.toSharedModel(): SharedChatGroup = SharedChatGroup(
+    id = this.id,
+    name = this.name,
+    description = this.description,
+    ownerId = this.ownerId,
+    isPrivate = this.isPrivate,
+    members = this.members,
+    imageUrl = this.imageUrl,
+    typingUsers = this.typingUsers
+)
+
+fun SharedChatGroup.toAndroidModel(): ChatGroup = ChatGroup(
+    id = this.id,
+    name = this.name,
+    description = this.description,
+    ownerId = this.ownerId,
+    isPrivate = this.isPrivate,
+    members = this.members,
+    imageUrl = this.imageUrl,
+    typingUsers = this.typingUsers
+)
