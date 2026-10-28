@@ -51,6 +51,9 @@ fun GroupChatScreen(
         },
         onGroupInfoClick = { id ->
             navController.navigate("${Constants.GROUP_INFO_SCREEN}/$id")
+        },
+        onSendMessage = { content ->
+            groupChatViewModel.addMessageToCurrentGroup(content, null)
         }
     )
 }

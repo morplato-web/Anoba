@@ -6,6 +6,7 @@ import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.ServerTimestamp
 import com.neval.anoba.chat.data.Messageable
+import com.neval.anoba.chat.general.SharedChatMessage
 import java.util.Date
 
 @Keep
@@ -44,3 +45,17 @@ data class GroupMessage(
     override val timestampMillis: Long?
         get() = timestamp?.time
 }
+
+@Suppress("unused")
+fun GroupMessage.toSharedModel(): SharedChatMessage = SharedChatMessage(
+    id = this.id,
+    senderId = this.senderId ?: "",
+    senderName = this.senderName ?: "",
+    senderPhotoUrl = this.senderPhotoUrl,
+    senderBadgeType = this.senderBadgeType,
+    content = this.content,
+    imageUrl = this.imageUrl,
+    videoUrl = this.videoUrl,
+    audioUrl = this.audioUrl,
+    timestampMillis = this.timestampMillis ?: 0L
+)
