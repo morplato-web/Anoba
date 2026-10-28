@@ -9,7 +9,8 @@ data class SharedChatGroup(
     val members: List<String> = emptyList(),
     val imageUrl: String? = null,
     val typingUsers: Map<String, String> = emptyMap(),
-    val lastMessage: String = ""
+    val lastMessage: String = "",
+    val createdAtMillis: Long = 0L,
 ) {
     val memberCount: Int
         get() = members.size

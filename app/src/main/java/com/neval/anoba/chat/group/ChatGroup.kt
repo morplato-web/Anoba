@@ -19,12 +19,13 @@ data class ChatGroup(
     var isPrivate: Boolean = false,
     var members: List<String> = emptyList(),
     var imageUrl: String? = null,
-    val typingUsers: Map<String, String> = emptyMap(),
+    var typingUsers: Map<String, String> = emptyMap(),
+    var lastMessage: String = "",
     @ServerTimestamp
     var createdAt: Date? = null
 ) {
     @Suppress("unused")
-    constructor() : this("", "", "", "", false, emptyList(), null, emptyMap(), null)
+    constructor() : this("", "", "", "", false, emptyList(), null, emptyMap(), "", null)
 }
 
 fun ChatGroup.toSharedModel(): SharedChatGroup = SharedChatGroup(
@@ -35,7 +36,9 @@ fun ChatGroup.toSharedModel(): SharedChatGroup = SharedChatGroup(
     isPrivate = this.isPrivate,
     members = this.members,
     imageUrl = this.imageUrl,
-    typingUsers = this.typingUsers
+    typingUsers = this.typingUsers,
+    lastMessage = this.lastMessage,
+    createdAtMillis = this.createdAt?.time ?: 0L
 )
 
 fun SharedChatGroup.toAndroidModel(): ChatGroup = ChatGroup(
@@ -46,5 +49,7 @@ fun SharedChatGroup.toAndroidModel(): ChatGroup = ChatGroup(
     isPrivate = this.isPrivate,
     members = this.members,
     imageUrl = this.imageUrl,
-    typingUsers = this.typingUsers
+    typingUsers = this.typingUsers,
+    lastMessage = this.lastMessage,
+    createdAt = if (this.createdAtMillis > 0L) Date(this.createdAtMillis) else null
 )
