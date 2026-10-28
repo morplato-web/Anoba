@@ -99,3 +99,26 @@ data class LetterModel(
         isFlagged = false, isPopular = false, flagReason = null, flaggedAt = null
     )
 }
+
+fun LetterModel.toSharedModel(): SharedLetterModel {
+    return SharedLetterModel(
+        id = this.id,
+        ownerId = this.ownerId,
+        username = this.username,
+        userProfileImageUrl = this.userProfileImageUrl,
+        title = this.title,
+        content = this.content,
+        commentsCount = this.commentsCount,
+        viewCount = this.viewCount,
+        privacy = this.privacy,
+        unlockTimestampMillis = this.unlockTimestamp,
+        audioUrl = this.audioUrl,
+        audioDuration = this.audioDuration,
+        createdAtMillis = this.createdAt?.time ?: 0L,
+        publishTimestampMillis = this.publishTimestamp?.time ?: 0L,
+        isPublished = this.isPublished,
+        isOfficial = this.isOfficial,
+        userBadgeType = this.userBadgeType ?: "NONE",
+        reactionCount = this.reactions.values.sum().toInt()
+    )
+}

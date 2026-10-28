@@ -10,8 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.neval.anoba.chat.call.SharedCallScreen
 import com.neval.anoba.chat.group.SharedGroupChatListScreen
-import com.neval.anoba.chat.ui.ChatHomeScreen
+import com.neval.anoba.chat.ui.SharedChatHomeScreen
 import com.neval.anoba.chat.ui.SharedPrivateChatScreen
 import com.neval.anoba.drawer.DrawerSheetContent
 import com.neval.anoba.guide.SharedGuideScreen
@@ -23,15 +24,18 @@ import com.neval.anoba.letter.SharedLetterEditScreen
 import com.neval.anoba.letter.SharedLetterHomeScreen
 import com.neval.anoba.letter.SharedLetterModel
 import com.neval.anoba.login.AuthContainerView
+import com.neval.anoba.map.SharedGlobalMapScreen
 import com.neval.anoba.market.MarketContainerView
 import com.neval.anoba.mete.MeteHomeScreen
+import com.neval.anoba.mycontent.SharedMyContentScreen
+import com.neval.anoba.mycontent.SharedMyContentType
 import com.neval.anoba.photo.SharedPhotoCommentsScreen
 import com.neval.anoba.photo.SharedPhotoDetailModel
 import com.neval.anoba.photo.SharedPhotoDetailScreen
 import com.neval.anoba.photo.SharedPhotoEditScreen
 import com.neval.anoba.photo.SharedPhotoHomeScreen
 import com.neval.anoba.photo.SharedPhotoModel
-import com.neval.anoba.profile.ProfileScreen
+import com.neval.anoba.profile.SharedProfileScreen
 import com.neval.anoba.ses.SharedSesCommentsScreen
 import com.neval.anoba.ses.SharedSesDetailModel
 import com.neval.anoba.ses.SharedSesDetailScreen
@@ -75,6 +79,10 @@ private fun MainAppScreen(
     var selectedSes by remember { mutableStateOf<SharedSesModel?>(null) }
     var isDrawerOpen by remember { mutableStateOf(false) }
 
+    // Arama Parametreleri State'i
+    var activeCallChannelName by remember { mutableStateOf("") }
+    var activeCallIsVideo by remember { mutableStateOf(false) }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -85,7 +93,7 @@ private fun MainAppScreen(
                     onNavigateHome = { activeView = "HOME" }
                 )
 
-                "CHAT" -> ChatHomeScreen(
+                "CHAT" -> SharedChatHomeScreen(
                     onNavigateBack = { activeView = "HOME" },
                     onHomeClick = { activeView = "HOME" },
                     onOpenGroupsClick = { activeView = "GROUP_CHAT" },
@@ -103,7 +111,13 @@ private fun MainAppScreen(
                     onHomeClick = { activeView = "HOME" }
                 )
 
-                "PROFILE" -> ProfileScreen(
+                "CALL" -> SharedCallScreen(
+                    partnerName = activeCallChannelName.ifBlank { "Anoba Kullanıcısı" },
+                    isVideoCall = activeCallIsVideo,
+                    onEndCall = { activeView = "HOME" }
+                )
+
+                "PROFILE" -> SharedProfileScreen(
                     onNavigateBack = { activeView = "HOME" },
                     onNavigateHome = { activeView = "HOME" },
                     onCloseApp = onLogout
@@ -311,10 +325,35 @@ private fun MainAppScreen(
                     onHomeClick = { activeView = "HOME" }
                 )
 
+                "MY_CONTENT" -> SharedMyContentScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onHomeClick = { activeView = "HOME" },
+                    onCameraClick = { activeView = "CAMERA" },
+                    onLetterClick = { activeView = "LETTER_CREATE" },
+                    onGalleryClick = { activeView = "PHOTO" },
+                    onItemClick = { item ->
+                        activeView = when (item.type) {
+                            SharedMyContentType.LETTER -> "LETTER"
+                            SharedMyContentType.PHOTO -> "PHOTO"
+                            SharedMyContentType.VIDEO -> "VIDEO"
+                            SharedMyContentType.AUDIO -> "SES"
+                            SharedMyContentType.MARKET -> "MARKET"
+                        }
+                    }
+                )
+
+                "GLOBAL_MAP" -> SharedGlobalMapScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onHomeClick = { activeView = "HOME" },
+                    onCountryClick = { activeView = "HOME" }
+                )
+
                 else -> SharedHomeScreen(
                     onOpenDrawer = { isDrawerOpen = true },
                     onOpenMarket = { activeView = "MARKET" },
                     onOpenChat = { activeView = "CHAT" },
+                    onOpenMap = { activeView = "GLOBAL_MAP" },
+                    onOpenMyContents = { activeView = "MY_CONTENT" },
                     onOpenProfile = { activeView = "PROFILE" },
                     onOpenMete = { activeView = "METE" },
                     onOpenLetter = { activeView = "LETTER" },

@@ -39,7 +39,8 @@ fun SharedLetterDetailScreen(
     letter: SharedLetterModel? = null,
     onNavigateBack: () -> Unit = {},
     onHomeClick: () -> Unit = onNavigateBack,
-    onOpenComments: () -> Unit = {}
+    onOpenComments: () -> Unit = {},
+    onShareClick: (SharedLetterModel) -> Unit = {}
 ) {
     val currentLetter = remember(letter) {
         letter ?: SharedLetterModel(
@@ -71,7 +72,7 @@ fun SharedLetterDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Share simulation */ }) {
+                    IconButton(onClick = { onShareClick(currentLetter) }) {
                         Icon(Icons.Default.Share, contentDescription = "Paylaş", tint = AnobaNavy)
                     }
                     IconButton(onClick = onHomeClick) {
@@ -225,8 +226,9 @@ fun SharedLetterDetailScreen(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 if (currentLetter.reactionCount > 0) {
+                    val emojiPrefix = currentLetter.topEmoji.let { "$it " }
                     Text(
-                        text = "${currentLetter.topEmoji} ${currentLetter.reactionCount}",
+                        text = "$emojiPrefix${currentLetter.reactionCount}",
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant

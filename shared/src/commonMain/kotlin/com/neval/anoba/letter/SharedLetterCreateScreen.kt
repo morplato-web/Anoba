@@ -3,7 +3,18 @@ package com.neval.anoba.letter
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,7 +23,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Mic
@@ -20,9 +30,30 @@ import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.WatchLater
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +71,11 @@ enum class SharedLetterMode { WRITE, SPEAK }
 fun SharedLetterCreateScreen(
     onNavigateBack: () -> Unit = {},
     onHomeClick: () -> Unit = onNavigateBack,
+    onStartRecord: () -> Unit = {},
+    onStopRecord: () -> Unit = {},
+    onCancelRecord: () -> Unit = {},
+    onPlayPreview: () -> Unit = {},
+    onStopPreview: () -> Unit = {},
     onSaveLetter: (
         content: String,
         privacy: String,
@@ -85,7 +121,7 @@ fun SharedLetterCreateScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // --- MOD SEÇİCİ (Yaz / Konuş) ---
+            // MOD SEÇİCİ (Yaz / Konuş)
             TabRow(
                 selectedTabIndex = if (selectedMode == SharedLetterMode.WRITE) 0 else 1,
                 containerColor = Color.Transparent,
@@ -120,7 +156,7 @@ fun SharedLetterCreateScreen(
                     shape = RoundedCornerShape(12.dp)
                 )
             } else {
-                // --- SESLİ MEKTUP ARAYÜZÜ ---
+                // SESLİ MEKTUP ARAYÜZÜ
                 Card(
                     modifier = Modifier.fillMaxWidth().height(200.dp),
                     colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF3F3)),
@@ -136,6 +172,7 @@ fun SharedLetterCreateScreen(
                                 onClick = {
                                     isRecording = true
                                     hasFinishedRecording = false
+                                    onStartRecord()
                                 },
                                 modifier = Modifier.size(64.dp).background(Color(0xFFFFD1DC), CircleShape)
                             ) {
@@ -148,17 +185,26 @@ fun SharedLetterCreateScreen(
                                 onClick = {
                                     isRecording = false
                                     hasFinishedRecording = true
+                                    onStopRecord()
                                 },
                                 modifier = Modifier.size(64.dp).background(Color.Red.copy(alpha = 0.1f), CircleShape)
                             ) {
                                 Box(modifier = Modifier.size(24.dp).background(Color.Red, RoundedCornerShape(4.dp)))
                             }
                             Spacer(Modifier.height(8.dp))
-                            Text("Kaydediliyor...", style = MaterialTheme.typography.bodySmall, color = Color.Red)
+                            Text("Kaydediliyor... Durdurmak için dokunun", style = MaterialTheme.typography.bodySmall, color = Color.Red)
                         } else {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 IconButton(
-                                    onClick = { isPlayingPreview = !isPlayingPreview },
+                                    onClick = {
+                                        if (isPlayingPreview) {
+                                            onStopPreview()
+                                            isPlayingPreview = false
+                                        } else {
+                                            onPlayPreview()
+                                            isPlayingPreview = true
+                                        }
+                                    },
                                     modifier = Modifier.size(48.dp).background(Color(0xFFE8F5E9), CircleShape)
                                 ) {
                                     Icon(if (isPlayingPreview) Icons.Default.Pause else Icons.Default.PlayArrow, null, tint = Color(0xFF388E3C))
@@ -167,8 +213,10 @@ fun SharedLetterCreateScreen(
                                 Text("Ses Kaydedildi 🎙️", fontWeight = FontWeight.Bold, color = Color(0xFF388E3C))
                                 Spacer(Modifier.width(8.dp))
                                 IconButton(onClick = {
+                                    if (isPlayingPreview) onStopPreview()
                                     hasFinishedRecording = false
                                     isPlayingPreview = false
+                                    onCancelRecord()
                                 }) {
                                     Icon(Icons.Default.Close, null, tint = Color.Gray)
                                 }
@@ -178,7 +226,7 @@ fun SharedLetterCreateScreen(
                 }
             }
 
-            // --- ANOBA ABLASI KARTI ---
+            // ANOBA ABLASI KARTI
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -247,22 +295,23 @@ fun SharedLetterCreateScreen(
                 }
             }
 
-            // --- SEÇENEKLER ---
+            // SEÇENEKLER
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                val canSubmit = newLetterContent.isNotBlank() || hasFinishedRecording
+
                 if (isAskAnoba) {
                     SharedOptionRow(
                         text = "Anoba Ablası'na Gönder ✉️",
                         icon = Icons.AutoMirrored.Filled.Send,
                         onClick = {
-                            if (newLetterContent.isNotBlank() || hasFinishedRecording) {
+                            if (canSubmit) {
                                 onSaveLetter(newLetterContent, answerPrivacy, pseudonym, true, hasFinishedRecording)
-                                onNavigateBack()
                             }
                         },
-                        isEnabled = (newLetterContent.isNotBlank() || hasFinishedRecording),
+                        isEnabled = canSubmit,
                         isActive = true
                     )
                 } else {
@@ -271,12 +320,11 @@ fun SharedLetterCreateScreen(
                         icon = Icons.Default.Public,
                         onClick = {
                             selectedOption = "PUBLIC"
-                            if (newLetterContent.isNotBlank() || hasFinishedRecording) {
+                            if (canSubmit) {
                                 onSaveLetter(newLetterContent, "PUBLIC", null, false, hasFinishedRecording)
-                                onNavigateBack()
                             }
                         },
-                        isEnabled = (newLetterContent.isNotBlank() || hasFinishedRecording),
+                        isEnabled = canSubmit,
                         isActive = selectedOption == "PUBLIC"
                     )
 
@@ -285,12 +333,11 @@ fun SharedLetterCreateScreen(
                         icon = Icons.Default.Lock,
                         onClick = {
                             selectedOption = "SEALED"
-                            if (newLetterContent.isNotBlank() || hasFinishedRecording) {
+                            if (canSubmit) {
                                 onSaveLetter(newLetterContent, "SEALED", null, false, hasFinishedRecording)
-                                onNavigateBack()
                             }
                         },
-                        isEnabled = (newLetterContent.isNotBlank() || hasFinishedRecording),
+                        isEnabled = canSubmit,
                         isActive = selectedOption == "SEALED"
                     )
 
@@ -299,11 +346,11 @@ fun SharedLetterCreateScreen(
                         icon = Icons.Default.WatchLater,
                         onClick = {
                             selectedOption = "TIMECAPSULE"
-                            if (newLetterContent.isNotBlank() || hasFinishedRecording) {
+                            if (canSubmit) {
                                 onSaveLetter(newLetterContent, "PUBLIC", null, false, hasFinishedRecording)
-                                onNavigateBack()
                             }
                         },
+                        isEnabled = canSubmit,
                         isActive = selectedOption == "TIMECAPSULE"
                     )
                 }
@@ -321,16 +368,17 @@ fun SharedLetterCreateScreen(
 @Composable
 fun SharedOptionRow(
     text: String,
+    modifier: Modifier = Modifier,
     icon: ImageVector? = null,
-    onClick: () -> Unit,
     isEnabled: Boolean = true,
-    isActive: Boolean = false
+    isActive: Boolean = false,
+    onClick: () -> Unit = {}
 ) {
     val backgroundColor = if (isActive) Color(0xFFBBDEFB) else Color(0xFFECEFF1)
     val contentColor = if (isActive) Color(0xFF0D47A1) else Color(0xFF455A64)
 
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(44.dp)
             .clickable(enabled = isEnabled) { onClick() },

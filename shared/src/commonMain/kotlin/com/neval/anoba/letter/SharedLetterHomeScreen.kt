@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,156 +31,194 @@ import kotlinx.coroutines.launch
 @Composable
 fun SharedLetterHomeScreen(
     lettersList: List<SharedLetterModel> = emptyList(),
+    isLoading: Boolean = false,
+    isRefreshing: Boolean = false,
+    errorMessage: String? = null,
+    pinnedIds: Set<String> = emptySet(),
+    unreadLetterIds: Set<String> = emptySet(),
+    currentUserId: String = "",
+    isAdmin: Boolean = false,
+    onRefresh: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
     onHomeClick: () -> Unit = onNavigateBack,
     onCreateLetterClick: () -> Unit = {},
     onLetterClick: (SharedLetterModel) -> Unit = {},
-    onCommentClick: (SharedLetterModel) -> Unit = {}
+    onCommentClick: (SharedLetterModel) -> Unit = {},
+    onPinClick: (String) -> Unit = {},
+    onShareClick: (SharedLetterModel) -> Unit = {},
+    onDeleteClick: (SharedLetterModel) -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
-    val sampleLetters = remember(lettersList) {
-        lettersList.ifEmpty {
-            listOf(
-                SharedLetterModel(
-                    id = "let_1",
-                    ownerId = "u1",
-                    username = "Ahmet Y.",
-                    title = "2026 Yılına Mektup ✉️",
-                    content = "Sevgili geleceğim, bu mektup Anoba Zaman Kapsülü ile yazıldı...",
-                    privacy = "PUBLIC",
-                    createdAtMillis = 1710000000000L,
-                    isPublished = true,
-                    userBadgeType = "PIONEER",
-                    reactionCount = 128,
-                    commentsCount = 12
-                ),
-                SharedLetterModel(
-                    id = "let_2",
-                    ownerId = "anoba_official",
-                    username = "Anoba",
-                    title = "Geleceğin İnsanına Mesaj 🌟",
-                    content = "Geçmişten gelen bir ses tonu ve zaman kapsülü mesajı.",
-                    privacy = "PUBLIC",
-                    audioUrl = "sample_voice.mp3",
-                    audioDuration = 120L,
-                    createdAtMillis = 1710000050000L,
-                    isPublished = true,
-                    isOfficial = true,
-                    userBadgeType = "OFFICIAL",
-                    reactionCount = 312,
-                    commentsCount = 28
-                )
-            )
-        }
-    }
-
     val gridState = rememberLazyGridState()
     val scope = rememberCoroutineScope()
-    var pinnedIds by remember { mutableStateOf<Set<String>>(emptySet()) }
 
     val showBackToTop by remember {
         derivedStateOf { gridState.firstVisibleItemIndex > 3 }
     }
 
     Scaffold(
-        containerColor = Color(0xFF0F172A),
         topBar = {
-            Surface(color = Color(0xFF1E293B), shadowElevation = 4.dp) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .statusBarsPadding()
-                        .height(56.dp)
-                        .padding(horizontal = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = onNavigateBack) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = Color.White)
-                        }
-                        Text("✉️ Zaman Kapsülü Mektupları", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    }
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = onHomeClick) {
-                            Icon(Icons.Filled.Home, contentDescription = "Ana Sayfa", tint = Color.White)
-                        }
-
-                        Spacer(modifier = Modifier.width(4.dp))
-
-                        Button(
-                            onClick = onCreateLetterClick,
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700)),
-                            shape = RoundedCornerShape(12.dp),
-                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
-                        ) {
-                            Icon(Icons.Default.Add, contentDescription = null, tint = Color.Black, modifier = Modifier.size(18.dp))
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Mektup Yaz", color = Color.Black, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                        }
-                    }
-                }
-            }
-        }
-    ) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-            ) {
-                Text(
-                    text = "Tüm Mektuplar",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(vertical = 4.dp)
-                )
-                HorizontalDivider(color = Color.White.copy(alpha = 0.2f), thickness = 1.dp)
-                Spacer(modifier = Modifier.height(8.dp))
-
-                LazyVerticalGrid(
-                    state = gridState,
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(bottom = 80.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    items(sampleLetters, key = { it.id }) { letter ->
-                        val isPinned = pinnedIds.contains(letter.id)
-                        SharedLetterCard(
-                            letter = letter,
-                            cardColor = Color(0xFFFFF3E0),
-                            isPinned = isPinned,
-                            onPinClick = {
-                                pinnedIds = if (isPinned) pinnedIds - letter.id else pinnedIds + letter.id
-                            },
-                            onLetterClick = { onLetterClick(letter) },
-                            onCommentClick = { onCommentClick(letter) }
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "✉️ Zaman Kapsülü Mektupları",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Geri"
                         )
                     }
-                }
-            }
-
-            AnimatedVisibility(
-                visible = showBackToTop,
-                enter = fadeIn(),
-                exit = fadeOut(),
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 24.dp)
-            ) {
-                SmallFloatingActionButton(
-                    onClick = {
-                        scope.launch { gridState.animateScrollToItem(0) }
-                    },
-                    shape = CircleShape,
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = Color.White,
-                    modifier = Modifier.shadow(8.dp, CircleShape)
+                },
+                actions = {
+                    IconButton(onClick = onHomeClick) {
+                        Icon(
+                            imageVector = Icons.Filled.Home,
+                            contentDescription = "Ana Sayfa"
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Button(
+                        onClick = onCreateLetterClick,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "Mektup Yaz",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
+            )
+        },
+        modifier = modifier
+    ) { innerPadding ->
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
                 ) {
-                    Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Yukarı Çık")
+                    Text(
+                        text = "Tüm Mektuplar",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                        thickness = 1.dp
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    when {
+                        isLoading -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                            }
+                        }
+                        errorMessage != null -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = errorMessage,
+                                    color = MaterialTheme.colorScheme.error,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                        }
+                        lettersList.isEmpty() -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "Henüz mektup bulunmuyor.",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                        else -> {
+                            LazyVerticalGrid(
+                                state = gridState,
+                                columns = GridCells.Fixed(2),
+                                modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(bottom = 80.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                items(lettersList, key = { it.id }) { letter ->
+                                    val isPinned = pinnedIds.contains(letter.id)
+                                    val hasUnread = unreadLetterIds.contains(letter.id)
+                                    val isMyLetter = currentUserId.isNotBlank() && letter.ownerId == currentUserId
+
+                                    SharedLetterCard(
+                                        letter = letter,
+                                        cardColor = Color(0xFFFFF3E0),
+                                        isPinned = isPinned,
+                                        hasNotification = hasUnread,
+                                        canDelete = isAdmin || isMyLetter,
+                                        onPinClick = { onPinClick(letter.id) },
+                                        onLetterClick = { onLetterClick(letter) },
+                                        onCommentClick = { onCommentClick(letter) },
+                                        onShareClick = { onShareClick(letter) },
+                                        onDeleteClick = { onDeleteClick(letter) }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = showBackToTop,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 24.dp)
+                ) {
+                    SmallFloatingActionButton(
+                        onClick = {
+                            scope.launch { gridState.animateScrollToItem(0) }
+                        },
+                        shape = CircleShape,
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.shadow(8.dp, CircleShape)
+                    ) {
+                        Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Yukarı Çık")
+                    }
                 }
             }
         }

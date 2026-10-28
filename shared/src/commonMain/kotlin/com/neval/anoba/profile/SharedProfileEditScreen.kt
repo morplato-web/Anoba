@@ -65,7 +65,7 @@ import com.neval.anoba.ui.theme.AnobaNavy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileEditScreen(
+fun SharedProfileEditScreen(
     currentDisplayName: String = "Anoba",
     currentEmail: String = "",
     profileImageUrl: String = "",

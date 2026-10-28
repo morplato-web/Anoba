@@ -75,7 +75,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.neval.anoba.mosaic.MosaicSheet
+import com.neval.anoba.mosaic.SharedMosaicSheet
 import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
 import kotlinx.coroutines.launch
@@ -120,25 +120,24 @@ fun SharedHomeScreen(
     }
 
     if (showQuarantineSheet) {
-        QuarantineSheet(
+        SharedQuarantineSheet(
             isVisible = true,
             onDismiss = { showQuarantineSheet = false }
         )
     }
 
     if (showPopularSheet) {
-        PopularSheet(
+        SharedPopularSheet(
             isVisible = true,
             onDismiss = { showPopularSheet = false }
         )
     }
 
-    if (showMosaicSheet) {
-        MosaicSheet(
-            isVisible = true,
-            onDismiss = { showMosaicSheet = false }
-        )
-    }
+    // Mozaik Sheet
+    SharedMosaicSheet(
+        isVisible = showMosaicSheet,
+        onDismiss = { showMosaicSheet = false }
+    )
 
     Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -209,7 +208,7 @@ fun SharedHomeScreen(
                                                 modifier = Modifier.padding(vertical = 2.dp)
                                             ) {
                                                 Surface(
-                                                    modifier = Modifier.size(20.dp),
+                                                    modifier = Modifier.size(22.dp),
                                                     shape = CircleShape,
                                                     color = AnobaGold,
                                                     shadowElevation = 1.dp
@@ -218,7 +217,7 @@ fun SharedHomeScreen(
                                                         Text(
                                                             text = "1000+",
                                                             color = Color.White,
-                                                            fontSize = 5.sp,
+                                                            fontSize = 7.sp,
                                                             fontWeight = FontWeight.Black,
                                                             maxLines = 1,
                                                             softWrap = false
@@ -302,7 +301,7 @@ fun SharedHomeScreen(
                                         }
                                     )
 
-                                    // Mektuplar (Zaman Kapsülü)
+                                    // Mektuplar
                                     DropdownMenuItem(
                                         text = {
                                             Row(
@@ -352,7 +351,7 @@ fun SharedHomeScreen(
 
                             Spacer(modifier = Modifier.width(4.dp))
 
-                            // Pazar Yeri Butonu
+                            // Pazar Yeri
                             IconButton(
                                 modifier = Modifier.size(28.dp),
                                 onClick = onOpenMarket
@@ -390,20 +389,18 @@ fun SharedHomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.padding(end = 4.dp)
                         ) {
-                            // 1. Arama
                             IconButton(
                                 modifier = Modifier.size(32.dp),
                                 onClick = onOpenSearch
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Search,
-                                    contentDescription = "Kullanıcı Filtresi",
+                                    contentDescription = "Arama",
                                     modifier = Modifier.size(24.dp),
                                     tint = Color(0xFF1E88E5)
                                 )
                             }
 
-                            // 2. Pin
                             val pinIcon = if (isPinnedFilterActive || hasPinnedItems) Icons.Filled.PushPin else Icons.Outlined.PushPin
                             val pinTint = when {
                                 isPinnedFilterActive -> Color(0xFF2196F3)
@@ -422,7 +419,6 @@ fun SharedHomeScreen(
                                 )
                             }
 
-                            // 3. Takip Edilenler
                             IconButton(
                                 modifier = Modifier.size(32.dp),
                                 onClick = onToggleFollowingFilter
@@ -435,7 +431,6 @@ fun SharedHomeScreen(
                                 )
                             }
 
-                            // 4. Harita
                             IconButton(
                                 modifier = Modifier.size(32.dp),
                                 onClick = onOpenMap
@@ -448,7 +443,6 @@ fun SharedHomeScreen(
                                 )
                             }
 
-                            // 5. Sohbet
                             IconButton(
                                 modifier = Modifier.size(32.dp),
                                 onClick = onOpenChat
@@ -465,7 +459,7 @@ fun SharedHomeScreen(
 
                     HorizontalDivider(modifier = Modifier.fillMaxWidth(), color = Color.LightGray, thickness = 1.dp)
 
-                    // --- 2. MOZAİK VE SAĞ AKSİYON KARTLARI SATIRI ---
+                    // --- 2. MOZAİK VE SAĞ AKSİYON KARTLARI ---
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -473,7 +467,6 @@ fun SharedHomeScreen(
                             .padding(vertical = 10.dp, horizontal = 14.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Solda: Mozaik Kartı
                         Card(
                             modifier = Modifier
                                 .height(38.dp)
@@ -511,74 +504,63 @@ fun SharedHomeScreen(
                         val cardHeight = 30.dp
                         val cardWidth = 32.dp
 
-                        // Sağda: 5 Adet Aksiyon Kartı
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.End
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                // 1. Bildirim (Zil)
-                                BadgedBox(
-                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
-                                    badge = {
-                                        if (hasUnreadNotifications) {
-                                            Badge(containerColor = Color.Red, modifier = Modifier.size(7.dp))
-                                        }
+                            BadgedBox(
+                                modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                badge = {
+                                    if (hasUnreadNotifications) {
+                                        Badge(containerColor = Color.Red, modifier = Modifier.size(7.dp))
                                     }
-                                ) {
-                                    IconInCardButton(
-                                        modifier = Modifier.fillMaxSize(),
-                                        onClick = onOpenNotifications,
-                                        icon = Icons.Default.Notifications,
-                                        cardColor = if (hasUnreadNotifications) Color(0xFFFFF3CD) else Color(0xFFECEFF1),
-                                        iconColor = if (hasUnreadNotifications) Color(0xFFE65100) else Color(0xFF455A64),
-                                        size = iconSize
-                                    )
                                 }
-
-                                // 2. Video / Kamera
+                            ) {
                                 IconInCardButton(
-                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
-                                    onClick = onOpenCamera,
-                                    icon = Icons.Filled.CameraAlt,
-                                    cardColor = Color(0xFFF3E5F5),
-                                    iconColor = Color(0xFF8E24AA),
-                                    size = iconSize
-                                )
-
-                                // 3. Mektup / Kalem
-                                IconInCardButton(
-                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
-                                    onClick = onOpenLetterCreate,
-                                    icon = Icons.Filled.Edit,
-                                    cardColor = Color(0xFFE1F5FE),
-                                    iconColor = Color(0xFF0288D1),
-                                    size = iconSize
-                                )
-
-                                // 4. Galeri
-                                IconInCardButton(
-                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
-                                    onClick = onOpenGallery,
-                                    icon = Icons.Filled.PhotoLibrary,
-                                    cardColor = Color(0xFFFFEBEE),
-                                    iconColor = Color(0xFFE53935),
-                                    size = iconSize
-                                )
-
-                                // 5. İçeriklerim
-                                IconInCardButton(
-                                    modifier = Modifier.size(width = cardWidth, height = cardHeight),
-                                    onClick = onOpenMyContents,
-                                    icon = Icons.Filled.DynamicFeed,
-                                    cardColor = Color(0xFFECEFF1),
-                                    iconColor = Color(0xFF37474F),
+                                    modifier = Modifier.fillMaxSize(),
+                                    onClick = onOpenNotifications,
+                                    icon = Icons.Default.Notifications,
+                                    cardColor = if (hasUnreadNotifications) Color(0xFFFFF3CD) else Color(0xFFECEFF1),
+                                    iconColor = if (hasUnreadNotifications) Color(0xFFE65100) else Color(0xFF455A64),
                                     size = iconSize
                                 )
                             }
+
+                            IconInCardButton(
+                                modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                onClick = onOpenCamera,
+                                icon = Icons.Filled.CameraAlt,
+                                cardColor = Color(0xFFF3E5F5),
+                                iconColor = Color(0xFF8E24AA),
+                                size = iconSize
+                            )
+
+                            IconInCardButton(
+                                modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                onClick = onOpenLetterCreate,
+                                icon = Icons.Filled.Edit,
+                                cardColor = Color(0xFFE1F5FE),
+                                iconColor = Color(0xFF0288D1),
+                                size = iconSize
+                            )
+
+                            IconInCardButton(
+                                modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                onClick = onOpenGallery,
+                                icon = Icons.Filled.PhotoLibrary,
+                                cardColor = Color(0xFFFFEBEE),
+                                iconColor = Color(0xFFE53935),
+                                size = iconSize
+                            )
+
+                            IconInCardButton(
+                                modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                onClick = onOpenMyContents,
+                                icon = Icons.Filled.DynamicFeed,
+                                cardColor = Color(0xFFECEFF1),
+                                iconColor = Color(0xFF37474F),
+                                size = iconSize
+                            )
                         }
                     }
 
@@ -617,7 +599,6 @@ fun SharedHomeScreen(
             }
         }
 
-        // Yukarı Çık Butonu (Back To Top)
         AnimatedVisibility(
             visible = showBackToTop,
             enter = fadeIn(),

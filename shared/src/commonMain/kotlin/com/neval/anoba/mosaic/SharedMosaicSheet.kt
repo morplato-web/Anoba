@@ -7,38 +7,52 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayCircle
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@Suppress("unused")
 data class SharedMosaicItem(
-    val id: String,
-    val title: String,
+    val id: String = "",
+    val title: String = "",
     val isAd: Boolean = false,
-    val color: Color
+    val color: Color = Color.Gray
 )
 
 @Composable
-fun MosaicSheet(
+fun SharedMosaicSheet(
     isVisible: Boolean,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    if (!isVisible) return
-
     val mosaicColors = remember {
         listOf(
             Color(0xFFEF5350), Color(0xFFEC407A), Color(0xFFAB47BC),
@@ -52,7 +66,8 @@ fun MosaicSheet(
     AnimatedVisibility(
         visible = isVisible,
         enter = slideInHorizontally(initialOffsetX = { it }),
-        exit = slideOutHorizontally(targetOffsetX = { it })
+        exit = slideOutHorizontally(targetOffsetX = { it }),
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
@@ -63,9 +78,9 @@ fun MosaicSheet(
             Surface(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .fillMaxWidth(0.95f)
+                    .fillMaxWidth(0.92f)
                     .align(Alignment.CenterEnd)
-                    .clickable(enabled = false) {},
+                    .clickable(enabled = false) {}, // İçeriğe tıklanınca arka planın kapanmasını engeller
                 shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp),
                 color = Color(0xFFECEFF1)
             ) {
@@ -104,7 +119,7 @@ fun MosaicSheet(
                     HorizontalDivider(color = Color.LightGray.copy(alpha = 0.6f))
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // 240 Pencereli Mozaik 6 Sütun Izgara
+                    // 6 Sütun Izgara
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(6),
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -128,7 +143,12 @@ fun MosaicSheet(
                                     if (index % 17 == 0) {
                                         Text("Reklam", fontSize = 8.sp, fontWeight = FontWeight.Bold, color = Color.White)
                                     } else {
-                                        Icon(Icons.Default.PlayCircle, contentDescription = null, tint = Color.White.copy(alpha = 0.7f), modifier = Modifier.size(16.dp))
+                                        Icon(
+                                            imageVector = Icons.Default.PlayCircle,
+                                            contentDescription = null,
+                                            tint = Color.White.copy(alpha = 0.7f),
+                                            modifier = Modifier.size(16.dp)
+                                        )
                                     }
                                 }
                             }

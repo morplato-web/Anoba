@@ -49,7 +49,7 @@ data class BlockedUserItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BlockedUsersScreen(
+fun SharedBlockedUsersScreen(
     blockedUsers: List<BlockedUserItem> = emptyList(),
     onNavigateBack: () -> Unit = {},
     onUnblockUser: (userId: String) -> Unit = {}

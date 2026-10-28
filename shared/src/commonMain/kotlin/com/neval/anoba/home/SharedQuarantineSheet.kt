@@ -55,7 +55,7 @@ import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
 
 @Composable
-fun QuarantineSheet(
+fun SharedQuarantineSheet(
     isVisible: Boolean,
     quarantineItems: List<SharedFeedItem> = emptyList(),
     onDismiss: () -> Unit,

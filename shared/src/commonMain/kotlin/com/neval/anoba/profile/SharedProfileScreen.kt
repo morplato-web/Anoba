@@ -53,7 +53,7 @@ import com.neval.anoba.ui.theme.AnobaNavy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(
+fun SharedProfileScreen(
     userEmail: String = "",
     userName: String = "Anoba",
     profileImageUrl: String = "",

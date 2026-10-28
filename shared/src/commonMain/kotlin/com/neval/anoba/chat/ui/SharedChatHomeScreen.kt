@@ -89,7 +89,7 @@ data class SharedChatMessage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatHomeScreen(
+fun SharedChatHomeScreen(
     messages: List<SharedChatMessage> = emptyList(),
     currentUserId: String = "me",
     isLoading: Boolean = false,

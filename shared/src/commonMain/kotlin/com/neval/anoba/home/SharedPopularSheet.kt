@@ -50,7 +50,7 @@ import coil3.compose.AsyncImage
 import com.neval.anoba.ui.theme.AnobaGold
 
 @Composable
-fun PopularSheet(
+fun SharedPopularSheet(
     isVisible: Boolean,
     popularItems: List<SharedFeedItem> = emptyList(),
     onDismiss: () -> Unit = {},
