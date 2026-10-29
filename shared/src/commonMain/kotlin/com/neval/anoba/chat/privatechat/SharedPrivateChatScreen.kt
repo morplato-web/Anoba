@@ -1,6 +1,6 @@
 @file:kotlin.jvm.JvmName("SharedPrivateChatScreenKt")
 
-package com.neval.anoba.chat.ui
+package com.neval.anoba.chat.privatechat
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -84,10 +83,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.neval.anoba.chat.general.SharedChatMessage
 import com.neval.anoba.common.ui.AnobaBadge
 import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.ui.theme.AnobaGold
-import com.neval.anoba.chat.general.SharedChatMessage
 import com.neval.anoba.ui.theme.AnobaNavy
 
 data class SharedChatPartner(
@@ -170,7 +169,6 @@ fun SharedPrivateChatScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TopAppBar(
-                        modifier = Modifier.statusBarsPadding(),
                         title = {
                             Text(
                                 text = "Özel Sohbet Başlat",
@@ -272,7 +270,6 @@ fun SharedPrivateChatScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TopAppBar(
-                        modifier = Modifier.statusBarsPadding(),
                         title = {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 UserAvatar(photoUrl = partner.photoUrl, username = partner.username, size = 38.dp)

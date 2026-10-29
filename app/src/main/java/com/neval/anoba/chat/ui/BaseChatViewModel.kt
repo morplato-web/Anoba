@@ -1,12 +1,13 @@
-package com.neval.anoba.chat.ui
+@file:Suppress("unused")
 
-import com.neval.anoba.chat.data.Messageable
+package com.neval.anoba.chat.ui
 
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.neval.anoba.chat.data.Messageable
 import com.neval.anoba.chat.group.GroupUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -82,7 +83,6 @@ abstract class BaseChatViewModel<M : Messageable>(
         _replyingToMessage.value = null
     }
 
-    // DÜZELTME: Context artık dışarıdan (UI'dan) güvenli bir şekilde geliyor.
     open fun copySelectedMessagesToClipboard(context: Context, text: String? = null) {
         val messagesToCopy = _selectedMessages.value
         if (messagesToCopy.isNotEmpty()) {

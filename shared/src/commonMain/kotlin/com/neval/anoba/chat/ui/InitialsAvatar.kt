@@ -2,6 +2,7 @@ package com.neval.anoba.chat.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,13 +30,13 @@ fun InitialsAvatar(
 
     Box(
         modifier = modifier
-            .background(backgroundColor),
+            .background(backgroundColor, CircleShape),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = initials,
             color = Color.White,
-            fontSize = 20.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Bold
         )
     }

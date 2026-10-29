@@ -1,9 +1,10 @@
 package com.neval.anoba.chat.privatechat
 
 import androidx.compose.runtime.*
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.neval.anoba.chat.ui.SharedChatPartner
-import com.neval.anoba.chat.ui.SharedPrivateChatScreen
+import com.neval.anoba.chat.privatechat.SharedChatPartner
+import com.neval.anoba.chat.privatechat.SharedPrivateChatScreen
 import com.neval.anoba.common.utils.Constants
 import com.neval.anoba.common.viewmodel.AuthViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -15,47 +16,58 @@ fun PrivateChatScreen(
     initialTargetUserId: String? = null,
     @Suppress("UNUSED_PARAMETER") authViewModel: AuthViewModel = koinViewModel()
 ) {
-    val chatPartnerProfile by privateChatViewModel.chatPartnerProfile.collectAsState()
-    val isPartnerTyping by privateChatViewModel.isPartnerTyping.collectAsState()
-    val chatRoomStatus by privateChatViewModel.chatRoomStatus.collectAsState()
-
-    var partner by remember(chatPartnerProfile) {
-        mutableStateOf(
-            chatPartnerProfile?.let { user ->
-                SharedChatPartner(
-                    id = user.id,
-                    username = user.safeDisplayName,
-                    photoUrl = user.photoUrl,
-                    badgeType = null,
-                    isOfficial = user.displayName?.equals("anoba", ignoreCase = true) == true
-                )
-            }
-        )
-    }
+    val chatPartnerProfile by privateChatViewModel.chatPartnerProfile.collectAsStateWithLifecycle()
+    val isPartnerTyping by privateChatViewModel.isPartnerTyping.collectAsStateWithLifecycle()
+    val chatRoomStatus by privateChatViewModel.chatRoomStatus.collectAsStateWithLifecycle()
+    val rawMessages by privateChatViewModel.messages.collectAsStateWithLifecycle()
+    val searchResults by privateChatViewModel.searchResults.collectAsStateWithLifecycle()
+    val isUploading by privateChatViewModel.isUploading.collectAsStateWithLifecycle()
+    val currentUserId = privateChatViewModel.currentUserId ?: ""
 
     LaunchedEffect(initialTargetUserId) {
         if (!initialTargetUserId.isNullOrBlank()) {
-            privateChatViewModel.fetchUserAndSetAsPartner(initialTargetUserId) { user ->
-                if (user != null) {
-                    partner = SharedChatPartner(
-                        id = user.id,
-                        username = user.safeDisplayName,
-                        photoUrl = user.photoUrl,
-                        badgeType = null,
-                        isOfficial = user.displayName?.equals("anoba", ignoreCase = true) == true
-                    )
-                }
-            }
+            privateChatViewModel.fetchUserAndSetAsPartner(initialTargetUserId)
+        }
+    }
+
+    val partner = remember(chatPartnerProfile) {
+        chatPartnerProfile?.let { user ->
+            SharedChatPartner(
+                id = user.id,
+                username = user.safeDisplayName,
+                photoUrl = user.photoUrl,
+                badgeType = user.badgeType,
+                isOfficial = user.displayName?.equals("anoba", ignoreCase = true) == true
+            )
+        }
+    }
+
+    val sharedMessages = remember(rawMessages) {
+        rawMessages.map { it.toSharedModel() }
+    }
+
+    val sharedSearchResults = remember(searchResults) {
+        searchResults.map { user ->
+            SharedChatPartner(
+                id = user.id,
+                username = user.safeDisplayName,
+                photoUrl = user.photoUrl,
+                badgeType = user.badgeType,
+                isOfficial = user.displayName?.equals("anoba", ignoreCase = true) == true
+            )
         }
     }
 
     SharedPrivateChatScreen(
         partner = partner,
+        messages = sharedMessages,
+        userSearchResults = sharedSearchResults,
+        currentUserId = currentUserId,
+        isLoading = isUploading,
         isPartnerTyping = isPartnerTyping,
         isPendingRequest = chatRoomStatus == "PENDING",
         onNavigateBack = {
             if (partner != null && initialTargetUserId.isNullOrBlank()) {
-                partner = null
                 privateChatViewModel.resetChatState()
             } else {
                 navController.popBackStack()
@@ -66,19 +78,26 @@ fun PrivateChatScreen(
                 popUpTo(navController.graph.id) { inclusive = true }
             }
         },
+        onSelectPartner = { selected ->
+            privateChatViewModel.fetchUserAndSetAsPartner(selected.id)
+        },
+        onSearchUser = { query ->
+            privateChatViewModel.searchUsers(query)
+        },
+        onSendMessage = { content ->
+            privateChatViewModel.sendMessage(content)
+        },
         onStartVoiceCall = {
-            val currentId = privateChatViewModel.currentUserId ?: ""
             val partnerId = partner?.id ?: ""
-            if (currentId.isNotEmpty() && partnerId.isNotEmpty()) {
-                val channelName = if (currentId < partnerId) "${currentId}_${partnerId}" else "${partnerId}_${currentId}"
+            if (currentUserId.isNotEmpty() && partnerId.isNotEmpty()) {
+                val channelName = if (currentUserId < partnerId) "${currentUserId}_${partnerId}" else "${partnerId}_${currentUserId}"
                 navController.navigate("call_screen/$channelName/false/false")
             }
         },
         onStartVideoCall = {
-            val currentId = privateChatViewModel.currentUserId ?: ""
             val partnerId = partner?.id ?: ""
-            if (currentId.isNotEmpty() && partnerId.isNotEmpty()) {
-                val channelName = if (currentId < partnerId) "${currentId}_${partnerId}" else "${partnerId}_${currentId}"
+            if (currentUserId.isNotEmpty() && partnerId.isNotEmpty()) {
+                val channelName = if (currentUserId < partnerId) "${currentUserId}_${partnerId}" else "${partnerId}_${currentUserId}"
                 navController.navigate("call_screen/$channelName/true/false")
             }
         },
@@ -88,7 +107,6 @@ fun PrivateChatScreen(
         onBlockUser = { targetUid ->
             if (targetUid.isNotEmpty()) {
                 privateChatViewModel.blockUser(targetUid)
-                partner = null
                 privateChatViewModel.resetChatState()
             }
         }

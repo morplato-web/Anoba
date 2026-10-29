@@ -12,8 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.neval.anoba.chat.call.SharedCallScreen
 import com.neval.anoba.chat.general.SharedChatHomeScreen
+import com.neval.anoba.chat.group.SharedChatGroup
 import com.neval.anoba.chat.group.SharedGroupChatListScreen
-import com.neval.anoba.chat.ui.SharedPrivateChatScreen
+import com.neval.anoba.chat.group.SharedGroupChatScreen
+import com.neval.anoba.chat.group.SharedGroupInfoScreen
+import com.neval.anoba.chat.privatechat.SharedChatPartner
+import com.neval.anoba.chat.privatechat.SharedPrivateChatScreen
 import com.neval.anoba.drawer.DrawerSheetContent
 import com.neval.anoba.guide.SharedGuideScreen
 import com.neval.anoba.home.SharedHomeScreen
@@ -79,7 +83,9 @@ private fun MainAppScreen(
     var selectedSes by remember { mutableStateOf<SharedSesModel?>(null) }
     var isDrawerOpen by remember { mutableStateOf(false) }
 
-    // Arama Parametreleri State'i
+    // Sohbet ve Arama State'leri
+    var activeGroupId by remember { mutableStateOf<String?>(null) }
+    var activePartnerId by remember { mutableStateOf<String?>(null) }
     var activeCallChannelName by remember { mutableStateOf("") }
     var activeCallIsVideo by remember { mutableStateOf(false) }
 
@@ -97,17 +103,50 @@ private fun MainAppScreen(
                     onNavigateBack = { activeView = "HOME" },
                     onHomeClick = { activeView = "HOME" },
                     onOpenGroupsClick = { activeView = "GROUP_CHAT" },
-                    onOpenPrivateChatClick = { activeView = "PRIVATE_CHAT" }
+                    onOpenPrivateChatClick = { 
+                        activePartnerId = null
+                        activeView = "PRIVATE_CHAT" 
+                    }
                 )
 
                 "PRIVATE_CHAT" -> SharedPrivateChatScreen(
-                    partner = null,
+                    partner = activePartnerId?.let { id -> SharedChatPartner(id = id, username = "Kullanıcı") },
                     onNavigateBack = { activeView = "CHAT" },
-                    onHomeClick = { activeView = "HOME" }
+                    onHomeClick = { activeView = "HOME" },
+                    onStartVoiceCall = {
+                        activeCallChannelName = "Sesli Arama"
+                        activeCallIsVideo = false
+                        activeView = "CALL"
+                    },
+                    onStartVideoCall = {
+                        activeCallChannelName = "Görüntülü Arama"
+                        activeCallIsVideo = true
+                        activeView = "CALL"
+                    }
                 )
 
                 "GROUP_CHAT" -> SharedGroupChatListScreen(
                     onNavigateBack = { activeView = "CHAT" },
+                    onHomeClick = { activeView = "HOME" },
+                    onGroupClick = { group ->
+                        activeGroupId = group.id
+                        activeView = "GROUP_CHAT_DETAIL"
+                    }
+                )
+
+                "GROUP_CHAT_DETAIL" -> SharedGroupChatScreen(
+                    group = activeGroupId?.let { id -> SharedChatGroup(id = id, name = "Grup Sohbeti") },
+                    onNavigateBack = { activeView = "GROUP_CHAT" },
+                    onHomeClick = { activeView = "HOME" },
+                    onGroupInfoClick = { id ->
+                        activeGroupId = id
+                        activeView = "GROUP_INFO"
+                    }
+                )
+
+                "GROUP_INFO" -> SharedGroupInfoScreen(
+                    group = activeGroupId?.let { id -> SharedChatGroup(id = id, name = "Grup Bilgisi") },
+                    onNavigateBack = { activeView = "GROUP_CHAT_DETAIL" },
                     onHomeClick = { activeView = "HOME" }
                 )
 

@@ -2,16 +2,13 @@ package com.neval.anoba.chat.privatechat
 
 import android.net.Uri
 import android.util.Log
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.firestore.ListenerRegistration
 import com.neval.anoba.chat.data.ChatDao
 import com.neval.anoba.chat.data.PrivateMessageEntity
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +21,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 class PrivateChatRepository(
     private val db: FirebaseFirestore,
@@ -33,10 +31,17 @@ class PrivateChatRepository(
     private val tag = "PrivateChatRepository"
     private val repositoryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val historyMutex = Mutex()
-    private val activeListeners = mutableMapOf<String, ListenerRegistration>()
+    private val activeListeners = ConcurrentHashMap<String, ListenerRegistration>()
 
     private fun getChatRoomId(userId1: String, userId2: String): String {
         return if (userId1 < userId2) "${userId1}_$userId2" else "${userId2}_$userId1"
+    }
+
+    fun getMessagesStream(currentUserId: String, otherUserId: String): Flow<List<PrivateMessage>> {
+        startRealtimeSync(currentUserId, otherUserId)
+        return chatDao.getPrivateMessages(currentUserId, otherUserId).map { list ->
+            list.map { it.toDomain() }
+        }
     }
 
     fun getMessagesPaging(currentUserId: String, otherUserId: String): Flow<PagingData<PrivateMessage>> {
@@ -108,8 +113,13 @@ class PrivateChatRepository(
 
     fun stopRealtimeSync(currentUserId: String, otherUserId: String) {
         val chatRoomId = getChatRoomId(currentUserId, otherUserId)
-        activeListeners[chatRoomId]?.remove()
-        activeListeners.remove(chatRoomId)
+        activeListeners.remove(chatRoomId)?.remove()
+    }
+
+    @Suppress("unused")
+    fun stopAllRealtimeSync() {
+        activeListeners.forEach { (_, listener) -> listener.remove() }
+        activeListeners.clear()
     }
 
     private fun PrivateMessage.toEntity() = PrivateMessageEntity(
@@ -200,7 +210,8 @@ class PrivateChatRepository(
         val chatRoomRef = db.collection("private_chats").document(chatRoomId)
         val messageRef = chatRoomRef.collection("messages").document()
 
-        val lastMessageContent = message.content?.takeIf { it.isNotBlank() } ?: mediaTypeString ?: ""
+        val finalMessage = if (message.id.isBlank()) message.copy(id = messageRef.id) else message
+        val lastMessageContent = finalMessage.content?.takeIf { it.isNotBlank() } ?: mediaTypeString ?: ""
 
         try {
             db.runTransaction { transaction ->
@@ -224,29 +235,28 @@ class PrivateChatRepository(
                     transaction.update(chatRoomRef, roomUpdates)
                 }
 
-                transaction.set(messageRef, message)
+                transaction.set(messageRef, finalMessage)
                 null
             }.await()
 
-            // 🚀 BİLDİRİM: !! uyarısı temizlendi, targetId (senderId) eklendi
-            val senderUsername = message.senderName?.ifBlank { "Bir kullanıcı" } ?: "Bir kullanıcı"
-            val msgContent = message.content
+            val senderUsername = finalMessage.senderName?.ifBlank { "Bir kullanıcı" } ?: "Bir kullanıcı"
+            val msgContent = finalMessage.content
             val notifBody = when {
                 !msgContent.isNullOrBlank() -> msgContent
-                message.imageUrl != null -> "📷 Fotoğraf"
-                message.videoUrl != null -> "🎥 Video"
-                message.audioUrl != null -> "🎙️ Sesli Mesaj"
+                finalMessage.imageUrl != null -> "📷 Fotoğraf"
+                finalMessage.videoUrl != null -> "🎥 Video"
+                finalMessage.audioUrl != null -> "🎙️ Sesli Mesaj"
                 else -> "Yeni bir mesajınız var."
             }
 
             val notificationData = mapOf(
                 "type" to "CHAT",
                 "targetId" to senderId,
-                "isGroup" to false, // 🚀 ÖZEL SOHBET OLDUĞUNU BELİRTTİK
+                "isGroup" to false,
                 "senderId" to senderId,
                 "title" to senderUsername,
                 "senderName" to senderUsername,
-                "senderPhotoUrl" to (message.senderPhotoUrl ?: ""),
+                "senderPhotoUrl" to (finalMessage.senderPhotoUrl ?: ""),
                 "message" to notifBody,
                 "body" to notifBody,
                 "isRead" to false,
@@ -345,7 +355,7 @@ class PrivateChatRepository(
             .snapshots()
             .map { snapshot ->
                 val typingMap = snapshot.get("typing") as? Map<*, *>
-                (typingMap?.get(otherUserId) ?: false) as Boolean
+                (typingMap?.get(otherUserId) as? Boolean) ?: false
             }
     }
 

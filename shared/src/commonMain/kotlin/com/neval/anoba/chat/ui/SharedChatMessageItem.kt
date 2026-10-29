@@ -279,26 +279,6 @@ fun <T : Messageable> ChatMessageItem(
 }
 
 @Composable
-fun InitialsAvatar(
-    name: String,
-    modifier: Modifier = Modifier
-) {
-    val initial = name.trim().firstOrNull()?.uppercaseChar()?.toString() ?: "?"
-    Box(
-        modifier = modifier
-            .background(AnobaNavy, CircleShape),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = initial,
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
-        )
-    }
-}
-
-@Composable
 fun ReplyQuote(
     replyToName: String?,
     replyToContent: String?,

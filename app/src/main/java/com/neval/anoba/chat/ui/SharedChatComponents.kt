@@ -1,6 +1,7 @@
-package com.neval.anoba.chat.ui
+@file:OptIn(ExperimentalFoundationApi::class)
+@file:Suppress("unused")
 
-import com.neval.anoba.chat.data.Messageable
+package com.neval.anoba.chat.ui
 
 import android.Manifest
 import android.content.Context
@@ -75,6 +76,7 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import com.neval.anoba.R
+import com.neval.anoba.chat.data.Messageable
 import com.neval.anoba.common.utils.formatDuration
 import com.neval.anoba.ui.theme.AnobaNavy
 import kotlinx.coroutines.delay
@@ -366,7 +368,7 @@ fun EditMessageIndicator(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
+@UnstableApi
 @Composable
 fun AudioMessagePlayer(
     audioUrl: String,
@@ -461,6 +463,7 @@ fun AudioMessagePlayer(
 class AudioRecorder(private val context: Context) {
     private var mediaRecorder: MediaRecorder? = null
     private var outputFile: File? = null
+
     fun start(): Boolean {
         return try {
             outputFile = File.createTempFile("audio", ".m4a", context.cacheDir)
@@ -483,13 +486,17 @@ class AudioRecorder(private val context: Context) {
     fun stop(): File? {
         return try {
             mediaRecorder?.apply {
-                stop()
+                try {
+                    stop()
+                } catch (e: Exception) {
+                    android.util.Log.w("AudioRecorder", "Stop failed: ${e.message}")
+                }
                 release()
             }
             mediaRecorder = null
             outputFile
         } catch (e: Exception) {
-            android.util.Log.e("AudioRecorder", "Failed to stop recording", e)
+            android.util.Log.e("AudioRecorder", "Failed to stop recording cleanly", e)
             null
         }
     }

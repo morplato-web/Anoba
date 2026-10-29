@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neval.anoba.chat.privatechat
 
 import android.net.Uri
@@ -15,6 +17,7 @@ import com.neval.anoba.common.utils.AnalyticsHelper
 import com.neval.anoba.common.utils.ResourceProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -57,25 +60,37 @@ class PrivateChatViewModel(
 
     private val _userList = MutableStateFlow<List<GeneralChatUser>>(emptyList())
     val userList: StateFlow<List<GeneralChatUser>> = _userList.asStateFlow()
+    val searchResults: StateFlow<List<GeneralChatUser>> = _userList.asStateFlow()
 
     private val _isPartnerTyping = MutableStateFlow(false)
     val isPartnerTyping: StateFlow<Boolean> = _isPartnerTyping.asStateFlow()
 
-    private var typingJob: kotlinx.coroutines.Job? = null
-    private var partnerTypingCollectionJob: kotlinx.coroutines.Job? = null
+    private var typingJob: Job? = null
+    private var partnerTypingCollectionJob: Job? = null
 
     private val _blockedUsers = MutableStateFlow<List<String>>(emptyList())
 
     private val _undoState = MutableStateFlow<List<PrivateMessage>>(emptyList())
     val undoState: StateFlow<List<PrivateMessage>> = _undoState.asStateFlow()
 
-    private var messageCollectionJob: kotlinx.coroutines.Job? = null
-    private var statusCollectionJob: kotlinx.coroutines.Job? = null
+    private var messageCollectionJob: Job? = null
+    private var statusCollectionJob: Job? = null
 
     private val _currentUserBadgeType = MutableStateFlow("NONE")
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
+    val messages: StateFlow<List<PrivateMessage>> = _chatPartnerProfile
+        .flatMapLatest { partner ->
+            val myId = currentUserId
+            if (partner == null || partner.id.isBlank() || myId.isNullOrBlank()) {
+                flowOf(emptyList())
+            } else {
+                privateChatRepository.getMessagesStream(myId, partner.id)
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     init {
         fetchCurrentUserBadge()
@@ -132,6 +147,10 @@ class PrivateChatViewModel(
 
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
+    }
+
+    fun searchUsers(query: String) {
+        onSearchQueryChanged(query)
     }
 
     private fun fetchCurrentUserBadge() {
@@ -227,6 +246,11 @@ class PrivateChatViewModel(
                 Log.e(LOCAL_TAG, "applyEdit failed: ${e.message}")
             }
         }
+    }
+
+    fun sendMessage(content: String) {
+        val partnerId = chatPartnerProfile.value?.id ?: return
+        sendMessage(partnerId, content)
     }
 
     fun sendMessage(receiverId: String, content: String) {
@@ -421,6 +445,10 @@ class PrivateChatViewModel(
         }
     }
 
+    fun fetchUserAndSetAsPartner(userId: String) {
+        listenForMessages(userId)
+    }
+
     override fun onCleared() {
         super.onCleared()
         val currentPartnerId = chatPartnerProfile.value?.id
@@ -509,7 +537,6 @@ class PrivateChatViewModel(
         }
     }
 
-    @Suppress("unused")
     fun loadMoreHistory(otherUserId: String, anchorTimestamp: Long? = null) {
         val uid = currentUserId ?: return
         viewModelScope.launch {
