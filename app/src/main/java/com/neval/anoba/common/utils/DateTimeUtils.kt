@@ -1,9 +1,11 @@
 package com.neval.anoba.common.utils
 
 import android.content.Context
+import androidx.core.os.ConfigurationCompat
 import com.neval.anoba.R
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 object DateTimeUtils {
 
@@ -14,11 +16,10 @@ object DateTimeUtils {
     fun formatRelativeTime(context: Context, dateMillis: Long?): String {
         if (dateMillis == null) return context.getString(R.string.common_unknown)
 
-        val now = Date().time
+        val now = System.currentTimeMillis()
         val diff = now - dateMillis
 
-        // Android 13+ Per-app language ve yerelleştirme uyumluluğu için
-        val locale = context.resources.configuration.locales[0]
+        val locale = ConfigurationCompat.getLocales(context.resources.configuration)[0] ?: Locale.getDefault()
 
         // GELECEK TARİH KONTROLÜ (Zaman Kapsülü için)
         if (diff < 0) {
