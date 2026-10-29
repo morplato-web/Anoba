@@ -60,7 +60,7 @@ class FollowRepositoryImpl(
         val uid = currentUserId ?: return
         if (uid == targetUserId) return
 
-        val followRef = firestore.collection("follows").document("${uid}_${targetUserId}")
+        val followRef = firestore.collection("follows").document("${uid}_$targetUserId")
         val currentUserRef = firestore.collection("users").document(uid)
         val targetUserRef = firestore.collection("users").document(targetUserId)
 
