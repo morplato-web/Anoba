@@ -1,3 +1,5 @@
+@file:Suppress("unused", "EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING", "NO_ACTUAL_FOR_EXPECT")
+
 package com.neval.anoba.common.database
 
 import androidx.room.ConstructedBy
@@ -24,7 +26,7 @@ import com.neval.anoba.market.SharedMarketItemModel
         PinnedItemEntity::class,
         FollowedUserEntity::class,
         SharedMarketItemModel::class,
-        SharedLetterModel::class
+        SharedLetterModel::class,
     ],
     version = 21,
     exportSchema = false

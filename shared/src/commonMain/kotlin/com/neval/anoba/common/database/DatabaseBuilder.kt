@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neval.anoba.common.database
 
 import androidx.room.RoomDatabase

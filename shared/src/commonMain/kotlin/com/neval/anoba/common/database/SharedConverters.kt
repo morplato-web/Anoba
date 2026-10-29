@@ -4,13 +4,14 @@ import androidx.room.TypeConverter
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+@Suppress("unused")
 class SharedConverters {
     @TypeConverter
     fun fromStringList(value: String?): List<String> {
         if (value.isNullOrBlank()) return emptyList()
         return try {
             Json.decodeFromString<List<String>>(value)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
@@ -25,7 +26,7 @@ class SharedConverters {
         if (value.isNullOrBlank()) return emptyMap()
         return try {
             Json.decodeFromString<Map<String, String>>(value)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyMap()
         }
     }
