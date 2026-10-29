@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neval.anoba.common.media
 
 class IosVideoPlayerController : VideoPlayerController {
