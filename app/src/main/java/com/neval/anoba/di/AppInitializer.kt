@@ -16,7 +16,7 @@ object AppInitializer {
         context: Context,
         authInstance: FirebaseAuth,
         firestoreInstance: FirebaseFirestore,
-        storageInstance: FirebaseStorage
+        storageInstance: FirebaseStorage,
     ) {
         try {
             // Eğer zaten bir Koin instance'ı varsa tekrar başlatma
@@ -28,8 +28,9 @@ object AppInitializer {
                         createAppModuleDefinition(
                             authInstance = authInstance,
                             firestoreInstance = firestoreInstance,
-                            storageInstance = storageInstance
-                        )
+                            storageInstance = storageInstance,
+                        ),
+                        sharedModule
                     )
                 }
                 Log.d("AppInitializer", "Koin başarıyla başlatıldı.")
