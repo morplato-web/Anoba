@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neval.anoba.common.ui
 
 import androidx.compose.foundation.background

@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AnobaBrandLogoIcon(
     modifier: Modifier = Modifier,
-    size: Dp = 40.dp
+    size: Dp = 40.dp,
 ) {
     Box(
         modifier = modifier

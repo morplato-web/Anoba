@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun GoogleLogoIcon(
     modifier: Modifier = Modifier,
-    size: Dp = 20.dp
+    size: Dp = 20.dp,
 ) {
     Canvas(modifier = modifier.size(size)) {
         val width = this.size.width
