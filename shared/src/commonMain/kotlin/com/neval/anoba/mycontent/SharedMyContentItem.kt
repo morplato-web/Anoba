@@ -30,7 +30,7 @@ sealed class SharedMyContentItem {
         val audioDuration: Long? = null,
         val privacy: String? = null,
         val recipientUsername: String? = null,
-        val isTimeCapsule: Boolean = false
+        val isTimeCapsule: Boolean = false,
     ) : SharedMyContentItem() {
         override val type: SharedMyContentType get() = SharedMyContentType.LETTER
         override val thumbnailUrl: String? get() = null
@@ -45,7 +45,7 @@ sealed class SharedMyContentItem {
         override val reactionsCount: Long = 0,
         override val commentsCount: Long = 0,
         override val personalNote: String = "",
-        val photoUrl: String = ""
+        val photoUrl: String = "",
     ) : SharedMyContentItem() {
         override val type: SharedMyContentType get() = SharedMyContentType.PHOTO
         override val thumbnailUrl: String get() = photoUrl
@@ -61,7 +61,7 @@ sealed class SharedMyContentItem {
         override val commentsCount: Long = 0,
         override val personalNote: String = "",
         val videoUrl: String = "",
-        override val thumbnailUrl: String? = null
+        override val thumbnailUrl: String? = null,
     ) : SharedMyContentItem() {
         override val type: SharedMyContentType get() = SharedMyContentType.VIDEO
     }
@@ -76,7 +76,7 @@ sealed class SharedMyContentItem {
         override val commentsCount: Long = 0,
         override val personalNote: String = "",
         val audioUrl: String = "",
-        val durationMillis: Long = 0L
+        val durationMillis: Long = 0L,
     ) : SharedMyContentItem() {
         override val type: SharedMyContentType get() = SharedMyContentType.AUDIO
         override val thumbnailUrl: String? get() = null
@@ -93,7 +93,7 @@ sealed class SharedMyContentItem {
         override val personalNote: String = "",
         val title: String = "",
         val photoUrl: String = "",
-        val price: String = ""
+        val price: String = "",
     ) : SharedMyContentItem() {
         override val type: SharedMyContentType get() = SharedMyContentType.MARKET
         override val thumbnailUrl: String get() = photoUrl

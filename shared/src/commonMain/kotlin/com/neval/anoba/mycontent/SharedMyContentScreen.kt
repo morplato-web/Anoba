@@ -18,9 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -28,7 +28,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.GraphicEq
@@ -110,9 +109,9 @@ fun SharedMyContentScreen(
     onDeleteContent: (id: String, type: SharedMyContentType) -> Unit = { _, _ -> },
     onToggleAnobaGuide: (id: String, type: SharedMyContentType) -> Unit = { _, _ -> },
     onShareContent: (shareText: String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    var showDeleteDialog by remember { mutableStateOf<SharedMyContentItem?>(null) }
+    var deleteItemTarget by remember { mutableStateOf<SharedMyContentItem?>(null) }
     var selectedContentItem by remember { mutableStateOf<SharedMyContentItem?>(null) }
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -124,27 +123,27 @@ fun SharedMyContentScreen(
         listOf("Yayınlananlar", "Pazar Yeri 🛍️")
     }
 
-    showDeleteDialog?.let { item ->
+    deleteItemTarget?.let { item ->
         AlertDialog(
-            onDismissRequest = { showDeleteDialog = null },
+            onDismissRequest = { deleteItemTarget = null },
             title = { Text("İçerik Silinsin mi?") },
             text = { Text("Bu içeriği silmek istediğinize emin misiniz? Bu işlem geri alınamaz.") },
             confirmButton = {
                 TextButton(
                     onClick = {
                         onDeleteContent(item.id, item.type)
-                        showDeleteDialog = null
+                        deleteItemTarget = null
                     },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
                 ) {
                     Text("Sil")
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteDialog = null }) {
+                TextButton(onClick = { deleteItemTarget = null }) {
                     Text("İptal")
                 }
-            }
+            },
         )
     }
 
@@ -159,7 +158,7 @@ fun SharedMyContentScreen(
                             .height(56.dp)
                             .padding(horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             IconButton(onClick = onNavigateBack) {
@@ -173,13 +172,13 @@ fun SharedMyContentScreen(
                                 },
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White
+                                color = Color.White,
                             )
                         }
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             if (isOwner) {
                                 CreationIconButton(
@@ -187,7 +186,7 @@ fun SharedMyContentScreen(
                                     contentDescription = "Yeni Foto/Video",
                                     backgroundColor = Color(0xFFF3E5F5),
                                     iconColor = Color(0xFF8E24AA),
-                                    onClick = onCameraClick
+                                    onClick = onCameraClick,
                                 )
 
                                 CreationIconButton(
@@ -195,7 +194,7 @@ fun SharedMyContentScreen(
                                     contentDescription = "Yeni Mektup",
                                     backgroundColor = Color(0xFFE1F5FE),
                                     iconColor = Color(0xFF0288D1),
-                                    onClick = onLetterClick
+                                    onClick = onLetterClick,
                                 )
 
                                 CreationIconButton(
@@ -203,7 +202,7 @@ fun SharedMyContentScreen(
                                     contentDescription = "Galeriden Seç",
                                     backgroundColor = Color(0xFFFFEBEE),
                                     iconColor = Color(0xFFE53935),
-                                    onClick = onGalleryClick
+                                    onClick = onGalleryClick,
                                 )
                             }
 
@@ -213,19 +212,19 @@ fun SharedMyContentScreen(
                         }
                     }
                 }
-            }
+            },
         ) { padding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(padding)
+                    .padding(padding),
             ) {
                 PrimaryTabRow(selectedTabIndex = selectedTabIndex) {
                     tabs.forEachIndexed { index, title ->
                         Tab(
                             selected = selectedTabIndex == index,
                             onClick = { selectedTabIndex = index },
-                            text = { Text(text = title) }
+                            text = { Text(text = title) },
                         )
                     }
                 }
@@ -236,13 +235,13 @@ fun SharedMyContentScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 8.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     if (errorMessage != null) {
                         Text(
                             text = errorMessage,
                             color = MaterialTheme.colorScheme.error,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     } else {
                         val itemsToShow: List<SharedMyContentItem> = if (isOwner) {
@@ -261,7 +260,7 @@ fun SharedMyContentScreen(
                         }
 
                         val emptyMessage = when {
-                            isOwner && selectedTabIndex == 1 -> "Henüz Taslak Bulunmuyor 📝"
+                            (isOwner && selectedTabIndex == 1) -> "Henüz Taslak Bulunmuyor 📝"
                             selectedTabIndex == (if (isOwner) 2 else 1) -> "Henüz İlan Bulunmuyor 🛍️"
                             else -> "Henüz Yayınlanan İçerik Bulunmuyor 🎬"
                         }
@@ -269,12 +268,12 @@ fun SharedMyContentScreen(
                         if (itemsToShow.isEmpty() && !isLoading) {
                             Text(text = emptyMessage, color = Color.Gray)
                         } else {
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(3),
+                            LazyVerticalStaggeredGrid(
+                                columns = StaggeredGridCells.Fixed(3),
                                 modifier = Modifier.fillMaxSize(),
                                 contentPadding = PaddingValues(4.dp),
                                 horizontalArrangement = Arrangement.spacedBy(10.dp),
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                                verticalItemSpacing = 10.dp,
                             ) {
                                 items(itemsToShow, key = { it.id + it.type.name }) { item ->
                                     Box {
@@ -286,7 +285,7 @@ fun SharedMyContentScreen(
                                                 } else {
                                                     selectedContentItem = item
                                                 }
-                                            }
+                                            },
                                         )
 
                                         if (item.isFlagged) {
@@ -296,32 +295,24 @@ fun SharedMyContentScreen(
                                                     .padding(4.dp),
                                                 color = Color(0xFF4CAF50).copy(alpha = 0.9f),
                                                 shape = RoundedCornerShape(4.dp),
-                                                shadowElevation = 4.dp
+                                                shadowElevation = 4.dp,
                                             ) {
                                                 Row(
                                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
-                                                    verticalAlignment = Alignment.CenterVertically
+                                                    verticalAlignment = Alignment.CenterVertically,
                                                 ) {
-                                                    Box(contentAlignment = Alignment.Center) {
-                                                        Icon(
-                                                            imageVector = Icons.Default.Shield,
-                                                            contentDescription = null,
-                                                            modifier = Modifier.size(10.dp),
-                                                            tint = Color.White
-                                                        )
-                                                        Icon(
-                                                            imageVector = Icons.Default.Check,
-                                                            contentDescription = null,
-                                                            modifier = Modifier.size(5.dp),
-                                                            tint = Color(0xFF4CAF50)
-                                                        )
-                                                    }
+                                                    Icon(
+                                                        imageVector = Icons.Default.Shield,
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(10.dp),
+                                                        tint = Color.White,
+                                                    )
                                                     Spacer(Modifier.width(4.dp))
                                                     Text(
                                                         text = "İncelemede",
                                                         color = Color.White,
                                                         fontSize = 8.sp,
-                                                        fontWeight = FontWeight.Black
+                                                        fontWeight = FontWeight.Black,
                                                     )
                                                 }
                                             }
@@ -341,7 +332,7 @@ fun SharedMyContentScreen(
                     .fillMaxSize()
                     .background(Color.Black.copy(alpha = 0.5f))
                     .clickable(enabled = false, onClick = {}),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator(color = Color.White)
@@ -353,7 +344,7 @@ fun SharedMyContentScreen(
                             uploadProgress?.let { "Yükleniyor ($it)" } ?: "İçerikler Yükleniyor..."
                         },
                         color = Color.White,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
             }
@@ -363,7 +354,7 @@ fun SharedMyContentScreen(
     selectedContentItem?.let { item ->
         ModalBottomSheet(
             onDismissRequest = { selectedContentItem = null },
-            sheetState = sheetState
+            sheetState = sheetState,
         ) {
             SharedBottomSheetContent(
                 item = item,
@@ -380,7 +371,7 @@ fun SharedMyContentScreen(
                     scope.launch { sheetState.hide(); selectedContentItem = null }
                 },
                 onDeleteClick = {
-                    showDeleteDialog = item
+                    deleteItemTarget = item
                     scope.launch { sheetState.hide(); selectedContentItem = null }
                 },
                 onAnobaClick = {
@@ -398,7 +389,7 @@ fun SharedMyContentScreen(
                     onShareContent(shareText)
                     scope.launch { sheetState.hide(); selectedContentItem = null }
                 },
-                isAnobaUser = isAnobaUser
+                isAnobaUser = isAnobaUser,
             )
         }
     }
@@ -411,7 +402,7 @@ private fun CreationIconButton(
     backgroundColor: Color,
     iconColor: Color,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier
@@ -419,14 +410,14 @@ private fun CreationIconButton(
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Icon(
                 imageVector = icon,
                 contentDescription = contentDescription,
                 tint = iconColor,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(20.dp),
             )
         }
     }
@@ -441,27 +432,27 @@ fun SharedBottomSheetContent(
     onDeleteClick: () -> Unit,
     onAnobaClick: () -> Unit,
     onShareClick: () -> Unit,
-    isAnobaUser: Boolean
+    isAnobaUser: Boolean,
 ) {
     Column {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = if (item.isPublished) "Yayınlandı" else "Taslak",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = if (item.isPublished) Color(0xFF388E3C) else MaterialTheme.colorScheme.outline
+                color = if (item.isPublished) Color(0xFF388E3C) else MaterialTheme.colorScheme.outline,
             )
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceAround,
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = item.viewCount.toString(), style = MaterialTheme.typography.titleLarge)
@@ -481,27 +472,27 @@ fun SharedBottomSheetContent(
         ListItem(
             headlineContent = { Text("Aç / Görüntüle") },
             leadingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = Color(0xFF42A5F5)) },
-            modifier = Modifier.clickable(onClick = onViewClick)
+            modifier = Modifier.clickable(onClick = onViewClick),
         )
 
         if (item.isPublished) {
             ListItem(
                 headlineContent = { Text("İçeriği Paylaş") },
                 leadingContent = { Icon(Icons.Default.Share, contentDescription = null, tint = Color(0xFF4CAF50)) },
-                modifier = Modifier.clickable(onClick = onShareClick)
+                modifier = Modifier.clickable(onClick = onShareClick),
             )
         }
 
         ListItem(
             headlineContent = { Text(if (item.isPublished) "Yayından Kaldır" else "Yayınla") },
             leadingContent = { Icon(Icons.Default.Publish, contentDescription = null, tint = Color(0xFF9E9E9E)) },
-            modifier = Modifier.clickable(onClick = onPublishClick)
+            modifier = Modifier.clickable(onClick = onPublishClick),
         )
 
         ListItem(
             headlineContent = { Text("Düzenle") },
             leadingContent = { Icon(Icons.Default.Edit, contentDescription = null, tint = Color(0xFFFFA726)) },
-            modifier = Modifier.clickable(onClick = onEditClick)
+            modifier = Modifier.clickable(onClick = onEditClick),
         )
 
         if (isAnobaUser) {
@@ -511,17 +502,17 @@ fun SharedBottomSheetContent(
                     Icon(
                         imageVector = if (item.isGuideContent) Icons.Default.Star else Icons.Default.StarOutline,
                         contentDescription = "Anoba",
-                        tint = AnobaGold
+                        tint = AnobaGold,
                     )
                 },
-                modifier = Modifier.clickable(onClick = onAnobaClick)
+                modifier = Modifier.clickable(onClick = onAnobaClick),
             )
         }
 
         ListItem(
             headlineContent = { Text("Sil") },
             leadingContent = { Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
-            modifier = Modifier.clickable(onClick = onDeleteClick)
+            modifier = Modifier.clickable(onClick = onDeleteClick),
         )
     }
 }
@@ -531,7 +522,7 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         when (item) {
             is SharedMyContentItem.Letter -> {
@@ -551,14 +542,14 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
                             is SharedMyContentItem.Audio -> Color(0xFFFFD1DC)
                             is SharedMyContentItem.Market -> Color(0xFFFFF9C4)
                             else -> Color(0xFFB3E5FC)
-                        }
-                    )
+                        },
+                    ),
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .aspectRatio(if (item is SharedMyContentItem.Audio) 1f else 0.75f),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         when (item) {
                             is SharedMyContentItem.Market -> {
@@ -566,21 +557,21 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
                                     model = item.photoUrl,
                                     contentDescription = item.title,
                                     modifier = Modifier.fillMaxSize(),
-                                    contentScale = ContentScale.Crop
+                                    contentScale = ContentScale.Crop,
                                 )
                                 Surface(
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)
                                         .padding(4.dp),
                                     shape = RoundedCornerShape(4.dp),
-                                    color = Color(0xFFFFD700)
+                                    color = Color(0xFFFFD700),
                                 ) {
                                     Text(
                                         text = "🛍️ İlan",
                                         color = Color.Black,
                                         fontSize = 8.sp,
                                         fontWeight = FontWeight.Bold,
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                                     )
                                 }
                             }
@@ -590,13 +581,13 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
                                     model = item.thumbnailUrl,
                                     contentDescription = "Video kapak",
                                     modifier = Modifier.fillMaxSize(),
-                                    contentScale = ContentScale.Crop
+                                    contentScale = ContentScale.Crop,
                                 )
                                 Icon(
                                     imageVector = Icons.Filled.PlayCircleOutline,
                                     contentDescription = "Oynat",
                                     tint = Color.White.copy(alpha = 0.8f),
-                                    modifier = Modifier.size(48.dp)
+                                    modifier = Modifier.size(48.dp),
                                 )
                             }
 
@@ -605,7 +596,7 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
                                     model = item.photoUrl,
                                     contentDescription = "Fotoğraf",
                                     modifier = Modifier.fillMaxSize(),
-                                    contentScale = ContentScale.Crop
+                                    contentScale = ContentScale.Crop,
                                 )
                             }
 
@@ -615,7 +606,7 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
                                         imageVector = Icons.Filled.GraphicEq,
                                         contentDescription = "Ses Dalgası",
                                         modifier = Modifier.size(40.dp),
-                                        tint = MaterialTheme.colorScheme.onSurface
+                                        tint = MaterialTheme.colorScheme.onSurface,
                                     )
                                     val formattedDuration = remember(item.durationMillis) {
                                         val totalSec = item.durationMillis / 1000
@@ -626,7 +617,7 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
                                     Text(
                                         text = formattedDuration,
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurface
+                                        color = MaterialTheme.colorScheme.onSurface,
                                     )
                                 }
                             }
@@ -641,12 +632,12 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
         val personalNote = item.personalNote
 
         if (personalNote.isNotBlank()) {
-            var isExpanded by remember { mutableStateOf(false) }
+            var isExpanded by remember { mutableStateOf(value = false) }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 4.dp, vertical = 4.dp)
-                    .animateContentSize()
+                    .animateContentSize(),
             ) {
                 Text(
                     text = personalNote,
@@ -655,7 +646,7 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                     maxLines = if (isExpanded) Int.MAX_VALUE else 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.clickable { isExpanded = !isExpanded }
+                    modifier = Modifier.clickable { isExpanded = !isExpanded },
                 )
             }
         }
@@ -666,12 +657,12 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
 fun SharedMyContentLetterItem(
     letter: SharedMyContentItem.Letter,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val isAudio = !letter.audioUrl.isNullOrBlank()
     val isSealed = letter.privacy == "SEALED"
     val isTimeCapsule = letter.isTimeCapsule
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(value = false) }
 
     Card(
         modifier = modifier
@@ -681,32 +672,32 @@ fun SharedMyContentLetterItem(
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFFFECB3)),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        border = BorderStroke(0.5.dp, Color.LightGray.copy(alpha = 0.5f))
+        border = BorderStroke(0.5.dp, Color.LightGray.copy(alpha = 0.5f)),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(6.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.TopEnd
+                contentAlignment = Alignment.TopEnd,
             ) {
                 if (isSealed && !letter.recipientUsername.isNullOrBlank()) {
                     Surface(
                         color = AnobaGold.copy(alpha = 0.2f),
-                        shape = RoundedCornerShape(3.dp)
+                        shape = RoundedCornerShape(3.dp),
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Lock,
                                 contentDescription = null,
                                 modifier = Modifier.size(8.dp),
-                                tint = Color(0xFF7B5E00)
+                                tint = Color(0xFF7B5E00),
                             )
                             Spacer(Modifier.width(2.dp))
                             Text(
@@ -715,7 +706,7 @@ fun SharedMyContentLetterItem(
                                 fontWeight = FontWeight.Black,
                                 color = Color(0xFF7B5E00),
                                 maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }
@@ -724,7 +715,7 @@ fun SharedMyContentLetterItem(
                         imageVector = Icons.Default.Mic,
                         contentDescription = null,
                         modifier = Modifier.size(12.dp),
-                        tint = AnobaNavy.copy(alpha = 0.35f)
+                        tint = AnobaNavy.copy(alpha = 0.35f),
                     )
                 }
             }
@@ -733,14 +724,14 @@ fun SharedMyContentLetterItem(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     if (isTimeCapsule) {
                         Icon(
                             imageVector = Icons.Default.WatchLater,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         )
                     }
                     if (isSealed) {
@@ -749,7 +740,7 @@ fun SharedMyContentLetterItem(
                             imageVector = Icons.Default.Lock,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         )
                     }
                     if (isAudio) {
@@ -758,7 +749,7 @@ fun SharedMyContentLetterItem(
                             imageVector = Icons.Default.Mic,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         )
                     }
                 }
@@ -768,7 +759,7 @@ fun SharedMyContentLetterItem(
                         imageVector = Icons.Default.Mic,
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
-                        tint = AnobaGold
+                        tint = AnobaGold,
                     )
                     if (letter.audioDuration != null && letter.audioDuration > 0L) {
                         Spacer(Modifier.height(2.dp))
@@ -781,7 +772,7 @@ fun SharedMyContentLetterItem(
                         Text(
                             text = formattedDuration,
                             fontSize = 10.sp,
-                            color = Color.Gray
+                            color = Color.Gray,
                         )
                     }
                 }
@@ -789,18 +780,18 @@ fun SharedMyContentLetterItem(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = 14.dp, bottom = 4.dp)
+                        .padding(top = 14.dp, bottom = 4.dp),
                 ) {
                     if (isExpanded) {
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .verticalScroll(rememberScrollState())
+                                .verticalScroll(rememberScrollState()),
                         ) {
                             Text(
                                 text = letter.content,
                                 style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Serif, fontSize = 10.sp),
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
                             )
                         }
                     } else {
@@ -809,7 +800,7 @@ fun SharedMyContentLetterItem(
                             style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Serif, fontSize = 10.sp),
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
                             maxLines = 4,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                         if (letter.content.length > 50) {
                             Text(
@@ -819,7 +810,7 @@ fun SharedMyContentLetterItem(
                                 modifier = Modifier
                                     .align(Alignment.BottomEnd)
                                     .background(Color(0xFFFFECB3).copy(alpha = 0.9f))
-                                    .clickable { isExpanded = true }
+                                    .clickable { isExpanded = true },
                             )
                         }
                     }

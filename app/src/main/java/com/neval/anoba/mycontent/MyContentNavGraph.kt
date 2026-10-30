@@ -26,7 +26,7 @@ private const val MY_CONTENT_SCREEN = "my_content_screen?userId={userId}"
 fun NavGraphBuilder.myContentNavGraph(navController: NavController) {
     navigation(
         startDestination = MY_CONTENT_SCREEN,
-        route = Constants.MY_CONTENT_NAV_GRAPH
+        route = Constants.MY_CONTENT_NAV_GRAPH,
     ) {
         composable(
             route = MY_CONTENT_SCREEN,
@@ -35,21 +35,27 @@ fun NavGraphBuilder.myContentNavGraph(navController: NavController) {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
-                }
-            )
+                },
+            ),
         ) {
             MyContentScreen(navController = navController)
         }
-        
-        composable(route = Constants.SES_EDIT_SCREEN, arguments = listOf(navArgument("sesId") { type = NavType.StringType })) { backStackEntry ->
+
+        composable(
+            route = Constants.SES_EDIT_SCREEN,
+            arguments = listOf(navArgument("sesId") { type = NavType.StringType }),
+        ) { backStackEntry ->
             val sesId = backStackEntry.arguments?.getString("sesId")
             if (sesId != null) {
                 val viewModel: SesEditViewModel = koinViewModel { parametersOf(sesId) }
                 SesEditScreen(navController = navController, sesId = sesId, viewModel = viewModel)
             }
         }
-        
-        composable(route = Constants.LETTER_EDIT_SCREEN, arguments = listOf(navArgument("letterId") { type = NavType.StringType })) { backStackEntry ->
+
+        composable(
+            route = Constants.LETTER_EDIT_SCREEN,
+            arguments = listOf(navArgument("letterId") { type = NavType.StringType }),
+        ) { backStackEntry ->
             val letterId = backStackEntry.arguments?.getString("letterId")
             if (letterId != null) {
                 val viewModel: LetterEditViewModel = koinViewModel { parametersOf(letterId) }
@@ -57,7 +63,10 @@ fun NavGraphBuilder.myContentNavGraph(navController: NavController) {
             }
         }
 
-        composable(route = Constants.PHOTO_EDIT_SCREEN, arguments = listOf(navArgument("photoId") { type = NavType.StringType })) { backStackEntry ->
+        composable(
+            route = Constants.PHOTO_EDIT_SCREEN,
+            arguments = listOf(navArgument("photoId") { type = NavType.StringType }),
+        ) { backStackEntry ->
             val photoId = backStackEntry.arguments?.getString("photoId")
             if (photoId != null) {
                 val viewModel: PhotoEditViewModel = koinViewModel { parametersOf(photoId) }
@@ -65,10 +74,16 @@ fun NavGraphBuilder.myContentNavGraph(navController: NavController) {
             }
         }
 
-        composable(route = Constants.VIDEO_EDIT_SCREEN, arguments = listOf(navArgument("videoId") { type = NavType.StringType }, navArgument("videoUri") { type = NavType.StringType; nullable = false })) { backStackEntry ->
+        composable(
+            route = Constants.VIDEO_EDIT_SCREEN,
+            arguments = listOf(
+                navArgument("videoId") { type = NavType.StringType },
+                navArgument("videoUri") { type = NavType.StringType; nullable = false },
+            ),
+        ) { backStackEntry ->
             val videoId = backStackEntry.arguments?.getString("videoId")
             val videoUriString = backStackEntry.arguments?.getString("videoUri")
-            if (videoId != null && videoUriString != null) {
+            if ((videoId != null) && (videoUriString != null)) {
                 val viewModel: VideoEditViewModel = koinViewModel()
                 VideoEditScreen(navController = navController, videoId = videoId, videoUri = videoUriString.toUri(), viewModel = viewModel)
             }
