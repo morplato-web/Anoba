@@ -1,4 +1,5 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
+@file:Suppress("unused")
 
 package com.neval.anoba.home
 
@@ -284,7 +285,7 @@ class HomeViewModel(
     fun unpublishSes(sesId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                firestore.collection("ses").document(sesId).update("is_published", false).await()
+                firestore.collection("sesler").document(sesId).update("is_published", false).await()
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Ses yayından kaldırma hatası: ${e.message}")
             }
