@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
+@Suppress("unused")
 class LetterCommentViewModel(
     private val letterId: String,
     private val repository: LetterCommentRepository,

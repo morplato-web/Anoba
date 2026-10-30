@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neval.anoba.letter.letteremoji
 
 import androidx.compose.foundation.background
