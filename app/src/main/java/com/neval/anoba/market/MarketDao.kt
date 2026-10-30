@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
+@Suppress("Unused", "unused")
 @Dao
 interface MarketDao {
     @Query("SELECT * FROM market_table WHERE is_sold = 0 ORDER BY id DESC")

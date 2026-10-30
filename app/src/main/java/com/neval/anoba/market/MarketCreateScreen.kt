@@ -5,14 +5,30 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -21,11 +37,33 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AddPhotoAlternate
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +72,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
@@ -49,13 +88,13 @@ private val TURKEY_PROVINCES = listOf(
     "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir",
     "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat",
     "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman",
-    "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"
+    "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce",
 )
 
 private val GLOBAL_CITIES = listOf(
     "Baku, Azerbaycan 🇦🇿", "Berlin, Almanya 🇩🇪", "London, İngiltere 🇬🇧", "Paris, Fransa 🇫🇷",
     "Tashkent, Özbekistan 🇺🇿", "Jakarta, Endonezya 🇮🇩", "New York, ABD 🇺🇸", "Amsterdam, Hollanda 🇳🇱",
-    "Tokyo, Japonya 🇯🇵", "Seoul, Güney Kore 🇰🇷", "Kuala Lumpur, Malezya 🇲🇾", "Tüm Dünya / Diğer 🌍"
+    "Tokyo, Japonya 🇯🇵", "Seoul, Güney Kore 🇰🇷", "Kuala Lumpur, Malezya 🇲🇾", "Tüm Dünya / Diğer 🌍",
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,14 +102,14 @@ private val GLOBAL_CITIES = listOf(
 fun MarketCreateScreen(
     onNavigateBack: () -> Unit,
     onSuccess: () -> Unit,
-    viewModel: MarketViewModel = koinViewModel()
+    viewModel: MarketViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     val createUiState by viewModel.createUiState.collectAsState()
 
-    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-    var showImageSourceDialog by remember { mutableStateOf(false) }
-    var showLocationSheet by remember { mutableStateOf(false) }
+    var selectedImages by remember { mutableStateOf<List<Uri>>(emptyList()) }
+    var showImageSourceDialog by remember { mutableStateOf(value = false) }
+    var showLocationSheet by remember { mutableStateOf(value = false) }
     var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
 
     var title by remember { mutableStateOf("") }
@@ -81,19 +120,22 @@ fun MarketCreateScreen(
     var description by remember { mutableStateOf("") }
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
-    ) { uri ->
-        if (uri != null) {
-            selectedImageUri = uri
+        contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = 4),
+    ) { uris ->
+        if (uris.isNotEmpty()) {
+            val combined = (selectedImages + uris).distinct().take(4)
+            selectedImages = combined
         }
     }
 
     val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture()
+        contract = ActivityResultContracts.TakePicture(),
     ) { success ->
         if (success) {
-            tempCameraUri?.let {
-                selectedImageUri = it
+            tempCameraUri?.let { uri ->
+                if (selectedImages.size < 4) {
+                    selectedImages = (selectedImages + uri).distinct().take(4)
+                }
             }
         }
     }
@@ -124,7 +166,6 @@ fun MarketCreateScreen(
         }
     }
 
-    // Camera / Gallery Choice Dialog
     if (showImageSourceDialog) {
         AlertDialog(
             onDismissRequest = { showImageSourceDialog = false },
@@ -139,11 +180,11 @@ fun MarketCreateScreen(
                                 openCamera()
                             },
                         shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFF232066)
+                        color = Color(0xFF232066),
                     ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Icon(Icons.Default.CameraAlt, contentDescription = null, tint = Color(0xFFFFD700))
                             Spacer(Modifier.width(12.dp))
@@ -159,15 +200,15 @@ fun MarketCreateScreen(
                                 photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                             },
                         shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFF1E293B)
+                        color = Color(0xFF1E293B),
                     ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Icon(Icons.Default.PhotoLibrary, contentDescription = null, tint = Color(0xFFFFD700))
                             Spacer(Modifier.width(12.dp))
-                            Text("Galeriden Fotoğraf Seç 🖼️", color = Color.White, fontWeight = FontWeight.Bold)
+                            Text("Galeriden Seç (En fazla 4 Adet) 🖼️", color = Color.White, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -178,15 +219,14 @@ fun MarketCreateScreen(
                     Text("Vazgeç", color = Color(0xFF94A3B8))
                 }
             },
-            containerColor = Color(0xFF0F172A)
+            containerColor = Color(0xFF131826),
         )
     }
 
-    // Küresel Konum Seçim BottomSheet (81 İl + Arama)
     if (showLocationSheet) {
         ModalBottomSheet(
             onDismissRequest = { showLocationSheet = false },
-            containerColor = Color(0xFF1E293B)
+            containerColor = Color(0xFF1E293B),
         ) {
             var locationQuery by remember { mutableStateOf("") }
             val filteredProvinces = remember(locationQuery) {
@@ -202,13 +242,13 @@ fun MarketCreateScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.85f)
-                    .padding(16.dp)
+                    .padding(16.dp),
             ) {
                 Text(
                     text = "Konum Seçin (Şehir / Ülke) 📍",
                     color = Color.White,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -221,21 +261,21 @@ fun MarketCreateScreen(
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color(0xFFFFD700)) },
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color(0xFF0F172A),
-                        unfocusedContainerColor = Color(0xFF0F172A),
+                        focusedContainerColor = Color(0xFF131826),
+                        unfocusedContainerColor = Color(0xFF131826),
                         focusedBorderColor = Color(0xFFFFD700),
-                        unfocusedBorderColor = Color(0xFF334155),
+                        unfocusedBorderColor = Color(0xFF2E384D),
                         focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
+                        unfocusedTextColor = Color.White,
                     ),
-                    singleLine = true
+                    singleLine = true,
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(filteredProvinces) { loc ->
                         Surface(
@@ -246,11 +286,11 @@ fun MarketCreateScreen(
                                     showLocationSheet = false
                                 },
                             shape = RoundedCornerShape(10.dp),
-                            color = if (city == loc) Color(0xFFFFD700).copy(alpha = 0.2f) else Color(0xFF0F172A)
+                            color = if (city == loc) Color(0xFFFFD700).copy(alpha = 0.2f) else Color(0xFF131826),
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFFFFD700), modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(12.dp))
@@ -258,7 +298,7 @@ fun MarketCreateScreen(
                                     text = loc,
                                     color = if (city == loc) Color(0xFFFFD700) else Color.White,
                                     fontWeight = if (city == loc) FontWeight.Bold else FontWeight.Normal,
-                                    fontSize = 15.sp
+                                    fontSize = 15.sp,
                                 )
                             }
                         }
@@ -269,7 +309,7 @@ fun MarketCreateScreen(
     }
 
     Scaffold(
-        containerColor = Color(0xFF0F172A),
+        containerColor = Color(0xFF131826),
         topBar = {
             Surface(color = Color(0xFF1E293B), shadowElevation = 4.dp) {
                 Row(
@@ -278,7 +318,7 @@ fun MarketCreateScreen(
                         .statusBarsPadding()
                         .height(56.dp)
                         .padding(horizontal = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = Color.White)
@@ -286,53 +326,111 @@ fun MarketCreateScreen(
                     Text("Yeni İlan Oluştur 🛍️", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
             }
-        }
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .navigationBarsPadding()
-                .imePadding() // 🚀 Klavyenin metin kutularını kapatmasını engeller
+                .imePadding()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // Photo Picker Section
-            Text("1. Ürün Fotoğrafı 🖼️", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color(0xFF1E293B))
-                    .border(2.dp, if (selectedImageUri != null) Color(0xFFFFD700) else Color(0xFF334155), RoundedCornerShape(16.dp))
-                    .clickable { showImageSourceDialog = true },
-                contentAlignment = Alignment.Center
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                if (selectedImageUri != null) {
-                    AsyncImage(
-                        model = selectedImageUri,
-                        contentDescription = "Ürün Fotoğrafı",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                } else {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Default.AddPhotoAlternate,
-                            contentDescription = null,
-                            tint = Color(0xFFFFD700),
-                            modifier = Modifier.size(48.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("Kamera veya Galeriden Fotoğraf Ekle", color = Color(0xFF94A3B8), fontSize = 14.sp)
+                Text("1. Ürün Fotoğrafları 📸", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text("${selectedImages.size}/4 Fotoğraf", color = Color(0xFFFFD700), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+            }
+
+            // 4'lü Fotoğraf Seçim Tablası
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                for (slotIndex in 0 until 4) {
+                    val uri = selectedImages.getOrNull(slotIndex)
+                    val label = when (slotIndex) {
+                        0 -> "Kapak"
+                        1 -> "Arka"
+                        2 -> "Yan"
+                        else -> "Detay"
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(95.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color(0xFF1E293B))
+                            .border(
+                                width = 1.dp,
+                                color = if (uri != null) Color(0xFFFFD700) else Color(0xFF2E384D),
+                                shape = RoundedCornerShape(12.dp),
+                            )
+                            .clickable {
+                                if (uri == null) {
+                                    showImageSourceDialog = true
+                                }
+                            },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        if (uri != null) {
+                            AsyncImage(
+                                model = uri,
+                                contentDescription = label,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(4.dp)
+                                    .size(20.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.Black.copy(alpha = 0.7f))
+                                    .clickable {
+                                        selectedImages = selectedImages.filterIndexed { index, _ -> index != slotIndex }
+                                    },
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Icon(Icons.Default.Close, contentDescription = "Kaldır", tint = Color.White, modifier = Modifier.size(12.dp))
+                            }
+                            Surface(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .fillMaxWidth(),
+                                color = Color.Black.copy(alpha = 0.65f),
+                            ) {
+                                Text(
+                                    text = label,
+                                    color = Color(0xFFFFD700),
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(vertical = 2.dp),
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
+                        } else {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(
+                                    imageVector = Icons.Default.AddPhotoAlternate,
+                                    contentDescription = null,
+                                    tint = Color(0xFF94A3B8),
+                                    modifier = Modifier.size(24.dp),
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(label, color = Color(0xFF94A3B8), fontSize = 11.sp, fontWeight = FontWeight.Medium)
+                            }
+                        }
                     }
                 }
             }
 
-            // Info Fields
             Text("2. İlan Detayları 📝", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
 
             OutlinedTextField(
@@ -343,12 +441,12 @@ fun MarketCreateScreen(
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFFFFD700),
-                    unfocusedBorderColor = Color(0xFF334155),
+                    unfocusedBorderColor = Color(0xFF2E384D),
                     focusedLabelColor = Color(0xFFFFD700),
                     unfocusedLabelColor = Color(0xFF94A3B8),
                     focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
-                )
+                    unfocusedTextColor = Color.White,
+                ),
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -361,47 +459,45 @@ fun MarketCreateScreen(
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFFFD700),
-                        unfocusedBorderColor = Color(0xFF334155),
+                        unfocusedBorderColor = Color(0xFF2E384D),
                         focusedLabelColor = Color(0xFFFFD700),
                         unfocusedLabelColor = Color(0xFF94A3B8),
                         focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
-                    )
+                        unfocusedTextColor = Color.White,
+                    ),
                 )
 
-                // 🚀 Akıllı Konum Seçici (81 İl + Arama)
                 Surface(
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp)
                         .clickable { showLocationSheet = true },
                     shape = RoundedCornerShape(12.dp),
-                    color = Color(0xFF0F172A),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF334155))
+                    color = Color(0xFF131826),
+                    border = BorderStroke(1.dp, Color(0xFF2E384D)),
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(horizontal = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFFFFD700), modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = city.ifBlank { "Şehir / Konum Seç" },
+                            text = city.ifBlank { "Şehir Seç" },
                             color = if (city.isNotBlank()) Color.White else Color(0xFF94A3B8),
                             fontSize = 13.sp,
-                            maxLines = 1
+                            maxLines = 1,
                         )
                     }
                 }
             }
 
-            // Category Selection Dropdown/Chips
             Text("Kategori", color = Color(0xFF94A3B8), fontSize = 14.sp)
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(listOf("Elektronik", "Giyim", "Ev & Yaşam", "Kitap & Hobi", "El Yapımı", "Diğer")) { cat ->
                     val isSelected = category == cat
@@ -413,13 +509,18 @@ fun MarketCreateScreen(
                             selectedContainerColor = Color(0xFFFFD700),
                             selectedLabelColor = Color.Black,
                             containerColor = Color(0xFF1E293B),
-                            labelColor = Color.White
-                        )
+                            labelColor = Color.White,
+                        ),
+                        border = FilterChipDefaults.filterChipBorder(
+                            borderColor = Color(0xFF2E384D),
+                            selectedBorderColor = Color(0xFFFFD700),
+                            enabled = true,
+                            selected = isSelected,
+                        ),
                     )
                 }
             }
 
-            // Condition Selection
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 FilterChip(
                     selected = condition == "İkinci El",
@@ -429,8 +530,14 @@ fun MarketCreateScreen(
                         selectedContainerColor = Color(0xFFFFD700),
                         selectedLabelColor = Color.Black,
                         containerColor = Color(0xFF1E293B),
-                        labelColor = Color.White
-                    )
+                        labelColor = Color.White,
+                    ),
+                    border = FilterChipDefaults.filterChipBorder(
+                        borderColor = Color(0xFF2E384D),
+                        selectedBorderColor = Color(0xFFFFD700),
+                        enabled = true,
+                        selected = condition == "İkinci El",
+                    ),
                 )
                 FilterChip(
                     selected = condition == "Sıfır",
@@ -440,8 +547,14 @@ fun MarketCreateScreen(
                         selectedContainerColor = Color(0xFFFFD700),
                         selectedLabelColor = Color.Black,
                         containerColor = Color(0xFF1E293B),
-                        labelColor = Color.White
-                    )
+                        labelColor = Color.White,
+                    ),
+                    border = FilterChipDefaults.filterChipBorder(
+                        borderColor = Color(0xFF2E384D),
+                        selectedBorderColor = Color(0xFFFFD700),
+                        enabled = true,
+                        selected = condition == "Sıfır",
+                    ),
                 )
             }
 
@@ -455,31 +568,31 @@ fun MarketCreateScreen(
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFFFFD700),
-                    unfocusedBorderColor = Color(0xFF334155),
+                    unfocusedBorderColor = Color(0xFF2E384D),
                     focusedLabelColor = Color(0xFFFFD700),
                     unfocusedLabelColor = Color(0xFF94A3B8),
                     focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
-                )
+                    unfocusedTextColor = Color.White,
+                ),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
                 onClick = {
-                    if (selectedImageUri == null) {
-                        Toast.makeText(context, "Lütfen ürün fotoğrafı seçiniz", Toast.LENGTH_SHORT).show()
+                    if (selectedImages.isEmpty()) {
+                        Toast.makeText(context, "Lütfen en az bir ürün fotoğrafı seçiniz", Toast.LENGTH_SHORT).show()
                         return@Button
                     }
                     viewModel.createMarketItem(
                         context = context,
-                        imageUri = selectedImageUri!!,
+                        imageUris = selectedImages,
                         title = title,
                         description = description,
                         priceText = priceText,
                         category = category,
                         city = city,
-                        condition = condition
+                        condition = condition,
                     )
                 },
                 enabled = createUiState !is MarketCreateUiState.Loading,
@@ -487,7 +600,7 @@ fun MarketCreateScreen(
                     .fillMaxWidth()
                     .height(54.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700))
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700)),
             ) {
                 if (createUiState is MarketCreateUiState.Loading) {
                     CircularProgressIndicator(color = Color.Black, modifier = Modifier.size(24.dp))

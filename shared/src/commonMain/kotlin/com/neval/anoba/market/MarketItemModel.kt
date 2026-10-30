@@ -17,6 +17,7 @@ data class SharedMarketItemModel(
     var condition: String = "İkinci El",
     var city: String = "",
     var photoUrl: String = "",
+    var photoUrls: List<String> = emptyList(),
     var ownerId: String = "",
     var username: String = "",
     var userProfileImageUrl: String? = null,

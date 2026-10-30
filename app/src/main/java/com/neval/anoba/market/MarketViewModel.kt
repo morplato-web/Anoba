@@ -4,7 +4,12 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 sealed interface MarketCreateUiState {
@@ -15,7 +20,7 @@ sealed interface MarketCreateUiState {
 }
 
 class MarketViewModel(
-    private val marketRepository: MarketRepository
+    private val marketRepository: MarketRepository,
 ) : ViewModel() {
 
     private val _selectedCategory = MutableStateFlow("Tümü")
@@ -34,13 +39,13 @@ class MarketViewModel(
         "Ev & Yaşam",
         "Kitap & Hobi",
         "El Yapımı",
-        "Diğer"
+        "Diğer",
     )
 
     val items: StateFlow<List<MarketItemModel>> = combine(
         marketRepository.getMarketItemsStream(),
         _selectedCategory,
-        _searchQuery
+        _searchQuery,
     ) { allItems, category, query ->
         allItems
             .sortedByDescending { it.createdAt?.time ?: 0L }
@@ -55,7 +60,7 @@ class MarketViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     init {
@@ -74,14 +79,18 @@ class MarketViewModel(
 
     fun createMarketItem(
         context: Context,
-        imageUri: Uri,
+        imageUris: List<Uri>,
         title: String,
         description: String,
         priceText: String,
         category: String,
         city: String,
-        condition: String
+        condition: String,
     ) {
+        if (imageUris.isEmpty()) {
+            _createUiState.value = MarketCreateUiState.Error("Lütfen en az bir ürün fotoğrafı seçiniz")
+            return
+        }
         if (title.isBlank()) {
             _createUiState.value = MarketCreateUiState.Error("Lütfen ilan başlığı giriniz")
             return
@@ -100,13 +109,13 @@ class MarketViewModel(
         viewModelScope.launch {
             val result = marketRepository.createMarketItem(
                 context = context,
-                imageUri = imageUri,
+                imageUris = imageUris,
                 title = title,
                 description = description,
                 price = price,
                 category = category,
                 city = city,
-                condition = condition
+                condition = condition,
             )
             result.onSuccess {
                 _createUiState.value = MarketCreateUiState.Success
@@ -128,7 +137,7 @@ class MarketViewModel(
         category: String,
         city: String,
         condition: String,
-        onSuccess: () -> Unit
+        onSuccess: () -> Unit,
     ) {
         val price = priceText.toDoubleOrNull() ?: 0.0
         viewModelScope.launch {
@@ -139,7 +148,7 @@ class MarketViewModel(
                 price = price,
                 category = category,
                 city = city,
-                condition = condition
+                condition = condition,
             )
             if (success) {
                 onSuccess()

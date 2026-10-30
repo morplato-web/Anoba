@@ -22,7 +22,7 @@ class MarketRepository(
     private val firestore: FirebaseFirestore,
     private val storage: FirebaseStorage,
     private val auth: FirebaseAuth,
-    private val marketDao: MarketDao
+    private val marketDao: MarketDao,
 ) {
 
     fun getMarketItemsStream(): Flow<List<MarketItemModel>> {
@@ -38,7 +38,12 @@ class MarketRepository(
                 .await()
 
             val items = snapshot.documents.mapNotNull { doc ->
-                doc.toObject(MarketItemModel::class.java)?.apply { id = doc.id }
+                doc.toObject(MarketItemModel::class.java)?.apply {
+                    id = doc.id
+                    if (photoUrls.isEmpty() && photoUrl.isNotBlank()) {
+                        photoUrls = listOf(photoUrl)
+                    }
+                }
             }
 
             marketDao.clearAll()
@@ -50,27 +55,36 @@ class MarketRepository(
 
     suspend fun createMarketItem(
         context: Context,
-        imageUri: Uri,
+        imageUris: List<Uri>,
         title: String,
         description: String,
         price: Double,
         category: String,
         city: String,
-        condition: String
+        condition: String,
     ): Result<MarketItemModel> = withContext(Dispatchers.IO) {
         try {
             val currentUser = auth.currentUser ?: return@withContext Result.failure(Exception("Oturum açılmamış"))
-            val compressedBytes = compressImage(context, imageUri)
-                ?: return@withContext Result.failure(Exception("Görsel sıkıştırılamadı"))
+            if (imageUris.isEmpty()) return@withContext Result.failure(Exception("En az bir görsel seçilmelidir"))
 
-            val storagePath = "market_photos/${currentUser.uid}_${System.currentTimeMillis()}.jpg"
-            val storageRef = storage.reference.child(storagePath)
-            
-            storageRef.putBytes(compressedBytes).await()
-            val downloadUrl = storageRef.downloadUrl.await().toString()
+            val uploadedUrls = mutableListOf<String>()
+            val timestamp = System.currentTimeMillis()
+
+            for ((index, uri) in imageUris.asSequence().take(4).withIndex()) {
+                val compressedBytes = compressImage(context, uri) ?: continue
+                val storagePath = "market_photos/${currentUser.uid}_${timestamp}_$index.jpg"
+                val storageRef = storage.reference.child(storagePath)
+                storageRef.putBytes(compressedBytes).await()
+                val downloadUrl = storageRef.downloadUrl.await().toString()
+                uploadedUrls.add(downloadUrl)
+            }
+
+            if (uploadedUrls.isEmpty()) {
+                return@withContext Result.failure(Exception("Görseller yüklenemedi"))
+            }
 
             val docRef = firestore.collection("market_items").document()
-            
+
             val userDoc = try {
                 firestore.collection("users").document(currentUser.uid).get().await()
             } catch (_: Exception) { null }
@@ -94,14 +108,15 @@ class MarketRepository(
                 category = category,
                 condition = condition,
                 city = city,
-                photoUrl = downloadUrl,
+                photoUrl = uploadedUrls.first(),
+                photoUrls = uploadedUrls,
                 ownerId = currentUser.uid,
                 username = userHandle,
                 userProfileImageUrl = userProfilePhoto,
                 createdAt = Date(),
                 isSold = false,
                 isOfficial = false,
-                userBadgeType = "NONE"
+                userBadgeType = "NONE",
             )
 
             docRef.set(newItem).await()
@@ -121,7 +136,7 @@ class MarketRepository(
         price: Double,
         category: String,
         city: String,
-        condition: String
+        condition: String,
     ): Boolean = withContext(Dispatchers.IO) {
         try {
             val existing = marketDao.getItemById(itemId) ?: return@withContext false
@@ -131,7 +146,7 @@ class MarketRepository(
                 price = price,
                 category = category,
                 city = city,
-                condition = condition
+                condition = condition,
             )
 
             marketDao.insert(updated)
@@ -147,7 +162,7 @@ class MarketRepository(
         try {
             val existing = marketDao.getItemById(itemId) ?: return@withContext false
             val updated = existing.copy(isSold = true)
-            
+
             marketDao.insert(updated)
             firestore.collection("market_items").document(itemId)
                 .update("is_sold", true)
@@ -180,13 +195,13 @@ class MarketRepository(
 
             val origWidth = boundsOptions.outWidth
             val origHeight = boundsOptions.outHeight
-            if (origWidth <= 0 || origHeight <= 0) return@withContext null
+            if ((origWidth <= 0) || (origHeight <= 0)) return@withContext null
 
             val maxDimension = 1080
             var sampleSize = 1
             val halfWidth = origWidth / 2
             val halfHeight = origHeight / 2
-            while ((halfWidth / sampleSize) >= maxDimension && (halfHeight / sampleSize) >= maxDimension) {
+            while (((halfWidth / sampleSize) >= maxDimension) && ((halfHeight / sampleSize) >= maxDimension)) {
                 sampleSize *= 2
             }
 
@@ -199,10 +214,11 @@ class MarketRepository(
                 BitmapFactory.decodeStream(input, null, decodeOptions)
             } ?: return@withContext null
 
-            val currentWidth = if (rotation == 90 || rotation == 270) sampledBitmap.height else sampledBitmap.width
-            val currentHeight = if (rotation == 90 || rotation == 270) sampledBitmap.width else sampledBitmap.height
+            val isRotated = (rotation == 90) || (rotation == 270)
+            val currentWidth = if (isRotated) sampledBitmap.height else sampledBitmap.width
+            val currentHeight = if (isRotated) sampledBitmap.width else sampledBitmap.height
 
-            val scale = if (currentWidth > maxDimension || currentHeight > maxDimension) {
+            val scale = if ((currentWidth > maxDimension) || (currentHeight > maxDimension)) {
                 maxDimension.toFloat() / maxOf(currentWidth, currentHeight).toFloat()
             } else 1.0f
 
@@ -211,12 +227,12 @@ class MarketRepository(
             if (rotation != 0) matrix.postRotate(rotation.toFloat())
 
             val finalBitmap = Bitmap.createBitmap(
-                sampledBitmap, 0, 0, sampledBitmap.width, sampledBitmap.height, matrix, true
+                sampledBitmap, 0, 0, sampledBitmap.width, sampledBitmap.height, matrix, true,
             )
 
             val outputStream = ByteArrayOutputStream()
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
-            
+
             if (sampledBitmap != finalBitmap) sampledBitmap.recycle()
             finalBitmap.recycle()
 
@@ -234,7 +250,7 @@ class MarketRepository(
                 val exif = ExifInterface(inputStream)
                 val orientation = exif.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL
+                    ExifInterface.ORIENTATION_NORMAL,
                 )
                 rotation = when (orientation) {
                     ExifInterface.ORIENTATION_ROTATE_90 -> 90

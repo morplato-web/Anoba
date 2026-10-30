@@ -5,16 +5,33 @@ import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
+@Suppress("Unused", "unused")
+class StringListTypeConverter {
+    @TypeConverter
+    fun fromString(value: String?): List<String> {
+        if (value.isNullOrBlank()) return emptyList()
+        return value.split("|||").filter { it.isNotBlank() }
+    }
+
+    @TypeConverter
+    fun fromList(list: List<String>?): String {
+        return list?.asSequence()?.filter { it.isNotBlank() }?.joinToString("|||") ?: ""
+    }
+}
+
 @Keep
 @IgnoreExtraProperties
 @Parcelize
 @Entity(tableName = "market_table")
+@TypeConverters(StringListTypeConverter::class)
 data class MarketItemModel(
     @DocumentId
     @PrimaryKey
@@ -27,6 +44,7 @@ data class MarketItemModel(
     var condition: String = "İkinci El",
     var city: String = "",
     var photoUrl: String = "",
+    var photoUrls: List<String> = emptyList(),
     var ownerId: String = "",
     var username: String = "",
     var userProfileImageUrl: String? = null,
@@ -43,7 +61,7 @@ data class MarketItemModel(
     var isOfficial: Boolean = false,
 
     var userBadgeType: String? = "NONE",
-    var countryCode: String? = null
+    var countryCode: String? = null,
 ) : Parcelable {
-    constructor() : this("", "", "", 0.0, "₺", "Genel", "İkinci El", "", "", "", "", null, null, false, false, "NONE", null)
+    constructor() : this("", "", "", 0.0, "₺", "Genel", "İkinci El", "", "", emptyList(), "", "", null, null, false, false, "NONE", null)
 }
