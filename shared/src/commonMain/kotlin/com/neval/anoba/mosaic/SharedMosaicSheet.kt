@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -52,6 +53,8 @@ data class SharedMosaicItem(
 fun SharedMosaicSheet(
     isVisible: Boolean,
     onDismiss: () -> Unit,
+    items: List<SharedMosaicItem> = emptyList(),
+    onItemClick: (SharedMosaicItem) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val mosaicColors = remember {
@@ -127,29 +130,58 @@ fun SharedMosaicSheet(
                         verticalArrangement = Arrangement.spacedBy(6.dp),
                         modifier = Modifier.fillMaxSize(),
                     ) {
-                        items(120) { index ->
-                            val color = mosaicColors[index % mosaicColors.size]
-                            Surface(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .aspectRatio(1f)
-                                    .clickable { },
-                                shape = RoundedCornerShape(6.dp),
-                                color = color.copy(alpha = 0.85f),
-                            ) {
-                                Box(
-                                    contentAlignment = Alignment.Center,
-                                    modifier = Modifier.fillMaxSize(),
+                        if (items.isNotEmpty()) {
+                            items(items, key = { it.id }) { item ->
+                                Surface(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .aspectRatio(1f)
+                                        .clickable { onItemClick(item) },
+                                    shape = RoundedCornerShape(6.dp),
+                                    color = item.color.copy(alpha = 0.85f),
                                 ) {
-                                    if ((index % 17 == 0)) {
-                                        Text("Reklam", fontSize = 8.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                                    } else {
-                                        Icon(
-                                            imageVector = Icons.Default.PlayCircle,
-                                            contentDescription = null,
-                                            tint = Color.White.copy(alpha = 0.7f),
-                                            modifier = Modifier.size(16.dp),
-                                        )
+                                    Box(
+                                        contentAlignment = Alignment.Center,
+                                        modifier = Modifier.fillMaxSize(),
+                                    ) {
+                                        if (item.isAd) {
+                                            Text("Reklam", fontSize = 8.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                                        } else {
+                                            Icon(
+                                                imageVector = Icons.Default.PlayCircle,
+                                                contentDescription = null,
+                                                tint = Color.White.copy(alpha = 0.7f),
+                                                modifier = Modifier.size(16.dp),
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            items(120) { index ->
+                                val color = mosaicColors[index % mosaicColors.size]
+                                Surface(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .aspectRatio(1f)
+                                        .clickable { },
+                                    shape = RoundedCornerShape(6.dp),
+                                    color = color.copy(alpha = 0.85f),
+                                ) {
+                                    Box(
+                                        contentAlignment = Alignment.Center,
+                                        modifier = Modifier.fillMaxSize(),
+                                    ) {
+                                        if (index % 17 == 0) {
+                                            Text("Reklam", fontSize = 8.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                                        } else {
+                                            Icon(
+                                                imageVector = Icons.Default.PlayCircle,
+                                                contentDescription = null,
+                                                tint = Color.White.copy(alpha = 0.7f),
+                                                modifier = Modifier.size(16.dp),
+                                            )
+                                        }
                                     }
                                 }
                             }
