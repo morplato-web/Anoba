@@ -17,7 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -48,6 +51,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -57,6 +61,7 @@ import coil3.compose.AsyncImage
 import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.common.utils.getRelativeTimeString
 
+@Suppress("Unused", "unused")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SharedMarketDetailScreen(
@@ -74,9 +79,19 @@ fun SharedMarketDetailScreen(
     var showDeleteConfirmDialog by remember { mutableStateOf(value = false) }
     var showReportDialog by remember { mutableStateOf(value = false) }
 
-    val canManage = item != null && (isAdmin || item.ownerId == currentUserId || currentUserId == "me")
+    val canManage = (item != null) && (isAdmin || item.ownerId == currentUserId || currentUserId == "me")
 
-    if (showDeleteConfirmDialog && item != null) {
+    val allPhotos = remember(item) {
+        if (item == null) emptyList()
+        else {
+            val list = item.photoUrls.filter { it.isNotBlank() }
+            if (list.isNotEmpty()) list else if (item.photoUrl.isNotBlank()) listOf(item.photoUrl) else emptyList()
+        }
+    }
+
+    val pagerState = rememberPagerState { maxOf(1, allPhotos.size) }
+
+    if (showDeleteConfirmDialog && (item != null)) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirmDialog = false },
             title = { Text("İlanı Sil", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp) },
@@ -221,7 +236,7 @@ fun SharedMarketDetailScreen(
                     .padding(innerPadding)
                     .verticalScroll(rememberScrollState()),
             ) {
-                // Görsel Katmanı
+                // Kaydırılabilir Çoklu Fotoğraf Galerisi
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -229,13 +244,39 @@ fun SharedMarketDetailScreen(
                         .background(Color(0xFF131826)),
                     contentAlignment = Alignment.Center,
                 ) {
-                    if (item.photoUrl.isNotBlank()) {
-                        AsyncImage(
-                            model = item.photoUrl,
-                            contentDescription = item.title,
-                            contentScale = ContentScale.Crop,
+                    if (allPhotos.isNotEmpty()) {
+                        HorizontalPager(
+                            state = pagerState,
                             modifier = Modifier.fillMaxSize(),
-                        )
+                        ) { page ->
+                            val currentPhoto = allPhotos.getOrNull(page) ?: ""
+                            AsyncImage(
+                                model = currentPhoto,
+                                contentDescription = "${item.title} - $page",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        }
+
+                        // Galeri Sayfa Noktaları (Indicators)
+                        if (allPhotos.size > 1) {
+                            Row(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 12.dp),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                            ) {
+                                repeat(allPhotos.size) { index ->
+                                    val isSelected = pagerState.currentPage == index
+                                    Box(
+                                        modifier = Modifier
+                                            .size(if (isSelected) 8.dp else 6.dp)
+                                            .clip(CircleShape)
+                                            .background(if (isSelected) Color(0xFFFFD700) else Color.White.copy(alpha = 0.5f)),
+                                    )
+                                }
+                            }
+                        }
                     } else {
                         Icon(
                             imageVector = Icons.Default.ShoppingBag,
@@ -245,7 +286,7 @@ fun SharedMarketDetailScreen(
                         )
                     }
 
-                    val priceDisplay = if (item.price % 1.0 == 0.0) item.price.toLong().toString() else item.price.toString()
+                    val priceDisplay = if ((item.price % 1.0 == 0.0)) item.price.toLong().toString() else item.price.toString()
 
                     Surface(
                         modifier = Modifier

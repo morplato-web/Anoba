@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -32,6 +33,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AddPhotoAlternate
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -50,6 +52,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -60,6 +63,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -81,11 +85,12 @@ private val GLOBAL_CITIES = listOf(
     "Tokyo, Japonya 🇯🇵", "Seoul, Güney Kore 🇰🇷", "Kuala Lumpur, Malezya 🇲🇾", "Tüm Dünya / Diğer 🌍",
 )
 
+@Suppress("Unused", "unused")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SharedMarketCreateScreen(
-    selectedImageUri: String? = null,
-    onPickImage: () -> Unit = {},
+    selectedImageUris: List<String> = emptyList(),
+    onPickImages: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
     onSuccess: (SharedMarketItemModel) -> Unit = {},
 ) {
@@ -98,6 +103,10 @@ fun SharedMarketCreateScreen(
     var city by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var isSubmitting by remember { mutableStateOf(value = false) }
+
+    val internalImages = remember(selectedImageUris) {
+        mutableStateListOf<String>().apply { addAll(selectedImageUris.take(4)) }
+    }
 
     val categories = remember {
         listOf("Elektronik", "Giyim & Moda", "Ev & Yaşam", "Araç & Vasıta", "Spor & Hobi", "Kitap & Oyun", "Diğer")
@@ -236,46 +245,99 @@ fun SharedMarketCreateScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // Görsel Katmanı
-            Text("1. Ürün Görseli 🖼️", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color(0xFF1E293B))
-                    .border(2.dp, Color(0xFFFFD700), RoundedCornerShape(16.dp))
-                    .clickable { onPickImage() },
-                contentAlignment = Alignment.Center,
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                if (!selectedImageUri.isNullOrBlank()) {
-                    AsyncImage(
-                        model = selectedImageUri,
-                        contentDescription = "Seçilen Ürün",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                    )
-                } else {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Default.AddPhotoAlternate,
-                            contentDescription = null,
-                            tint = Color(0xFFFFD700),
-                            modifier = Modifier.size(48.dp),
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Fotoğraf Yüklemek İçin Dokunun",
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp,
-                        )
+                Text("1. Ürün Fotoğrafları 📸", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text("${internalImages.size}/4 Fotoğraf", color = Color(0xFFFFD700), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+            }
+
+            // 4'lü Fotoğraf Seçim Tablası
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                for (slotIndex in 0 until 4) {
+                    val uri = internalImages.getOrNull(slotIndex)
+                    val label = when (slotIndex) {
+                        0 -> "Kapak"
+                        1 -> "Arka"
+                        2 -> "Yan"
+                        else -> "Detay"
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(95.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color(0xFF1E293B))
+                            .border(
+                                width = 1.dp,
+                                color = if (uri != null) Color(0xFFFFD700) else Color(0xFF2E384D),
+                                shape = RoundedCornerShape(12.dp),
+                            )
+                            .clickable {
+                                if (uri == null) {
+                                    onPickImages()
+                                }
+                            },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        if (uri != null) {
+                            AsyncImage(
+                                model = uri,
+                                contentDescription = label,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(4.dp)
+                                    .size(20.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.Black.copy(alpha = 0.7f))
+                                    .clickable {
+                                        internalImages.removeAt(slotIndex)
+                                    },
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Icon(Icons.Default.Close, contentDescription = "Kaldır", tint = Color.White, modifier = Modifier.size(12.dp))
+                            }
+                            Surface(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .fillMaxWidth(),
+                                color = Color.Black.copy(alpha = 0.65f),
+                            ) {
+                                Text(
+                                    text = label,
+                                    color = Color(0xFFFFD700),
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(vertical = 2.dp),
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
+                        } else {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(
+                                    imageVector = Icons.Default.AddPhotoAlternate,
+                                    contentDescription = null,
+                                    tint = Color(0xFF94A3B8),
+                                    modifier = Modifier.size(24.dp),
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(label, color = Color(0xFF94A3B8), fontSize = 11.sp, fontWeight = FontWeight.Medium)
+                            }
+                        }
                     }
                 }
             }
 
-            // Form Alanları
             Text("2. İlan Detayları 📝", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
 
             OutlinedTextField(
@@ -346,7 +408,6 @@ fun SharedMarketCreateScreen(
                 }
             }
 
-            // Kategori Çipleri
             Text("Kategori", color = Color(0xFF94A3B8), fontSize = 14.sp)
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -374,7 +435,6 @@ fun SharedMarketCreateScreen(
                 }
             }
 
-            // Durum Çipleri
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 FilterChip(
                     selected = condition == "İkinci El",
@@ -436,6 +496,7 @@ fun SharedMarketCreateScreen(
                 onClick = {
                     if (!isFormValid) return@Button
                     isSubmitting = true
+                    val photos = internalImages.toList()
                     val newItem = SharedMarketItemModel(
                         id = "item_${kotlin.random.Random.nextLong(100000, 999999)}",
                         title = title.trim(),
@@ -445,7 +506,8 @@ fun SharedMarketCreateScreen(
                         category = category,
                         condition = condition,
                         city = city.ifBlank { "Türkiye 🇹🇷" },
-                        photoUrl = selectedImageUri ?: "",
+                        photoUrl = photos.firstOrNull() ?: "",
+                        photoUrls = photos,
                         ownerId = "me",
                         username = "Siz",
                         isSold = false,
