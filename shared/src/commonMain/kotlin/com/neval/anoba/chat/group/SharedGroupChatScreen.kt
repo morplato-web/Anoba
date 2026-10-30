@@ -75,6 +75,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.neval.anoba.chat.general.SharedChatMessage
+import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
 
@@ -178,19 +179,30 @@ fun SharedGroupChatScreen(
                                     .padding(vertical = 4.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(38.dp)
-                                        .clip(CircleShape)
-                                        .background(AnobaGold.copy(alpha = 0.2f)),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Group,
-                                        contentDescription = null,
-                                        tint = AnobaNavy,
-                                        modifier = Modifier.size(22.dp)
+                                if (!group?.imageUrl.isNullOrBlank()) {
+                                    AsyncImage(
+                                        model = group.imageUrl,
+                                        contentDescription = group.name,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(38.dp)
+                                            .clip(CircleShape),
                                     )
+                                } else {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(38.dp)
+                                            .clip(CircleShape)
+                                            .background(AnobaGold.copy(alpha = 0.2f)),
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Group,
+                                            contentDescription = null,
+                                            tint = AnobaNavy,
+                                            modifier = Modifier.size(22.dp),
+                                        )
+                                    }
                                 }
                                 Spacer(modifier = Modifier.width(10.dp))
                                 Column {
@@ -420,18 +432,28 @@ private fun GroupChatBubbleItem(
     message: SharedChatMessage,
     isSentByMe: Boolean,
     onClick: () -> Unit,
-    onLongClick: () -> Unit
+    onLongClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = if (isSentByMe) Arrangement.End else Arrangement.Start
+        horizontalArrangement = if (isSentByMe) Arrangement.End else Arrangement.Start,
+        verticalAlignment = Alignment.Bottom,
     ) {
+        if (!isSentByMe) {
+            UserAvatar(
+                photoUrl = message.senderPhotoUrl,
+                username = message.senderName,
+                size = 32.dp,
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+        }
+
         Surface(
             shape = RoundedCornerShape(
                 topStart = 16.dp,
                 topEnd = 16.dp,
                 bottomStart = if (isSentByMe) 16.dp else 4.dp,
-                bottomEnd = if (isSentByMe) 4.dp else 16.dp
+                bottomEnd = if (isSentByMe) 4.dp else 16.dp,
             ),
             color = if (isSentByMe) AnobaNavy else Color.White,
             shadowElevation = 1.5.dp,
@@ -442,10 +464,10 @@ private fun GroupChatBubbleItem(
                         topStart = 16.dp,
                         topEnd = 16.dp,
                         bottomStart = if (isSentByMe) 16.dp else 4.dp,
-                        bottomEnd = if (isSentByMe) 4.dp else 16.dp
-                    )
+                        bottomEnd = if (isSentByMe) 4.dp else 16.dp,
+                    ),
                 )
-                .combinedClickable(onClick = onClick, onLongClick = onLongClick)
+                .combinedClickable(onClick = onClick, onLongClick = onLongClick),
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 if (!isSentByMe) {
