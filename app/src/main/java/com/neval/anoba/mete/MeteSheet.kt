@@ -391,8 +391,11 @@ fun SectionCardModule(
                             PuzzleCard(item = item, onClick = { onWordClick(item) })
                         }
                     }
-                    repeat(3 - rowItems.size) {
-                        Spacer(modifier = Modifier.weight(1f).aspectRatio(1f))
+                    val emptySlots = 3 - rowItems.size
+                    if (emptySlots > 0) {
+                        repeat(emptySlots) {
+                            Spacer(modifier = Modifier.weight(1f).aspectRatio(1f))
+                        }
                     }
                 }
             }
