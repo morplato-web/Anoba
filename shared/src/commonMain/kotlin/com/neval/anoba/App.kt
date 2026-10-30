@@ -30,7 +30,7 @@ import com.neval.anoba.letter.SharedLetterModel
 import com.neval.anoba.login.AuthContainerView
 import com.neval.anoba.map.SharedGlobalMapScreen
 import com.neval.anoba.market.MarketContainerView
-import com.neval.anoba.mete.MeteHomeScreen
+import com.neval.anoba.mete.SharedMeteHomeScreen
 import com.neval.anoba.mycontent.SharedMyContentScreen
 import com.neval.anoba.mycontent.SharedMyContentType
 import com.neval.anoba.photo.SharedPhotoCommentsScreen
@@ -169,8 +169,9 @@ private fun MainAppScreen(
                     onOpenMete = { activeView = "METE" }
                 )
 
-                "METE" -> MeteHomeScreen(
-                    onNavigateBack = { activeView = "HOME" }
+                "METE" -> SharedMeteHomeScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onHomeClick = { activeView = "HOME" },
                 )
 
                 "LETTER" -> SharedLetterHomeScreen(

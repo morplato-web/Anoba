@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.annotation.OptIn
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
@@ -37,12 +38,12 @@ enum class MeteLanguage(val suffix: String) {
     ZH("zh"),
     PT("pt"),
     KO("ko"),
-    HI("hi")
+    HI("hi"),
 }
 
 data class MeteSectionGroup(
     val sectionName: String,
-    val words: List<MeteWordItem>
+    val words: List<MeteWordItem>,
 )
 
 @OptIn(UnstableApi::class)
@@ -50,7 +51,7 @@ class MeteSesViewModel(
     private val repository: MeteRepository,
     private val analyticsHelper: AnalyticsHelper,
     private val authService: AuthServiceInterface,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
 ) : ViewModel() {
 
     private var exoPlayer: ExoPlayer? = null
@@ -72,7 +73,7 @@ class MeteSesViewModel(
     private val _allPuzzlesForGame = MutableStateFlow<List<MeteWordItem>>(emptyList())
     val allPuzzlesForGame: StateFlow<List<MeteWordItem>> = _allPuzzlesForGame.asStateFlow()
 
-    private val _isSystemAudioPlaying = MutableStateFlow(false)
+    private val _isSystemAudioPlaying = MutableStateFlow(value = false)
     val isSystemAudioPlaying: StateFlow<Boolean> = _isSystemAudioPlaying.asStateFlow()
 
     private val _unlockedSections = MutableStateFlow<Set<String>>(emptySet())
@@ -88,7 +89,7 @@ class MeteSesViewModel(
         val updated = _unlockedSections.value + sectionName
         _unlockedSections.value = updated
         val prefs = context.getSharedPreferences("mete_unlocked_prefs", Context.MODE_PRIVATE)
-        prefs.edit().putStringSet("unlocked_sections", updated).apply()
+        prefs.edit { putStringSet("unlocked_sections", updated) }
     }
 
     fun startLoading() {
@@ -120,14 +121,16 @@ class MeteSesViewModel(
                                 .map { (name, list) ->
                                     MeteSectionGroup(
                                         sectionName = name,
-                                        words = list.shuffled()
+                                        words = list.shuffled(),
                                     )
                                 }.shuffled()
 
                             _sectionGroups.value = grouped
                         }
                 } catch (e: Exception) {
-                    if (e is CancellationException) throw e
+                    if (e is CancellationException) {
+                        throw e
+                    }
                     Log.e("MeteSesViewModel", "Hata kelimeler: ${e.message}", e)
                 }
             }
@@ -146,7 +149,9 @@ class MeteSesViewModel(
                             _storyVideos.value = stories.shuffled()
                         }
                 } catch (e: Exception) {
-                    if (e is CancellationException) throw e
+                    if (e is CancellationException) {
+                        throw e
+                    }
                     Log.e("MeteSesViewModel", "Hata hikayeler: ${e.message}", e)
                 }
             }
@@ -173,7 +178,7 @@ class MeteSesViewModel(
             "imageUrl" to null,
             "audioUrl" to null,
             "animationUrl" to null,
-            "videoUrl" to null
+            "videoUrl" to null,
         )
 
         firestore.collection(collName).document(docId).set(cleanTemplate)
@@ -188,11 +193,13 @@ class MeteSesViewModel(
 
         if (exoPlayer == null) {
             exoPlayer = MediaCacheManager.createPlayer(context.applicationContext).apply {
-                addListener(object : Player.Listener {
-                    override fun onIsPlayingChanged(isPlaying: Boolean) {
-                        _isSystemAudioPlaying.value = isPlaying
-                    }
-                })
+                addListener(
+                    object : Player.Listener {
+                        override fun onIsPlayingChanged(isPlaying: Boolean) {
+                            _isSystemAudioPlaying.value = isPlaying
+                        }
+                    },
+                )
             }
         }
 

@@ -86,7 +86,7 @@ enum class SharedMeteLanguage(val flag: String, val label: String) {
     KO("🇰🇷", "한국어"),
     HI("🇮🇳", "हिन्दी"),
     SW("🇰🇪", "Kiswahili"),
-    AF("🇿🇦", "Afrikaans")
+    AF("🇿🇦", "Afrikaans"),
 }
 
 data class SharedMeteWordItem(
@@ -96,12 +96,12 @@ data class SharedMeteWordItem(
     val boxColor: Color = Color(0xFF80DEEA),
     val imageUrl: String? = null,
     val videoUrl: String? = null,
-    val audioUrl: String? = null
+    val audioUrl: String? = null,
 )
 
 data class SharedMeteSectionGroup(
     val sectionName: String,
-    val words: List<SharedMeteWordItem> = emptyList()
+    val words: List<SharedMeteWordItem> = emptyList(),
 )
 
 data class SharedMeteStoryItem(
@@ -109,7 +109,7 @@ data class SharedMeteStoryItem(
     val title: String,
     val imageUrl: String? = null,
     val videoUrl: String? = null,
-    val isUnlocked: Boolean = false
+    val isUnlocked: Boolean = false,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -126,14 +126,14 @@ fun SharedMeteHomeScreen(
     onStopAudio: () -> Unit = {},
     onAddNewSection: (String) -> Unit = {},
     onUnlockSectionStory: (String) -> Unit = {},
-    onPlayStoryVideo: (SharedMeteStoryItem) -> Unit = {}
+    onPlayStoryVideo: (SharedMeteStoryItem) -> Unit = {},
 ) {
-    var isGameMode by remember { mutableStateOf(false) }
-    var isSearchActive by remember { mutableStateOf(false) }
+    var isGameMode by remember { mutableStateOf(value = false) }
+    var isSearchActive by remember { mutableStateOf(value = false) }
     var searchQuery by remember { mutableStateOf("") }
 
     var selectedWordItem by remember { mutableStateOf<SharedMeteWordItem?>(null) }
-    var showCreateSectionDialog by remember { mutableStateOf(false) }
+    var showCreateSectionDialog by remember { mutableStateOf(value = false) }
 
     val filteredSectionGroups = remember(sectionGroups, searchQuery) {
         if (searchQuery.isBlank()) sectionGroups
@@ -152,11 +152,10 @@ fun SharedMeteHomeScreen(
             isAudioPlaying = isSystemAudioPlaying,
             onPlayAudio = { onPlayWordAudio(wordItem) },
             onStopAudio = onStopAudio,
-            onDismiss = {
-                onStopAudio()
-                selectedWordItem = null
-            }
-        )
+        ) {
+            onStopAudio()
+            selectedWordItem = null
+        }
     }
 
     // Yeni Bölüm Ekleme Diyaloğu
@@ -175,7 +174,7 @@ fun SharedMeteHomeScreen(
                     label = { Text("Bölüm Adı") },
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             },
             confirmButton = {
@@ -187,7 +186,7 @@ fun SharedMeteHomeScreen(
                             showCreateSectionDialog = false
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = AnobaNavy)
+                    colors = ButtonDefaults.buttonColors(containerColor = AnobaNavy),
                 ) {
                     Text("Oluştur", color = Color.White)
                 }
@@ -196,7 +195,7 @@ fun SharedMeteHomeScreen(
                 TextButton(onClick = { showCreateSectionDialog = false }) {
                     Text("İptal", color = Color.Gray)
                 }
-            }
+            },
         )
     }
 
@@ -206,7 +205,7 @@ fun SharedMeteHomeScreen(
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 color = Color.White,
-                shadowElevation = 2.dp
+                shadowElevation = 2.dp,
             ) {
                 TopAppBar(
                     modifier = Modifier.statusBarsPadding(),
@@ -215,7 +214,7 @@ fun SharedMeteHomeScreen(
                             text = "Mete",
                             fontWeight = FontWeight.Bold,
                             color = AnobaNavy,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
                         )
                     },
                     navigationIcon = {
@@ -223,45 +222,49 @@ fun SharedMeteHomeScreen(
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Geri",
-                                tint = AnobaNavy
+                                tint = AnobaNavy,
                             )
                         }
                     },
                     actions = {
-                        IconButton(onClick = {
-                            isSearchActive = !isSearchActive
-                            if (!isSearchActive) searchQuery = ""
-                        }) {
+                        IconButton(
+                            onClick = {
+                                isSearchActive = !isSearchActive
+                                if (!isSearchActive) searchQuery = ""
+                            },
+                        ) {
                             Icon(
                                 imageVector = if (isSearchActive) Icons.Default.Close else Icons.Default.Search,
                                 contentDescription = "Ara",
-                                tint = if (isSearchActive) Color.Red else AnobaNavy
+                                tint = if (isSearchActive) Color.Red else AnobaNavy,
                             )
                         }
-                        IconButton(onClick = { isGameMode = !isGameMode }) {
+                        IconButton(
+                            onClick = { isGameMode = !isGameMode },
+                        ) {
                             Icon(
                                 imageVector = if (isGameMode) Icons.Default.Close else Icons.Default.SportsEsports,
                                 contentDescription = "Oyun Modu",
-                                tint = if (isGameMode) Color.Red else AnobaNavy
+                                tint = if (isGameMode) Color.Red else AnobaNavy,
                             )
                         }
                         IconButton(onClick = onHomeClick) {
                             Icon(
                                 imageVector = Icons.Filled.Home,
                                 contentDescription = "Ana Sayfa",
-                                tint = AnobaNavy
+                                tint = AnobaNavy,
                             )
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 )
             }
-        }
+        },
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(padding),
         ) {
             // Arama Çubuğu
             if (isSearchActive) {
@@ -272,7 +275,7 @@ fun SharedMeteHomeScreen(
                         placeholder = { Text("Bölüm veya video ara...", color = Color.Gray) },
                         singleLine = true,
                         shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }
@@ -280,7 +283,7 @@ fun SharedMeteHomeScreen(
             // Dil Seçici
             SharedLanguageSelector(
                 selectedLanguage = selectedLanguage,
-                onSelectLanguage = onSelectLanguage
+                onSelectLanguage = onSelectLanguage,
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = Color.LightGray.copy(alpha = 0.5f))
@@ -291,31 +294,31 @@ fun SharedMeteHomeScreen(
                     puzzles = allPuzzles,
                     isAudioPlaying = isSystemAudioPlaying,
                     onPlayAudio = onPlayWordAudio,
-                    onCorrectAnswer = onUnlockSectionStory
+                    onCorrectAnswer = onUnlockSectionStory,
                 )
             } else {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 12.dp)
+                        .padding(horizontal = 12.dp),
                 ) {
                     // İKİ SÜTUNLU LİSTE ALANI
                     Row(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
                         // SOL SÜTUN (%58): Kelime Bölümleri
                         LazyColumn(
                             modifier = Modifier.weight(1.2f).fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(16.dp),
-                            contentPadding = PaddingValues(bottom = 16.dp)
+                            contentPadding = PaddingValues(bottom = 16.dp),
                         ) {
                             items(filteredSectionGroups) { group ->
                                 SharedSectionCardModule(
                                     group = group,
-                                    onWordClick = { selectedWordItem = it }
+                                    onWordClick = { selectedWordItem = it },
                                 )
                             }
                         }
@@ -324,12 +327,12 @@ fun SharedMeteHomeScreen(
                         LazyColumn(
                             modifier = Modifier.weight(0.8f).fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(16.dp),
-                            contentPadding = PaddingValues(bottom = 16.dp)
+                            contentPadding = PaddingValues(bottom = 16.dp),
                         ) {
                             items(filteredStoryVideos) { story ->
                                 SharedMeteStoryCard(
                                     item = story,
-                                    onClick = { onPlayStoryVideo(story) }
+                                    onClick = { onPlayStoryVideo(story) },
                                 )
                             }
                         }
@@ -340,19 +343,19 @@ fun SharedMeteHomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         OutlinedButton(
                             onClick = { showCreateSectionDialog = true },
                             shape = RoundedCornerShape(20.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp)
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
                         ) {
                             Icon(imageVector = Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = "Yeni Bölüm Ekle",
                                 fontSize = 13.sp,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
                             )
                         }
                     }
@@ -365,13 +368,13 @@ fun SharedMeteHomeScreen(
 @Composable
 fun SharedLanguageSelector(
     selectedLanguage: SharedMeteLanguage,
-    onSelectLanguage: (SharedMeteLanguage) -> Unit
+    onSelectLanguage: (SharedMeteLanguage) -> Unit,
 ) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
     ) {
         items(SharedMeteLanguage.entries) { lang ->
             val isSelected = lang == selectedLanguage
@@ -382,19 +385,19 @@ fun SharedLanguageSelector(
                     .clip(CircleShape)
                     .background(
                         if (isSelected) AnobaNavy
-                        else Color.LightGray.copy(alpha = 0.35f)
+                        else Color.LightGray.copy(alpha = 0.35f),
                     )
                     .border(
                         width = if (isSelected) 2.dp else 0.dp,
                         color = if (isSelected) AnobaNavy else Color.Transparent,
-                        shape = CircleShape
+                        shape = CircleShape,
                     )
                     .clickable { onSelectLanguage(lang) },
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = lang.flag,
-                    fontSize = if (isSelected) 22.sp else 18.sp
+                    fontSize = if (isSelected) 22.sp else 18.sp,
                 )
             }
         }
@@ -404,13 +407,13 @@ fun SharedLanguageSelector(
 @Composable
 fun SharedSectionCardModule(
     group: SharedMeteSectionGroup,
-    onWordClick: (SharedMeteWordItem) -> Unit
+    onWordClick: (SharedMeteWordItem) -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(3.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFE1F5FE))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFE1F5FE)),
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Text(
@@ -418,13 +421,13 @@ fun SharedSectionCardModule(
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF0277BD),
-                modifier = Modifier.padding(bottom = 8.dp, start = 2.dp)
+                modifier = Modifier.padding(bottom = 8.dp, start = 2.dp),
             )
 
             group.words.chunked(3).forEach { rowItems ->
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     rowItems.forEach { item ->
                         Box(modifier = Modifier.weight(1f)) {
@@ -435,18 +438,18 @@ fun SharedSectionCardModule(
                                     .clickable { onWordClick(item) },
                                 shape = RoundedCornerShape(8.dp),
                                 elevation = CardDefaults.cardElevation(2.dp),
-                                colors = CardDefaults.cardColors(containerColor = item.boxColor)
+                                colors = CardDefaults.cardColors(containerColor = item.boxColor),
                             ) {
                                 Box(
                                     modifier = Modifier.fillMaxSize().padding(6.dp),
-                                    contentAlignment = Alignment.Center
+                                    contentAlignment = Alignment.Center,
                                 ) {
                                     if (!item.imageUrl.isNullOrBlank()) {
                                         AsyncImage(
                                             model = item.imageUrl,
                                             contentDescription = item.word,
                                             modifier = Modifier.fillMaxSize(),
-                                            contentScale = ContentScale.Fit
+                                            contentScale = ContentScale.Fit,
                                         )
                                     } else {
                                         Text(
@@ -454,7 +457,7 @@ fun SharedSectionCardModule(
                                             fontSize = 12.sp,
                                             fontWeight = FontWeight.Bold,
                                             color = Color.DarkGray,
-                                            textAlign = TextAlign.Center
+                                            textAlign = TextAlign.Center,
                                         )
                                     }
                                 }
@@ -476,19 +479,19 @@ fun SharedSectionCardModule(
 @Composable
 fun SharedMeteStoryCard(
     item: SharedMeteStoryItem,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
         shape = RoundedCornerShape(14.dp),
         elevation = CardDefaults.cardElevation(3.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (item.isUnlocked) Color(0xFFE0F2F1) else Color(0xFFECEFF1)
-        )
+            containerColor = if (item.isUnlocked) Color(0xFFE0F2F1) else Color(0xFFECEFF1),
+        ),
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
                 modifier = Modifier
@@ -496,21 +499,21 @@ fun SharedMeteStoryCard(
                     .aspectRatio(1.2f)
                     .clip(RoundedCornerShape(10.dp))
                     .background(if (item.isUnlocked) Color(0xFF80CBC4) else Color.Gray),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 if (!item.imageUrl.isNullOrBlank()) {
                     AsyncImage(
                         model = item.imageUrl,
                         contentDescription = item.title,
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
                     )
                 } else {
                     Icon(
                         imageVector = Icons.Default.Movie,
                         contentDescription = null,
                         tint = Color.White,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp),
                     )
                 }
 
@@ -519,7 +522,7 @@ fun SharedMeteStoryCard(
                         .size(34.dp)
                         .clip(CircleShape)
                         .background(Color.Black.copy(alpha = if (item.isUnlocked) 0.5f else 0.7f)),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     if (item.isUnlocked) {
                         Icon(Icons.Default.PlayArrow, contentDescription = null, tint = Color.White, modifier = Modifier.size(22.dp))
@@ -536,7 +539,7 @@ fun SharedMeteStoryCard(
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (item.isUnlocked) Color(0xFF004D40) else Color.Gray,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }
@@ -547,13 +550,13 @@ fun SharedMeteGameView(
     puzzles: List<SharedMeteWordItem>,
     isAudioPlaying: Boolean,
     onPlayAudio: (SharedMeteWordItem) -> Unit,
-    onCorrectAnswer: (String) -> Unit
+    onCorrectAnswer: (String) -> Unit,
 ) {
     var options by remember { mutableStateOf<List<SharedMeteWordItem>>(emptyList()) }
     var targetItem by remember { mutableStateOf<SharedMeteWordItem?>(null) }
     var selectedItemId by remember { mutableStateOf<Long?>(null) }
-    var isAnsweredCorrectly by remember { mutableStateOf(false) }
-    var hasListened by remember { mutableStateOf(false) }
+    var isAnsweredCorrectly by remember { mutableStateOf(value = false) }
+    var hasListened by remember { mutableStateOf(value = false) }
 
     fun startNewRound() {
         if (puzzles.size < 4) return
@@ -581,7 +584,7 @@ fun SharedMeteGameView(
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Box(
             modifier = Modifier
@@ -595,13 +598,13 @@ fun SharedMeteGameView(
                         hasListened = true
                     }
                 },
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = if (isAudioPlaying) Icons.Default.Stop else Icons.Default.PlayArrow,
                 contentDescription = "Dinle",
                 modifier = Modifier.size(38.dp),
-                tint = if (isAudioPlaying) Color.Red else AnobaNavy
+                tint = if (isAudioPlaying) Color.Red else AnobaNavy,
             )
         }
 
@@ -615,19 +618,19 @@ fun SharedMeteGameView(
             },
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = if (isAnsweredCorrectly) Color(0xFF4CAF50) else AnobaNavy
+            color = if (isAnsweredCorrectly) Color(0xFF4CAF50) else AnobaNavy,
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         Column(
             modifier = Modifier.fillMaxWidth(0.9f),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             options.chunked(2).forEach { rowItems ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     rowItems.forEach { item ->
                         val isSelected = selectedItemId == item.id
@@ -654,8 +657,8 @@ fun SharedMeteGameView(
                             shape = RoundedCornerShape(16.dp),
                             elevation = CardDefaults.cardElevation(if (isSelected) 8.dp else 2.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = if (hasListened) Color.White else Color.White.copy(alpha = 0.5f)
-                            )
+                                containerColor = if (hasListened) Color.White else Color.White.copy(alpha = 0.5f),
+                            ),
                         ) {
                             Box(modifier = Modifier.fillMaxSize().padding(10.dp), contentAlignment = Alignment.Center) {
                                 if (!item.imageUrl.isNullOrBlank()) {
@@ -663,7 +666,7 @@ fun SharedMeteGameView(
                                         model = item.imageUrl,
                                         contentDescription = item.word,
                                         modifier = Modifier.fillMaxSize(),
-                                        contentScale = ContentScale.Fit
+                                        contentScale = ContentScale.Fit,
                                     )
                                 } else {
                                     Text(text = item.word, fontWeight = FontWeight.Bold, fontSize = 14.sp)
@@ -682,7 +685,7 @@ fun SharedMeteGameView(
                 onClick = { startNewRound() },
                 modifier = Modifier.fillMaxWidth(0.6f).height(46.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)),
             ) {
                 Text("Sonraki Soru ➡️", fontWeight = FontWeight.Bold)
             }
@@ -696,7 +699,7 @@ fun SharedWordDetailDialog(
     isAudioPlaying: Boolean,
     onPlayAudio: () -> Unit,
     onStopAudio: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -707,7 +710,7 @@ fun SharedWordDetailDialog(
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
                     modifier = Modifier
@@ -715,14 +718,14 @@ fun SharedWordDetailDialog(
                         .height(180.dp)
                         .clip(RoundedCornerShape(12.dp))
                         .background(item.boxColor.copy(alpha = 0.3f)),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     if (!item.imageUrl.isNullOrBlank()) {
                         AsyncImage(
                             model = item.imageUrl,
                             contentDescription = item.word,
                             modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit
+                            contentScale = ContentScale.Fit,
                         )
                     } else {
                         Text(text = item.word, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = AnobaNavy)
@@ -734,16 +737,16 @@ fun SharedWordDetailDialog(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     IconButton(
-                        onClick = { if (isAudioPlaying) onStopAudio() else onPlayAudio() }
+                        onClick = { if (isAudioPlaying) onStopAudio() else onPlayAudio() },
                     ) {
                         Icon(
                             imageVector = if (isAudioPlaying) Icons.Default.Stop else Icons.Default.PlayArrow,
                             contentDescription = "Dinle",
                             tint = if (isAudioPlaying) Color.Red else Color(0xFF4CAF50),
-                            modifier = Modifier.size(44.dp)
+                            modifier = Modifier.size(44.dp),
                         )
                     }
 
@@ -752,13 +755,13 @@ fun SharedWordDetailDialog(
                             .size(50.dp)
                             .clip(CircleShape)
                             .background(Color(0xFFE2E8F0)),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Icon(
                             imageVector = Icons.Default.Mic,
                             contentDescription = "Tekrar Et",
                             tint = AnobaNavy,
-                            modifier = Modifier.size(28.dp)
+                            modifier = Modifier.size(28.dp),
                         )
                     }
                 }
@@ -768,6 +771,6 @@ fun SharedWordDetailDialog(
             TextButton(onClick = onDismiss) {
                 Text("Kapat", color = AnobaNavy, fontWeight = FontWeight.Bold)
             }
-        }
+        },
     )
 }

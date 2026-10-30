@@ -8,6 +8,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 /**
  * Sol paneldeki kelime ve ses kartlarının veri modeli (mete_kelimeler_tr)
  */
+@Suppress("Unused", "unused")
 @Keep
 @IgnoreExtraProperties
 data class MeteWordItem(
@@ -20,7 +21,7 @@ data class MeteWordItem(
     var animationUrl: String? = null,
     var animationResId: Int? = null,
     var videoUrl: String? = null,
-    var videoResId: Int? = null
+    var videoResId: Int? = null,
 ) {
     @get:Exclude @set:Exclude var boxColor: Color? = null
 
