@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -42,6 +43,7 @@ import com.neval.anoba.common.utils.getRelativeTimeString
 @Composable
 fun SharedMarketCard(
     item: SharedMarketItemModel,
+    imageHeight: Dp = 140.dp,
     onClick: () -> Unit,
 ) {
     Card(
@@ -78,11 +80,11 @@ fun SharedMarketCard(
                 )
             }
 
-            // ÜRÜN FOTOĞRAFI (Kategori Rozeti & Fiyat)
+            // ÜRÜN FOTOĞRAFI (Dolap Tarzı Dinamik Yükseklik)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(140.dp)
+                    .height(imageHeight)
                     .background(Color(0xFF131826))
                     .border(1.dp, Color(0xFF2E384D)),
                 contentAlignment = Alignment.Center,

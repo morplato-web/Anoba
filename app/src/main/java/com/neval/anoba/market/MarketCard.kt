@@ -1,9 +1,20 @@
 package com.neval.anoba.market
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
@@ -19,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -28,28 +40,30 @@ import com.neval.anoba.common.utils.getRelativeTimeString
 @Composable
 fun MarketCard(
     item: MarketItemModel,
-    onClick: () -> Unit
+    imageHeight: Dp = 140.dp,
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+        border = BorderStroke(1.dp, Color(0xFF2E384D)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            // 🚀 ÜST BANT (Sadece Profil Fotoğrafı & Tam Kullanıcı Adı - Geniş ve Kesintisiz)
+            // ÜST BANT (Profil Fotoğrafı & Kullanıcı Adı)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 UserAvatar(
                     photoUrl = item.userProfileImageUrl,
                     username = item.username,
-                    size = 28.dp
+                    size = 28.dp,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
@@ -59,23 +73,23 @@ fun MarketCard(
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
             }
 
-            // 🚀 ÜRÜN FOTOĞRAFI (Kategori Rozeti Görselin Üstünde Sol Üstte, Fiyat Sağ Üstte)
+            // ÜRÜN FOTOĞRAFI (Dolap Tarzı Dinamik Yükseklik)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(140.dp)
-                    .background(Color(0xFF0F172A))
-                    .border(1.dp, Color(0xFF334155))
+                    .height(imageHeight)
+                    .background(Color(0xFF131826))
+                    .border(1.dp, Color(0xFF2E384D)),
             ) {
                 AsyncImage(
                     model = item.photoUrl,
                     contentDescription = item.title,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
 
                 // Kategori Rozeti Görselin Sol Üstünde
@@ -84,14 +98,14 @@ fun MarketCard(
                         .padding(6.dp)
                         .align(Alignment.TopStart),
                     shape = RoundedCornerShape(6.dp),
-                    color = Color(0xFF0F172A).copy(alpha = 0.85f)
+                    color = Color(0xFF131826).copy(alpha = 0.85f),
                 ) {
                     Text(
                         text = item.category,
                         color = Color(0xFFFFD700),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
                     )
                 }
 
@@ -101,14 +115,14 @@ fun MarketCard(
                         .padding(6.dp)
                         .align(Alignment.TopEnd),
                     shape = RoundedCornerShape(8.dp),
-                    color = Color(0xFF10B981)
+                    color = Color(0xFF10B981),
                 ) {
                     Text(
                         text = "${item.price.toInt()} ${item.currency}",
                         color = Color.White,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     )
                 }
 
@@ -118,18 +132,18 @@ fun MarketCard(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.Black.copy(alpha = 0.65f)),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Surface(
                             shape = RoundedCornerShape(8.dp),
-                            color = Color(0xFFEF4444)
+                            color = Color(0xFFEF4444),
                         ) {
                             Text(
                                 text = "SATILDI 🛑",
                                 color = Color.White,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                             )
                         }
                     }
@@ -142,7 +156,7 @@ fun MarketCard(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = item.title,
@@ -151,7 +165,7 @@ fun MarketCard(
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
 
                     val timeStr = getRelativeTimeString(item.createdAt)
@@ -160,7 +174,7 @@ fun MarketCard(
                             text = timeStr,
                             color = Color(0xFF94A3B8),
                             fontSize = 10.sp,
-                            modifier = Modifier.padding(start = 4.dp)
+                            modifier = Modifier.padding(start = 4.dp),
                         )
                     }
                 }
@@ -173,7 +187,7 @@ fun MarketCard(
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = null,
                         tint = Color(0xFF94A3B8),
-                        modifier = Modifier.size(12.dp)
+                        modifier = Modifier.size(12.dp),
                     )
                     Spacer(modifier = Modifier.width(3.dp))
                     Text(
@@ -181,7 +195,7 @@ fun MarketCard(
                         color = Color(0xFF94A3B8),
                         fontSize = 11.sp,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }
