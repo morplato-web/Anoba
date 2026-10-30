@@ -33,7 +33,7 @@ import com.neval.anoba.video.VideoModel
         FollowedUserEntity::class,
         MarketItemModel::class
     ],
-    version = 20,
+    version = 21,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
