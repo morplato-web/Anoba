@@ -28,5 +28,6 @@ data class SharedMarketItemModel(
     @ColumnInfo(name = "is_official")
     var isOfficial: Boolean = false,
 
-    var userBadgeType: String? = "NONE"
+    var userBadgeType: String? = "NONE",
+    var countryCode: String? = null,
 )

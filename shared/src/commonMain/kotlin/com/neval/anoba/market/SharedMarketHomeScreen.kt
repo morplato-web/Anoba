@@ -57,7 +57,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun MarketContainerView(
-    onNavigateHome: () -> Unit = {}
+    onNavigateHome: () -> Unit = {},
 ) {
     var activeView by remember { mutableStateOf("LIST") }
     var selectedItem by remember { mutableStateOf<SharedMarketItemModel?>(null) }
@@ -76,7 +76,7 @@ fun MarketContainerView(
                 photoUrl = "",
                 ownerId = "user1",
                 username = "Ahmet Y.",
-                isSold = false
+                isSold = false,
             ),
             SharedMarketItemModel(
                 id = "2",
@@ -90,7 +90,7 @@ fun MarketContainerView(
                 photoUrl = "",
                 ownerId = "user2",
                 username = "Zeynep K.",
-                isSold = false
+                isSold = false,
             ),
             SharedMarketItemModel(
                 id = "3",
@@ -105,7 +105,7 @@ fun MarketContainerView(
                 ownerId = "user3",
                 username = "Anoba İmalat",
                 isSold = false,
-                isOfficial = true
+                isOfficial = true,
             ),
             SharedMarketItemModel(
                 id = "4",
@@ -119,29 +119,44 @@ fun MarketContainerView(
                 photoUrl = "",
                 ownerId = "user4",
                 username = "Mehmet T.",
-                isSold = true
-            )
+                isSold = true,
+            ),
         )
     }
 
     when (activeView) {
         "CREATE" -> {
-            MarketCreateScreen(
+            SharedMarketCreateScreen(
                 onNavigateBack = { activeView = "LIST" },
                 onSuccess = { newItem ->
                     sampleItems.add(0, newItem)
                     activeView = "LIST"
-                }
+                },
             )
         }
         "DETAIL" -> {
-            MarketDetailScreen(
+            SharedMarketDetailScreen(
                 item = selectedItem,
-                onNavigateBack = { activeView = "LIST" }
+                onNavigateBack = { activeView = "LIST" },
+                onEditClick = {
+                    activeView = "EDIT"
+                },
+            )
+        }
+        "EDIT" -> {
+            SharedMarketEditScreen(
+                item = selectedItem,
+                onNavigateBack = { activeView = "DETAIL" },
+                onSaveSuccess = { updated ->
+                    val index = sampleItems.indexOfFirst { it.id == updated.id }
+                    if (index != -1) sampleItems[index] = updated
+                    selectedItem = updated
+                    activeView = "DETAIL"
+                },
             )
         }
         else -> {
-            MarketHomeScreen(
+            SharedMarketHomeScreen(
                 itemsList = sampleItems,
                 onNavigateBack = onNavigateHome,
                 onHomeClick = onNavigateHome,
@@ -149,7 +164,7 @@ fun MarketContainerView(
                 onItemClick = { item ->
                     selectedItem = item
                     activeView = "DETAIL"
-                }
+                },
             )
         }
     }
@@ -157,12 +172,12 @@ fun MarketContainerView(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MarketHomeScreen(
+fun SharedMarketHomeScreen(
     itemsList: List<SharedMarketItemModel> = emptyList(),
     onNavigateBack: () -> Unit = {},
     onHomeClick: () -> Unit = onNavigateBack,
     onCreateItemClick: () -> Unit = {},
-    onItemClick: (SharedMarketItemModel) -> Unit = {}
+    onItemClick: (SharedMarketItemModel) -> Unit = {},
 ) {
     val categories = remember {
         listOf("Tümü", "Elektronik", "Giyim & Moda", "Ev & Yaşam", "Araç & Vasıta", "Spor & Hobi", "Kitap & Oyun", "Diğer")
@@ -182,11 +197,11 @@ fun MarketHomeScreen(
     }
 
     Scaffold(
-        containerColor = Color(0xFF0F172A),
+        containerColor = Color(0xFF131826),
         topBar = {
             Surface(
                 color = Color(0xFF1E293B),
-                shadowElevation = 4.dp
+                shadowElevation = 4.dp,
             ) {
                 Column(modifier = Modifier.fillMaxWidth().statusBarsPadding()) {
                     Row(
@@ -195,21 +210,21 @@ fun MarketHomeScreen(
                             .height(56.dp)
                             .padding(horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             IconButton(onClick = onNavigateBack) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = "Geri",
-                                    tint = Color.White
+                                    tint = Color.White,
                                 )
                             }
                             Text(
                                 text = "Pazar Yeri",
                                 color = Color.White,
                                 fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                         }
 
@@ -218,20 +233,20 @@ fun MarketHomeScreen(
                                 onClick = onCreateItemClick,
                                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700)),
                                 shape = RoundedCornerShape(12.dp),
-                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
                                     contentDescription = null,
                                     tint = Color.Black,
-                                    modifier = Modifier.size(18.dp)
+                                    modifier = Modifier.size(18.dp),
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
                                     text = "İlan Oluştur",
                                     color = Color.Black,
                                     fontSize = 13.sp,
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.Bold,
                                 )
                             }
 
@@ -239,7 +254,7 @@ fun MarketHomeScreen(
                                 Icon(
                                     imageVector = Icons.Default.Home,
                                     contentDescription = "Ana Sayfa",
-                                    tint = Color.White
+                                    tint = Color.White,
                                 )
                             }
                         }
@@ -260,14 +275,14 @@ fun MarketHomeScreen(
                         },
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = Color(0xFF0F172A),
-                            unfocusedContainerColor = Color(0xFF0F172A),
+                            focusedContainerColor = Color(0xFF131826),
+                            unfocusedContainerColor = Color(0xFF131826),
                             focusedBorderColor = Color(0xFFFFD700),
-                            unfocusedBorderColor = Color(0xFF334155),
+                            unfocusedBorderColor = Color(0xFF2E384D),
                             focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White
+                            unfocusedTextColor = Color.White,
                         ),
-                        singleLine = true
+                        singleLine = true,
                     )
 
                     // Kategori Çipleri
@@ -276,7 +291,7 @@ fun MarketHomeScreen(
                             .fillMaxWidth()
                             .padding(vertical = 10.dp),
                         contentPadding = PaddingValues(horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         items(categories) { category ->
                             val isSelected = category == selectedCategory
@@ -286,32 +301,32 @@ fun MarketHomeScreen(
                                 label = {
                                     Text(
                                         text = category,
-                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                                     )
                                 },
                                 colors = FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = Color(0xFFFFD700),
                                     selectedLabelColor = Color.Black,
-                                    containerColor = Color(0xFF0F172A),
-                                    labelColor = Color(0xFFCBD5E1)
+                                    containerColor = Color(0xFF131826),
+                                    labelColor = Color(0xFFCBD5E1),
                                 ),
                                 border = FilterChipDefaults.filterChipBorder(
-                                    borderColor = Color(0xFF334155),
+                                    borderColor = Color(0xFF2E384D),
                                     selectedBorderColor = Color(0xFFFFD700),
                                     enabled = true,
-                                    selected = isSelected
-                                )
+                                    selected = isSelected,
+                                ),
                             )
                         }
                     }
                 }
             }
-        }
+        },
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
         ) {
             if (filteredItems.isEmpty()) {
                 Column(
@@ -319,20 +334,20 @@ fun MarketHomeScreen(
                         .fillMaxSize()
                         .padding(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     Icon(
                         imageVector = Icons.Default.ShoppingBag,
                         contentDescription = null,
                         tint = Color(0xFFFFD700).copy(alpha = 0.85f),
-                        modifier = Modifier.size(72.dp)
+                        modifier = Modifier.size(72.dp),
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "Henüz İlan Bulunmuyor",
                         color = Color.White,
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -344,8 +359,8 @@ fun MarketHomeScreen(
                             },
                             shape = RoundedCornerShape(12.dp),
                             border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
-                                brush = SolidColor(Color(0xFFFFD700))
-                            )
+                                brush = SolidColor(Color(0xFFFFD700)),
+                            ),
                         ) {
                             Icon(Icons.Default.Refresh, contentDescription = null, tint = Color(0xFFFFD700), modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
@@ -355,7 +370,7 @@ fun MarketHomeScreen(
                         Button(
                             onClick = onCreateItemClick,
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700)),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(12.dp),
                         ) {
                             Text("➕ İlan Oluştur", color = Color.Black, fontWeight = FontWeight.Bold)
                         }
@@ -367,12 +382,12 @@ fun MarketHomeScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(12.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     items(filteredItems, key = { it.id }) { item ->
-                        MarketCard(
+                        SharedMarketCard(
                             item = item,
-                            onClick = { onItemClick(item) }
+                            onClick = { onItemClick(item) },
                         )
                     }
                 }

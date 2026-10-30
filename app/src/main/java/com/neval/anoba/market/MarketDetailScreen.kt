@@ -1,9 +1,22 @@
 package com.neval.anoba.market
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -18,8 +31,23 @@ import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,15 +73,15 @@ fun MarketDetailScreen(
     onEditClick: (String) -> Unit = {},
     onSellerClick: (String) -> Unit = {},
     onSendMessageClick: (String, String) -> Unit, // ownerId, username
-    viewModel: MarketViewModel = koinViewModel()
+    viewModel: MarketViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     val items by viewModel.items.collectAsState()
     val item = items.find { it.id == itemId }
     val currentUserId = remember { FirebaseAuth.getInstance().currentUser?.uid ?: "" }
 
-    var showDeleteConfirmDialog by remember { mutableStateOf(false) }
-    var showReportDialog by remember { mutableStateOf(false) }
+    var showDeleteConfirmDialog by remember { mutableStateOf(value = false) }
+    var showReportDialog by remember { mutableStateOf(value = false) }
 
     // Silme Onay Penceresi (Evet / Hayır)
     if (showDeleteConfirmDialog && item != null) {
@@ -69,7 +97,7 @@ fun MarketDetailScreen(
                         onNavigateBack()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEF4444)),
-                    shape = RoundedCornerShape(10.dp)
+                    shape = RoundedCornerShape(10.dp),
                 ) {
                     Text(stringResource(R.string.market_yes_delete), color = Color.White, fontWeight = FontWeight.Bold)
                 }
@@ -79,7 +107,7 @@ fun MarketDetailScreen(
                     Text(stringResource(R.string.market_cancel), color = Color(0xFF94A3B8))
                 }
             },
-            containerColor = Color(0xFF1E293B)
+            containerColor = Color(0xFF1E293B),
         )
     }
 
@@ -101,13 +129,13 @@ fun MarketDetailScreen(
                                     Toast.makeText(context, reportSuccessText, Toast.LENGTH_SHORT).show()
                                 },
                             shape = RoundedCornerShape(10.dp),
-                            color = Color(0xFF0F172A)
+                            color = Color(0xFF131826),
                         ) {
                             Text(
                                 text = reason,
                                 color = Color.White,
                                 modifier = Modifier.padding(12.dp),
-                                fontSize = 14.sp
+                                fontSize = 14.sp,
                             )
                         }
                     }
@@ -119,12 +147,12 @@ fun MarketDetailScreen(
                     Text(stringResource(R.string.market_cancel), color = Color(0xFF94A3B8))
                 }
             },
-            containerColor = Color(0xFF1E293B)
+            containerColor = Color(0xFF1E293B),
         )
     }
 
     Scaffold(
-        containerColor = Color(0xFF0F172A),
+        containerColor = Color(0xFF131826),
         topBar = {
             Surface(color = Color(0xFF1E293B), shadowElevation = 4.dp) {
                 Row(
@@ -134,7 +162,7 @@ fun MarketDetailScreen(
                         .height(56.dp)
                         .padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = onNavigateBack) {
@@ -154,12 +182,12 @@ fun MarketDetailScreen(
                                 }
                             } else {
                                 IconButton(onClick = {
-                                    val shareIntent = android.content.Intent().apply {
-                                        action = android.content.Intent.ACTION_SEND
-                                        putExtra(android.content.Intent.EXTRA_TEXT, "Anoba Pazar Yeri'nde ilana göz atın: ${item.title} - ${item.price.toInt()} TL")
+                                    val shareIntent = Intent().apply {
+                                        action = Intent.ACTION_SEND
+                                        putExtra(Intent.EXTRA_TEXT, "Anoba Pazar Yeri'nde ilana göz atın: ${item.title} - ${item.price.toInt()} TL")
                                         type = "text/plain"
                                     }
-                                    context.startActivity(android.content.Intent.createChooser(shareIntent, null))
+                                    context.startActivity(Intent.createChooser(shareIntent, null))
                                 }) {
                                     Icon(Icons.Default.Share, contentDescription = "Paylaş", tint = Color.White)
                                 }
@@ -181,7 +209,7 @@ fun MarketDetailScreen(
                 Surface(
                     color = Color(0xFF1E293B),
                     shadowElevation = 12.dp,
-                    modifier = Modifier.fillMaxWidth().navigationBarsPadding()
+                    modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
                 ) {
                     Box(modifier = Modifier.padding(16.dp)) {
                         if (item.ownerId == currentUserId) {
@@ -190,7 +218,7 @@ fun MarketDetailScreen(
                                     onClick = { viewModel.markAsSold(item.id) },
                                     modifier = Modifier.fillMaxWidth().height(52.dp),
                                     shape = RoundedCornerShape(16.dp),
-                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF10B981))
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF10B981)),
                                 ) {
                                     Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color.White)
                                     Spacer(modifier = Modifier.width(8.dp))
@@ -200,11 +228,11 @@ fun MarketDetailScreen(
                                 Surface(
                                     modifier = Modifier.fillMaxWidth(),
                                     shape = RoundedCornerShape(16.dp),
-                                    color = Color(0xFFEF4444).copy(alpha = 0.2f)
+                                    color = Color(0xFFEF4444).copy(alpha = 0.2f),
                                 ) {
                                     Box(
                                         modifier = Modifier.padding(14.dp),
-                                        contentAlignment = Alignment.Center
+                                        contentAlignment = Alignment.Center,
                                     ) {
                                         Text(stringResource(R.string.market_item_is_sold), color = Color(0xFFEF4444), fontWeight = FontWeight.Bold)
                                     }
@@ -215,7 +243,7 @@ fun MarketDetailScreen(
                                 onClick = { onSendMessageClick(item.ownerId, item.username) },
                                 modifier = Modifier.fillMaxWidth().height(52.dp),
                                 shape = RoundedCornerShape(16.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700))
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFD700)),
                             ) {
                                 Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = null, tint = Color.Black)
                                 Spacer(modifier = Modifier.width(8.dp))
@@ -225,12 +253,12 @@ fun MarketDetailScreen(
                     }
                 }
             }
-        }
+        },
     ) { innerPadding ->
         if (item == null) {
             Box(
                 modifier = Modifier.fillMaxSize().padding(innerPadding),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text("İlan bulunamadı", color = Color.White, fontSize = 16.sp)
             }
@@ -239,20 +267,20 @@ fun MarketDetailScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(rememberScrollState()),
             ) {
                 // Product Image
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(280.dp)
-                        .background(Color(0xFF0F172A))
+                        .background(Color(0xFF131826)),
                 ) {
                     AsyncImage(
                         model = item.photoUrl,
                         contentDescription = item.title,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
 
                     Surface(
@@ -260,14 +288,14 @@ fun MarketDetailScreen(
                             .padding(16.dp)
                             .align(Alignment.BottomEnd),
                         shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFF10B981)
+                        color = Color(0xFF10B981),
                     ) {
                         Text(
                             text = "${item.price.toInt()} ${item.currency}",
                             color = Color.White,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                         )
                     }
                 }
@@ -277,27 +305,27 @@ fun MarketDetailScreen(
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Surface(
                             shape = RoundedCornerShape(8.dp),
-                            color = Color(0xFF1E293B)
+                            color = Color(0xFF1E293B),
                         ) {
                             Text(
                                 text = item.category,
                                 color = Color(0xFFFFD700),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
                             )
                         }
 
                         Surface(
                             shape = RoundedCornerShape(8.dp),
-                            color = Color(0xFF1E293B)
+                            color = Color(0xFF1E293B),
                         ) {
                             Text(
                                 text = item.condition,
                                 color = Color(0xFFCBD5E1),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
                             )
                         }
                     }
@@ -308,14 +336,14 @@ fun MarketDetailScreen(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
                             text = item.title,
                             color = Color.White,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
 
                         val timeStr = getRelativeTimeString(item.createdAt)
@@ -324,35 +352,35 @@ fun MarketDetailScreen(
                                 text = timeStr,
                                 color = Color(0xFF94A3B8),
                                 fontSize = 14.sp,
-                                modifier = Modifier.padding(start = 8.dp)
+                                modifier = Modifier.padding(start = 8.dp),
                             )
                         }
                     }
 
                     Spacer(modifier = Modifier.height(6.dp))
 
-                    // Row 2: Şehir Bilgisi (Sağa Yatkın)
+                    // Row 2: Şehir Bilgisi
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
                             contentDescription = null,
                             tint = Color(0xFF94A3B8),
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(16.dp),
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = item.city.ifBlank { "Tüm Türkiye" },
                             color = Color(0xFF94A3B8),
-                            fontSize = 14.sp
+                            fontSize = 14.sp,
                         )
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))
-                    HorizontalDivider(color = Color(0xFF334155))
+                    HorizontalDivider(color = Color(0xFF2E384D))
                     Spacer(modifier = Modifier.height(20.dp))
 
                     Text("Açıklama", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -361,11 +389,11 @@ fun MarketDetailScreen(
                         text = item.description.ifBlank { "Açıklama eklenmemiş." },
                         color = Color(0xFFCBD5E1),
                         fontSize = 15.sp,
-                        lineHeight = 22.sp
+                        lineHeight = 22.sp,
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
-                    HorizontalDivider(color = Color(0xFF334155))
+                    HorizontalDivider(color = Color(0xFF2E384D))
                     Spacer(modifier = Modifier.height(20.dp))
 
                     // Seller Card
@@ -377,20 +405,20 @@ fun MarketDetailScreen(
                             .fillMaxWidth()
                             .clickable { onSellerClick(item.ownerId) },
                         shape = RoundedCornerShape(16.dp),
-                        color = Color(0xFF1E293B)
+                        color = Color(0xFF1E293B),
                     ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 UserAvatar(
                                     photoUrl = item.userProfileImageUrl,
                                     username = item.username,
-                                    size = 48.dp
+                                    size = 48.dp,
                                 )
                                 Spacer(modifier = Modifier.width(16.dp))
                                 Column {
@@ -398,12 +426,12 @@ fun MarketDetailScreen(
                                         text = item.username,
                                         color = Color.White,
                                         fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold
+                                        fontWeight = FontWeight.Bold,
                                     )
                                     Text(
                                         text = stringResource(R.string.market_seller_label),
                                         color = Color(0xFF94A3B8),
-                                        fontSize = 12.sp
+                                        fontSize = 12.sp,
                                     )
                                 }
                             }
@@ -411,7 +439,7 @@ fun MarketDetailScreen(
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                 contentDescription = null,
-                                tint = Color(0xFF94A3B8)
+                                tint = Color(0xFF94A3B8),
                             )
                         }
                     }

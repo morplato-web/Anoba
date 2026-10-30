@@ -72,24 +72,24 @@ private val TURKEY_PROVINCES = listOf(
     "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir",
     "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat",
     "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman",
-    "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"
+    "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce",
 )
 
 private val GLOBAL_CITIES = listOf(
     "Baku, Azerbaycan 🇦🇿", "Berlin, Almanya 🇩🇪", "London, İngiltere 🇬🇧", "Paris, Fransa 🇫🇷",
     "Tashkent, Özbekistan 🇺🇿", "Jakarta, Endonezya 🇮🇩", "New York, ABD 🇺🇸", "Amsterdam, Hollanda 🇳🇱",
-    "Tokyo, Japonya 🇯🇵", "Seoul, Güney Kore 🇰🇷", "Kuala Lumpur, Malezya 🇲🇾", "Tüm Dünya / Diğer 🌍"
+    "Tokyo, Japonya 🇯🇵", "Seoul, Güney Kore 🇰🇷", "Kuala Lumpur, Malezya 🇲🇾", "Tüm Dünya / Diğer 🌍",
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MarketCreateScreen(
+fun SharedMarketCreateScreen(
     selectedImageUri: String? = null,
     onPickImage: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
-    onSuccess: (SharedMarketItemModel) -> Unit = {}
+    onSuccess: (SharedMarketItemModel) -> Unit = {},
 ) {
-    var showLocationSheet by remember { mutableStateOf(false) }
+    var showLocationSheet by remember { mutableStateOf(value = false) }
 
     var title by remember { mutableStateOf("") }
     var priceText by remember { mutableStateOf("") }
@@ -97,20 +97,20 @@ fun MarketCreateScreen(
     var condition by remember { mutableStateOf("İkinci El") }
     var city by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var isSubmitting by remember { mutableStateOf(false) }
+    var isSubmitting by remember { mutableStateOf(value = false) }
 
     val categories = remember {
         listOf("Elektronik", "Giyim & Moda", "Ev & Yaşam", "Araç & Vasıta", "Spor & Hobi", "Kitap & Oyun", "Diğer")
     }
 
-    val isFormValid = title.trim().isNotBlank() && 
-                      priceText.trim().isNotBlank() && 
-                      (priceText.toDoubleOrNull() ?: 0.0) > 0.0
+    val isFormValid = title.trim().isNotBlank() &&
+            priceText.trim().isNotBlank() &&
+            ((priceText.toDoubleOrNull() ?: 0.0) > 0.0)
 
     if (showLocationSheet) {
         ModalBottomSheet(
             onDismissRequest = { showLocationSheet = false },
-            containerColor = Color(0xFF1E293B)
+            containerColor = Color(0xFF1E293B),
         ) {
             var locationQuery by remember { mutableStateOf("") }
             val filteredProvinces = remember(locationQuery) {
@@ -126,13 +126,13 @@ fun MarketCreateScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.85f)
-                    .padding(16.dp)
+                    .padding(16.dp),
             ) {
                 Text(
                     text = "Konum Seçin (Şehir / Ülke) 📍",
                     color = Color.White,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -145,21 +145,21 @@ fun MarketCreateScreen(
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color(0xFFFFD700)) },
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color(0xFF0F172A),
-                        unfocusedContainerColor = Color(0xFF0F172A),
+                        focusedContainerColor = Color(0xFF131826),
+                        unfocusedContainerColor = Color(0xFF131826),
                         focusedBorderColor = Color(0xFFFFD700),
-                        unfocusedBorderColor = Color(0xFF334155),
+                        unfocusedBorderColor = Color(0xFF2E384D),
                         focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
+                        unfocusedTextColor = Color.White,
                     ),
-                    singleLine = true
+                    singleLine = true,
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(filteredProvinces) { loc ->
                         Surface(
@@ -170,24 +170,24 @@ fun MarketCreateScreen(
                                     showLocationSheet = false
                                 },
                             shape = RoundedCornerShape(10.dp),
-                            color = if (city == loc) Color(0xFFFFD700).copy(alpha = 0.2f) else Color(0xFF0F172A)
+                            color = if (city == loc) Color(0xFFFFD700).copy(alpha = 0.2f) else Color(0xFF131826),
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.LocationOn,
                                     contentDescription = null,
                                     tint = Color(0xFFFFD700),
-                                    modifier = Modifier.size(18.dp)
+                                    modifier = Modifier.size(18.dp),
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
                                     text = loc,
                                     color = if (city == loc) Color(0xFFFFD700) else Color.White,
                                     fontWeight = if (city == loc) FontWeight.Bold else FontWeight.Normal,
-                                    fontSize = 15.sp
+                                    fontSize = 15.sp,
                                 )
                             }
                         }
@@ -198,7 +198,7 @@ fun MarketCreateScreen(
     }
 
     Scaffold(
-        containerColor = Color(0xFF0F172A),
+        containerColor = Color(0xFF131826),
         topBar = {
             Surface(color = Color(0xFF1E293B), shadowElevation = 4.dp) {
                 Row(
@@ -207,24 +207,24 @@ fun MarketCreateScreen(
                         .statusBarsPadding()
                         .height(56.dp)
                         .padding(horizontal = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Geri",
-                            tint = Color.White
+                            tint = Color.White,
                         )
                     }
                     Text(
                         text = "Yeni İlan Oluştur 🛍️",
                         color = Color.White,
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 }
             }
-        }
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -234,7 +234,7 @@ fun MarketCreateScreen(
                 .imePadding()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             // Görsel Katmanı
             Text("1. Ürün Görseli 🖼️", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -247,14 +247,14 @@ fun MarketCreateScreen(
                     .background(Color(0xFF1E293B))
                     .border(2.dp, Color(0xFFFFD700), RoundedCornerShape(16.dp))
                     .clickable { onPickImage() },
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 if (!selectedImageUri.isNullOrBlank()) {
                     AsyncImage(
                         model = selectedImageUri,
                         contentDescription = "Seçilen Ürün",
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
                     )
                 } else {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -262,14 +262,14 @@ fun MarketCreateScreen(
                             imageVector = Icons.Default.AddPhotoAlternate,
                             contentDescription = null,
                             tint = Color(0xFFFFD700),
-                            modifier = Modifier.size(48.dp)
+                            modifier = Modifier.size(48.dp),
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "Fotoğraf Yüklemek İçin Dokunun",
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp
+                            fontSize = 14.sp,
                         )
                     }
                 }
@@ -287,12 +287,12 @@ fun MarketCreateScreen(
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFFFFD700),
-                    unfocusedBorderColor = Color(0xFF334155),
+                    unfocusedBorderColor = Color(0xFF2E384D),
                     focusedLabelColor = Color(0xFFFFD700),
                     unfocusedLabelColor = Color(0xFF94A3B8),
                     focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
-                )
+                    unfocusedTextColor = Color.White,
+                ),
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -306,12 +306,12 @@ fun MarketCreateScreen(
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFFFD700),
-                        unfocusedBorderColor = Color(0xFF334155),
+                        unfocusedBorderColor = Color(0xFF2E384D),
                         focusedLabelColor = Color(0xFFFFD700),
                         unfocusedLabelColor = Color(0xFF94A3B8),
                         focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
-                    )
+                        unfocusedTextColor = Color.White,
+                    ),
                 )
 
                 Surface(
@@ -320,27 +320,27 @@ fun MarketCreateScreen(
                         .height(56.dp)
                         .clickable { showLocationSheet = true },
                     shape = RoundedCornerShape(12.dp),
-                    color = Color(0xFF0F172A),
-                    border = BorderStroke(1.dp, Color(0xFF334155))
+                    color = Color(0xFF131826),
+                    border = BorderStroke(1.dp, Color(0xFF2E384D)),
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(horizontal = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
                             contentDescription = null,
                             tint = Color(0xFFFFD700),
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = city.ifBlank { "Şehir / Konum" },
                             color = if (city.isNotBlank()) Color.White else Color(0xFF94A3B8),
                             fontSize = 13.sp,
-                            maxLines = 1
+                            maxLines = 1,
                         )
                     }
                 }
@@ -350,7 +350,7 @@ fun MarketCreateScreen(
             Text("Kategori", color = Color(0xFF94A3B8), fontSize = 14.sp)
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(categories) { cat ->
                     val isSelected = category == cat
@@ -362,14 +362,14 @@ fun MarketCreateScreen(
                             selectedContainerColor = Color(0xFFFFD700),
                             selectedLabelColor = Color.Black,
                             containerColor = Color(0xFF1E293B),
-                            labelColor = Color.White
+                            labelColor = Color.White,
                         ),
                         border = FilterChipDefaults.filterChipBorder(
-                            borderColor = Color(0xFF334155),
+                            borderColor = Color(0xFF2E384D),
                             selectedBorderColor = Color(0xFFFFD700),
                             enabled = true,
-                            selected = isSelected
-                        )
+                            selected = isSelected,
+                        ),
                     )
                 }
             }
@@ -384,14 +384,14 @@ fun MarketCreateScreen(
                         selectedContainerColor = Color(0xFFFFD700),
                         selectedLabelColor = Color.Black,
                         containerColor = Color(0xFF1E293B),
-                        labelColor = Color.White
+                        labelColor = Color.White,
                     ),
                     border = FilterChipDefaults.filterChipBorder(
-                        borderColor = Color(0xFF334155),
+                        borderColor = Color(0xFF2E384D),
                         selectedBorderColor = Color(0xFFFFD700),
                         enabled = true,
-                        selected = condition == "İkinci El"
-                    )
+                        selected = condition == "İkinci El",
+                    ),
                 )
                 FilterChip(
                     selected = condition == "Sıfır",
@@ -401,14 +401,14 @@ fun MarketCreateScreen(
                         selectedContainerColor = Color(0xFFFFD700),
                         selectedLabelColor = Color.Black,
                         containerColor = Color(0xFF1E293B),
-                        labelColor = Color.White
+                        labelColor = Color.White,
                     ),
                     border = FilterChipDefaults.filterChipBorder(
-                        borderColor = Color(0xFF334155),
+                        borderColor = Color(0xFF2E384D),
                         selectedBorderColor = Color(0xFFFFD700),
                         enabled = true,
-                        selected = condition == "Sıfır"
-                    )
+                        selected = condition == "Sıfır",
+                    ),
                 )
             }
 
@@ -422,12 +422,12 @@ fun MarketCreateScreen(
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFFFFD700),
-                    unfocusedBorderColor = Color(0xFF334155),
+                    unfocusedBorderColor = Color(0xFF2E384D),
                     focusedLabelColor = Color(0xFFFFD700),
                     unfocusedLabelColor = Color(0xFF94A3B8),
                     focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
-                )
+                    unfocusedTextColor = Color.White,
+                ),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -448,7 +448,7 @@ fun MarketCreateScreen(
                         photoUrl = selectedImageUri ?: "",
                         ownerId = "me",
                         username = "Siz",
-                        isSold = false
+                        isSold = false,
                     )
                     onSuccess(newItem)
                 },
@@ -459,8 +459,8 @@ fun MarketCreateScreen(
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFFD700),
-                    disabledContainerColor = Color(0xFF334155)
-                )
+                    disabledContainerColor = Color(0xFF2E384D),
+                ),
             ) {
                 if (isSubmitting) {
                     CircularProgressIndicator(color = Color.Black, modifier = Modifier.size(24.dp))
@@ -471,7 +471,7 @@ fun MarketCreateScreen(
                         text = "İlanı Yayınla 🚀",
                         color = if (isFormValid) Color.Black else Color.Gray,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 }
             }

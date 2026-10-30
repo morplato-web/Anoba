@@ -70,21 +70,21 @@ private val TURKEY_PROVINCES = listOf(
     "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir",
     "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat",
     "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman",
-    "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"
+    "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce",
 )
 
 private val GLOBAL_CITIES = listOf(
     "Baku, Azerbaycan 🇦🇿", "Berlin, Almanya 🇩🇪", "London, İngiltere 🇬🇧", "Paris, Fransa 🇫🇷",
     "Tashkent, Özbekistan 🇺🇿", "Jakarta, Endonezya 🇮🇩", "New York, ABD 🇺🇸", "Amsterdam, Hollanda 🇳🇱",
-    "Tokyo, Japonya 🇯🇵", "Seoul, Güney Kore 🇰🇷", "Kuala Lumpur, Malezya 🇲🇾", "Tüm Dünya / Diğer 🌍"
+    "Tokyo, Japonya 🇯🇵", "Seoul, Güney Kore 🇰🇷", "Kuala Lumpur, Malezya 🇲🇾", "Tüm Dünya / Diğer 🌍",
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MarketEditScreen(
+fun SharedMarketEditScreen(
     item: SharedMarketItemModel?,
     onNavigateBack: () -> Unit = {},
-    onSaveSuccess: (SharedMarketItemModel) -> Unit = {}
+    onSaveSuccess: (SharedMarketItemModel) -> Unit = {},
 ) {
     var title by remember(item) { mutableStateOf(item?.title ?: "") }
     var priceText by remember(item) {
@@ -92,7 +92,7 @@ fun MarketEditScreen(
         mutableStateOf(
             if (price != null) {
                 if (price % 1.0 == 0.0) price.toLong().toString() else price.toString()
-            } else ""
+            } else "",
         )
     }
     var category by remember(item) { mutableStateOf(item?.category ?: "Elektronik") }
@@ -100,7 +100,7 @@ fun MarketEditScreen(
     var city by remember(item) { mutableStateOf(item?.city ?: "") }
     var description by remember(item) { mutableStateOf(item?.description ?: "") }
 
-    var showLocationSheet by remember { mutableStateOf(false) }
+    var showLocationSheet by remember { mutableStateOf(value = false) }
 
     val categories = remember {
         listOf("Elektronik", "Giyim & Moda", "Ev & Yaşam", "Araç & Vasıta", "Spor & Hobi", "Kitap & Oyun", "Diğer")
@@ -108,12 +108,12 @@ fun MarketEditScreen(
 
     val isFormValid = title.trim().isNotBlank() &&
             priceText.trim().isNotBlank() &&
-            (priceText.toDoubleOrNull() ?: 0.0) > 0.0
+            ((priceText.toDoubleOrNull() ?: 0.0) > 0.0)
 
     if (showLocationSheet) {
         ModalBottomSheet(
             onDismissRequest = { showLocationSheet = false },
-            containerColor = Color(0xFF1E293B)
+            containerColor = Color(0xFF1E293B),
         ) {
             var locationQuery by remember { mutableStateOf("") }
             val filteredProvinces = remember(locationQuery) {
@@ -129,13 +129,13 @@ fun MarketEditScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.85f)
-                    .padding(16.dp)
+                    .padding(16.dp),
             ) {
                 Text(
                     text = "Konum Seçin (Şehir / Ülke) 📍",
                     color = Color.White,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -148,21 +148,21 @@ fun MarketEditScreen(
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color(0xFFFFD700)) },
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color(0xFF0F172A),
-                        unfocusedContainerColor = Color(0xFF0F172A),
+                        focusedContainerColor = Color(0xFF131826),
+                        unfocusedContainerColor = Color(0xFF131826),
                         focusedBorderColor = Color(0xFFFFD700),
-                        unfocusedBorderColor = Color(0xFF334155),
+                        unfocusedBorderColor = Color(0xFF2E384D),
                         focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
+                        unfocusedTextColor = Color.White,
                     ),
-                    singleLine = true
+                    singleLine = true,
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(filteredProvinces) { loc ->
                         Surface(
@@ -173,11 +173,11 @@ fun MarketEditScreen(
                                     showLocationSheet = false
                                 },
                             shape = RoundedCornerShape(10.dp),
-                            color = if (city == loc) Color(0xFFFFD700).copy(alpha = 0.2f) else Color(0xFF0F172A)
+                            color = if (city == loc) Color(0xFFFFD700).copy(alpha = 0.2f) else Color(0xFF131826),
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFFFFD700), modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(12.dp))
@@ -185,7 +185,7 @@ fun MarketEditScreen(
                                     text = loc,
                                     color = if (city == loc) Color(0xFFFFD700) else Color.White,
                                     fontWeight = if (city == loc) FontWeight.Bold else FontWeight.Normal,
-                                    fontSize = 15.sp
+                                    fontSize = 15.sp,
                                 )
                             }
                         }
@@ -196,7 +196,7 @@ fun MarketEditScreen(
     }
 
     Scaffold(
-        containerColor = Color(0xFF0F172A),
+        containerColor = Color(0xFF131826),
         topBar = {
             Surface(color = Color(0xFF1E293B), shadowElevation = 4.dp) {
                 Row(
@@ -205,7 +205,7 @@ fun MarketEditScreen(
                         .statusBarsPadding()
                         .height(56.dp)
                         .padding(horizontal = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = Color.White)
@@ -213,7 +213,7 @@ fun MarketEditScreen(
                     Text("İlanı Düzenle 📝", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
             }
-        }
+        },
     ) { innerPadding ->
         if (item == null) {
             Box(modifier = Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
@@ -228,7 +228,7 @@ fun MarketEditScreen(
                     .imePadding()
                     .verticalScroll(rememberScrollState())
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 // Fotoğraf Önizleme (Photo Preview)
                 Box(
@@ -237,21 +237,21 @@ fun MarketEditScreen(
                         .height(180.dp)
                         .clip(RoundedCornerShape(16.dp))
                         .background(Color(0xFF1E293B)),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     if (item.photoUrl.isNotBlank()) {
                         AsyncImage(
                             model = item.photoUrl,
                             contentDescription = item.title,
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
                         )
                     } else {
                         Icon(
                             imageVector = Icons.Default.ShoppingBag,
                             contentDescription = null,
                             tint = Color(0xFFFFD700).copy(alpha = 0.7f),
-                            modifier = Modifier.size(56.dp)
+                            modifier = Modifier.size(56.dp),
                         )
                     }
                 }
@@ -265,12 +265,12 @@ fun MarketEditScreen(
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFFFD700),
-                        unfocusedBorderColor = Color(0xFF334155),
+                        unfocusedBorderColor = Color(0xFF2E384D),
                         focusedLabelColor = Color(0xFFFFD700),
                         unfocusedLabelColor = Color(0xFF94A3B8),
                         focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
-                    )
+                        unfocusedTextColor = Color.White,
+                    ),
                 )
 
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -284,12 +284,12 @@ fun MarketEditScreen(
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color(0xFFFFD700),
-                            unfocusedBorderColor = Color(0xFF334155),
+                            unfocusedBorderColor = Color(0xFF2E384D),
                             focusedLabelColor = Color(0xFFFFD700),
                             unfocusedLabelColor = Color(0xFF94A3B8),
                             focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White
-                        )
+                            unfocusedTextColor = Color.White,
+                        ),
                     )
 
                     Surface(
@@ -298,14 +298,14 @@ fun MarketEditScreen(
                             .height(56.dp)
                             .clickable { showLocationSheet = true },
                         shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFF0F172A),
-                        border = BorderStroke(1.dp, Color(0xFF334155))
+                        color = Color(0xFF131826),
+                        border = BorderStroke(1.dp, Color(0xFF2E384D)),
                     ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(horizontal = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFFFFD700), modifier = Modifier.size(20.dp))
                             Spacer(modifier = Modifier.width(8.dp))
@@ -313,7 +313,7 @@ fun MarketEditScreen(
                                 text = city.ifBlank { "Şehir / Konum" },
                                 color = if (city.isNotBlank()) Color.White else Color(0xFF94A3B8),
                                 fontSize = 13.sp,
-                                maxLines = 1
+                                maxLines = 1,
                             )
                         }
                     }
@@ -323,7 +323,7 @@ fun MarketEditScreen(
                 Text("Kategori", color = Color(0xFF94A3B8), fontSize = 14.sp)
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(categories) { cat ->
                         val isSelected = category == cat
@@ -335,14 +335,14 @@ fun MarketEditScreen(
                                 selectedContainerColor = Color(0xFFFFD700),
                                 selectedLabelColor = Color.Black,
                                 containerColor = Color(0xFF1E293B),
-                                labelColor = Color.White
+                                labelColor = Color.White,
                             ),
                             border = FilterChipDefaults.filterChipBorder(
-                                borderColor = Color(0xFF334155),
+                                borderColor = Color(0xFF2E384D),
                                 selectedBorderColor = Color(0xFFFFD700),
                                 enabled = true,
-                                selected = isSelected
-                            )
+                                selected = isSelected,
+                            ),
                         )
                     }
                 }
@@ -357,14 +357,14 @@ fun MarketEditScreen(
                             selectedContainerColor = Color(0xFFFFD700),
                             selectedLabelColor = Color.Black,
                             containerColor = Color(0xFF1E293B),
-                            labelColor = Color.White
+                            labelColor = Color.White,
                         ),
                         border = FilterChipDefaults.filterChipBorder(
-                            borderColor = Color(0xFF334155),
+                            borderColor = Color(0xFF2E384D),
                             selectedBorderColor = Color(0xFFFFD700),
                             enabled = true,
-                            selected = condition == "İkinci El"
-                        )
+                            selected = condition == "İkinci El",
+                        ),
                     )
                     FilterChip(
                         selected = condition == "Sıfır",
@@ -374,14 +374,14 @@ fun MarketEditScreen(
                             selectedContainerColor = Color(0xFFFFD700),
                             selectedLabelColor = Color.Black,
                             containerColor = Color(0xFF1E293B),
-                            labelColor = Color.White
+                            labelColor = Color.White,
                         ),
                         border = FilterChipDefaults.filterChipBorder(
-                            borderColor = Color(0xFF334155),
+                            borderColor = Color(0xFF2E384D),
                             selectedBorderColor = Color(0xFFFFD700),
                             enabled = true,
-                            selected = condition == "Sıfır"
-                        )
+                            selected = condition == "Sıfır",
+                        ),
                     )
                 }
 
@@ -395,12 +395,12 @@ fun MarketEditScreen(
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFFFD700),
-                        unfocusedBorderColor = Color(0xFF334155),
+                        unfocusedBorderColor = Color(0xFF2E384D),
                         focusedLabelColor = Color(0xFFFFD700),
                         unfocusedLabelColor = Color(0xFF94A3B8),
                         focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
-                    )
+                        unfocusedTextColor = Color.White,
+                    ),
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -414,7 +414,7 @@ fun MarketEditScreen(
                             price = priceText.toDoubleOrNull() ?: item.price,
                             category = category,
                             city = city.ifBlank { item.city },
-                            condition = condition
+                            condition = condition,
                         )
                         onSaveSuccess(updated)
                     },
@@ -425,8 +425,8 @@ fun MarketEditScreen(
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFFFD700),
-                        disabledContainerColor = Color(0xFF334155)
-                    )
+                        disabledContainerColor = Color(0xFF2E384D),
+                    ),
                 ) {
                     Icon(Icons.Default.Check, contentDescription = null, tint = Color.Black)
                     Spacer(modifier = Modifier.width(8.dp))
@@ -434,7 +434,7 @@ fun MarketEditScreen(
                         text = "Değişiklikleri Kaydet 🚀",
                         color = if (isFormValid) Color.Black else Color.Gray,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 }
             }
