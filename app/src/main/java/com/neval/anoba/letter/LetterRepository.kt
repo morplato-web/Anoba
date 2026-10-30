@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
+@Suppress("unused")
 class LetterRepository(
     private val firestore: FirebaseFirestore,
     private val storage: com.google.firebase.storage.FirebaseStorage,
