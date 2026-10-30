@@ -9,11 +9,11 @@ fun MosaicSheet(
     isVisible: Boolean,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
-    @Suppress("UNUSED_PARAMETER") viewModel: MosaicViewModel = koinViewModel()
+    @Suppress("UNUSED_PARAMETER") viewModel: MosaicViewModel = koinViewModel(),
 ) {
     SharedMosaicSheet(
         isVisible = isVisible,
         onDismiss = onDismiss,
-        modifier = modifier
+        modifier = modifier,
     )
 }

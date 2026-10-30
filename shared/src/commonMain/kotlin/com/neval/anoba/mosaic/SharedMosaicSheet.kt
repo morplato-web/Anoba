@@ -39,19 +39,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Suppress("unused")
+@Suppress("Unused", "unused")
 data class SharedMosaicItem(
     val id: String = "",
     val title: String = "",
     val isAd: Boolean = false,
-    val color: Color = Color.Gray
+    val color: Color = Color.Gray,
 )
 
+@Suppress("Unused", "unused")
 @Composable
 fun SharedMosaicSheet(
     isVisible: Boolean,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val mosaicColors = remember {
         listOf(
@@ -59,21 +60,21 @@ fun SharedMosaicSheet(
             Color(0xFF7E57C2), Color(0xFF5C6BC0), Color(0xFF42A5F5),
             Color(0xFF29B6F6), Color(0xFF26C6DA), Color(0xFF26A69A),
             Color(0xFF66BB6A), Color(0xFF9CCC65), Color(0xFFD4E157),
-            Color(0xFFFFEE58), Color(0xFFFFCA28), Color(0xFFFFA726)
+            Color(0xFFFFEE58), Color(0xFFFFCA28), Color(0xFFFFA726),
         )
     }
 
     AnimatedVisibility(
         visible = isVisible,
-        enter = slideInHorizontally(initialOffsetX = { it }),
-        exit = slideOutHorizontally(targetOffsetX = { it }),
-        modifier = modifier
+        enter = slideInHorizontally { it },
+        exit = slideOutHorizontally { it },
+        modifier = modifier,
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.5f))
-                .clickable { onDismiss() }
+                .clickable { onDismiss() },
         ) {
             Surface(
                 modifier = Modifier
@@ -82,31 +83,31 @@ fun SharedMosaicSheet(
                     .align(Alignment.CenterEnd)
                     .clickable(enabled = false) {}, // İçeriğe tıklanınca arka planın kapanmasını engeller
                 shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp),
-                color = Color(0xFFECEFF1)
+                color = Color(0xFFECEFF1),
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp)
+                        .padding(16.dp),
                 ) {
                     Spacer(modifier = Modifier.height(32.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Column {
                             Text(
                                 text = "MOZAİK 🧩",
                                 color = Color(0xFF232066),
                                 fontSize = 20.sp,
-                                fontWeight = FontWeight.ExtraBold
+                                fontWeight = FontWeight.ExtraBold,
                             )
                             Text(
                                 text = "Reklam & İçerik Havuzu",
                                 color = Color.Gray,
-                                fontSize = 12.sp
+                                fontSize = 12.sp,
                             )
                         }
 
@@ -124,7 +125,7 @@ fun SharedMosaicSheet(
                         columns = GridCells.Fixed(6),
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
                         verticalArrangement = Arrangement.spacedBy(6.dp),
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         items(120) { index ->
                             val color = mosaicColors[index % mosaicColors.size]
@@ -134,20 +135,20 @@ fun SharedMosaicSheet(
                                     .aspectRatio(1f)
                                     .clickable { },
                                 shape = RoundedCornerShape(6.dp),
-                                color = color.copy(alpha = 0.85f)
+                                color = color.copy(alpha = 0.85f),
                             ) {
                                 Box(
                                     contentAlignment = Alignment.Center,
-                                    modifier = Modifier.fillMaxSize()
+                                    modifier = Modifier.fillMaxSize(),
                                 ) {
-                                    if (index % 17 == 0) {
+                                    if ((index % 17 == 0)) {
                                         Text("Reklam", fontSize = 8.sp, fontWeight = FontWeight.Bold, color = Color.White)
                                     } else {
                                         Icon(
                                             imageVector = Icons.Default.PlayCircle,
                                             contentDescription = null,
                                             tint = Color.White.copy(alpha = 0.7f),
-                                            modifier = Modifier.size(16.dp)
+                                            modifier = Modifier.size(16.dp),
                                         )
                                     }
                                 }
