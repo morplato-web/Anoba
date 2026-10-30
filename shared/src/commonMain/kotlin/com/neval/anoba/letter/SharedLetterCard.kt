@@ -1,3 +1,5 @@
+@file:Suppress("unused", "UNUSED_PARAMETER")
+
 package com.neval.anoba.letter
 
 import androidx.compose.animation.animateContentSize
