@@ -24,6 +24,7 @@ sealed class LetterUiEvent {
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@Suppress("unused")
 class LetterViewModel(
     private val authService: AuthServiceInterface,
     private val letterRepository: LetterRepository,
