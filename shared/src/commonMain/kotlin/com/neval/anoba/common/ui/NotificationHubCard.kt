@@ -38,20 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class SharedAnobaNotification(
-    val id: String,
-    val type: String = "PHOTO",
-    val title: String = "",
-    val message: String = "",
-    val isRead: Boolean = false,
-    val targetId: String = "",
-    val senderName: String = "",
-    val senderPhotoUrl: String? = null,
-    val timestampMillis: Long = 0L
-)
+import com.neval.anoba.models.SharedAnobaNotification
 
 @Composable
 fun NotificationHubCard(

@@ -20,7 +20,7 @@ data class User(
     var isOfficial: Boolean = false,
     val followerCount: Int = 0,
     val followingCount: Int = 0,
-    val blockedUsers: List<String> = emptyList()
+    val blockedUsers: List<String> = emptyList(),
 ) {
     val role: UserRole
         get() = try {
