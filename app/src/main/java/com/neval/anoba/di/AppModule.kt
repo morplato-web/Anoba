@@ -39,8 +39,6 @@ import com.neval.anoba.letter.LetterViewModel
 import com.neval.anoba.letter.lettercomment.LetterCommentRepository
 import com.neval.anoba.letter.lettercomment.LetterCommentViewModel
 import com.neval.anoba.letter.letteremoji.LetterEmojiReactionRepository
-import com.neval.anoba.login.repository.ILoginRepository
-import com.neval.anoba.login.repository.LoginRepository
 import com.neval.anoba.login.viewmodel.ForgotPasswordViewModel
 import com.neval.anoba.login.viewmodel.LoginViewModel
 import com.neval.anoba.login.viewmodel.NewPasswordViewModel
@@ -122,7 +120,6 @@ fun createAppModuleDefinition(
 
     single<AuthServiceInterface> { AuthService(get(), get(), get(), get(), androidContext(), get(), get(), get(), get(), get()) }
     single<IUserRepository> { UserRepository(androidContext(), get(), get()) }
-    single<ILoginRepository> { LoginRepository(get()) }
     single { GeneralChatRepository(get(), get(), get()) }
     single { GroupChatRepository(get(), get(), get()) }
     single { PrivateChatRepository(get(), get(), get()) }

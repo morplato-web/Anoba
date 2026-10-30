@@ -10,20 +10,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ForgotPasswordViewModel(
-    private val authService: AuthServiceInterface
+    private val authService: AuthServiceInterface,
 ) : ViewModel() {
 
     // Sonucu (Başarı, Hata Mesajı, Hata ID) taşıyan bir veri sınıfı
     data class ResetState(
         val isSuccess: Boolean = false,
         val errorMessage: String? = null,
-        val errorResId: Int? = null
+        val errorResId: Int? = null,
     )
 
     private val _resetResult = MutableStateFlow<ResetState?>(null)
     val resetResult: StateFlow<ResetState?> = _resetResult.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(false)
+    private val _isLoading = MutableStateFlow(value = false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     fun resetPassword(email: String) {
@@ -42,7 +42,7 @@ class ForgotPasswordViewModel(
                 ResetState(
                     isSuccess = false,
                     errorMessage = errorMessage,
-                    errorResId = if (errorMessage == null) R.string.error_unknown else null
+                    errorResId = if (errorMessage == null) R.string.error_unknown else null,
                 )
             }
             _isLoading.value = false

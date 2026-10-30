@@ -73,18 +73,18 @@ fun SplashScreen(navController: NavHostController) {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .padding(horizontal = 24.dp, vertical = 16.dp),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // Logo (R.drawable.app_logo şeffaf arka planlı olmalı)
             Image(
                 painter = painterResource(id = R.drawable.app_logo),
                 contentDescription = "Anoba Logo",
-                modifier = Modifier.size(120.dp) // Boyut 140dp'den 120dp'ye düşürüldü
+                modifier = Modifier.size(120.dp),
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -92,7 +92,7 @@ fun SplashScreen(navController: NavHostController) {
             // Yükleme Çubuğu
             CircularProgressIndicator(
                 color = MaterialTheme.colorScheme.primary,
-                strokeWidth = 3.dp
+                strokeWidth = 3.dp,
             )
         }
 
@@ -101,25 +101,25 @@ fun SplashScreen(navController: NavHostController) {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(bottom = 50.dp)
+                .padding(bottom = 50.dp),
         ) {
             Column(
                 modifier = Modifier.align(Alignment.Center),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = "Anoba",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = MaterialTheme.colorScheme.primary,
-                    letterSpacing = 2.sp
+                    letterSpacing = 2.sp,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(id = R.string.splash_made_in_turkiye),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Light,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                 )
             }
         }

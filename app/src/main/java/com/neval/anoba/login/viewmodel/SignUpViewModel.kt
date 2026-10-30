@@ -20,7 +20,7 @@ class SignUpViewModel(
     private val authService: AuthServiceInterface,
     private val userRepository: IUserRepository,
     private val emailValidator: EmailValidator,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
 ) : ViewModel() {
 
     private val _username = MutableStateFlow("")
@@ -35,10 +35,10 @@ class SignUpViewModel(
     private val _confirmPassword = MutableStateFlow("")
     val confirmPassword: StateFlow<String> = _confirmPassword.asStateFlow()
 
-    private val _passwordVisible = MutableStateFlow(false)
+    private val _passwordVisible = MutableStateFlow(value = false)
     val passwordVisible: StateFlow<Boolean> = _passwordVisible.asStateFlow()
 
-    private val _confirmPasswordVisible = MutableStateFlow(false)
+    private val _confirmPasswordVisible = MutableStateFlow(value = false)
     val confirmPasswordVisible: StateFlow<Boolean> = _confirmPasswordVisible.asStateFlow()
 
     private val _usernameError = MutableStateFlow<Int?>(null)
@@ -53,14 +53,14 @@ class SignUpViewModel(
     private val _confirmPasswordError = MutableStateFlow<Int?>(null)
     val confirmPasswordError: StateFlow<Int?> = _confirmPasswordError.asStateFlow()
 
-    private val _formValid = MutableStateFlow(false)
+    private val _formValid = MutableStateFlow(value = false)
     val formValid: StateFlow<Boolean> = _formValid.asStateFlow()
 
     private val _signUpState = MutableStateFlow<SignUpUiState>(SignUpUiState.Idle)
     val signUpState: StateFlow<SignUpUiState> = _signUpState.asStateFlow()
 
     fun updateUsername(newUsername: String) {
-        _username.update { newUsername } // trim() kaldırıldı, böylece yazarken boşluk bırakabilirsin
+        _username.update { newUsername }
         validateForm()
     }
 
@@ -70,12 +70,12 @@ class SignUpViewModel(
     }
 
     fun updatePassword(newPassword: String) {
-        _password.update { newPassword } // Şifrede de trim olması sorun yaratabilir, kaldırdık
+        _password.update { newPassword }
         validateForm()
     }
 
     fun updateConfirmPassword(newConfirmPassword: String) {
-        _confirmPassword.update { newConfirmPassword } // Kaldırıldı
+        _confirmPassword.update { newConfirmPassword }
         validateForm()
     }
 
@@ -105,7 +105,7 @@ class SignUpViewModel(
         } else null
 
         // Formun genel geçerliliği
-        _formValid.value = _usernameError.value == null &&
+        _formValid.value = (_usernameError.value == null &&
                 _emailError.value == null &&
                 _passwordError.value == null &&
                 _confirmPasswordError.value == null &&
@@ -113,7 +113,7 @@ class SignUpViewModel(
                 _email.value.isNotEmpty() &&
                 _password.value.isNotEmpty() &&
                 _confirmPassword.value.isNotEmpty() &&
-                _password.value == _confirmPassword.value
+                _password.value == _confirmPassword.value)
     }
 
     fun performRegistration() {
@@ -125,13 +125,13 @@ class SignUpViewModel(
             val result = authService.register(
                 email = _email.value,
                 password = _password.value,
-                username = _username.value
+                username = _username.value,
             )
             _signUpState.value = when (result) {
                 is AuthResult.Success -> {
                     analyticsHelper.logEvent("sign_up_success")
                     withContext(Dispatchers.IO) {
-                        userRepository.setRememberMe(true)
+                        userRepository.setRememberMe(rememberMe = true)
                     }
                     SignUpUiState.Success
                 }

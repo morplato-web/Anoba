@@ -24,10 +24,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,27 +39,25 @@ import androidx.compose.ui.unit.sp
 private val ForgotPasswordPrimaryColor = Color(0xFF232066)
 
 @Composable
-fun ForgotPasswordScreen(
+fun SharedForgotPasswordScreen(
     email: String = "",
     onEmailChange: (String) -> Unit = {},
     isLoading: Boolean = false,
     onResetPasswordClick: (String) -> Unit = {},
     onNavigateBack: () -> Unit = {},
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    var internalEmail by remember { mutableStateOf(email) }
-    val currentEmail = email.ifEmpty { internalEmail }
     val focusManager = LocalFocusManager.current
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = ForgotPasswordPrimaryColor,
         focusedLabelColor = ForgotPasswordPrimaryColor,
-        cursorColor = ForgotPasswordPrimaryColor
+        cursorColor = ForgotPasswordPrimaryColor,
     )
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        containerColor = Color.White
+        containerColor = Color.White,
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -71,14 +66,14 @@ fun ForgotPasswordScreen(
                 .padding(horizontal = 24.dp)
                 .imePadding(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Text(
                 text = "Şifremi Unuttum?",
                 style = MaterialTheme.typography.headlineMedium,
                 color = ForgotPasswordPrimaryColor,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 16.dp),
             )
 
             Text(
@@ -86,15 +81,12 @@ fun ForgotPasswordScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 32.dp)
+                modifier = Modifier.padding(bottom = 32.dp),
             )
 
             OutlinedTextField(
-                value = currentEmail,
-                onValueChange = {
-                    internalEmail = it
-                    onEmailChange(it)
-                },
+                value = email,
+                onValueChange = onEmailChange,
                 label = { Text("E-posta") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
@@ -102,28 +94,28 @@ fun ForgotPasswordScreen(
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        if (currentEmail.isNotBlank() && !isLoading) {
+                        if (email.isNotBlank() && !isLoading) {
                             focusManager.clearFocus()
-                            onResetPasswordClick(currentEmail)
+                            onResetPasswordClick(email)
                         }
-                    }
-                )
+                    },
+                ),
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
                 onClick = {
-                    if (currentEmail.isNotBlank() && !isLoading) {
+                    if (email.isNotBlank() && !isLoading) {
                         focusManager.clearFocus()
-                        onResetPasswordClick(currentEmail)
+                        onResetPasswordClick(email)
                     }
                 },
-                enabled = currentEmail.isNotBlank() && !isLoading,
+                enabled = email.isNotBlank() && !isLoading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
@@ -131,21 +123,21 @@ fun ForgotPasswordScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = ForgotPasswordPrimaryColor,
                     disabledContainerColor = Color(0xFFE0E0E0),
-                    disabledContentColor = Color(0xFF888888)
-                )
+                    disabledContentColor = Color(0xFF888888),
+                ),
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                         color = Color.White,
-                        strokeWidth = 2.5.dp
+                        strokeWidth = 2.5.dp,
                     )
                 } else {
                     Text(
                         text = "Sıfırlama Bağlantısı Gönder",
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
             }
@@ -156,7 +148,7 @@ fun ForgotPasswordScreen(
                 Text(
                     text = "Geri Dön",
                     color = ForgotPasswordPrimaryColor,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
         }

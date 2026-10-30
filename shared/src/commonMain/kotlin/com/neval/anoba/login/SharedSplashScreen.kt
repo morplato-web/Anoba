@@ -26,11 +26,12 @@ import kotlinx.coroutines.delay
 private val SplashPrimaryColor = Color(0xFF232066)
 private val SplashFooterColor = Color.Gray
 
+@Suppress("Unused", "unused")
 @Composable
-fun SplashScreen(
+fun SharedSplashScreen(
     onSplashFinished: () -> Unit = {},
     footerText: String = "Türkiye'de Üretildi 🇹🇷",
-    delayMillis: Long = 2000L
+    delayMillis: Long = 2000L,
 ) {
     LaunchedEffect(Unit) {
         delay(delayMillis)
@@ -41,17 +42,17 @@ fun SplashScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .padding(horizontal = 24.dp, vertical = 16.dp),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // Anoba Logo (120dp)
             AnobaBrandLogoIcon(
                 size = 120.dp,
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier.size(120.dp),
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -59,7 +60,7 @@ fun SplashScreen(
             // Yükleme Göstergesi
             CircularProgressIndicator(
                 color = SplashPrimaryColor,
-                strokeWidth = 3.dp
+                strokeWidth = 3.dp,
             )
         }
 
@@ -68,25 +69,25 @@ fun SplashScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(bottom = 50.dp)
+                .padding(bottom = 50.dp),
         ) {
             Column(
                 modifier = Modifier.align(Alignment.Center),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = "Anoba",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = SplashPrimaryColor,
-                    letterSpacing = 2.sp
+                    letterSpacing = 2.sp,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = footerText,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Light,
-                    color = SplashFooterColor
+                    color = SplashFooterColor,
                 )
             }
         }

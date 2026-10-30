@@ -2,7 +2,17 @@ package com.neval.anoba.login.ui
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -11,14 +21,35 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -46,7 +77,7 @@ import org.koin.androidx.compose.koinViewModel
 fun SignUpScreen(
     navController: NavHostController,
     viewModel: SignUpViewModel,
-    authViewModel: AuthViewModel = koinViewModel()
+    authViewModel: AuthViewModel = koinViewModel(),
 ) {
     val username by viewModel.username.collectAsState()
     val email by viewModel.email.collectAsState()
@@ -72,7 +103,7 @@ fun SignUpScreen(
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = primaryColor,
         focusedLabelColor = primaryColor,
-        cursorColor = primaryColor
+        cursorColor = primaryColor,
     )
 
     LaunchedEffect(signUpState) {
@@ -88,7 +119,7 @@ fun SignUpScreen(
                 val errorMessage = errorState.message ?: defaultErrorMessage
                 snackbarHostState.showSnackbar(
                     message = errorMessage,
-                    duration = SnackbarDuration.Long
+                    duration = SnackbarDuration.Long,
                 )
                 viewModel.onSignUpResultConsumed()
             }
@@ -98,7 +129,7 @@ fun SignUpScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        containerColor = Color.White
+        containerColor = Color.White,
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -108,7 +139,7 @@ fun SignUpScreen(
                 .imePadding()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             Text(
@@ -116,7 +147,7 @@ fun SignUpScreen(
                 style = MaterialTheme.typography.headlineMedium,
                 color = primaryColor,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -129,9 +160,9 @@ fun SignUpScreen(
                         try {
                             val credentialManager = CredentialManager.create(context)
                             val googleIdOption = GetGoogleIdOption.Builder()
-                                .setFilterByAuthorizedAccounts(false)
+                                .setFilterByAuthorizedAccounts(filterByAuthorizedAccounts = false)
                                 .setServerClientId(context.getString(R.string.default_web_client_id))
-                                .setAutoSelectEnabled(false)
+                                .setAutoSelectEnabled(autoSelectEnabled = false)
                                 .build()
 
                             val request = GetCredentialRequest.Builder()
@@ -149,8 +180,8 @@ fun SignUpScreen(
                                             popUpTo(Constants.LOGIN_NAV_GRAPH) { inclusive = true }
                                         }
                                     } else if (authResult is AuthResult.Error) {
-                                        scope.launch { 
-                                            snackbarHostState.showSnackbar(authResult.message ?: defaultErrorMessage) 
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(authResult.message ?: defaultErrorMessage)
                                         }
                                     }
                                 }
@@ -165,24 +196,24 @@ fun SignUpScreen(
                     .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
-                border = BorderStroke(1.dp, Color.LightGray)
+                border = BorderStroke(1.dp, Color.LightGray),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
                 ) {
                     Icon(
-                        painter = androidx.compose.ui.res.painterResource(id = R.drawable.ic_google_logo),
+                        painter = painterResource(id = R.drawable.ic_google_logo),
                         contentDescription = "Google Logo",
                         tint = Color.Unspecified,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = "Google ile Hızlı Kayıt Ol",
                         color = Color.Black,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp
+                        fontSize = 15.sp,
                     )
                 }
             }
@@ -191,13 +222,13 @@ fun SignUpScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
                 Text(
                     text = "  veya e-posta ile  ",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    color = Color.Gray,
                 )
                 HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
             }
@@ -217,7 +248,7 @@ fun SignUpScreen(
                 singleLine = true,
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) })
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -235,7 +266,7 @@ fun SignUpScreen(
                 singleLine = true,
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) })
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -255,7 +286,7 @@ fun SignUpScreen(
                         Icon(
                             imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             contentDescription = null,
-                            tint = primaryColor
+                            tint = primaryColor,
                         )
                     }
                 },
@@ -263,7 +294,7 @@ fun SignUpScreen(
                 singleLine = true,
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) })
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -283,7 +314,7 @@ fun SignUpScreen(
                         Icon(
                             imageVector = if (confirmPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             contentDescription = null,
-                            tint = primaryColor
+                            tint = primaryColor,
                         )
                     }
                 },
@@ -291,12 +322,14 @@ fun SignUpScreen(
                 singleLine = true,
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    if (formValid) {
-                        focusManager.clearFocus()
-                        viewModel.performRegistration()
-                    }
-                })
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (formValid) {
+                            focusManager.clearFocus()
+                            viewModel.performRegistration()
+                        }
+                    },
+                ),
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -312,7 +345,7 @@ fun SignUpScreen(
                     .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = primaryColor),
-                enabled = formValid && signUpState !is SignUpViewModel.SignUpUiState.Loading
+                enabled = formValid && signUpState !is SignUpViewModel.SignUpUiState.Loading,
             ) {
                 if (signUpState is SignUpViewModel.SignUpUiState.Loading) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White)
@@ -321,7 +354,7 @@ fun SignUpScreen(
                         text = stringResource(id = R.string.signup_button),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
             }
@@ -331,7 +364,7 @@ fun SignUpScreen(
             TextButton(onClick = { navController.popBackStack() }) {
                 Text(
                     text = stringResource(id = R.string.signup_already_have_account),
-                    color = primaryColor
+                    color = primaryColor,
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))

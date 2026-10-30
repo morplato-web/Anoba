@@ -2,7 +2,17 @@ package com.neval.anoba.login.ui
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -11,8 +21,28 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,7 +79,7 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreen(
     navController: NavHostController,
     viewModel: LoginViewModel,
-    authViewModel: AuthViewModel = koinViewModel()
+    authViewModel: AuthViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -63,7 +93,7 @@ fun LoginScreen(
     LaunchedEffect(uiState.loginResult) {
         val result = uiState.loginResult
         if (result != null) {
-            when(result) {
+            when (result) {
                 is LoginUiState.LoginResult.Success -> {
                     navController.navigate(Constants.DRAWER_GRAPH) {
                         popUpTo(Constants.LOGIN_NAV_GRAPH) { inclusive = true }
@@ -81,7 +111,7 @@ fun LoginScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        containerColor = Color.White
+        containerColor = Color.White,
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -90,17 +120,17 @@ fun LoginScreen(
                 .padding(horizontal = 24.dp)
                 .imePadding()
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(48.dp))
             Text(
                 text = stringResource(id = R.string.login_welcome_title),
                 style = MaterialTheme.typography.displaySmall.copy(
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.sp,
                 ),
                 color = primaryColor,
                 fontWeight = FontWeight.ExtraBold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -112,9 +142,9 @@ fun LoginScreen(
                         try {
                             val credentialManager = CredentialManager.create(context)
                             val googleIdOption = GetGoogleIdOption.Builder()
-                                .setFilterByAuthorizedAccounts(false)
+                                .setFilterByAuthorizedAccounts(filterByAuthorizedAccounts = false)
                                 .setServerClientId(context.getString(R.string.default_web_client_id))
-                                .setAutoSelectEnabled(false)
+                                .setAutoSelectEnabled(autoSelectEnabled = false)
                                 .build()
 
                             val request = GetCredentialRequest.Builder()
@@ -132,8 +162,8 @@ fun LoginScreen(
                                             popUpTo(Constants.LOGIN_NAV_GRAPH) { inclusive = true }
                                         }
                                     } else if (authResult is AuthResult.Error) {
-                                        scope.launch { 
-                                            snackbarHostState.showSnackbar(authResult.message ?: defaultErrorMessage) 
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(authResult.message ?: defaultErrorMessage)
                                         }
                                     }
                                 }
@@ -148,25 +178,25 @@ fun LoginScreen(
                     .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
-                border = BorderStroke(1.dp, Color.LightGray)
+                border = BorderStroke(1.dp, Color.LightGray),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
                 ) {
                     // 🚀 Google Renkli Logosu (Kütüphaneden veya Kaynaktan)
                     Icon(
                         painter = painterResource(id = R.drawable.ic_google_logo),
                         contentDescription = "Google Logo",
                         tint = Color.Unspecified,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = "Google ile Devam Et",
                         color = Color.Black,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp
+                        fontSize = 15.sp,
                     )
                 }
             }
@@ -175,13 +205,13 @@ fun LoginScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
                 Text(
                     text = "  veya  ",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    color = Color.Gray,
                 )
                 HorizontalDivider(modifier = Modifier.weight(1f), color = Color.LightGray.copy(alpha = 0.6f))
             }
@@ -196,8 +226,8 @@ fun LoginScreen(
                 errorResId = uiState.emailError,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
-                )
+                    imeAction = ImeAction.Next,
+                ),
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -213,7 +243,7 @@ fun LoginScreen(
                 onPasswordToggle = { viewModel.togglePasswordVisibility() },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
@@ -221,20 +251,20 @@ fun LoginScreen(
                             viewModel.login()
                             focusManager.clearFocus()
                         }
-                    }
-                )
+                    },
+                ),
             )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = uiState.rememberMe,
                         onCheckedChange = { viewModel.updateRememberMe(it) },
-                        colors = CheckboxDefaults.colors(checkedColor = primaryColor)
+                        colors = CheckboxDefaults.colors(checkedColor = primaryColor),
                     )
                     Text(stringResource(id = R.string.login_remember_me), style = MaterialTheme.typography.bodyMedium)
                 }
@@ -242,7 +272,7 @@ fun LoginScreen(
                     Text(
                         text = stringResource(id = R.string.login_forgot_password),
                         color = primaryColor,
-                        textDecoration = TextDecoration.Underline
+                        textDecoration = TextDecoration.Underline,
                     )
                 }
             }
@@ -259,7 +289,7 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
+                colors = ButtonDefaults.buttonColors(containerColor = primaryColor),
             ) {
                 if (uiState.isLoading) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White)
@@ -281,7 +311,7 @@ fun LoginScreen(
                     .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = AnobaGold),
-                border = BorderStroke(1.dp, primaryColor)
+                border = BorderStroke(1.dp, primaryColor),
             ) {
                 Text(stringResource(id = R.string.login_guest_button), color = primaryColor)
             }
@@ -291,7 +321,7 @@ fun LoginScreen(
             TextButton(onClick = { navController.navigate(Constants.SIGN_UP_SCREEN) }) {
                 Text(
                     text = stringResource(id = R.string.login_go_to_signup),
-                    color = primaryColor
+                    color = primaryColor,
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
@@ -309,7 +339,7 @@ fun LoginTextField(
     isPasswordVisible: Boolean = false,
     onPasswordToggle: (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
     val primaryColor = Color(0xFF232066)
 
@@ -328,7 +358,7 @@ fun LoginTextField(
                     Icon(
                         imageVector = if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                         contentDescription = null,
-                        tint = primaryColor
+                        tint = primaryColor,
                     )
                 }
             }
@@ -336,6 +366,6 @@ fun LoginTextField(
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions
+        keyboardActions = keyboardActions,
     )
 }

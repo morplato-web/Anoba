@@ -175,7 +175,7 @@ class AuthService(
             val firebaseUser = result.user ?: return AuthResult.Error(message = context.getString(R.string.auth_user_object_null))
             appUserRepository.setRememberMe(rememberMe)
             reloadAuthState()
-            AuthResult.Success(firebaseUser = firebaseUser, isAnonymous = false)
+            AuthResult.Success(uid = firebaseUser.uid, isAnonymous = false)
         } catch (e: Exception) {
             _authState.value = AuthState.Unauthenticated
             AuthResult.Error(message = getErrorMessage(e))
@@ -209,7 +209,7 @@ class AuthService(
             }
 
             reloadAuthState()
-            AuthResult.Success(firebaseUser = firebaseUser, isAnonymous = false)
+            AuthResult.Success(uid = firebaseUser.uid, isAnonymous = false)
         } catch (e: Exception) {
             _authState.value = AuthState.Unauthenticated
             AuthResult.Error(message = getErrorMessage(e))
@@ -242,7 +242,7 @@ class AuthService(
             firestore.collection("users").document(firebaseUser.uid).set(newUser, SetOptions.merge()).await()
 
             reloadAuthState()
-            AuthResult.Success(firebaseUser = firebaseUser, isAnonymous = true)
+            AuthResult.Success(uid = firebaseUser.uid, isAnonymous = true)
         } catch (e: Exception) {
             _authState.value = AuthState.Unauthenticated
             AuthResult.Error(message = getErrorMessage(e))
@@ -321,7 +321,7 @@ class AuthService(
                 registrationDate = regDateString,
                 isOfficial = false
             )
-            AuthResult.Success(firebaseUser = firebaseUser, isAnonymous = false)
+            AuthResult.Success(uid = firebaseUser.uid, isAnonymous = false)
         } catch (e: Exception) {
             _authState.value = AuthState.Unauthenticated
             AuthResult.Error(message = getErrorMessage(e))

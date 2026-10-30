@@ -1,13 +1,38 @@
 package com.neval.anoba.login.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -30,7 +55,7 @@ import com.neval.anoba.login.viewmodel.NewPasswordViewModel
 @Composable
 fun NewPasswordScreen(
     navController: NavHostController,
-    viewModel: NewPasswordViewModel
+    viewModel: NewPasswordViewModel,
 ) {
     val password by viewModel.password.collectAsState()
     val confirmPassword by viewModel.confirmPassword.collectAsState()
@@ -41,15 +66,15 @@ fun NewPasswordScreen(
 
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
-    var isPasswordVisible by remember { mutableStateOf(false) }
-    var isConfirmPasswordVisible by remember { mutableStateOf(false) }
+    var isPasswordVisible by remember { mutableStateOf(value = false) }
+    var isConfirmPasswordVisible by remember { mutableStateOf(value = false) }
 
     val primaryColor = Color(0xFF232066)
     val snackbarHostState = remember { SnackbarHostState() }
     val defaultErrorMessage = stringResource(id = R.string.error_unknown)
 
     LaunchedEffect(uiState) {
-        when(val state = uiState) {
+        when (val state = uiState) {
             is NewPasswordUiState.Success -> {
                 val successMessage = state.message ?: state.messageRes?.let { context.getString(it) } ?: "Success"
                 snackbarHostState.showSnackbar(successMessage)
@@ -69,7 +94,7 @@ fun NewPasswordScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = Color.White
+        containerColor = Color.White,
     ) { padding ->
         Column(
             modifier = Modifier
@@ -78,13 +103,13 @@ fun NewPasswordScreen(
                 .padding(24.dp)
                 .imePadding(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = stringResource(id = R.string.new_password_title),
                 style = MaterialTheme.typography.headlineMedium,
                 color = primaryColor,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -103,24 +128,24 @@ fun NewPasswordScreen(
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Next,
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
                 ),
                 trailingIcon = {
                     IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                         Icon(
                             imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = primaryColor,
                     focusedLabelColor = primaryColor,
-                    cursorColor = primaryColor
-                )
+                    cursorColor = primaryColor,
+                ),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -139,7 +164,7 @@ fun NewPasswordScreen(
                 visualTransformation = if (isConfirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
@@ -147,21 +172,21 @@ fun NewPasswordScreen(
                             focusManager.clearFocus()
                             viewModel.updatePassword()
                         }
-                    }
+                    },
                 ),
                 trailingIcon = {
                     IconButton(onClick = { isConfirmPasswordVisible = !isConfirmPasswordVisible }) {
                         Icon(
                             imageVector = if (isConfirmPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = primaryColor,
                     focusedLabelColor = primaryColor,
-                    cursorColor = primaryColor
-                )
+                    cursorColor = primaryColor,
+                ),
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -170,13 +195,13 @@ fun NewPasswordScreen(
             Button(
                 onClick = {
                     focusManager.clearFocus()
-                    viewModel.updatePassword() 
+                    viewModel.updatePassword()
                 },
-                enabled = isFormValid && uiState !is NewPasswordUiState.Loading,
+                enabled = (isFormValid && uiState !is NewPasswordUiState.Loading),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
+                colors = ButtonDefaults.buttonColors(containerColor = primaryColor),
             ) {
                 if (uiState is NewPasswordUiState.Loading) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White)
@@ -184,7 +209,7 @@ fun NewPasswordScreen(
                     Text(
                         text = stringResource(id = R.string.new_password_button),
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
             }

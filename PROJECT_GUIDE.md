@@ -236,6 +236,7 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **Room KMP Native Uyumlaştırması:** `ChatDao`, `FollowedUserDao`, `PinnedItemDao` ve `Converters` sınıfları KMP Native (iOS) derleme standartlarına taşındı. Android'e özel `PagingSource` bağımlılıkları Native uyumlu `Flow` akışına çevrildi.
 - **Bulut Mac (MacInCloud) Entegrasyonu & GitHub CI/CD:**
   - Proje GitHub reposuna (`https://github.com/morplato-web/Anoba.git`) taşındı.
+  - Bulut Mac portal hesabı: `nevalcicek@hotmail.com`
   - Bulut Mac sunucusu (`FF376.macincloud.com`, kullanıcı: `user299223`, şifre: `pkp45927chd`) kuruldu ve bilgileri güvenceye alındı.
   - Kotlin `2.1.0`, KSP `2.1.0-1.0.29` ve Room KMP `2.7.0-alpha13` sürümleri hizalanarak iOS KLIB derleme motoru tam uyumlu hale getirildi (`BUILD SUCCESSFUL`).
   - Kilitli Xcode şablonlarının yerine bağımsız **`iosApp/iosApp.xcodeproj`** projesi oluşturuldu.

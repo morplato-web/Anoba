@@ -24,7 +24,7 @@ data class LoginUiState(
     val passwordError: Int? = null,
     val isLoading: Boolean = false,
     val isFormValid: Boolean = false,
-    val loginResult: LoginResult? = null
+    val loginResult: LoginResult? = null,
 ) {
     sealed class LoginResult {
         data object Success : LoginResult()
@@ -36,7 +36,7 @@ class LoginViewModel(
     private val authService: AuthServiceInterface,
     private val userRepository: IUserRepository,
     private val emailValidator: EmailValidator,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
@@ -48,7 +48,7 @@ class LoginViewModel(
             currentState.copy(
                 email = email,
                 emailError = if (isValid || email.isEmpty()) null else R.string.error_invalid_email,
-                isFormValid = validateForm(email, currentState.password)
+                isFormValid = validateForm(email, currentState.password),
             )
         }
     }
@@ -59,7 +59,7 @@ class LoginViewModel(
             currentState.copy(
                 password = password,
                 passwordError = if (isValid || password.isEmpty()) null else R.string.error_password_too_short,
-                isFormValid = validateForm(currentState.email, password)
+                isFormValid = validateForm(currentState.email, password),
             )
         }
     }
@@ -81,7 +81,7 @@ class LoginViewModel(
             val result = authService.login(
                 email = _uiState.value.email,
                 password = _uiState.value.password,
-                rememberMe = _uiState.value.rememberMe
+                rememberMe = _uiState.value.rememberMe,
             )
 
             val loginResultState = when (result) {
@@ -99,7 +99,7 @@ class LoginViewModel(
                     }
                     LoginUiState.LoginResult.Error(
                         message = result.message,
-                        messageRes = if (result.message == null) R.string.error_unknown else null
+                        messageRes = if (result.message == null) R.string.error_unknown else null,
                     )
                 }
                 else -> LoginUiState.LoginResult.Error(messageRes = R.string.error_unknown)
@@ -116,7 +116,7 @@ class LoginViewModel(
             _uiState.update { it.copy(isLoading = true) }
 
             withContext(Dispatchers.IO) {
-                userRepository.setRememberMe(false)
+                userRepository.setRememberMe(rememberMe = false)
             }
 
             val loginResultState = when (val result = authService.loginAnonymously()) {
@@ -131,7 +131,7 @@ class LoginViewModel(
                     }
                     LoginUiState.LoginResult.Error(
                         message = result.message,
-                        messageRes = if (result.message == null) R.string.error_unknown else null
+                        messageRes = if (result.message == null) R.string.error_unknown else null,
                     )
                 }
                 else -> LoginUiState.LoginResult.Error(messageRes = R.string.error_unknown)
@@ -146,6 +146,6 @@ class LoginViewModel(
     }
 
     private fun validateForm(email: String, pass: String): Boolean {
-        return emailValidator.isValid(email) && pass.length >= 6
+        return (emailValidator.isValid(email) && pass.length >= 6)
     }
 }

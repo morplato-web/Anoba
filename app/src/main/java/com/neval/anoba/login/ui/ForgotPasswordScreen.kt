@@ -1,10 +1,32 @@
 package com.neval.anoba.login.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +44,7 @@ import com.neval.anoba.login.viewmodel.ForgotPasswordViewModel
 @Composable
 fun ForgotPasswordScreen(
     navController: NavHostController,
-    viewModel: ForgotPasswordViewModel
+    viewModel: ForgotPasswordViewModel,
 ) {
     val emailState = remember { mutableStateOf("") }
     val resetResult by viewModel.resetResult.collectAsState()
@@ -50,7 +72,7 @@ fun ForgotPasswordScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        containerColor = Color.White
+        containerColor = Color.White,
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -59,14 +81,14 @@ fun ForgotPasswordScreen(
                 .padding(24.dp)
                 .imePadding(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Text(
                 text = stringResource(id = R.string.login_forgot_password),
                 style = MaterialTheme.typography.headlineMedium,
                 color = primaryColor,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 16.dp),
             )
 
             Text(
@@ -74,7 +96,7 @@ fun ForgotPasswordScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 32.dp)
+                modifier = Modifier.padding(bottom = 32.dp),
             )
 
             OutlinedTextField(
@@ -86,10 +108,10 @@ fun ForgotPasswordScreen(
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = primaryColor,
                     focusedLabelColor = primaryColor,
-                    cursorColor = primaryColor
+                    cursorColor = primaryColor,
                 ),
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
@@ -97,8 +119,8 @@ fun ForgotPasswordScreen(
                             focusManager.clearFocus()
                             viewModel.resetPassword(emailState.value)
                         }
-                    }
-                )
+                    },
+                ),
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -113,12 +135,12 @@ fun ForgotPasswordScreen(
                     },
                     modifier = Modifier.fillMaxWidth().height(50.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = primaryColor),
-                    enabled = emailState.value.isNotBlank()
+                    enabled = emailState.value.isNotBlank(),
                 ) {
                     Text(
                         text = stringResource(id = R.string.forgot_password_button),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
                     )
                 }
             }
@@ -129,7 +151,7 @@ fun ForgotPasswordScreen(
                 Text(
                     text = stringResource(id = R.string.common_back),
                     color = primaryColor,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
         }

@@ -48,8 +48,9 @@ import androidx.compose.ui.unit.sp
 
 private val NewPasswordPrimaryColor = Color(0xFF232066)
 
+@Suppress("Unused", "unused")
 @Composable
-fun NewPasswordScreen(
+fun SharedNewPasswordScreen(
     password: String = "",
     onPasswordChange: (String) -> Unit = {},
     confirmPassword: String = "",
@@ -59,27 +60,27 @@ fun NewPasswordScreen(
     isLoading: Boolean = false,
     onUpdatePasswordClick: () -> Unit = {},
     onNavigateBack: (() -> Unit)? = null,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    var isPasswordVisible by remember { mutableStateOf(false) }
-    var isConfirmPasswordVisible by remember { mutableStateOf(false) }
+    var isPasswordVisible by remember { mutableStateOf(value = false) }
+    var isConfirmPasswordVisible by remember { mutableStateOf(value = false) }
     val focusManager = LocalFocusManager.current
 
-    val isFormValid = password.isNotBlank() &&
+    val isFormValid = (password.isNotBlank() &&
             confirmPassword.isNotBlank() &&
             password == confirmPassword &&
             passwordError == null &&
-            confirmPasswordError == null
+            confirmPasswordError == null)
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = NewPasswordPrimaryColor,
         focusedLabelColor = NewPasswordPrimaryColor,
-        cursorColor = NewPasswordPrimaryColor
+        cursorColor = NewPasswordPrimaryColor,
     )
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = Color.White
+        containerColor = Color.White,
     ) { padding ->
         Column(
             modifier = Modifier
@@ -88,13 +89,13 @@ fun NewPasswordScreen(
                 .padding(24.dp)
                 .imePadding(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = "Yeni Şifre Oluştur",
                 style = MaterialTheme.typography.headlineMedium,
                 color = NewPasswordPrimaryColor,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -113,20 +114,20 @@ fun NewPasswordScreen(
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Next,
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
                 ),
                 trailingIcon = {
                     IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                         Icon(
                             imageVector = if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             contentDescription = if (isPasswordVisible) "Şifreyi Gizle" else "Şifreyi Göster",
-                            tint = NewPasswordPrimaryColor
+                            tint = NewPasswordPrimaryColor,
                         )
                     }
-                }
+                },
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -145,7 +146,7 @@ fun NewPasswordScreen(
                 visualTransformation = if (isConfirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
@@ -153,17 +154,17 @@ fun NewPasswordScreen(
                             focusManager.clearFocus()
                             onUpdatePasswordClick()
                         }
-                    }
+                    },
                 ),
                 trailingIcon = {
                     IconButton(onClick = { isConfirmPasswordVisible = !isConfirmPasswordVisible }) {
                         Icon(
                             imageVector = if (isConfirmPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             contentDescription = if (isConfirmPasswordVisible) "Şifreyi Gizle" else "Şifreyi Göster",
-                            tint = NewPasswordPrimaryColor
+                            tint = NewPasswordPrimaryColor,
                         )
                     }
-                }
+                },
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -182,21 +183,21 @@ fun NewPasswordScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = NewPasswordPrimaryColor,
                     disabledContainerColor = Color(0xFFE0E0E0),
-                    disabledContentColor = Color(0xFF888888)
-                )
+                    disabledContentColor = Color(0xFF888888),
+                ),
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                         color = Color.White,
-                        strokeWidth = 2.5.dp
+                        strokeWidth = 2.5.dp,
                     )
                 } else {
                     Text(
                         text = "Şifreyi Güncelle",
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
             }
@@ -208,7 +209,7 @@ fun NewPasswordScreen(
                     Text(
                         text = "Giriş Ekranına Dön",
                         color = NewPasswordPrimaryColor,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
             }

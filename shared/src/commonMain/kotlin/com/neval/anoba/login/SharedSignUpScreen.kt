@@ -58,7 +58,7 @@ import com.neval.anoba.common.ui.GoogleLogoIcon
 private val SignUpPrimaryColor = Color(0xFF232066)
 
 @Composable
-fun SignUpScreen(
+fun SharedSignUpScreen(
     username: String = "",
     onUsernameChange: (String) -> Unit = {},
     email: String = "",
@@ -75,31 +75,31 @@ fun SignUpScreen(
     onSignUpClick: () -> Unit = {},
     onGoogleSignUpClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    var passwordVisible by remember { mutableStateOf(false) }
-    var confirmPasswordVisible by remember { mutableStateOf(false) }
+    var passwordVisible by remember { mutableStateOf(value = false) }
+    var confirmPasswordVisible by remember { mutableStateOf(value = false) }
     val focusManager = LocalFocusManager.current
 
-    val isFormValid = username.isNotBlank() &&
-            email.isNotBlank() &&
-            password.isNotBlank() &&
-            confirmPassword.isNotBlank() &&
-            password == confirmPassword &&
-            usernameError == null &&
-            emailError == null &&
-            passwordError == null &&
-            confirmPasswordError == null
+    val isFormValid = (username.isNotBlank()) &&
+            (email.isNotBlank()) &&
+            (password.isNotBlank()) &&
+            (confirmPassword.isNotBlank()) &&
+            (password == confirmPassword) &&
+            (usernameError == null) &&
+            (emailError == null) &&
+            (passwordError == null) &&
+            (confirmPasswordError == null)
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = SignUpPrimaryColor,
         focusedLabelColor = SignUpPrimaryColor,
-        cursorColor = SignUpPrimaryColor
+        cursorColor = SignUpPrimaryColor,
     )
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        containerColor = Color.White
+        containerColor = Color.White,
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -109,7 +109,7 @@ fun SignUpScreen(
                 .imePadding()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -118,7 +118,7 @@ fun SignUpScreen(
                 style = MaterialTheme.typography.headlineMedium,
                 color = SignUpPrimaryColor,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -134,11 +134,11 @@ fun SignUpScreen(
                     .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
-                border = BorderStroke(1.dp, Color.LightGray)
+                border = BorderStroke(1.dp, Color.LightGray),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
                 ) {
                     GoogleLogoIcon(size = 20.dp)
                     Spacer(modifier = Modifier.width(12.dp))
@@ -146,7 +146,7 @@ fun SignUpScreen(
                         text = "Google ile Hızlı Kayıt Ol",
                         color = Color.Black,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp
+                        fontSize = 15.sp,
                     )
                 }
             }
@@ -156,20 +156,20 @@ fun SignUpScreen(
             // Ayraç
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 HorizontalDivider(
                     modifier = Modifier.weight(1f),
-                    color = Color.LightGray.copy(alpha = 0.6f)
+                    color = Color.LightGray.copy(alpha = 0.6f),
                 )
                 Text(
                     text = "  veya e-posta ile  ",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    color = Color.Gray,
                 )
                 HorizontalDivider(
                     modifier = Modifier.weight(1f),
-                    color = Color.LightGray.copy(alpha = 0.6f)
+                    color = Color.LightGray.copy(alpha = 0.6f),
                 )
             }
 
@@ -187,7 +187,7 @@ fun SignUpScreen(
                 singleLine = true,
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) })
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -205,9 +205,9 @@ fun SignUpScreen(
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Next,
                 ),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) })
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -229,15 +229,15 @@ fun SignUpScreen(
                         Icon(
                             imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             contentDescription = if (passwordVisible) "Şifreyi Gizle" else "Şifreyi Göster",
-                            tint = SignUpPrimaryColor
+                            tint = SignUpPrimaryColor,
                         )
                     }
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Next,
                 ),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) })
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -259,20 +259,22 @@ fun SignUpScreen(
                         Icon(
                             imageVector = if (confirmPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             contentDescription = if (confirmPasswordVisible) "Şifreyi Gizle" else "Şifreyi Göster",
-                            tint = SignUpPrimaryColor
+                            tint = SignUpPrimaryColor,
                         )
                     }
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 ),
-                keyboardActions = KeyboardActions(onDone = {
-                    if (isFormValid && !isLoading) {
-                        focusManager.clearFocus()
-                        onSignUpClick()
-                    }
-                })
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (isFormValid && !isLoading) {
+                            focusManager.clearFocus()
+                            onSignUpClick()
+                        }
+                    },
+                ),
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -290,22 +292,22 @@ fun SignUpScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = SignUpPrimaryColor,
                     disabledContainerColor = Color(0xFFE0E0E0),
-                    disabledContentColor = Color(0xFF888888)
+                    disabledContentColor = Color(0xFF888888),
                 ),
-                enabled = isFormValid && !isLoading
+                enabled = isFormValid && !isLoading,
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                         color = Color.White,
-                        strokeWidth = 2.5.dp
+                        strokeWidth = 2.5.dp,
                     )
                 } else {
                     Text(
                         text = "Kayıt Ol",
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
             }
@@ -316,7 +318,7 @@ fun SignUpScreen(
             TextButton(onClick = onNavigateBack) {
                 Text(
                     text = "Zaten bir hesabınız var mı? Giriş Yapın",
-                    color = SignUpPrimaryColor
+                    color = SignUpPrimaryColor,
                 )
             }
 

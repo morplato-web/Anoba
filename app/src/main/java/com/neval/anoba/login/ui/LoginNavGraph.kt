@@ -14,7 +14,7 @@ import org.koin.androidx.compose.koinViewModel
 fun NavGraphBuilder.loginNavGraph(navController: NavHostController) {
     navigation(
         startDestination = Constants.SPLASH_SCREEN,
-        route = Constants.LOGIN_NAV_GRAPH
+        route = Constants.LOGIN_NAV_GRAPH,
     ) {
         composable(Constants.SPLASH_SCREEN) {
             SplashScreen(navController = navController)

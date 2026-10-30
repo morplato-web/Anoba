@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.neval.anoba.R
 import com.neval.anoba.common.services.AuthServiceInterface
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -32,7 +34,7 @@ class NewPasswordViewModel(
     private val _confirmPasswordError = MutableStateFlow<Int?>(null)
     val confirmPasswordError: StateFlow<Int?> = _confirmPasswordError.asStateFlow()
 
-    private val _isFormValid = MutableStateFlow(false)
+    private val _isFormValid = MutableStateFlow(value = false)
     val isFormValid: StateFlow<Boolean> = _isFormValid.asStateFlow()
 
     private val _uiState = MutableStateFlow<NewPasswordUiState>(NewPasswordUiState.Idle)
@@ -53,14 +55,14 @@ class NewPasswordViewModel(
             R.string.error_password_too_short
         } else null
 
-        _confirmPasswordError.value = if (_confirmPassword.value.isNotEmpty() && _password.value != _confirmPassword.value) {
+        _confirmPasswordError.value = if (_confirmPassword.value.isNotEmpty() && (_password.value != _confirmPassword.value)) {
             R.string.error_passwords_mismatch
         } else null
 
-        _isFormValid.value = _passwordError.value == null &&
+        _isFormValid.value = (_passwordError.value == null &&
                 _confirmPasswordError.value == null &&
                 _password.value.length >= 6 &&
-                _password.value == _confirmPassword.value
+                _password.value == _confirmPassword.value)
     }
 
     fun updatePassword() {
@@ -80,19 +82,19 @@ class NewPasswordViewModel(
                 } else {
                     NewPasswordUiState.Error(
                         message = message,
-                        messageRes = if (message == null) R.string.error_unknown else null
+                        messageRes = if (message == null) R.string.error_unknown else null,
                     )
                 }
             } catch (e: Exception) {
                 _uiState.value = NewPasswordUiState.Error(
                     message = e.localizedMessage,
-                    messageRes = R.string.error_unknown
+                    messageRes = R.string.error_unknown,
                 )
             }
         }
     }
 
-    fun resetState(){
+    fun resetState() {
         _uiState.value = NewPasswordUiState.Idle
     }
 }

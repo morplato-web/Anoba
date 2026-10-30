@@ -59,22 +59,24 @@ private val AnobaGoldColor = Color(0xFFFFD700)
 
 @Composable
 fun AuthContainerView(
-    onLoginSuccess: () -> Unit = {}
+    onLoginSuccess: () -> Unit = {},
 ) {
     var authMode by remember { mutableStateOf("LOGIN") }
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var rememberMe by remember { mutableStateOf(false) }
+    var rememberMe by remember { mutableStateOf(value = false) }
+
+    var regUsername by remember { mutableStateOf("") }
+    var regEmail by remember { mutableStateOf("") }
+    var regPassword by remember { mutableStateOf("") }
+    var regConfirmPassword by remember { mutableStateOf("") }
+
+    var forgotEmail by remember { mutableStateOf("") }
 
     when (authMode) {
         "SIGN_UP" -> {
-            var regUsername by remember { mutableStateOf("") }
-            var regEmail by remember { mutableStateOf("") }
-            var regPassword by remember { mutableStateOf("") }
-            var regConfirmPassword by remember { mutableStateOf("") }
-
-            SignUpScreen(
+            SharedSignUpScreen(
                 username = regUsername,
                 onUsernameChange = { regUsername = it },
                 email = regEmail,
@@ -85,22 +87,21 @@ fun AuthContainerView(
                 onConfirmPasswordChange = { regConfirmPassword = it },
                 onNavigateBack = { authMode = "LOGIN" },
                 onSignUpClick = onLoginSuccess,
-                onGoogleSignUpClick = onLoginSuccess
+                onGoogleSignUpClick = onLoginSuccess,
             )
         }
         "FORGOT_PASSWORD" -> {
-            var forgotEmail by remember { mutableStateOf("") }
-            ForgotPasswordScreen(
+            SharedForgotPasswordScreen(
                 email = forgotEmail,
                 onEmailChange = { forgotEmail = it },
                 onNavigateBack = { authMode = "LOGIN" },
                 onResetPasswordClick = {
                     authMode = "LOGIN"
-                }
+                },
             )
         }
         else -> {
-            LoginScreen(
+            SharedLoginScreen(
                 email = email,
                 onEmailChange = { email = it },
                 password = password,
@@ -111,14 +112,14 @@ fun AuthContainerView(
                 onGoogleLoginClick = onLoginSuccess,
                 onGuestLoginClick = onLoginSuccess,
                 onForgotPasswordClick = { authMode = "FORGOT_PASSWORD" },
-                onSignUpClick = { authMode = "SIGN_UP" }
+                onSignUpClick = { authMode = "SIGN_UP" },
             )
         }
     }
 }
 
 @Composable
-fun LoginScreen(
+fun SharedLoginScreen(
     email: String = "",
     onEmailChange: (String) -> Unit = {},
     password: String = "",
@@ -131,14 +132,14 @@ fun LoginScreen(
     onGuestLoginClick: () -> Unit = {},
     onForgotPasswordClick: () -> Unit = {},
     onSignUpClick: () -> Unit = {},
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    var isPasswordVisible by remember { mutableStateOf(false) }
+    var isPasswordVisible by remember { mutableStateOf(value = false) }
     val isFormValid = email.isNotBlank() && password.isNotBlank()
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        containerColor = Color.White
+        containerColor = Color.White,
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -147,7 +148,7 @@ fun LoginScreen(
                 .padding(horizontal = 24.dp)
                 .imePadding()
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(48.dp))
 
@@ -156,7 +157,7 @@ fun LoginScreen(
                 style = MaterialTheme.typography.displaySmall.copy(letterSpacing = 1.sp),
                 color = LoginPrimaryColor,
                 fontWeight = FontWeight.ExtraBold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -169,7 +170,7 @@ fun LoginScreen(
                     .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
-                border = BorderStroke(1.dp, Color.LightGray)
+                border = BorderStroke(1.dp, Color.LightGray),
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     GoogleLogoIcon(size = 20.dp)
@@ -178,7 +179,7 @@ fun LoginScreen(
                         text = "Google ile Devam Et",
                         color = Color.Black,
                         fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
             }
@@ -188,20 +189,20 @@ fun LoginScreen(
             // Ayraç
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 HorizontalDivider(
                     modifier = Modifier.weight(1f),
-                    color = Color.LightGray.copy(alpha = 0.6f)
+                    color = Color.LightGray.copy(alpha = 0.6f),
                 )
                 Text(
                     text = "  veya  ",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    color = Color.Gray,
                 )
                 HorizontalDivider(
                     modifier = Modifier.weight(1f),
-                    color = Color.LightGray.copy(alpha = 0.6f)
+                    color = Color.LightGray.copy(alpha = 0.6f),
                 )
             }
 
@@ -216,9 +217,9 @@ fun LoginScreen(
                 shape = RoundedCornerShape(8.dp),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Next,
                 ),
-                singleLine = true
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -232,7 +233,7 @@ fun LoginScreen(
                 shape = RoundedCornerShape(8.dp),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 ),
                 singleLine = true,
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -241,10 +242,10 @@ fun LoginScreen(
                         Icon(
                             imageVector = if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             contentDescription = if (isPasswordVisible) "Şifreyi Gizle" else "Şifreyi Göster",
-                            tint = LoginPrimaryColor
+                            tint = LoginPrimaryColor,
                         )
                     }
-                }
+                },
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -253,24 +254,24 @@ fun LoginScreen(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = rememberMe,
                         onCheckedChange = onRememberMeChange,
-                        colors = CheckboxDefaults.colors(checkedColor = LoginPrimaryColor)
+                        colors = CheckboxDefaults.colors(checkedColor = LoginPrimaryColor),
                     )
                     Text(
                         text = "Beni Hatırla",
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
                 TextButton(onClick = onForgotPasswordClick) {
                     Text(
                         text = "Şifremi Unuttum?",
                         color = LoginPrimaryColor,
-                        textDecoration = TextDecoration.Underline
+                        textDecoration = TextDecoration.Underline,
                     )
                 }
             }
@@ -288,13 +289,13 @@ fun LoginScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LoginPrimaryColor,
                     disabledContainerColor = Color(0xFFE0E0E0),
-                    disabledContentColor = Color(0xFF888888)
-                )
+                    disabledContentColor = Color(0xFF888888),
+                ),
             ) {
                 Text(
                     text = "Giriş Yap",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
+                    fontSize = 15.sp,
                 )
             }
 
@@ -308,13 +309,13 @@ fun LoginScreen(
                     .height(50.dp),
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(1.dp, LoginPrimaryColor),
-                colors = ButtonDefaults.outlinedButtonColors(containerColor = AnobaGoldColor)
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = AnobaGoldColor),
             ) {
                 Text(
                     text = "Misafir Girişi",
                     color = LoginPrimaryColor,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp
+                    fontSize = 15.sp,
                 )
             }
 
@@ -325,7 +326,7 @@ fun LoginScreen(
                 Text(
                     text = "Kayıt Ol",
                     color = LoginPrimaryColor,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
 

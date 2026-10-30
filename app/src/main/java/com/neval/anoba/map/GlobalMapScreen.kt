@@ -16,11 +16,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun GlobalMapScreen(
     navController: NavController,
-    homeViewModel: HomeViewModel = koinViewModel()
+    homeViewModel: HomeViewModel = koinViewModel(),
 ) {
     val items by homeViewModel.globalMapItems.collectAsState()
     val context = LocalContext.current
-    val knownCodes = remember { DEFAULT_SHARED_COUNTRIES.map { it.code }.toSet() - "OTHER" }
+    val knownCodes = remember { DEFAULT_SHARED_COUNTRIES.asSequence().map { it.code }.toSet() - "OTHER" }
 
     val countryStats = remember(items) {
         if (items.isEmpty()) {
@@ -83,12 +83,12 @@ fun GlobalMapScreen(
                     "CO" -> context.getString(R.string.country_co)
                     "MY" -> context.getString(R.string.country_my)
                     "TM" -> context.getString(R.string.country_tm)
-                    else -> context.getString(R.string.country_other)
+                    else -> country.name
                 }
 
                 country.copy(
                     name = localizedName,
-                    contentCount = itemsByCountry[country.code]?.size ?: 0
+                    contentCount = itemsByCountry[country.code]?.size ?: 0,
                 )
             }
         }
@@ -112,6 +112,6 @@ fun GlobalMapScreen(
                 }
                 launchSingleTop = true
             }
-        }
+        },
     )
 }
