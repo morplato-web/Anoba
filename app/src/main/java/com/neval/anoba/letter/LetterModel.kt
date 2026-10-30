@@ -119,6 +119,7 @@ fun LetterModel.toSharedModel(): SharedLetterModel {
         isPublished = this.isPublished,
         isOfficial = this.isOfficial,
         userBadgeType = this.userBadgeType ?: "NONE",
+        topEmoji = this.reactions.maxByOrNull { it.value }?.key ?: "❤️",
         reactionCount = this.reactions.values.sum().toInt()
     )
 }
