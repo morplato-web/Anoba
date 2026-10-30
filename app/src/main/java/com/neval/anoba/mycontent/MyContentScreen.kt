@@ -10,7 +10,20 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -20,10 +33,58 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.PlayCircleOutline
+import androidx.compose.material.icons.filled.Publish
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarOutline
+import androidx.compose.material.icons.filled.WatchLater
+import androidx.compose.material.icons.outlined.ShoppingBag
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,7 +118,7 @@ import java.nio.charset.StandardCharsets
 @Composable
 fun MyContentScreen(
     navController: NavController,
-    viewModel: MyContentViewModel = koinViewModel()
+    viewModel: MyContentViewModel = koinViewModel(),
 ) {
     val isOwner by viewModel.isOwner.collectAsState()
     val targetUsername by viewModel.targetUsername.collectAsState()
@@ -72,7 +133,7 @@ fun MyContentScreen(
     val videoDownloadState by viewModel.videoDownloadState.collectAsState()
     val context = LocalContext.current
     val launchGallery by viewModel.launchGallery.collectAsState()
-    var showAudioSheet by remember { mutableStateOf(false) }
+    var showAudioSheet by remember { mutableStateOf(value = false) }
 
     val backText = stringResource(id = R.string.mycontent_back)
     val homeText = stringResource(id = R.string.mycontent_home)
@@ -92,7 +153,7 @@ fun MyContentScreen(
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> viewModel.onMediaSelected(uris, context) }
+        onResult = { uris -> viewModel.onMediaSelected(uris, context) },
     )
 
     LaunchedEffect(launchGallery) {
@@ -110,12 +171,12 @@ fun MyContentScreen(
         listOf(
             stringResource(id = R.string.mycontent_published_tab),
             stringResource(id = R.string.mycontent_drafts_tab),
-            "Pazar Yeri 🛍️"
+            "Pazar Yeri",
         )
     } else {
         listOf(
             stringResource(id = R.string.mycontent_published_tab),
-            "Pazar Yeri 🛍️"
+            "Pazar Yeri",
         )
     }
 
@@ -144,7 +205,7 @@ fun MyContentScreen(
                 viewModel.deleteContent(it.id, it.type)
                 showDeleteDialog = null
             },
-            onDismiss = { showDeleteDialog = null }
+            onDismiss = { showDeleteDialog = null },
         )
     }
 
@@ -168,7 +229,7 @@ fun MyContentScreen(
                             },
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = AnobaNavy
+                            color = AnobaNavy,
                         )
                     },
                     navigationIcon = {
@@ -180,7 +241,7 @@ fun MyContentScreen(
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(14.dp),
-                            modifier = Modifier.padding(end = 2.dp)
+                            modifier = Modifier.padding(end = 2.dp),
                         ) {
                             if (isOwner) {
                                 // 1. Kamera (ÇEK)
@@ -189,7 +250,7 @@ fun MyContentScreen(
                                     contentDescription = newCameraText,
                                     backgroundColor = Color(0xFFF3E5F5),
                                     iconColor = Color(0xFF8E24AA),
-                                    onClick = { navController.navigate(Constants.VIDEO_CAMERA_SCREEN) }
+                                    onClick = { navController.navigate(Constants.VIDEO_CAMERA_SCREEN) },
                                 )
 
                                 // 2. Kalem (YAZ)
@@ -198,7 +259,7 @@ fun MyContentScreen(
                                     contentDescription = newLetterText,
                                     backgroundColor = Color(0xFFE1F5FE),
                                     iconColor = Color(0xFF0288D1),
-                                    onClick = { navController.navigate(Constants.LETTER_CREATE_SCREEN) }
+                                    onClick = { navController.navigate(Constants.LETTER_CREATE_SCREEN) },
                                 )
 
                                 // 3. Galeri (SEÇ)
@@ -207,7 +268,7 @@ fun MyContentScreen(
                                     contentDescription = fromGalleryText,
                                     backgroundColor = Color(0xFFFFEBEE),
                                     iconColor = Color(0xFFE53935),
-                                    onClick = { viewModel.onGalleryIconClicked() }
+                                    onClick = { viewModel.onGalleryIconClicked() },
                                 )
                             }
 
@@ -220,28 +281,54 @@ fun MyContentScreen(
                                         }
                                         launchSingleTop = true
                                     }
-                                }
+                                },
                             ) {
                                 Icon(Icons.Default.Home, contentDescription = homeText)
                             }
                         }
-                    }
+                    },
                 )
-            }
+            },
         ) { padding ->
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+            ) {
                 PrimaryTabRow(selectedTabIndex = selectedTabIndex) {
                     tabs.forEachIndexed { index, title ->
-                        Tab(selected = selectedTabIndex == index, onClick = { selectedTabIndex = index }, text = { Text(text = title) })
+                        val isMarketTab = title == "Pazar Yeri"
+                        Tab(
+                            selected = selectedTabIndex == index,
+                            onClick = { selectedTabIndex = index },
+                            text = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center,
+                                ) {
+                                    if (isMarketTab) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.ShoppingBag,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp),
+                                            tint = if (selectedTabIndex == index) AnobaNavy else Color.Gray,
+                                        )
+                                        Spacer(Modifier.width(4.dp))
+                                    }
+                                    Text(text = title)
+                                }
+                            },
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 8.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
                     if (errorMessageRes != null) {
                         Text(text = stringResource(id = errorMessageRes!!), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
                     } else {
@@ -274,7 +361,7 @@ fun MyContentScreen(
                                 modifier = Modifier.fillMaxSize(),
                                 contentPadding = PaddingValues(4.dp),
                                 horizontalArrangement = Arrangement.spacedBy(10.dp),
-                                verticalItemSpacing = 10.dp
+                                verticalItemSpacing = 10.dp,
                             ) {
                                 items(itemsToShow, key = { it.id + it.type }) { item ->
                                     Box {
@@ -293,7 +380,7 @@ fun MyContentScreen(
                                                 } else {
                                                     selectedContentItem = item
                                                 }
-                                            }
+                                            },
                                         )
 
                                         // 🛡️ KARANTİNA / İNCELEME ETİKETİ
@@ -302,34 +389,26 @@ fun MyContentScreen(
                                                 modifier = Modifier
                                                     .align(Alignment.TopStart)
                                                     .padding(4.dp),
-                                                color = Color(0xFF4CAF50).copy(alpha = 0.9f), // Yeşil
+                                                color = Color(0xFF4CAF50).copy(alpha = 0.9f),
                                                 shape = RoundedCornerShape(4.dp),
-                                                shadowElevation = 4.dp
+                                                shadowElevation = 4.dp,
                                             ) {
                                                 Row(
                                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
-                                                    verticalAlignment = Alignment.CenterVertically
+                                                    verticalAlignment = Alignment.CenterVertically,
                                                 ) {
-                                                    Box(contentAlignment = Alignment.Center) {
-                                                        Icon(
-                                                            imageVector = Icons.Default.Shield,
-                                                            contentDescription = null,
-                                                            modifier = Modifier.size(10.dp),
-                                                            tint = Color.White
-                                                        )
-                                                        Icon(
-                                                            imageVector = Icons.Default.Check,
-                                                            contentDescription = null,
-                                                            modifier = Modifier.size(5.dp),
-                                                            tint = Color(0xFF4CAF50)
-                                                        )
-                                                    }
+                                                    Icon(
+                                                        imageVector = Icons.Default.Shield,
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(10.dp),
+                                                        tint = Color.White,
+                                                    )
                                                     Spacer(Modifier.width(4.dp))
                                                     Text(
                                                         text = "İncelemede",
                                                         color = Color.White,
                                                         fontSize = 8.sp,
-                                                        fontWeight = FontWeight.Black
+                                                        fontWeight = FontWeight.Black,
                                                     )
                                                 }
                                             }
@@ -344,10 +423,13 @@ fun MyContentScreen(
         }
 
         if (isLoading || videoDownloadState is VideoDownloadState.InProgress) {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f))
-                .clickable(enabled = false, onClick = {}), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .clickable(enabled = false, onClick = {}),
+                contentAlignment = Alignment.Center,
+            ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator(color = Color.White)
                     Spacer(modifier = Modifier.height(16.dp))
@@ -358,7 +440,7 @@ fun MyContentScreen(
                             uploadProgress?.let { "$contentLoadingText ($it)" } ?: contentLoadingText
                         },
                         color = Color.White,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
             }
@@ -417,7 +499,7 @@ fun MyContentScreen(
                     context.startActivity(android.content.Intent.createChooser(shareIntent, null))
                     scope.launch { sheetState.hide(); selectedContentItem = null }
                 },
-                isAnobaUser = isAnobaUser
+                isAnobaUser = isAnobaUser,
             )
         }
     }
@@ -430,7 +512,7 @@ private fun CreationIconButton(
     backgroundColor: Color,
     iconColor: Color,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier
@@ -438,14 +520,14 @@ private fun CreationIconButton(
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Icon(
                 imageVector = icon,
                 contentDescription = contentDescription,
                 tint = iconColor,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(20.dp),
             )
         }
     }
@@ -461,19 +543,25 @@ fun BottomSheetContent(
     onDeleteClick: () -> Unit,
     onAnobaClick: () -> Unit,
     onShareClick: () -> Unit,
-    isAnobaUser: Boolean
+    isAnobaUser: Boolean,
 ) {
     val publishSuccessMessage = stringResource(id = R.string.mycontent_publish_success)
     val unpublishSuccessMessage = stringResource(id = R.string.mycontent_unpublish_success)
     Column {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            contentAlignment = Alignment.Center,
+        ) {
             Text(text = if (item.isPublished) stringResource(id = R.string.mycontent_sheet_published) else stringResource(id = R.string.mycontent_sheet_draft), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = if (item.isPublished) Color(0xFF388E3C) else MaterialTheme.colorScheme.outline)
         }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp), horizontalArrangement = Arrangement.SpaceAround) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+        ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) { Text(text = item.viewCount.toString(), style = MaterialTheme.typography.titleLarge); Text(text = stringResource(id = R.string.mycontent_sheet_views), style = MaterialTheme.typography.bodySmall) }
             Column(horizontalAlignment = Alignment.CenterHorizontally) { Text(text = item.reactionsCount.toString(), style = MaterialTheme.typography.titleLarge); Text(text = stringResource(id = R.string.mycontent_sheet_reactions), style = MaterialTheme.typography.bodySmall) }
             Column(horizontalAlignment = Alignment.CenterHorizontally) { Text(text = item.commentsCount.toString(), style = MaterialTheme.typography.titleLarge); Text(text = stringResource(id = R.string.mycontent_sheet_comments), style = MaterialTheme.typography.bodySmall) }
@@ -486,7 +574,7 @@ fun BottomSheetContent(
             ListItem(
                 headlineContent = { Text(stringResource(id = R.string.home_share_content)) },
                 leadingContent = { Icon(Icons.Default.Share, contentDescription = null, tint = Color(0xFF4CAF50)) },
-                modifier = Modifier.clickable(onClick = onShareClick)
+                modifier = Modifier.clickable(onClick = onShareClick),
             )
         }
 
@@ -502,7 +590,7 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         when (item) {
             is MyContentItem.Letter -> {
@@ -521,14 +609,14 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
                             is MyContentItem.Audio -> Color(0xFFFFD1DC)
                             is MyContentItem.Market -> Color(0xFFFFF9C4)
                             else -> Color(0xFFB3E5FC)
-                        }
-                    )
+                        },
+                    ),
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .aspectRatio(if (item is MyContentItem.Audio) 1f else 0.75f),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         when (item) {
                             is MyContentItem.Market -> {
@@ -537,22 +625,33 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
                                     contentDescription = item.marketItem.title,
                                     modifier = Modifier.fillMaxSize(),
                                     contentScale = ContentScale.Crop,
-                                    error = painterResource(id = R.drawable.ic_default_profile)
+                                    error = painterResource(id = R.drawable.ic_default_profile),
                                 )
                                 Surface(
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)
                                         .padding(4.dp),
                                     shape = RoundedCornerShape(4.dp),
-                                    color = Color(0xFFFFD700)
+                                    color = Color(0xFFFFD700),
                                 ) {
-                                    Text(
-                                        text = "🛍️ İlan",
-                                        color = Color.Black,
-                                        fontSize = 8.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
-                                    )
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.ShoppingBag,
+                                            contentDescription = null,
+                                            tint = Color.Black,
+                                            modifier = Modifier.size(10.dp),
+                                        )
+                                        Spacer(Modifier.width(2.dp))
+                                        Text(
+                                            text = "İlan",
+                                            color = Color.Black,
+                                            fontSize = 8.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    }
                                 }
                             }
                             is MyContentItem.Video -> {
@@ -561,13 +660,13 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
                                     contentDescription = stringResource(id = R.string.mycontent_card_video_thumb),
                                     modifier = Modifier.fillMaxSize(),
                                     contentScale = ContentScale.Crop,
-                                    error = painterResource(id = R.drawable.ic_default_profile)
+                                    error = painterResource(id = R.drawable.ic_default_profile),
                                 )
                                 Icon(
                                     imageVector = Icons.Filled.PlayCircleOutline,
                                     contentDescription = stringResource(id = R.string.mycontent_card_play_video),
                                     tint = Color.White.copy(alpha = 0.8f),
-                                    modifier = Modifier.size(48.dp)
+                                    modifier = Modifier.size(48.dp),
                                 )
                             }
                             is MyContentItem.Photo -> {
@@ -576,7 +675,7 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
                                     contentDescription = stringResource(id = R.string.mycontent_card_user_photo),
                                     modifier = Modifier.fillMaxSize(),
                                     contentScale = ContentScale.Crop,
-                                    error = painterResource(id = R.drawable.ic_default_profile)
+                                    error = painterResource(id = R.drawable.ic_default_profile),
                                 )
                             }
                             is MyContentItem.Audio -> {
@@ -585,12 +684,12 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
                                         imageVector = Icons.Filled.GraphicEq,
                                         contentDescription = stringResource(id = R.string.mycontent_card_audio_waveform),
                                         modifier = Modifier.size(40.dp),
-                                        tint = MaterialTheme.colorScheme.onSurface
+                                        tint = MaterialTheme.colorScheme.onSurface,
                                     )
                                     Text(
                                         text = formatDuration(item.audio.duration),
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurface
+                                        color = MaterialTheme.colorScheme.onSurface,
                                     )
                                 }
                             }
@@ -601,7 +700,7 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
             }
         }
 
-        val personalNote = when(item) {
+        val personalNote = when (item) {
             is MyContentItem.Audio -> item.audio.personalNote
             is MyContentItem.Letter -> item.letter.personalNote
             is MyContentItem.Photo -> item.photo.personalNote
@@ -610,12 +709,14 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
         }
 
         if (personalNote.isNotBlank()) {
-            var isExpanded by remember { mutableStateOf(false) }
-            var isOverflowing by remember { mutableStateOf(false) }
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = 4.dp)
-                .animateContentSize()) {
+            var isExpanded by remember { mutableStateOf(value = false) }
+            var isOverflowing by remember { mutableStateOf(value = false) }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp, vertical = 4.dp)
+                    .animateContentSize(),
+            ) {
                 Text(
                     text = personalNote,
                     style = MaterialTheme.typography.labelSmall,
@@ -624,7 +725,7 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
                     maxLines = if (isExpanded) Int.MAX_VALUE else 1,
                     overflow = TextOverflow.Ellipsis,
                     onTextLayout = { textLayoutResult -> isOverflowing = textLayoutResult.hasVisualOverflow },
-                    modifier = Modifier.clickable { isExpanded = !isExpanded }
+                    modifier = Modifier.clickable { isExpanded = !isExpanded },
                 )
                 if (!isExpanded && isOverflowing) {
                     Text(
@@ -632,7 +733,7 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 12.sp,
-                        modifier = Modifier.clickable { isExpanded = true }
+                        modifier = Modifier.clickable { isExpanded = true },
                     )
                 }
             }
@@ -644,12 +745,12 @@ fun ContentCard(item: MyContentItem, onClick: () -> Unit) {
 fun MyContentLetterItem(
     letter: LetterModel,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val isAudio = !letter.audioUrl.isNullOrBlank()
     val isSealed = letter.privacy == "SEALED"
     val isTimeCapsule = letter.unlockTimestamp != null && letter.unlockTimestamp!! > System.currentTimeMillis()
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(value = false) }
 
     Card(
         modifier = modifier
@@ -659,33 +760,33 @@ fun MyContentLetterItem(
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFFFECB3)),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        border = BorderStroke(0.5.dp, Color.LightGray.copy(alpha = 0.5f))
+        border = BorderStroke(0.5.dp, Color.LightGray.copy(alpha = 0.5f)),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(6.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             // Sağ Üst Rozet / İkon
             Box(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.TopEnd
+                contentAlignment = Alignment.TopEnd,
             ) {
                 if (isSealed && !letter.recipientUsername.isNullOrBlank()) {
                     Surface(
                         color = AnobaGold.copy(alpha = 0.2f),
-                        shape = RoundedCornerShape(3.dp)
+                        shape = RoundedCornerShape(3.dp),
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Lock,
                                 contentDescription = null,
                                 modifier = Modifier.size(8.dp),
-                                tint = Color(0xFF7B5E00)
+                                tint = Color(0xFF7B5E00),
                             )
                             Spacer(Modifier.width(2.dp))
                             Text(
@@ -694,7 +795,7 @@ fun MyContentLetterItem(
                                 fontWeight = FontWeight.Black,
                                 color = Color(0xFF7B5E00),
                                 maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }
@@ -703,7 +804,7 @@ fun MyContentLetterItem(
                         imageVector = Icons.Default.Mic,
                         contentDescription = null,
                         modifier = Modifier.size(12.dp),
-                        tint = AnobaNavy.copy(alpha = 0.35f)
+                        tint = AnobaNavy.copy(alpha = 0.35f),
                     )
                 }
             }
@@ -713,14 +814,14 @@ fun MyContentLetterItem(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     if (isTimeCapsule) {
                         Icon(
                             imageVector = Icons.Default.WatchLater,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         )
                     }
                     if (isSealed) {
@@ -729,7 +830,7 @@ fun MyContentLetterItem(
                             imageVector = Icons.Default.Lock,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         )
                     }
                     if (isAudio) {
@@ -738,7 +839,7 @@ fun MyContentLetterItem(
                             imageVector = Icons.Default.Mic,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         )
                     }
                 }
@@ -749,30 +850,34 @@ fun MyContentLetterItem(
                         imageVector = Icons.Default.Mic,
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
-                        tint = AnobaGold
+                        tint = AnobaGold,
                     )
                     if (letter.audioDuration != null && letter.audioDuration!! > 0L) {
                         Spacer(Modifier.height(2.dp))
                         Text(
                             text = formatDuration(letter.audioDuration!!, leadingZero = false),
                             fontSize = 10.sp,
-                            color = Color.Gray
+                            color = Color.Gray,
                         )
                     }
                 }
             } else {
                 // Yazılı Mektup 4 Satır + Devamı
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 14.dp, bottom = 4.dp)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 14.dp, bottom = 4.dp),
+                ) {
                     if (isExpanded) {
-                        Box(modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState())) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState()),
+                        ) {
                             Text(
                                 text = letter.content,
                                 style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Serif, fontSize = 10.sp),
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
                             )
                         }
                     } else {
@@ -781,7 +886,7 @@ fun MyContentLetterItem(
                             style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Serif, fontSize = 10.sp),
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
                             maxLines = 4,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                         if (letter.content.length > 50) {
                             Text(
@@ -791,7 +896,7 @@ fun MyContentLetterItem(
                                 modifier = Modifier
                                     .align(Alignment.BottomEnd)
                                     .background(Color(0xFFFFECB3).copy(alpha = 0.9f))
-                                    .clickable { isExpanded = true }
+                                    .clickable { isExpanded = true },
                             )
                         }
                     }
@@ -816,6 +921,6 @@ private fun DeleteConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Uni
             TextButton(onClick = onDismiss) {
                 Text(stringResource(id = R.string.mycontent_delete_dialog_cancel))
             }
-        }
+        },
     )
 }

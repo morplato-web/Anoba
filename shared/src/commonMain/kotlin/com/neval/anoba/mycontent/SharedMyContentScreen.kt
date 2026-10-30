@@ -42,6 +42,7 @@ import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material.icons.filled.WatchLater
+import androidx.compose.material.icons.outlined.ShoppingBag
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -118,9 +119,9 @@ fun SharedMyContentScreen(
     val scope = rememberCoroutineScope()
 
     val tabs = if (isOwner) {
-        listOf("Yayınlananlar", "Taslaklar", "Pazar Yeri 🛍️")
+        listOf("Yayınlananlar", "Taslaklar", "Pazar Yeri")
     } else {
-        listOf("Yayınlananlar", "Pazar Yeri 🛍️")
+        listOf("Yayınlananlar", "Pazar Yeri")
     }
 
     deleteItemTarget?.let { item ->
@@ -221,10 +222,27 @@ fun SharedMyContentScreen(
             ) {
                 PrimaryTabRow(selectedTabIndex = selectedTabIndex) {
                     tabs.forEachIndexed { index, title ->
+                        val isMarketTab = title == "Pazar Yeri"
                         Tab(
                             selected = selectedTabIndex == index,
                             onClick = { selectedTabIndex = index },
-                            text = { Text(text = title) },
+                            text = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center,
+                                ) {
+                                    if (isMarketTab) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.ShoppingBag,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp),
+                                            tint = if (selectedTabIndex == index) AnobaNavy else Color.Gray,
+                                        )
+                                        Spacer(Modifier.width(4.dp))
+                                    }
+                                    Text(text = title)
+                                }
+                            },
                         )
                     }
                 }
@@ -566,13 +584,24 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
                                     shape = RoundedCornerShape(4.dp),
                                     color = Color(0xFFFFD700),
                                 ) {
-                                    Text(
-                                        text = "🛍️ İlan",
-                                        color = Color.Black,
-                                        fontSize = 8.sp,
-                                        fontWeight = FontWeight.Bold,
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
-                                    )
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.ShoppingBag,
+                                            contentDescription = null,
+                                            tint = Color.Black,
+                                            modifier = Modifier.size(10.dp),
+                                        )
+                                        Spacer(Modifier.width(2.dp))
+                                        Text(
+                                            text = "İlan",
+                                            color = Color.Black,
+                                            fontSize = 8.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    }
                                 }
                             }
 
