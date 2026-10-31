@@ -77,7 +77,7 @@ fun SharedLetterDetailScreen(
             ownerId = "u_demo",
             username = "Ahmet Y.",
             title = "2026 Yılına Mektup ✉️",
-            content = "Sevgili geleceğim, bu mektup Anoba Zaman Kapsülü ile yazıldı...",
+            content = "Sevgili geleceğim, bu bu mektup Anoba Zaman Kapsülü ile yazıldı...",
             privacy = "PUBLIC",
             createdAtMillis = 1710000000000L,
             isPublished = true,
@@ -241,27 +241,28 @@ fun SharedLetterDetailScreen(
                 border = BorderStroke(0.5.dp, Color.LightGray.copy(alpha = 0.5f)),
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
-                    // Üst Satır: Göz İkonu + Görüntülenme | En Çok Tıklanan Emoji + Skor
+                    // Üst Satır: SOLDAYAN YANA -> Göz İkonu + Görüntülenme Sayısı  |  Lider Emoji + Skor
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            if (currentLetter.viewCount > 0) {
-                                Icon(
-                                    imageVector = Icons.Default.RemoveRedEye,
-                                    contentDescription = "Görüntülenme",
-                                    tint = Color.Gray,
-                                    modifier = Modifier.size(16.dp),
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = currentLetter.viewCount.toString(),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = Color.Gray,
-                                )
-                            }
+                        if (currentLetter.viewCount > 0) {
+                            Icon(
+                                imageVector = Icons.Default.RemoveRedEye,
+                                contentDescription = "Görüntülenme",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(16.dp),
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = currentLetter.viewCount.toString(),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray,
+                            )
+                        }
+
+                        if (currentLetter.viewCount > 0 && currentLetter.reactionCount > 0) {
+                            Spacer(modifier = Modifier.width(12.dp))
                         }
 
                         if (currentLetter.reactionCount > 0) {
