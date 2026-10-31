@@ -86,7 +86,6 @@ class LetterRepository(
             .whereEqualTo("ownerId", userId)
             .dataObjects<LetterModel>()
             .onEach { letters ->
-                letterDao.resetPublishedLetters()
                 letterDao.insertAll(letters)
             }
             .flowOn(Dispatchers.IO)

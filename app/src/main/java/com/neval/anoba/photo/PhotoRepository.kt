@@ -89,7 +89,6 @@ class PhotoRepository(
             .whereEqualTo("ownerId", userId)
             .dataObjects<PhotoModel>()
             .onEach { photos: List<PhotoModel> ->
-                photoDao.resetPublishedPhotos()
                 photoDao.insertAll(photos)
             }
             .catch { e: Throwable ->
