@@ -3,8 +3,8 @@ package com.neval.anoba.letter
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -47,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -229,7 +230,7 @@ fun SharedLetterDetailScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 🚀 ETKİLEŞİMLİ EMOJİ SEÇİM BARI (❤️, 🔥, 👏, 👍, 😂, 😍)
+            // 🚀 EMOJİ SEÇİM VE BİLGİ BARI
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -240,6 +241,7 @@ fun SharedLetterDetailScreen(
                 border = BorderStroke(0.5.dp, Color.LightGray.copy(alpha = 0.5f)),
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
+                    // Üst Satır: Göz İkonu + Görüntülenme | En Çok Tıklanan Emoji + Skor
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -249,7 +251,7 @@ fun SharedLetterDetailScreen(
                             if (currentLetter.viewCount > 0) {
                                 Icon(
                                     imageVector = Icons.Default.RemoveRedEye,
-                                    contentDescription = null,
+                                    contentDescription = "Görüntülenme",
                                     tint = Color.Gray,
                                     modifier = Modifier.size(16.dp),
                                 )
@@ -275,7 +277,7 @@ fun SharedLetterDetailScreen(
                                     Text(text = currentLetter.topEmoji, fontSize = 14.sp)
                                     Spacer(modifier = Modifier.width(4.dp))
                                     Text(
-                                        text = "${currentLetter.reactionCount} Tepki 👥",
+                                        text = currentLetter.reactionCount.toString(),
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = AnobaNavy,
@@ -287,26 +289,29 @@ fun SharedLetterDetailScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    val emojiList = listOf("❤️", "🔥", "👏", "👍", "😂", "😍")
+                    // 🚀 KAYAN EMOJİ SATIRI
+                    val emojiList = listOf("❤️", "🔥", "👏", "👍", "😂", "😍", "😮", "😢", "🥰")
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         emojiList.forEach { emoji ->
                             Surface(
                                 modifier = Modifier
-                                    .size(42.dp)
+                                    .clip(RoundedCornerShape(16.dp))
                                     .clickable { onEmojiReaction(emoji) },
-                                shape = CircleShape,
+                                shape = RoundedCornerShape(16.dp),
                                 color = Color(0xFFF1F5F9),
-                                shadowElevation = 1.dp,
+                                border = BorderStroke(0.5.dp, Color.LightGray.copy(alpha = 0.5f)),
                             ) {
-                                Box(
-                                    contentAlignment = Alignment.Center,
-                                    modifier = Modifier.fillMaxSize(),
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
                                 ) {
-                                    Text(text = emoji, fontSize = 20.sp)
+                                    Text(text = emoji, fontSize = 18.sp)
                                 }
                             }
                         }
