@@ -132,7 +132,7 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 | `morplato@gmail.com` | Anoba (Admin) | `59123456` | Yönetici Hesabı |
 | `anobaimalat@gmail.com` | Anoba İmalat | `70123456` | Kurumsal |
 | `anobaheyet@gmail.com` | anoba_heyet | `70123456` | Kurumsal |
-| `anobamuhtar@gmail.com` | anoba_muhtar | `70123456` | Muhtar |
+| `anobamuhtar@gmail.com` | anoba_muhtar | `70123456` | Kurumsal |
 | `anobaguide@gmail.com` | anoba_guide | `70123456` | Rehber |
 | `anobapolis@gmail.com` | Anoba Polis | `70123456` | Polis |
 | `anobaaslan@gmail.com` | Global Aslan | `70123456` | Öncü Hesap |
@@ -263,3 +263,27 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **Apple ID (Gmail):** `morplato@gmail.com`
 - **Şifre:** `fabrikalaR3019`
 
+---
+
+## 25. Paket Refactoring, KMP Standartlaşması & Oturum Notları (v143 Güncellemeleri)
+
+### 📌 Tamamlanan Paket Çalışmaları
+1. **`login` Paketi:** `:app` ve `:shared` tarafında ViewModel, AuthState ve sealed `AuthResult` sınıfları KMP standartlarında eşitlendi. Tekrarlanan ölü kodlar temizlendi.
+2. **`map` Paketi:** `DEFAULT_SHARED_COUNTRIES` listesi Google Play Console verileriyle 177 hedef ülkeye genişletildi. Bayrak emojileri ve ISO kodları eklendi, ilk 39 ülkenin sıralaması korundu.
+3. **`market` Paketi:** Dolap/Vinted tarzı 4 fotoğraflı galeri (`photoUrls: List<String>`), Room `@TypeConverters(StringListTypeConverter::class)` dönüşümü ve 2'li `LazyVerticalStaggeredGrid` akışı KMP katmanlarına taşındı.
+4. **`mete` Paketi:** Kod satır kırılmaları, loglama hataları ve `emptySlots = 3 - rowItems.size` döngü hesaplamaları düzeltildi.
+5. **`models` Paketi:** `SharedAnobaNotification` modeli `com.neval.anoba.models` paketine taşındı, `User` model linter uyarıları temizlendi.
+6. **`mosaic` Paketi:** `MosaicViewModel` üzerindeki canlı Firestore akışı (`mosaicItems`) `:shared` katmanındaki `SharedMosaicSheet` bileşenine bağlandı.
+7. **`mycontent` Paketi:**
+   - `:shared` katmanındaki `SharedMyContentScreen` ekranı `:app` ile tam görsel uyum için `LazyVerticalStaggeredGrid` akışına geçirildi.
+   - Pazar Yeri sekmesi ve kart rozetlerindeki ikon, `HomeScreen.kt` üst barındaki kurumsal `Icons.Outlined.ShoppingBag` ikonu ile eşitlendi.
+   - Karantina rozetindeki çift ikon çakışması temizlendi.
+8. **Room Veritabanı Şema Güncellemesi (v21):** `MarketItemModel` üzerindeki `photoUrls` sütun değişikliği nedeniyle `AppDatabase.kt` sürümü `21` yapılarak `IllegalStateException` çökmeleri önlendi.
+9. **Grup Sohbet Profil Resimleri:** `SharedGroupChatListScreen` ve `SharedGroupChatScreen` üst barlarında grup kapak görselleri (`group.imageUrl`) ve mesaj balonlarında gönderen üyelerin profil fotoğrafları (`UserAvatar`) dinamik hale getirildi.
+10. **Akış Önbellek Koruması (Feed Persistence Fix):** `getUserLetters` ve `getUserPhotos` çağrıldığında Room veritabanındaki diğer yayınlanmış içerikleri temizleyen `resetPublishedLetters()` / `resetPublishedPhotos()` kaldırıldı; böylece kullanıcı kendi içeriklerine bakıp Ana Sayfaya döndüğünde diğer içerikler kaybolmamaktadır.
+11. **Mektup Detay Emoji Satırı & Hizalaması:** `SharedLetterDetailScreen` ve `LetterDetailScreen` ekranlarında Göz İkonu (`👁️`) ve Lider Emoji + Skor (`❤️ 128`) sol tarafa yan yana hizalandı; altına sağa/sola kaydırılabilir 12 emojilik tam standart emoji satırı (`❤️`, `🔥`, `👏`, `👍`, `😂`, `😍`, `😮`, `😢`, `🥰`...) eklendi.
+
+### 🧪 Derleme & GitHub Durumu
+- **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- Tüm değişiklikler GitHub `origin/main` deposuna push edildi (`working tree clean`).
