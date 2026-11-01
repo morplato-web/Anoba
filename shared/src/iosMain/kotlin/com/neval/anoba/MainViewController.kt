@@ -4,7 +4,6 @@ import androidx.compose.ui.window.ComposeUIViewController
 import com.neval.anoba.di.appModules
 import org.koin.core.context.startKoin
 
-@Suppress("unused")
 fun initKoinIos() {
     try {
         startKoin {
@@ -21,5 +20,6 @@ fun MainViewController() = ComposeUIViewController(
         enforceStrictPlistSanityCheck = false
     }
 ) {
+    initKoinIos()
     App()
 }
