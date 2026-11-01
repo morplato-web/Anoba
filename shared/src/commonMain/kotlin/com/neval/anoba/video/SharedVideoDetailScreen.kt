@@ -548,6 +548,16 @@ fun SharedVideoDetailScreen(
 
                                         Spacer(modifier = Modifier.weight(1f))
 
+                                        // 🚀 ZAMAN DAMGASI (Yorum ikonundan hemen önce)
+                                        if (video.timeAgoText.isNotBlank()) {
+                                            Text(
+                                                text = video.timeAgoText,
+                                                color = Color.White.copy(alpha = 0.7f),
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                        }
+
                                         Row(
                                             modifier = Modifier
                                                 .clip(RoundedCornerShape(6.dp))

@@ -8,19 +8,25 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,6 +55,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -63,20 +70,26 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.neval.anoba.photo.SharedReactionUser
-import com.neval.anoba.video.SharedVideoEmojiReactionRow
 import com.neval.anoba.video.SharedVideoReactionUsersBottomSheet
 import com.neval.anoba.video.formatDurationMillis
 
 private val AnobaGold = Color(0xFFFFD700)
+private val AnobaNavy = Color(0xFF1E293B)
 private val AnobaBackgroundDark = Color(0xFF0F172A)
 private val AnobaTopBarNavy = Color(0xFF1E293B)
 private val SesPinkAccent = Color(0xFFE11D48)
+
+// 🎯 ANOBA STANDART 12 EMOJİSİ
+private val ANOBA_STANDARD_EMOJIS = listOf(
+    "❤️", "😂", "👍", "🔥", "🥰", "😢", "😲", "🤔", "🫤", "😠", "🚫", "❌"
+)
 
 @Composable
 fun SoundWaveAnimation(
@@ -226,6 +239,32 @@ fun SharedSesDetailScreen(
                 }
             }
         },
+        bottomBar = {
+            // 🚀 ANOBA STANDART ALT KAPAT BUTONU
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Button(
+                    onClick = onNavigateBack,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = AnobaGold)
+                ) {
+                    Text(
+                        text = "Kapat",
+                        fontWeight = FontWeight.Bold,
+                        color = AnobaNavy,
+                        fontSize = 15.sp
+                    )
+                }
+            }
+        },
         modifier = modifier
     ) { innerPadding ->
         Box(
@@ -249,6 +288,7 @@ fun SharedSesDetailScreen(
                 ses != null -> {
                     val topReaction = ses.reactions.maxByOrNull { it.value }
                     val activeDurationMs = if (totalDurationMillis > 0L) totalDurationMillis else ses.durationMillis
+                    val reactionTotal = ses.reactions.values.sum()
 
                     Column(
                         modifier = Modifier
@@ -290,6 +330,7 @@ fun SharedSesDetailScreen(
                             Spacer(modifier = Modifier.height(14.dp))
                         }
 
+                        // 1. KULLANICI BİLGİ KARTI
                         Card(
                             shape = RoundedCornerShape(16.dp),
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
@@ -400,6 +441,7 @@ fun SharedSesDetailScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
+                        // 2. SES OYNATICI KARTI
                         Card(
                             shape = RoundedCornerShape(20.dp),
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
@@ -473,87 +515,161 @@ fun SharedSesDetailScreen(
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        // 🎯 İÇERİK KARTI İLE İSTATİSTİK ARASINDAKİ 20.dp BOŞLUK
+                        Spacer(modifier = Modifier.height(20.dp))
 
+                        // 🚀 3. KUTUSUZ İSTATİSTİK SATIRI (GÖZ + EMOJİ | ZAMAN + YORUM)
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.RemoveRedEye,
-                                    contentDescription = null,
-                                    tint = Color.White.copy(alpha = 0.7f),
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = "${ses.viewCount} · ${ses.timeAgoText}",
-                                    color = Color.White.copy(alpha = 0.7f),
-                                    fontSize = 12.sp
-                                )
+                            // Sol Grup: Göz İkonu ve En Çok Tıklanan Emoji
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                // Göz + İzlenme Skoru
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.RemoveRedEye,
+                                        contentDescription = "Görüntülenme",
+                                        tint = Color.LightGray,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Text(
+                                        text = ses.viewCount.toString(),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Color.LightGray
+                                    )
+                                }
 
+                                // En Çok Tıklanan Emoji + Skor Rozeti
                                 if (topReaction != null && topReaction.value > 0) {
-                                    Spacer(modifier = Modifier.width(12.dp))
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier
-                                            .clip(RoundedCornerShape(6.dp))
-                                            .clickable {
-                                                onRequestReactionUsers()
-                                                showReactionsSheet = true
-                                            }
-                                            .background(Color.White.copy(alpha = 0.15f))
-                                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                                    Surface(
+                                        modifier = Modifier.clickable {
+                                            onRequestReactionUsers()
+                                            showReactionsSheet = true
+                                        },
+                                        shape = RoundedCornerShape(12.dp),
+                                        color = Color.White.copy(alpha = 0.15f)
                                     ) {
-                                        Text(topReaction.key, fontSize = 12.sp)
-                                        Spacer(modifier = Modifier.width(3.dp))
-                                        Text(
-                                            text = "${topReaction.value}",
-                                            color = Color.White,
-                                            fontSize = 11.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
+                                        Row(
+                                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                        ) {
+                                            Text(text = topReaction.key, fontSize = 13.sp)
+                                            Text(
+                                                text = "${topReaction.value}",
+                                                fontSize = 12.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color.White
+                                            )
+                                        }
                                     }
                                 }
                             }
 
+                            // Sağ Grup: Zaman Damgası ve Yorum İkonu
                             Row(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(6.dp))
-                                    .background(Color.White.copy(alpha = 0.2f))
-                                    .clickable { onOpenComments() }
-                                    .padding(horizontal = 10.dp, vertical = 4.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.Comment,
-                                    contentDescription = null,
-                                    tint = Color.White,
-                                    modifier = Modifier.size(14.dp)
-                                )
-                                if (ses.commentsCount > 0) {
-                                    Spacer(modifier = Modifier.width(4.dp))
+                                if (ses.timeAgoText.isNotBlank()) {
+                                    Text(
+                                        text = ses.timeAgoText,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Color.LightGray
+                                    )
+                                }
+
+                                Row(
+                                    modifier = Modifier
+                                        .clickable { onOpenComments() }
+                                        .padding(vertical = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.Comment,
+                                        contentDescription = "Yorumlar",
+                                        modifier = Modifier.size(18.dp),
+                                        tint = Color.LightGray
+                                    )
                                     Text(
                                         text = ses.commentsCount.toString(),
-                                        color = Color.White,
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontWeight = FontWeight.Medium,
+                                        color = Color.LightGray
                                     )
                                 }
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(14.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
 
-                        SharedVideoEmojiReactionRow(
-                            reactions = ses.reactions,
-                            selectedEmoji = userReactions[ses.id],
-                            onReact = onReactionClick
-                        )
+                        // 🚀 4. KUTUSUZ ANOBA STANDART 12 EMOJİ SATIRI
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            contentPadding = PaddingValues(horizontal = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            items(
+                                items = ANOBA_STANDARD_EMOJIS,
+                                key = { it }
+                            ) { emoji ->
+                                val interactionSource = remember { MutableInteractionSource() }
+                                val count = ses.reactions[emoji] ?: 0
+                                val isSelected = userReactions[ses.id] == emoji
 
-                        Spacer(modifier = Modifier.height(28.dp))
+                                Column(
+                                    modifier = Modifier.width(44.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(38.dp)
+                                            .clip(CircleShape)
+                                            .background(
+                                                if (isSelected) SesPinkAccent.copy(alpha = 0.3f)
+                                                else Color(0xFF1E293B)
+                                            )
+                                            .border(
+                                                width = if (isSelected) 1.5.dp else 1.dp,
+                                                color = if (isSelected) SesPinkAccent else Color.White.copy(alpha = 0.15f),
+                                                shape = CircleShape
+                                            )
+                                            .clickable(
+                                                interactionSource = interactionSource,
+                                                indication = ripple(bounded = true, radius = 20.dp),
+                                                role = Role.Button,
+                                                onClick = { onReactionClick(emoji) }
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(text = emoji, fontSize = 18.sp)
+                                    }
+
+                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                    Text(
+                                        text = if (count > 0) count.toString() else "·",
+                                        fontSize = 11.sp,
+                                        fontWeight = if (count > 0) FontWeight.Bold else FontWeight.Normal,
+                                        color = if (isSelected) SesPinkAccent else Color.Gray
+                                    )
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(20.dp))
                     }
                 }
 

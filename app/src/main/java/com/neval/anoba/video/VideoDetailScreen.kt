@@ -104,6 +104,7 @@ import com.neval.anoba.common.ui.OfficialBadge
 import com.neval.anoba.common.ui.QuarantineBanner
 import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.common.utils.Constants
+import com.neval.anoba.common.utils.DateTimeUtils
 import com.neval.anoba.common.utils.MediaCacheManager
 import com.neval.anoba.common.utils.formatDuration
 import com.neval.anoba.login.state.AuthState
@@ -137,7 +138,7 @@ fun VideoDetailScreen(
 
     val currentUserId = (authState as? AuthState.Authenticated)?.uid
     val isAnoba = userRoleState?.equals("ADMIN", ignoreCase = true) == true ||
-                  (authState as? AuthState.Authenticated)?.email == "morplato@gmail.com"
+            (authState as? AuthState.Authenticated)?.email == "morplato@gmail.com"
 
     val userReactions by videoViewModel.userReactions.collectAsState()
     val shareState by videoViewModel.shareState.collectAsState()
@@ -487,12 +488,12 @@ fun VideoDetailScreen(
                     Box(modifier = Modifier.zIndex(10f).align(Alignment.TopCenter).padding(innerPadding)) {
                         Column {
                             QuarantineBanner(isFlagged = currentVideo.isFlagged, flagReason = currentVideo.flagReason)
-                            
+
                             if (currentVideo.isFlagged) {
                                 Button(
-                                    onClick = { 
+                                    onClick = {
                                         if (isAnoba) {
-                                            videoViewModel.unflagVideo(currentVideo.id) 
+                                            videoViewModel.unflagVideo(currentVideo.id)
                                         } else {
                                             Toast.makeText(context, "Sadece yetkililer karantinadan çıkarabilir.", Toast.LENGTH_SHORT).show()
                                         }
@@ -681,7 +682,7 @@ fun VideoDetailScreen(
                                                 Text(displayEmoji, fontSize = 12.sp)
                                                 Spacer(Modifier.width(3.dp))
                                                 Text(
-                                                    text = "${topReaction.value}", // 🚀 TEKİL LİDER SKOR
+                                                    text = "${topReaction.value}",
                                                     color = Color.White,
                                                     fontSize = 11.sp,
                                                     fontWeight = FontWeight.Bold
@@ -689,6 +690,20 @@ fun VideoDetailScreen(
                                             }
                                         }
                                         Spacer(modifier = Modifier.weight(1f))
+
+                                        // 🚀 ZAMAN DAMGASI (Yorum ikonundan hemen önce)
+                                        val timeStr = DateTimeUtils.formatRelativeTime(
+                                            context,
+                                            currentVideo.publishTimestamp?.time ?: currentVideo.createdAt?.time ?: 0L
+                                        )
+                                        if (timeStr.isNotBlank()) {
+                                            Text(
+                                                text = timeStr,
+                                                color = Color.White.copy(alpha = 0.7f),
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                            Spacer(Modifier.width(8.dp))
+                                        }
 
                                         Row(
                                             modifier = Modifier.clickable {

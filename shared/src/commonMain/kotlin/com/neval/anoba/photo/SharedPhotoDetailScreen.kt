@@ -372,6 +372,7 @@ fun SharedPhotoDetailScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
+                            // Sol Küme: Göz + İzlenme ve Lider Emoji
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
                                     imageVector = Icons.Default.RemoveRedEye,
@@ -381,7 +382,7 @@ fun SharedPhotoDetailScreen(
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = "${photo.viewCount} · ${photo.timeAgoText}",
+                                    text = photo.viewCount.toString(),
                                     color = Color.White.copy(alpha = 0.7f),
                                     fontSize = 12.sp
                                 )
@@ -411,28 +412,40 @@ fun SharedPhotoDetailScreen(
                                 }
                             }
 
+                            // Sağ Küme: Zaman Damgası ve Kutusuz Yorum İkonu
                             Row(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(6.dp))
-                                    .background(Color.White.copy(alpha = 0.2f))
-                                    .clickable { onOpenComments() }
-                                    .padding(horizontal = 10.dp, vertical = 4.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.Comment,
-                                    contentDescription = null,
-                                    tint = Color.White,
-                                    modifier = Modifier.size(14.dp)
-                                )
-                                if (photo.commentsCount > 0) {
-                                    Spacer(modifier = Modifier.width(4.dp))
+                                if (photo.timeAgoText.isNotBlank()) {
                                     Text(
-                                        text = photo.commentsCount.toString(),
-                                        color = Color.White,
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold
+                                        text = photo.timeAgoText,
+                                        color = Color.White.copy(alpha = 0.7f),
+                                        fontSize = 12.sp
                                     )
+                                }
+
+                                Row(
+                                    modifier = Modifier
+                                        .clickable { onOpenComments() }
+                                        .padding(vertical = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.Comment,
+                                        contentDescription = "Yorumlar",
+                                        tint = Color.White,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    if (photo.commentsCount > 0) {
+                                        Text(
+                                            text = photo.commentsCount.toString(),
+                                            color = Color.White,
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
                                 }
                             }
                         }
