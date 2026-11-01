@@ -67,7 +67,7 @@ echo "✅ SharedKit.framework kopyalandı."
 # 4. Xcode projesini derle
 echo "🔨 4/5: iOS Uygulaması derleniyor (xcodebuild)..."
 cd "$HOME/Anoba/iosApp" || exit 1
-xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator build
+xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator ONLY_ACTIVE_ARCH=YES ARCHS="$ARCH" build
 cd "$HOME/Anoba" || exit 1
 
 # 5. Derlenen .app paketini bul
