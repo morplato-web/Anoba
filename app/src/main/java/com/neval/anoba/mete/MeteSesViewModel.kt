@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.annotation.OptIn
+import androidx.compose.ui.graphics.Color
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -79,6 +80,10 @@ class MeteSesViewModel(
     private val _unlockedSections = MutableStateFlow<Set<String>>(emptySet())
     val unlockedSections: StateFlow<Set<String>> = _unlockedSections.asStateFlow()
 
+    init {
+        startLoading()
+    }
+
     fun loadUnlockedSections(context: Context) {
         val prefs = context.getSharedPreferences("mete_unlocked_prefs", Context.MODE_PRIVATE)
         val set = prefs.getStringSet("unlocked_sections", emptySet()) ?: emptySet()
@@ -93,7 +98,7 @@ class MeteSesViewModel(
     }
 
     fun startLoading() {
-        if (_sectionGroups.value.isEmpty() && authService.isLoggedInFirebase()) {
+        if (_sectionGroups.value.isEmpty()) {
             loadLanguageData(_selectedLanguage.value)
         }
     }
@@ -107,53 +112,63 @@ class MeteSesViewModel(
 
         // 1. SOL PANEL KELİMELERİNİ ÇEK VE KARIŞTIR
         wordsJob = viewModelScope.launch {
-            if (authService.isLoggedInFirebase()) {
-                try {
-                    repository.getWordsFromCollection(wordsCollection)
-                        .catch { e ->
-                            Log.e("MeteSesViewModel", "Kelimeler çekilemedi: $wordsCollection", e)
-                            emit(emptyList())
-                        }
-                        .collect { items: List<MeteWordItem> ->
-                            _allPuzzlesForGame.value = items
-
-                            val grouped = items.groupBy { it.sectionName }
-                                .map { (name, list) ->
-                                    MeteSectionGroup(
-                                        sectionName = name,
-                                        words = list.shuffled(),
-                                    )
-                                }.shuffled()
-
-                            _sectionGroups.value = grouped
-                        }
-                } catch (e: Exception) {
-                    if (e is CancellationException) {
-                        throw e
+            try {
+                repository.getWordsFromCollection(wordsCollection)
+                    .catch { e ->
+                        Log.e("MeteSesViewModel", "Kelimeler çekilemedi: $wordsCollection", e)
+                        emit(emptyList())
                     }
-                    Log.e("MeteSesViewModel", "Hata kelimeler: ${e.message}", e)
+                    .collect { items: List<MeteWordItem> ->
+                        _allPuzzlesForGame.value = items
+
+                        val pastelColors = listOf(
+                            Color(0xFF80DEEA),
+                            Color(0xFFFFAB91),
+                            Color(0xFFA5D6A7),
+                            Color(0xFFFFE082),
+                            Color(0xFFCE93D8),
+                            Color(0xFF90CAF9),
+                            Color(0xFFF48FB1),
+                            Color(0xFFB0BEC5)
+                        )
+
+                        val grouped = items.groupBy { it.sectionName }
+                            .map { (name, list) ->
+                                list.forEachIndexed { index, item ->
+                                    item.boxColor = pastelColors[index % pastelColors.size]
+                                }
+                                MeteSectionGroup(
+                                    sectionName = name,
+                                    words = list,
+                                )
+                            }
+
+                        _sectionGroups.value = grouped
+                    }
+            } catch (e: Exception) {
+                if (e is CancellationException) {
+                    throw e
                 }
+                Log.e("MeteSesViewModel", "Hata kelimeler: ${e.message}", e)
             }
         }
 
         // 2. SAĞ PANEL HİKAYELERİNİ ÇEK VE KARIŞTIR
         storiesJob = viewModelScope.launch {
-            if (authService.isLoggedInFirebase()) {
-                try {
-                    repository.getStoriesFromCollection(storiesCollection)
-                        .catch { e ->
-                            Log.e("MeteSesViewModel", "Hikayeler çekilemedi: $storiesCollection", e)
-                            emit(emptyList())
-                        }
-                        .collect { stories: List<MeteStoryItem> ->
-                            _storyVideos.value = stories.shuffled()
-                        }
-                } catch (e: Exception) {
-                    if (e is CancellationException) {
-                        throw e
+            try {
+                repository.getStoriesFromCollection(storiesCollection)
+                    .catch { e ->
+                        Log.e("MeteSesViewModel", "Hikayeler çekilemedi: $storiesCollection", e)
+                        emit(emptyList())
                     }
-                    Log.e("MeteSesViewModel", "Hata hikayeler: ${e.message}", e)
+                    .collect { stories: List<MeteStoryItem> ->
+                        _storyVideos.value = stories.shuffled()
+                    }
+            } catch (e: Exception) {
+                if (e is CancellationException) {
+                    throw e
                 }
+                Log.e("MeteSesViewModel", "Hata hikayeler: ${e.message}", e)
             }
         }
     }

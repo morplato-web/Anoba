@@ -2,7 +2,6 @@ package com.neval.anoba.mete
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -16,10 +15,9 @@ class MeteRepository(private val firestore: FirebaseFirestore) {
         Log.d("MeteRepository", "Kelimeler sorgusu: $collectionName")
         return try {
             firestore.collection(collectionName)
-                .orderBy("id", Query.Direction.ASCENDING)
                 .snapshots()
                 .map { snapshot ->
-                    snapshot.toObjects(MeteWordItem::class.java)
+                    snapshot.toObjects(MeteWordItem::class.java).sortedBy { it.id }
                 }
                 .catch { e ->
                     Log.e("MeteRepository", "Kelimeler sorgu hatası ($collectionName): ${e.message}")
@@ -36,10 +34,9 @@ class MeteRepository(private val firestore: FirebaseFirestore) {
         Log.d("MeteRepository", "Hikayeler sorgusu: $collectionName")
         return try {
             firestore.collection(collectionName)
-                .orderBy("id", Query.Direction.ASCENDING)
                 .snapshots()
                 .map { snapshot ->
-                    snapshot.toObjects(MeteStoryItem::class.java)
+                    snapshot.toObjects(MeteStoryItem::class.java).sortedBy { it.id }
                 }
                 .catch { e ->
                     Log.e("MeteRepository", "Hikayeler sorgu hatası ($collectionName): ${e.message}")

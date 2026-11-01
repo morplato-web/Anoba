@@ -302,4 +302,22 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
 - Tüm değişiklikler GitHub `origin/main` deposuna yüklenmiştir.
 
+---
+
+## 27. Mete & Photo Paketi Kontrolleri & İyileştirmeler (v145 Güncellemeleri)
+
+### 📌 Tamamlanan Çalışmalar
+1. **Mete Modülü Yapboz Mantığı & Veri Akışı:**
+   - `MeteRepository.kt` içerisindeki Firestore `.orderBy("id")` kısıtlaması kaldırılarak tüm kartların eksiksiz çekilmesi ve bellek tarafında sıralanması sağlandı.
+   - `MeteScreen` ekranı orijinal zengin `MeteSheet()` bileşenine bağlandı. Dışarıdan sadece kapalı renkli yapboz kutuları görünür hale getirildi; tıklanınca Lottie animasyonu, video, ses çalma ve mikrofon kaydı bulunan `PuzzleDetailDialog` diyalogunun açılması sağlandı.
+2. **Photo Paketi İncelemesi & Temizlik:**
+   - `:app` ve `:shared` tarafındaki tüm Fotoğraf sayfaları (`PhotoHomeScreen`, `PhotoDetailScreen`, `PhotoEditScreen`, `PhotoCommentsScreen`, `PhotoCard`) kontrol edildi.
+   - `SharedPhotoCommentsScreen.kt` içerisindeki `photoId` parametre uyarısı `@Suppress("UNUSED_PARAMETER")` ile giderildi.
+
+### 🧪 Derleme & GitHub Durumu
+- **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- Tüm değişiklikler GitHub `origin/main` deposuna push edildi (`working tree clean`).
+
+
 

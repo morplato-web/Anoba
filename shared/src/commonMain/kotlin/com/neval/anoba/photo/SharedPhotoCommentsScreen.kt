@@ -42,7 +42,7 @@ data class SharedPhotoCommentItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SharedPhotoCommentsScreen(
-    photoId: String = "",
+    @Suppress("UNUSED_PARAMETER") photoId: String = "",
     onNavigateBack: () -> Unit = {},
     onHomeClick: () -> Unit = onNavigateBack
 ) {
