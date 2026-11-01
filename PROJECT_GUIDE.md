@@ -367,10 +367,12 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
    - **`app/proguard-rules.pro`:** Release/R8 sürümlerinde Room ve Serializer bozulmalarını önlemek için `:shared` altındaki KMP modellerine ve veritabanı paketine `-keep` kuralları eklendi.
    - **`gradle.properties`:** Gradle Daemon bellek limiti `-Xmx4096m -XX:MaxMetaspaceSize=1024m` seviyesine yükseltildi.
 
-### 🧪 Derleme & GitHub Durumu
+### 🧪 Derleme, Yedekleme & GitHub Durumu
 - **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
 - **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **Proje Zip Yedeği:** **`D:\anobadepo\Anoba_v9.2.4_v148_Final.zip`** adresi üzerine tam yedek alındı. 📦
 - Tüm proje kodları ve rehber GitHub `origin/main` deposuna yüklenmiştir.
+
 
 
 
