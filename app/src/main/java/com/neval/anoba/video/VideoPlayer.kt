@@ -22,6 +22,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.PlayerView
 import com.neval.anoba.common.utils.MediaCacheManager
 
+@Suppress("unused", "UnusedSymbol")
 @UnstableApi
 @Composable
 fun VideoPlayer(

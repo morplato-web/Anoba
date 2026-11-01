@@ -80,12 +80,12 @@ fun SharedSesHomeScreen(
         topBar = {
             Surface(
                 color = AnobaTopBarNavy,
-                shadowElevation = 4.dp
+                shadowElevation = 4.dp,
+                modifier = Modifier.fillMaxWidth().statusBarsPadding()
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .statusBarsPadding()
                         .height(56.dp)
                         .padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,

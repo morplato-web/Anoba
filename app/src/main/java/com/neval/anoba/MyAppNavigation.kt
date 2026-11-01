@@ -18,7 +18,6 @@ import com.neval.anoba.mycontent.myContentNavGraph
 import com.neval.anoba.photo.photoNavGraph
 import com.neval.anoba.ses.sesNavGraph
 import com.neval.anoba.video.videoNavGraph
-import com.neval.anoba.home.HomeScreen
 import com.neval.anoba.guide.GuideScreen
 import com.neval.anoba.map.GlobalMapScreen
 
@@ -45,12 +44,7 @@ fun MainAppNavHost(
         videoNavGraph(navController)
         myContentNavGraph(navController)
         marketNavGraph(navController)
-        
-        composable(Constants.HOME_SCREEN + "?countryCode={countryCode}") { backStackEntry ->
-            val countryCode = backStackEntry.arguments?.getString("countryCode")
-            HomeScreen(navController, countryCode = countryCode)
-        }
-        
+
         composable(Constants.GUIDE_NAV_GRAPH) { GuideScreen(navController) }
         composable(Constants.GLOBAL_MAP_SCREEN) { GlobalMapScreen(navController) }
         composable(Constants.METE_SCREEN) { com.neval.anoba.mete.MeteScreen(navController = navController) }

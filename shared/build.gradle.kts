@@ -67,7 +67,7 @@ kotlin {
 
 android {
     namespace = "com.anoba.shared"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24

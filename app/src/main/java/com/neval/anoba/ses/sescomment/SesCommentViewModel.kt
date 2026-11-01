@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
+@Suppress("unused", "UnusedSymbol")
 class SesCommentViewModel(
     private val sesId: String,
     private val repository: SesCommentRepository,

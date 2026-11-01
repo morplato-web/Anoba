@@ -77,7 +77,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.neval.anoba.photo.SharedReactionUser
-import com.neval.anoba.video.SharedVideoReactionUsersBottomSheet
 import com.neval.anoba.video.formatDurationMillis
 
 private val AnobaGold = Color(0xFFFFD700)
@@ -174,7 +173,7 @@ fun SharedSesDetailScreen(
     }
 
     if (showReactionsSheet) {
-        SharedVideoReactionUsersBottomSheet(
+        SharedSesReactionUsersBottomSheet(
             reactionUsers = reactionUsers,
             onDismiss = { showReactionsSheet = false }
         )
@@ -185,12 +184,12 @@ fun SharedSesDetailScreen(
         topBar = {
             Surface(
                 color = AnobaTopBarNavy,
-                shadowElevation = 4.dp
+                shadowElevation = 4.dp,
+                modifier = Modifier.fillMaxWidth().statusBarsPadding()
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .statusBarsPadding()
                         .height(56.dp)
                         .padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -288,7 +287,6 @@ fun SharedSesDetailScreen(
                 ses != null -> {
                     val topReaction = ses.reactions.maxByOrNull { it.value }
                     val activeDurationMs = if (totalDurationMillis > 0L) totalDurationMillis else ses.durationMillis
-                    val reactionTotal = ses.reactions.values.sum()
 
                     Column(
                         modifier = Modifier

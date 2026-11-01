@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neval.anoba.common.utils.StandardEmojis
 
+@Suppress("unused", "UnusedSymbol")
 @Composable
 fun SesEmojiReactionRow(
     reactions: Map<String, Long>,

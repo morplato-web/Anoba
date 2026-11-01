@@ -352,6 +352,27 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
 - Tüm değişiklikler GitHub `origin/main` deposuna yüklenmiştir (`working tree clean`).
 
+---
+
+## 30. Tam Proje Denetimi, Ses/Video Paket İyileştirmeleri & Build Optimizasyonu (v148 Güncellemeleri)
+
+### 📌 Tamamlanan Çalışmalar
+1. **`ses` ve `video` Paketi İncelemeleri:**
+   - `:shared` katmanındaki ses detay modülüne bağımsız `SharedSesReactionUsersBottomSheet` bileşeni eklendi.
+   - `VideoPlayer.kt` ve `SharedVideoCommentsScreen.kt` üzerindeki linter uyarıları giderildi.
+   - `:shared` katmanındaki `SharedSesHomeScreen.kt`, `SharedSesDetailScreen.kt`, `SharedSesEditScreen.kt`, `SharedSesCommentsScreen.kt` ve `SharedVideoHomeScreen.kt` ekranlarında `statusBarsPadding()` Surface seviyesine taşınarak iOS Safe Area uyumu yükseltildi.
+2. **Kök ve Modül Yapılandırma Optimizasyonları:**
+   - **`shared/build.gradle.kts`:** `:shared` modülünün `compileSdk` seviyesi `:app` ile eşitlenerek `36` yapıldı.
+   - **`settings.gradle.kts`:** JetBrains Compose dev Maven deposu (`https://maven.pkg.jetbrains.space/public/p/compose/dev`) eklendi.
+   - **`app/proguard-rules.pro`:** Release/R8 sürümlerinde Room ve Serializer bozulmalarını önlemek için `:shared` altındaki KMP modellerine ve veritabanı paketine `-keep` kuralları eklendi.
+   - **`gradle.properties`:** Gradle Daemon bellek limiti `-Xmx4096m -XX:MaxMetaspaceSize=1024m` seviyesine yükseltildi.
+
+### 🧪 Derleme & GitHub Durumu
+- **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- Tüm proje kodları ve rehber GitHub `origin/main` deposuna yüklenmiştir.
+
+
 
 
 

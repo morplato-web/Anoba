@@ -54,8 +54,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neval.anoba.common.ui.AnobaBadge
 import com.neval.anoba.common.ui.UserAvatar
-import com.neval.anoba.ui.theme.AnobaGold
-import com.neval.anoba.ui.theme.AnobaNavy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -108,12 +106,12 @@ fun SharedSesCommentsScreen(
         topBar = {
             Surface(
                 color = Color(0xFF1E293B),
-                shadowElevation = 4.dp
+                shadowElevation = 4.dp,
+                modifier = Modifier.fillMaxWidth().statusBarsPadding()
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .statusBarsPadding()
                         .height(56.dp)
                         .padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,

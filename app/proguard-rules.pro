@@ -24,6 +24,17 @@
 -keep class com.neval.anoba.letter.LetterModel { *; }
 -keep class com.neval.anoba.ses.SesModel { *; }
 
+# Shared KMP Modelleri (Room & Serialization Koruması)
+-keep class com.neval.anoba.photo.SharedPhotoModel { *; }
+-keep class com.neval.anoba.photo.SharedPhotoDetailModel { *; }
+-keep class com.neval.anoba.video.SharedVideoModel { *; }
+-keep class com.neval.anoba.video.SharedVideoDetailModel { *; }
+-keep class com.neval.anoba.video.SharedVideoCommentModel { *; }
+-keep class com.neval.anoba.ses.SharedSesModel { *; }
+-keep class com.neval.anoba.ses.SharedSesDetailModel { *; }
+-keep class com.neval.anoba.ses.SharedSesCommentModel { *; }
+-keep class com.neval.anoba.common.database.** { *; }
+
 # Yorum modellerini koru (Yorumların görünmeme sorunu için)
 -keep class com.neval.anoba.photo.photocomment.PhotoComment { *; }
 -keep class com.neval.anoba.video.videocomment.VideoComment { *; }

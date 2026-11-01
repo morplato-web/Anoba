@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neval.anoba.chat.call
 
 class IosCallService : CallService {

@@ -56,7 +56,7 @@ class SesEditViewModel(
                 val originalDuration = currentSes.duration
                 val effectiveStart = trimStartMs ?: 0L
                 val effectiveEnd = trimEndMs ?: originalDuration
-                val newDuration = effectiveEnd - effectiveStart
+                val newDuration = (effectiveEnd - effectiveStart).coerceAtLeast(0L)
 
                 val updates = mutableMapOf<String, Any?>(
                     "title" to title,
