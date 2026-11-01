@@ -5,8 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import com.neval.anoba.common.viewmodel.AuthViewModel
-import com.neval.anoba.drawer.profile.BlockedUserItem
-import com.neval.anoba.drawer.profile.SharedBlockedUsersScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

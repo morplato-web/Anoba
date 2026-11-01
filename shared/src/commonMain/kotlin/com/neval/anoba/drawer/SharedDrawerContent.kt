@@ -30,6 +30,8 @@ fun DrawerSheetContent(
     onDismiss: () -> Unit = {},
     onNavigateProfile: () -> Unit = {},
     onNavigateGuide: () -> Unit = {},
+    onOpenAdminPanel: () -> Unit = {},
+    onOpenPrivacyPolicy: () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
     if (!isOpen) return
@@ -105,7 +107,10 @@ fun DrawerSheetContent(
                         icon = { Icon(Icons.Default.Stars, contentDescription = null, tint = Color(0xFFFFD700)) },
                         label = { Text("Animasyon Paneli", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
                         selected = false,
-                        onClick = { onDismiss() },
+                        onClick = {
+                            onDismiss()
+                            onOpenAdminPanel()
+                        },
                         colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                     )
 
@@ -126,7 +131,10 @@ fun DrawerSheetContent(
                         icon = { Icon(Icons.Default.Lock, contentDescription = null, tint = AnobaNavy) },
                         label = { Text("Gizlilik Politikası", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
                         selected = false,
-                        onClick = { onDismiss() },
+                        onClick = {
+                            onDismiss()
+                            onOpenPrivacyPolicy()
+                        },
                         colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                     )
                 }

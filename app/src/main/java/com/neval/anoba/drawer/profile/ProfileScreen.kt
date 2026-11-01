@@ -15,7 +15,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.neval.anoba.R
 import com.neval.anoba.common.utils.Constants
 import com.neval.anoba.common.viewmodel.AuthViewModel
-import com.neval.anoba.drawer.profile.SharedProfileScreen
 import com.neval.anoba.follow.FollowViewModel
 import com.neval.anoba.follow.UserListSheet
 import com.neval.anoba.login.state.AuthState

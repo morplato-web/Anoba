@@ -336,6 +336,23 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
 - Tüm değişiklikler GitHub `origin/main` deposuna yüklenmiştir (`working tree clean`).
 
+---
+
+## 29. Drawer Menü Callback & Status Bar İyileştirmeleri (v147 Güncellemeleri)
+
+### 📌 Tamamlanan Çalışmalar
+1. **Drawer Menü İşlevselliği (`SharedDrawerContent.kt`):**
+   - `DrawerSheetContent` bileşenine `onOpenAdminPanel` ve `onOpenPrivacyPolicy` callback parametreleri eklendi.
+   - Animasyon Paneli ve Gizlilik Politikası tıklamalarında ilgili aksiyonların tetiklenmesi sağlandı.
+2. **iOS Safe Area & Status Bar Yerleşimi:**
+   - `SharedProfileScreen.kt`, `SharedProfileEditScreen.kt` ve `SharedBlockedUsersScreen.kt` ekranlarında `statusBarsPadding()` modifiyeri iç `Row` üzerinden alınıp üst `Surface` bileşenine taşındı. Böylece status bar arka plan rengi tüm alana yayıldı ve üst bar içeriği 56dp içine sıkışmaktan kurtarıldı.
+
+### 🧪 Derleme & GitHub Durumu
+- **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- Tüm değişiklikler GitHub `origin/main` deposuna yüklenmiştir (`working tree clean`).
+
+
 
 
 

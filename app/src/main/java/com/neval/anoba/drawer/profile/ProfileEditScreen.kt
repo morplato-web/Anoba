@@ -19,7 +19,6 @@ import com.neval.anoba.R
 import com.neval.anoba.common.state.UiState
 import com.neval.anoba.common.utils.Constants
 import com.neval.anoba.common.viewmodel.AuthViewModel
-import com.neval.anoba.drawer.profile.SharedProfileEditScreen
 import com.neval.anoba.login.state.AuthState
 import org.koin.androidx.compose.koinViewModel
 

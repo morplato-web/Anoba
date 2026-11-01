@@ -62,12 +62,12 @@ class PhotoEmojiReactionRepository(
                 if (currentEmoji == emoji) {
                     // Durum 1: Aynı emojiye tekrar basıldı -> Kaldır (-1)
                     val count = updatedReactions[emoji] ?: 1L
-                    updatedReactions[emoji] = (count - 1).coerceAtLeast(0L)
+                    updatedReactions[emoji] = (count - 1L).coerceAtLeast(0L)
                 } else {
                     // Durum 2: Farklı bir emojiye geçildi -> Eski emojiyi düş (-1)
                     if (!currentEmoji.isNullOrBlank()) {
                         val oldCount = updatedReactions[currentEmoji] ?: 1L
-                        updatedReactions[currentEmoji] = (oldCount - 1).coerceAtLeast(0L)
+                        updatedReactions[currentEmoji] = (oldCount - 1L).coerceAtLeast(0L)
                     }
                     // Yeni emojiyi artır (+1)
                     val newCount = updatedReactions[emoji] ?: 0L
