@@ -31,7 +31,7 @@ fun LetterDetailScreen(
     val context = LocalContext.current
     val letterState by viewModel.selectedLetter.collectAsState()
     val comments by commentViewModel.comments.collectAsState()
-    var showEmojiUsersSheet by remember { mutableStateOf(value = false) }
+    var showEmojiUsersSheet by remember { mutableStateOf(false) }
 
     val reactionRepository: LetterEmojiReactionRepository = koinInject()
     val reactionUsers by remember(letterId, showEmojiUsersSheet) {

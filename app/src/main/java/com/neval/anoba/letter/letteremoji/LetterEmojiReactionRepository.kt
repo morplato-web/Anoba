@@ -31,7 +31,7 @@ class LetterEmojiReactionRepository(
         private const val TAG = "LetterEmojiReactionRepo"
     }
 
-    private fun getUserLetterReactionRef(userId: String, letterId: String) =
+    private fun getUserLetterReactionRef(userId: String, letterId: String): DocumentReference =
         firestore.collection("userReactions").document(userId)
             .collection("letter_reactions").document(letterId)
 
@@ -59,18 +59,15 @@ class LetterEmojiReactionRepository(
                 val updatedReactions = localLetter.reactions.toMutableMap()
 
                 if (currentEmoji == emoji) {
-                    // Durum 1: Aynı emojiye tekrar basıldı -> Kaldır (-1)
                     val count = updatedReactions[emoji] ?: 1L
-                    updatedReactions[emoji] = (count - 1).coerceAtLeast(0L)
+                    updatedReactions[emoji] = (count - 1L).coerceAtLeast(0L)
                 } else {
-                    // Durum 2: Farklı bir emojiye geçildi -> Eski emojiyi düş (-1)
                     if (!currentEmoji.isNullOrBlank()) {
                         val oldCount = updatedReactions[currentEmoji] ?: 1L
-                        updatedReactions[currentEmoji] = (oldCount - 1).coerceAtLeast(0L)
+                        updatedReactions[currentEmoji] = (oldCount - 1L).coerceAtLeast(0L)
                     }
-                    // Yeni emojiyi artır (+1)
                     val newCount = updatedReactions[emoji] ?: 0L
-                    updatedReactions[emoji] = newCount + 1
+                    updatedReactions[emoji] = newCount + 1L
                 }
 
                 letterDao.insertAll(listOf(localLetter.copy(reactions = updatedReactions)))
@@ -84,12 +81,9 @@ class LetterEmojiReactionRepository(
         // -------------------------------------------------------------------------
         try {
             val letterRef: DocumentReference = lettersCollection.document(letterId)
-            val userReactionRef = getUserLetterReactionRef(userId, letterId)
-
             var isNewReaction = false
             var targetOwnerId: String? = null
 
-            // Kullanıcı bilgilerini önceden alalım (Denormalizasyon için)
             val userDoc = firestore.collection("users").document(userId).get().await()
             val currentDisplayName = userDoc.getString("username")?.ifBlank {
                 userDoc.getString("displayName") ?: "Bir kullanıcı"
@@ -102,19 +96,18 @@ class LetterEmojiReactionRepository(
                 val letterDoc = transaction.get(letterRef)
                 targetOwnerId = letterDoc.getString("ownerId")
                 val userReactionSnapshot = transaction.get(userReactionRef)
-                val currentEmoji = if (userReactionSnapshot.exists()) userReactionSnapshot.getString("emoji") else null
+                val existingEmoji = if (userReactionSnapshot.exists()) userReactionSnapshot.getString("emoji") else null
 
-                if (currentEmoji == emoji) {
+                if (existingEmoji == emoji) {
                     transaction.delete(userReactionRef)
                     transaction.update(letterRef, "reactions.$emoji", FieldValue.increment(-1))
                 } else {
-                    if (!currentEmoji.isNullOrBlank()) {
-                        transaction.update(letterRef, "reactions.$currentEmoji", FieldValue.increment(-1))
+                    if (!existingEmoji.isNullOrBlank()) {
+                        transaction.update(letterRef, "reactions.$existingEmoji", FieldValue.increment(-1))
                     } else {
                         isNewReaction = true
                     }
 
-                    // --- TOPLULUK MODERASYONU (EŞİK KONTROLÜ) ---
                     val currentEmojiCount = (letterDoc.get("reactions.$emoji") as? Long) ?: 0L
                     val updatedCount = currentEmojiCount + 1
 
@@ -124,7 +117,6 @@ class LetterEmojiReactionRepository(
                         else -> false
                     }
 
-                    // ⭐ 1000+ VİTRİN SİSTEMİ EŞİĞİ (Test için 10, orijinal 1000)
                     val alreadyPopular = letterDoc.getBoolean("is_popular") ?: false
                     val isPopularThresholdReached = !alreadyPopular && !listOf("🚫", "❌").contains(emoji) && updatedCount >= 10
 
@@ -180,13 +172,12 @@ class LetterEmojiReactionRepository(
                     }
 
                     if (shouldUnpublish) {
-                        isNewReaction = false // 🚀 KRİTİK: Karantina varsa normal "beğeni" bildirimi atılmasın
+                        isNewReaction = false
                         transaction.update(letterRef, "is_published", false)
                         transaction.update(letterRef, "is_flagged", true)
                         transaction.update(letterRef, "flag_reason", "COMMUNITY_REPORT_$emoji")
                         transaction.update(letterRef, "flagged_at", FieldValue.serverTimestamp())
 
-                        // 🟢🛡️✅ BİLDİRİM 1: İçerik sahibine karantina bildirimi gönder (Transaction İçinde)
                         if (!targetOwnerId.isNullOrBlank()) {
                             val quarantineNotif = mapOf(
                                 "type" to "QUARANTINE_ALERT",
@@ -204,7 +195,6 @@ class LetterEmojiReactionRepository(
                             transaction.set(notifRef, quarantineNotif)
                         }
 
-                        // 🟢🛡️✅ BİLDİRİM 2: İşaretleyen (🚫 veya ❌) tüm kullanıcılara geri bildirim gönder
                         scope.launch {
                             try {
                                 val reportersSnapshot = firestore.collectionGroup("letter_reactions")
@@ -242,7 +232,6 @@ class LetterEmojiReactionRepository(
                             }
                         }
                     }
-                    // --------------------------------------------
 
                     val newReaction = LetterReaction(
                         userId = userId,
@@ -296,7 +285,9 @@ class LetterEmojiReactionRepository(
             .collection("letter_reactions")
             .snapshots()
             .map { snapshot ->
-                snapshot.documents.associate { it.id to (it.getString("emoji") ?: "") }
+                snapshot.documents.associate { doc ->
+                    doc.id to (doc.getString("emoji") ?: "")
+                }
             }
             .flowOn(Dispatchers.IO)
     }
@@ -318,7 +309,7 @@ class LetterEmojiReactionRepository(
                 }
 
                 val usersList = snapshot.documents.mapNotNull { doc ->
-                    val userId = doc.getString("userId") ?: return@mapNotNull null
+                    val uid = doc.getString("userId") ?: return@mapNotNull null
                     val emoji = doc.getString("emoji") ?: ""
                     val displayName = doc.getString("displayName")?.ifBlank { "Anonim" } ?: "Anonim"
                     val photoUrl = doc.getString("userPhotoUrl") ?: doc.getString("photoUrl")
@@ -327,7 +318,7 @@ class LetterEmojiReactionRepository(
                     val timestampMillis = doc.getDate("timestamp")?.time ?: 0L
 
                     LetterReactionUser(
-                        userId = userId,
+                        userId = uid,
                         displayName = displayName,
                         photoUrl = photoUrl,
                         emoji = emoji,
@@ -335,8 +326,8 @@ class LetterEmojiReactionRepository(
                         isOfficial = isOfficial
                     ) to timestampMillis
                 }
-                .sortedByDescending { it.second }
-                .map { it.first }
+                    .sortedByDescending { it.second }
+                    .map { it.first }
 
                 trySend(usersList)
             }
