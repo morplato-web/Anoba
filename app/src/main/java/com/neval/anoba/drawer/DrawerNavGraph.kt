@@ -5,6 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.neval.anoba.common.utils.Constants
+import com.neval.anoba.drawer.profile.BlockedUsersScreen
+import com.neval.anoba.drawer.profile.ProfileEditScreen
+import com.neval.anoba.drawer.profile.ProfileScreen
 import com.neval.anoba.home.HomeScreen
 
 import androidx.navigation.NavType

@@ -1,11 +1,17 @@
-package com.neval.anoba.drawer
+package com.neval.anoba.drawer.profile
 
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
@@ -13,8 +19,8 @@ import com.neval.anoba.R
 import com.neval.anoba.common.state.UiState
 import com.neval.anoba.common.utils.Constants
 import com.neval.anoba.common.viewmodel.AuthViewModel
+import com.neval.anoba.drawer.profile.SharedProfileEditScreen
 import com.neval.anoba.login.state.AuthState
-import com.neval.anoba.profile.SharedProfileEditScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

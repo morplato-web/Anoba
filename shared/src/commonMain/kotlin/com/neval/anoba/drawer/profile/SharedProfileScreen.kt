@@ -1,6 +1,6 @@
 @file:kotlin.jvm.JvmName("SharedProfileScreenKt")
 
-package com.neval.anoba.profile
+package com.neval.anoba.drawer.profile
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

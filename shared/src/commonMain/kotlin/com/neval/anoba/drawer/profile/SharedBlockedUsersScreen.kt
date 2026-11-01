@@ -1,6 +1,6 @@
 @file:kotlin.jvm.JvmName("SharedBlockedUsersScreenKt")
 
-package com.neval.anoba.profile
+package com.neval.anoba.drawer.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,7 +1,13 @@
-package com.neval.anoba.drawer
+package com.neval.anoba.drawer.profile
 
 import android.app.Activity
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
@@ -9,10 +15,10 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.neval.anoba.R
 import com.neval.anoba.common.utils.Constants
 import com.neval.anoba.common.viewmodel.AuthViewModel
+import com.neval.anoba.drawer.profile.SharedProfileScreen
 import com.neval.anoba.follow.FollowViewModel
 import com.neval.anoba.follow.UserListSheet
 import com.neval.anoba.login.state.AuthState
-import com.neval.anoba.profile.SharedProfileScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

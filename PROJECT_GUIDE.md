@@ -319,5 +319,23 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
 - Tüm değişiklikler GitHub `origin/main` deposuna push edildi (`working tree clean`).
 
+---
+
+## 28. Profile & Drawer Paketi Eşitlemesi (v146 Güncellemeleri)
+
+### 📌 Tamamlanan Çalışmalar
+1. **Paket Yapısı Eşitlemesi:**
+   - Profil sayfaları hem `:app` hem de `:shared` katmanlarında `drawer` paketinin altına `profile` alt paketi (`com.neval.anoba.drawer.profile`) olarak taşındı.
+   - `:app`: `ProfileScreen.kt`, `ProfileEditScreen.kt`, `BlockedUsersScreen.kt` ➔ `com.neval.anoba.drawer.profile`
+   - `:shared`: `SharedProfileScreen.kt`, `SharedProfileEditScreen.kt`, `SharedBlockedUsersScreen.kt` ➔ `com.neval.anoba.drawer.profile`
+2. **Navigasyon ve Import Güncellemeleri:**
+   - `DrawerNavGraph.kt` ve `App.kt` içerisindeki tüm importlar yeni pakete göre güncellendi.
+
+### 🧪 Derleme & GitHub Durumu
+- **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- Tüm değişiklikler GitHub `origin/main` deposuna yüklenmiştir (`working tree clean`).
+
+
 
 
