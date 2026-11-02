@@ -58,6 +58,8 @@ import com.neval.anoba.video.SharedVideoEditScreen
 import com.neval.anoba.video.SharedVideoHomeScreen
 import com.neval.anoba.video.SharedVideoModel
 
+private const val ANOBA_OFFICIAL_AVATAR = "https://firebasestorage.googleapis.com/v0/b/anoba-cd9de.appspot.com/o/profile_photos%2Fanoba_official.jpg?alt=media"
+
 @Composable
 fun App() {
     AnobaTheme {
@@ -76,14 +78,13 @@ fun App() {
             )
         } else if (!isAuthenticated) {
             AuthContainerView(
-                onLoginSuccess = {
-                    // Not: Eğer AuthContainerView parametre olarak (email, name, photoUrl) iletiyorsa
-                    // doğrudan bu değişkenlere eşleyebilirsiniz.
-                    // Parametresiz tetikleniyorsa varsayılan oturum verisi tanımlanabilir:
-                    if (currentUserEmail.isBlank()) {
-                        currentUserEmail = "kullanici@anoba.com"
-                        currentUserName = "Kullanıcı"
-                    }
+                onLoginSuccess = { loggedInEmail, loggedInUsername, photoUrl ->
+                    currentUserEmail = loggedInEmail
+                    val isOfficialAdmin = loggedInEmail.equals("morplato@gmail.com", ignoreCase = true)
+
+                    currentUserName = if (isOfficialAdmin) "Anoba" else loggedInUsername
+                    currentUserProfileImageUrl = if (isOfficialAdmin) ANOBA_OFFICIAL_AVATAR else photoUrl
+                    isUserAdmin = isOfficialAdmin
                     isAuthenticated = true
                 }
             )
@@ -94,7 +95,7 @@ fun App() {
                 currentUserProfileImageUrl = currentUserProfileImageUrl,
                 isUserAdmin = isUserAdmin,
                 onLogout = {
-                    // Oturum durumunu temizle ve giriş ekranına dön
+                    // Oturum durumunu tamamen sıfırla
                     currentUserEmail = ""
                     currentUserName = ""
                     currentUserProfileImageUrl = null
@@ -204,8 +205,8 @@ private fun MainAppScreen(
                     isAdmin = isUserAdmin,
                     isOfficial = isUserAdmin,
                     badgeType = if (isUserAdmin) "OFFICIAL" else "NONE",
-                    followerCount = 0,
-                    followingCount = 0,
+                    followerCount = if (isUserAdmin) 2 else 0,
+                    followingCount = if (isUserAdmin) 15 else 0,
                     onNavigateBack = { activeView = "HOME" },
                     onNavigateHome = { activeView = "HOME" },
                     onOpenMyContents = { activeView = "MY_CONTENT" },

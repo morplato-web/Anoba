@@ -59,13 +59,13 @@ private val AnobaGoldColor = Color(0xFFFFD700)
 
 @Composable
 fun AuthContainerView(
-    onLoginSuccess: () -> Unit = {},
+    onLoginSuccess: (email: String, username: String, photoUrl: String?) -> Unit = { _, _, _ -> },
 ) {
     var authMode by remember { mutableStateOf("LOGIN") }
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var rememberMe by remember { mutableStateOf(value = false) }
+    var rememberMe by remember { mutableStateOf(false) }
 
     var regUsername by remember { mutableStateOf("") }
     var regEmail by remember { mutableStateOf("") }
@@ -86,8 +86,13 @@ fun AuthContainerView(
                 confirmPassword = regConfirmPassword,
                 onConfirmPasswordChange = { regConfirmPassword = it },
                 onNavigateBack = { authMode = "LOGIN" },
-                onSignUpClick = onLoginSuccess,
-                onGoogleSignUpClick = onLoginSuccess,
+                onSignUpClick = {
+                    val derivedName = regUsername.ifBlank { regEmail.substringBefore("@").replaceFirstChar { it.uppercase() } }
+                    onLoginSuccess(regEmail, derivedName, null)
+                },
+                onGoogleSignUpClick = {
+                    onLoginSuccess(regEmail.ifBlank { "morplato@gmail.com" }, regUsername.ifBlank { "Anoba" }, null)
+                },
             )
         }
         "FORGOT_PASSWORD" -> {
@@ -108,9 +113,24 @@ fun AuthContainerView(
                 onPasswordChange = { password = it },
                 rememberMe = rememberMe,
                 onRememberMeChange = { rememberMe = it },
-                onLoginClick = onLoginSuccess,
-                onGoogleLoginClick = onLoginSuccess,
-                onGuestLoginClick = onLoginSuccess,
+                onLoginClick = {
+                    val trimmedEmail = email.trim()
+                    val derivedName = if (trimmedEmail.contains("@")) {
+                        trimmedEmail.substringBefore("@").replaceFirstChar { it.uppercase() }
+                    } else {
+                        "Kullanıcı"
+                    }
+                    onLoginSuccess(trimmedEmail, derivedName, null)
+                },
+                onGoogleLoginClick = {
+                    // Google ile giriş varsayılanı
+                    val actualEmail = email.trim().ifBlank { "morplato@gmail.com" }
+                    val actualName = if (actualEmail.contains("@")) actualEmail.substringBefore("@").replaceFirstChar { it.uppercase() } else "Anoba"
+                    onLoginSuccess(actualEmail, actualName, null)
+                },
+                onGuestLoginClick = {
+                    onLoginSuccess("misafir@anoba.com", "Misafir", null)
+                },
                 onForgotPasswordClick = { authMode = "FORGOT_PASSWORD" },
                 onSignUpClick = { authMode = "SIGN_UP" },
             )
@@ -134,7 +154,7 @@ fun SharedLoginScreen(
     onSignUpClick: () -> Unit = {},
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    var isPasswordVisible by remember { mutableStateOf(value = false) }
+    var isPasswordVisible by remember { mutableStateOf(false) }
     val isFormValid = email.isNotBlank() && password.isNotBlank()
 
     Scaffold(
