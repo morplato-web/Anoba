@@ -1,207 +1,129 @@
 package com.neval.anoba.home
 
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.firestore.DocumentSnapshot
-import dev.gitlive.firebase.firestore.firestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 class SharedHomeRepository {
 
-    private val firestore = Firebase.firestore
+    private val json = Json { ignoreUnknownKeys = true }
+    private val projectId = "anoba-cd9de"
+    private val baseUrl = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents"
 
-    private inline fun <reified T> getField(doc: DocumentSnapshot, field: String): T? {
+    fun getCombinedHomeFeed(): Flow<List<SharedFeedItem>> = flow {
+        val letters = fetchCollection("letters", ContentType.LETTER)
+        val photos = fetchCollection("photos", ContentType.PHOTO)
+        val videos = fetchCollection("videos", ContentType.VIDEO)
+        val audios = fetchCollection("sesler", ContentType.AUDIO)
+
+        val fullList = mutableListOf<SharedFeedItem>()
+        fullList.addAll(letters)
+        fullList.addAll(photos)
+        fullList.addAll(videos)
+        fullList.addAll(audios)
+
+        emit(fullList.sortedByDescending { it.createdAtMillis })
+    }.flowOn(Dispatchers.IO)
+
+    private fun fetchCollection(collectionName: String, contentType: ContentType): List<SharedFeedItem> {
+        val url = "$baseUrl/$collectionName?pageSize=30"
+        val rawJson = httpGet(url)
+        if (rawJson.isBlank()) return emptyList()
+
         return try {
-            doc.get<T>(field)
+            val root = json.parseToJsonElement(rawJson).jsonObject
+            val documents = root["documents"]?.jsonArray ?: return emptyList()
+
+            documents.mapNotNull { docElement ->
+                try {
+                    val docObj = docElement.jsonObject
+                    val namePath = docObj["name"]?.jsonPrimitive?.content ?: ""
+                    val docId = namePath.substringAfterLast('/')
+
+                    val fields = docObj["fields"]?.jsonObject ?: return@mapNotNull null
+
+                    val isPublished = parseBoolean(fields, "is_published", default = true)
+                    val isFlagged = parseBoolean(fields, "is_flagged", default = false)
+                    if (!isPublished || isFlagged) return@mapNotNull null
+
+                    val title = parseString(fields, "title")
+                    val text = parseString(fields, "text").ifBlank { parseString(fields, "personalNote") }
+                    val finalTitle = title.ifBlank { if (contentType == ContentType.LETTER) text.take(30) else defaultTitle(contentType) }
+
+                    val photoUrl = parseString(fields, "photoUrl").ifBlank { parseString(fields, "url") }
+                    val videoUrl = parseString(fields, "videoUrl")
+                    val audioUrl = parseString(fields, "audioUrl")
+                    val mediaUrl = photoUrl.ifBlank { videoUrl }.ifBlank { audioUrl }.takeIf { it.isNotBlank() }
+
+                    val ownerId = parseString(fields, "ownerId")
+                    val username = parseString(fields, "username").ifBlank { "Anonim" }
+                    val userProfileImageUrl = parseString(fields, "userProfileImageUrl").takeIf { it.isNotBlank() }
+                    val isOfficial = parseBoolean(fields, "isOfficial", default = false)
+                    val badgeType = parseString(fields, "userBadgeType").ifBlank { "NONE" }
+                    val reactionCount = parseLong(fields, "reactionCount").toInt()
+                    val viewCount = parseLong(fields, "viewCount")
+                    val createdAt = parseLong(fields, "createdAt").let { if (it == 0L) parseLong(fields, "createdAtMillis") else it }
+
+                    SharedFeedItem(
+                        id = docId,
+                        type = contentType,
+                        title = finalTitle,
+                        description = text,
+                        mediaUrl = mediaUrl,
+                        ownerId = ownerId,
+                        username = username,
+                        userProfileImageUrl = userProfileImageUrl,
+                        userBadgeType = badgeType,
+                        isOfficial = isOfficial,
+                        topEmoji = defaultEmoji(contentType),
+                        reactionCount = reactionCount,
+                        viewCount = viewCount,
+                        createdAtMillis = createdAt
+                    )
+                } catch (_: Exception) {
+                    null
+                }
+            }
         } catch (_: Exception) {
-            null
+            emptyList()
         }
     }
 
-    fun getCombinedHomeFeed(): Flow<List<SharedFeedItem>> {
-        val lettersFlow: Flow<List<SharedFeedItem>> = firestore.collection("letters")
-            .snapshots
-            .map { snapshot ->
-                snapshot.documents.mapNotNull { doc ->
-                    try {
-                        val isPublished = getField<Boolean>(doc, "is_published") ?: true
-                        val isFlagged = getField<Boolean>(doc, "is_flagged") ?: false
-                        if (!isPublished || isFlagged) return@mapNotNull null
+    private fun parseString(fields: kotlinx.serialization.json.JsonObject, fieldName: String): String {
+        return fields[fieldName]?.jsonObject?.get("stringValue")?.jsonPrimitive?.content ?: ""
+    }
 
-                        val text = getField<String>(doc, "text") ?: getField<String>(doc, "personalNote") ?: ""
-                        val title = getField<String>(doc, "title") ?: text.take(30)
-                        val ownerId = getField<String>(doc, "ownerId") ?: ""
-                        val username = getField<String>(doc, "username") ?: "Anonim"
-                        val userProfileImageUrl = getField<String>(doc, "userProfileImageUrl")
-                        val isOfficial = getField<Boolean>(doc, "isOfficial") ?: false
-                        val badgeType = getField<String>(doc, "userBadgeType") ?: "NONE"
-                        val reactionCount = getField<Int>(doc, "reactionCount") ?: 0
-                        val viewCount = getField<Long>(doc, "viewCount") ?: 0L
-                        val createdAt = getField<Long>(doc, "createdAt") ?: getField<Long>(doc, "createdAtMillis") ?: 0L
+    private fun parseBoolean(fields: kotlinx.serialization.json.JsonObject, fieldName: String, default: Boolean): Boolean {
+        return fields[fieldName]?.jsonObject?.get("booleanValue")?.jsonPrimitive?.booleanOrNull ?: default
+    }
 
-                        SharedFeedItem(
-                            id = doc.id,
-                            type = ContentType.LETTER,
-                            title = title,
-                            description = text,
-                            ownerId = ownerId,
-                            username = username,
-                            userProfileImageUrl = userProfileImageUrl,
-                            userBadgeType = badgeType,
-                            isOfficial = isOfficial,
-                            topEmoji = "❤️",
-                            reactionCount = reactionCount,
-                            viewCount = viewCount,
-                            createdAtMillis = createdAt
-                        )
-                    } catch (_: Exception) {
-                        null
-                    }
-                }
-            }
-            .catch { emit(emptyList()) }
+    private fun parseLong(fields: kotlinx.serialization.json.JsonObject, fieldName: String): Long {
+        val obj = fields[fieldName]?.jsonObject ?: return 0L
+        return obj["integerValue"]?.jsonPrimitive?.content?.toLongOrNull()
+            ?: obj["doubleValue"]?.jsonPrimitive?.content?.toDoubleOrNull()?.toLong()
+            ?: 0L
+    }
 
-        val photosFlow: Flow<List<SharedFeedItem>> = firestore.collection("photos")
-            .snapshots
-            .map { snapshot ->
-                snapshot.documents.mapNotNull { doc ->
-                    try {
-                        val isPublished = getField<Boolean>(doc, "is_published") ?: true
-                        val isFlagged = getField<Boolean>(doc, "is_flagged") ?: false
-                        if (!isPublished || isFlagged) return@mapNotNull null
+    private fun defaultTitle(type: ContentType): String = when (type) {
+        ContentType.PHOTO -> "Fotoğraf"
+        ContentType.VIDEO -> "Video"
+        ContentType.AUDIO -> "Ses Kaydı"
+        ContentType.LETTER -> "Mektup"
+        ContentType.MARKET -> "İlan"
+    }
 
-                        val url = getField<String>(doc, "photoUrl") ?: getField<String>(doc, "url") ?: ""
-                        val title = getField<String>(doc, "title") ?: "Fotoğraf"
-                        val note = getField<String>(doc, "personalNote") ?: ""
-                        val ownerId = getField<String>(doc, "ownerId") ?: ""
-                        val username = getField<String>(doc, "username") ?: "Anonim"
-                        val userProfileImageUrl = getField<String>(doc, "userProfileImageUrl")
-                        val isOfficial = getField<Boolean>(doc, "isOfficial") ?: false
-                        val badgeType = getField<String>(doc, "userBadgeType") ?: "NONE"
-                        val reactionCount = getField<Int>(doc, "reactionCount") ?: 0
-                        val viewCount = getField<Long>(doc, "viewCount") ?: 0L
-                        val createdAt = getField<Long>(doc, "createdAt") ?: getField<Long>(doc, "createdAtMillis") ?: 0L
-
-                        SharedFeedItem(
-                            id = doc.id,
-                            type = ContentType.PHOTO,
-                            title = title,
-                            description = note,
-                            mediaUrl = url,
-                            ownerId = ownerId,
-                            username = username,
-                            userProfileImageUrl = userProfileImageUrl,
-                            userBadgeType = badgeType,
-                            isOfficial = isOfficial,
-                            topEmoji = "🔥",
-                            reactionCount = reactionCount,
-                            viewCount = viewCount,
-                            createdAtMillis = createdAt
-                        )
-                    } catch (_: Exception) {
-                        null
-                    }
-                }
-            }
-            .catch { emit(emptyList()) }
-
-        val videosFlow: Flow<List<SharedFeedItem>> = firestore.collection("videos")
-            .snapshots
-            .map { snapshot ->
-                snapshot.documents.mapNotNull { doc ->
-                    try {
-                        val isPublished = getField<Boolean>(doc, "is_published") ?: true
-                        val isFlagged = getField<Boolean>(doc, "is_flagged") ?: false
-                        if (!isPublished || isFlagged) return@mapNotNull null
-
-                        val url = getField<String>(doc, "videoUrl") ?: ""
-                        val title = getField<String>(doc, "title") ?: "Video"
-                        val note = getField<String>(doc, "personalNote") ?: ""
-                        val ownerId = getField<String>(doc, "ownerId") ?: ""
-                        val username = getField<String>(doc, "username") ?: "Anonim"
-                        val userProfileImageUrl = getField<String>(doc, "userProfileImageUrl")
-                        val isOfficial = getField<Boolean>(doc, "isOfficial") ?: false
-                        val badgeType = getField<String>(doc, "userBadgeType") ?: "NONE"
-                        val reactionCount = getField<Int>(doc, "reactionCount") ?: 0
-                        val viewCount = getField<Long>(doc, "viewCount") ?: 0L
-                        val createdAt = getField<Long>(doc, "createdAt") ?: getField<Long>(doc, "createdAtMillis") ?: 0L
-
-                        SharedFeedItem(
-                            id = doc.id,
-                            type = ContentType.VIDEO,
-                            title = title,
-                            description = note,
-                            mediaUrl = url,
-                            ownerId = ownerId,
-                            username = username,
-                            userProfileImageUrl = userProfileImageUrl,
-                            userBadgeType = badgeType,
-                            isOfficial = isOfficial,
-                            topEmoji = "👏",
-                            reactionCount = reactionCount,
-                            viewCount = viewCount,
-                            createdAtMillis = createdAt
-                        )
-                    } catch (_: Exception) {
-                        null
-                    }
-                }
-            }
-            .catch { emit(emptyList()) }
-
-        val seslerFlow: Flow<List<SharedFeedItem>> = firestore.collection("sesler")
-            .snapshots
-            .map { snapshot ->
-                snapshot.documents.mapNotNull { doc ->
-                    try {
-                        val isPublished = getField<Boolean>(doc, "is_published") ?: true
-                        val isFlagged = getField<Boolean>(doc, "is_flagged") ?: false
-                        if (!isPublished || isFlagged) return@mapNotNull null
-
-                        val url = getField<String>(doc, "audioUrl") ?: ""
-                        val title = getField<String>(doc, "title") ?: "Ses Kaydı"
-                        val note = getField<String>(doc, "personalNote") ?: ""
-                        val ownerId = getField<String>(doc, "ownerId") ?: ""
-                        val username = getField<String>(doc, "username") ?: "Anonim"
-                        val userProfileImageUrl = getField<String>(doc, "userProfileImageUrl")
-                        val isOfficial = getField<Boolean>(doc, "isOfficial") ?: false
-                        val badgeType = getField<String>(doc, "userBadgeType") ?: "NONE"
-                        val reactionCount = getField<Int>(doc, "reactionCount") ?: 0
-                        val viewCount = getField<Long>(doc, "viewCount") ?: 0L
-                        val createdAt = getField<Long>(doc, "createdAt") ?: getField<Long>(doc, "createdAtMillis") ?: 0L
-
-                        SharedFeedItem(
-                            id = doc.id,
-                            type = ContentType.AUDIO,
-                            title = title,
-                            description = note,
-                            mediaUrl = url,
-                            ownerId = ownerId,
-                            username = username,
-                            userProfileImageUrl = userProfileImageUrl,
-                            userBadgeType = badgeType,
-                            isOfficial = isOfficial,
-                            topEmoji = "🎙️",
-                            reactionCount = reactionCount,
-                            viewCount = viewCount,
-                            createdAtMillis = createdAt
-                        )
-                    } catch (_: Exception) {
-                        null
-                    }
-                }
-            }
-            .catch { emit(emptyList()) }
-
-        return combine(lettersFlow, photosFlow, videosFlow, seslerFlow) { letters, photos, videos, audios ->
-            val fullList = mutableListOf<SharedFeedItem>()
-            fullList.addAll(letters)
-            fullList.addAll(photos)
-            fullList.addAll(videos)
-            fullList.addAll(audios)
-            fullList.sortedByDescending { it.createdAtMillis }
-        }
+    private fun defaultEmoji(type: ContentType): String = when (type) {
+        ContentType.PHOTO -> "🔥"
+        ContentType.VIDEO -> "👏"
+        ContentType.AUDIO -> "🎙️"
+        ContentType.LETTER -> "❤️"
+        ContentType.MARKET -> "🛍️"
     }
 }

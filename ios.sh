@@ -68,7 +68,13 @@ echo "✅ SharedKit.framework kopyalandı."
 echo "🔨 4/5: iOS Uygulaması derleniyor (xcodebuild)..."
 cd "$HOME/Anoba/iosApp" || exit 1
 xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator ONLY_ACTIVE_ARCH=YES ARCHS="$ARCH" CONFIGURATION_BUILD_DIR="$HOME/Anoba/iosApp/build" build
+BUILD_STATUS=$?
 cd "$HOME/Anoba" || exit 1
+
+if [ $BUILD_STATUS -ne 0 ]; then
+    echo "❌ HATA: Xcode derlemesi başarısız oldu!"
+    exit 1
+fi
 
 # 5. Derlenen .app paketini bul
 APP_PATH="$HOME/Anoba/iosApp/build/Anoba.app"
