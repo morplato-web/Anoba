@@ -115,41 +115,6 @@ fun SharedHomeScreen(
     var showMosaicSheet by remember { mutableStateOf(false) }
     var showHomeAnimation by remember { mutableStateOf(false) }
 
-    val displayFeedItems = remember(feedItems) {
-        feedItems.ifEmpty {
-            listOf(
-                SharedFeedItem(
-                    id = "feed_1",
-                    type = ContentType.LETTER,
-                    title = "Hoş Geldiniz ✉️",
-                    description = "Anoba topluluğuna hoş geldiniz! İlk mektubunuzu veya fotoğrafınızı paylaşabilirsiniz.",
-                    ownerId = "anoba_official",
-                    username = "Anoba Resmi",
-                    userBadgeType = "OFFICIAL",
-                    isOfficial = true,
-                    topEmoji = "❤️",
-                    reactionCount = 128,
-                    viewCount = 1024L,
-                    createdAtMillis = 1710000000000L
-                ),
-                SharedFeedItem(
-                    id = "feed_2",
-                    type = ContentType.PHOTO,
-                    title = "Günün Fotoğrafı 📸",
-                    description = "Anoba topluluk seçkisi.",
-                    mediaUrl = "https://picsum.photos/600/400",
-                    ownerId = "u_photo_1",
-                    username = "Merve K.",
-                    userBadgeType = "PIONEER",
-                    topEmoji = "🔥",
-                    reactionCount = 84,
-                    viewCount = 512L,
-                    createdAtMillis = 1710003600000L
-                )
-            )
-        }
-    }
-
     val showBackToTop by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 2 }
     }
@@ -612,7 +577,7 @@ fun SharedHomeScreen(
                 contentPadding = PaddingValues(top = 6.dp, bottom = 80.dp),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                if (displayFeedItems.isEmpty()) {
+                if (feedItems.isEmpty()) {
                     item {
                         Box(
                             modifier = Modifier
@@ -624,7 +589,7 @@ fun SharedHomeScreen(
                         }
                     }
                 } else {
-                    items(displayFeedItems, key = { it.id }) { item ->
+                    items(feedItems, key = { it.id }) { item ->
                         SharedFeedCard(
                             item = item,
                             onItemClick = { onItemClick(item) }
