@@ -131,7 +131,15 @@ fun SharedFeedCard(
                 Spacer(modifier = Modifier.height(10.dp))
             }
 
-            if (item.title.isNotBlank()) {
+            val isGenericTitle = item.title.isBlank() || 
+                item.title.equals("Yeni Anı", ignoreCase = true) || 
+                item.title.equals("Mektup", ignoreCase = true) || 
+                item.title.equals("Fotoğraf", ignoreCase = true) || 
+                item.title.equals("Video", ignoreCase = true) || 
+                item.title.equals("Ses Kaydı", ignoreCase = true) || 
+                item.title.trim() == item.description.trim()
+
+            if (!isGenericTitle) {
                 Text(
                     text = item.title,
                     color = Color(0xFF232066),

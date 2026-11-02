@@ -23,13 +23,18 @@ class SharedHomeRepository {
         val videos = fetchCollection("videos", ContentType.VIDEO)
         val audios = fetchCollection("sesler", ContentType.AUDIO)
 
-        val fullList = mutableListOf<SharedFeedItem>()
-        fullList.addAll(letters)
-        fullList.addAll(photos)
-        fullList.addAll(videos)
-        fullList.addAll(audios)
+        // Karışık Akış (Interleave Round-Robin): Fotoğraf -> Mektup -> Video -> Ses
+        val mixedList = mutableListOf<SharedFeedItem>()
+        val maxLen = maxOf(letters.size, photos.size, videos.size, audios.size)
 
-        emit(fullList.sortedByDescending { it.createdAtMillis })
+        for (i in 0 until maxLen) {
+            if (i < photos.size) mixedList.add(photos[i])
+            if (i < letters.size) mixedList.add(letters[i])
+            if (i < videos.size) mixedList.add(videos[i])
+            if (i < audios.size) mixedList.add(audios[i])
+        }
+
+        emit(mixedList)
     }.flowOn(Dispatchers.IO)
 
     private fun fetchCollection(collectionName: String, contentType: ContentType): List<SharedFeedItem> {
