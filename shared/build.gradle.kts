@@ -59,7 +59,7 @@ kotlin {
             implementation(libs.androidx.material.icons.extended)
         }
         iosMain.dependencies {
-            // iOS'a özel bağımlılıklar buraya gelecek
+            implementation("io.ktor:ktor-client-darwin:3.0.0")
         }
     }
 }
