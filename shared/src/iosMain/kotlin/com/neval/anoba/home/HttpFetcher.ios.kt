@@ -12,7 +12,7 @@ import platform.Foundation.timeIntervalSince1970
 actual fun httpGet(urlString: String): String {
     return try {
         val url = NSURL.URLWithString(urlString) ?: return ""
-        NSString.stringWithContentsOfURL(url, encoding = NSUTF8StringEncoding, error = null) ?: ""
+        NSString.stringWithContentsOfURL(url, NSUTF8StringEncoding, null) ?: ""
     } catch (_: Exception) {
         ""
     }

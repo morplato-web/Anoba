@@ -48,11 +48,11 @@ echo "🖥️ İşlemci Mimarisi: $ARCH"
 chmod +x gradlew
 if [ "$ARCH" = "x86_64" ]; then
     echo "📦 3/5: Intel Mac için SharedKit (IosX64) derleniyor..."
-    ./gradlew :shared:clean :shared:linkDebugFrameworkIosX64 --no-daemon
+    ./gradlew :shared:linkDebugFrameworkIosX64 --stacktrace --no-daemon
     FRAMEWORK_SRC="shared/build/bin/iosX64/debugFramework/SharedKit.framework"
 else
     echo "📦 3/5: Apple Silicon Mac için SharedKit (IosSimulatorArm64) derleniyor..."
-    ./gradlew :shared:clean :shared:linkDebugFrameworkIosSimulatorArm64 --no-daemon
+    ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --stacktrace --no-daemon
     FRAMEWORK_SRC="shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework"
 fi
 
