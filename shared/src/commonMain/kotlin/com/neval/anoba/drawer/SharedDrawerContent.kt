@@ -127,17 +127,6 @@ fun DrawerSheetContent(
                     }
 
                     NavigationDrawerItem(
-                        icon = { Icon(Icons.Default.Info, contentDescription = null, tint = AnobaNavy) },
-                        label = { Text("Anoba Rehberi", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
-                        selected = false,
-                        onClick = {
-                            onDismiss()
-                            onNavigateGuide()
-                        },
-                        colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-                    )
-
-                    NavigationDrawerItem(
                         icon = { Icon(Icons.Default.Lock, contentDescription = null, tint = AnobaNavy) },
                         label = { Text("Gizlilik Politikası", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
                         selected = false,

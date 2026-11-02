@@ -42,6 +42,7 @@ import com.neval.anoba.photo.SharedPhotoEditScreen
 import com.neval.anoba.photo.SharedPhotoHomeScreen
 import com.neval.anoba.photo.SharedPhotoModel
 import com.neval.anoba.drawer.profile.SharedProfileScreen
+import com.neval.anoba.guide.SharedPrivacyPolicyScreen
 import com.neval.anoba.ses.SharedSesCommentsScreen
 import com.neval.anoba.ses.SharedSesDetailModel
 import com.neval.anoba.ses.SharedSesDetailScreen
@@ -211,6 +212,11 @@ private fun MainAppScreen(
                     onNavigateHome = { activeView = "HOME" },
                     onOpenMyContents = { activeView = "MY_CONTENT" },
                     onCloseApp = onLogout
+                )
+
+                "PRIVACY" -> SharedPrivacyPolicyScreen(
+                    onNavigateBack = { activeView = "HOME" },
+                    onHomeClick = { activeView = "HOME" }
                 )
 
                 "GUIDE" -> SharedGuideScreen(
@@ -467,9 +473,9 @@ private fun MainAppScreen(
                 isDrawerOpen = false
                 activeView = "PROFILE"
             },
-            onNavigateGuide = {
+            onOpenPrivacyPolicy = {
                 isDrawerOpen = false
-                activeView = "GUIDE"
+                activeView = "PRIVACY"
             },
             onLogout = {
                 isDrawerOpen = false
