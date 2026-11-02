@@ -38,6 +38,7 @@ killall -9 Simulator 2>/dev/null || true
 rm -rf "$HOME/Library/Developer/Xcode/DerivedData"
 rm -rf "$HOME/Anoba/iosApp/build"
 rm -rf "$HOME/Anoba/iosApp/Frameworks"
+rm -rf "$HOME/Anoba/shared/build"
 mkdir -p "$HOME/Anoba/iosApp/Frameworks"
 
 # 2. İşlemci mimarisini tespit et (Intel x86_64 vs Apple Silicon arm64)
@@ -47,11 +48,11 @@ echo "🖥️ İşlemci Mimarisi: $ARCH"
 chmod +x gradlew
 if [ "$ARCH" = "x86_64" ]; then
     echo "📦 3/5: Intel Mac için SharedKit (IosX64) derleniyor..."
-    ./gradlew :shared:linkDebugFrameworkIosX64 --no-daemon
+    ./gradlew :shared:clean :shared:linkDebugFrameworkIosX64 --no-daemon
     FRAMEWORK_SRC="shared/build/bin/iosX64/debugFramework/SharedKit.framework"
 else
     echo "📦 3/5: Apple Silicon Mac için SharedKit (IosSimulatorArm64) derleniyor..."
-    ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --no-daemon
+    ./gradlew :shared:clean :shared:linkDebugFrameworkIosSimulatorArm64 --no-daemon
     FRAMEWORK_SRC="shared/build/bin/iosSimulatorArm64/debugFramework/SharedKit.framework"
 fi
 
