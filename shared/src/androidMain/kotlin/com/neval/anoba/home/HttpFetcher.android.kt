@@ -15,3 +15,5 @@ actual fun httpGet(urlString: String): String {
         ""
     }
 }
+
+actual fun currentTimeMillis(): Long = System.currentTimeMillis()

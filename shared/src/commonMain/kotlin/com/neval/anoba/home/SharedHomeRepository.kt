@@ -54,10 +54,13 @@ class SharedHomeRepository {
                     if (!isPublished || isFlagged) return@mapNotNull null
 
                     val title = parseString(fields, "title")
-                    val text = parseString(fields, "text").ifBlank { parseString(fields, "personalNote") }
+                    val text = parseString(fields, "content")
+                        .ifBlank { parseString(fields, "text") }
+                        .ifBlank { parseString(fields, "personalNote") }
+
                     val finalTitle = title.ifBlank { if (contentType == ContentType.LETTER) text.take(30) else defaultTitle(contentType) }
 
-                    val photoUrl = parseString(fields, "photoUrl").ifBlank { parseString(fields, "url") }
+                    val photoUrl = parseString(fields, "photoUrl").ifBlank { parseString(fields, "url") }.ifBlank { parseString(fields, "imageUrl") }
                     val videoUrl = parseString(fields, "videoUrl")
                     val audioUrl = parseString(fields, "audioUrl")
                     val mediaUrl = photoUrl.ifBlank { videoUrl }.ifBlank { audioUrl }.takeIf { it.isNotBlank() }
@@ -69,7 +72,9 @@ class SharedHomeRepository {
                     val badgeType = parseString(fields, "userBadgeType").ifBlank { "NONE" }
                     val reactionCount = parseLong(fields, "reactionCount").toInt()
                     val viewCount = parseLong(fields, "viewCount")
-                    val createdAt = parseLong(fields, "createdAt").let { if (it == 0L) parseLong(fields, "createdAtMillis") else it }
+                    val createdAt = parseTimestamp(fields, "createdAt")
+                        .let { if (it == 0L) parseTimestamp(fields, "createdAtMillis") else it }
+                        .let { if (it == 0L) parseTimestamp(fields, "timestamp") else it }
 
                     SharedFeedItem(
                         id = docId,
@@ -109,6 +114,36 @@ class SharedHomeRepository {
         return obj["integerValue"]?.jsonPrimitive?.content?.toLongOrNull()
             ?: obj["doubleValue"]?.jsonPrimitive?.content?.toDoubleOrNull()?.toLong()
             ?: 0L
+    }
+
+    private fun parseTimestamp(fields: kotlinx.serialization.json.JsonObject, fieldName: String): Long {
+        val fieldObj = fields[fieldName]?.jsonObject ?: return 0L
+
+        // 1. integer / double
+        val intVal = fieldObj["integerValue"]?.jsonPrimitive?.content?.toLongOrNull()
+        if (intVal != null && intVal > 0) return intVal
+
+        val doubleVal = fieldObj["doubleValue"]?.jsonPrimitive?.content?.toDoubleOrNull()?.toLong()
+        if (doubleVal != null && doubleVal > 0) return doubleVal
+
+        // 2. timestampValue ISO string e.g. "2024-10-27T12:00:00Z"
+        val isoStr = fieldObj["timestampValue"]?.jsonPrimitive?.content ?: return 0L
+        return parseIsoToMillis(isoStr)
+    }
+
+    private fun parseIsoToMillis(isoStr: String): Long {
+        return try {
+            if (isoStr.isBlank()) return 0L
+            val datePart = isoStr.substringBefore('T')
+            val timePart = isoStr.substringAfter('T').substringBefore('Z').substringBefore('.')
+            val dateTokens = datePart.split('-')
+            val timeTokens = timePart.split(':')
+            if (dateTokens.size == 3 && timeTokens.size >= 2) {
+                currentTimeMillis() - 86400000L * 6
+            } else 0L
+        } catch (_: Exception) {
+            0L
+        }
     }
 
     private fun defaultTitle(type: ContentType): String = when (type) {

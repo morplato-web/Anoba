@@ -108,8 +108,8 @@ fun SharedFeedCard(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // MEDYA GÖRSEL VEYA BAŞLIK / İÇERİK
-            if (isMediaPost) {
+            // MEDYA GÖRSELİ (Varsa Yükle)
+            if (!item.mediaUrl.isNullOrBlank()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -118,26 +118,12 @@ fun SharedFeedCard(
                         .background(Color(0xFFF1F5F9)),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (!item.mediaUrl.isNullOrBlank()) {
-                        AsyncImage(
-                            model = item.mediaUrl,
-                            contentDescription = item.title,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    } else {
-                        val icon = when (item.type) {
-                            ContentType.PHOTO -> Icons.Default.CameraAlt
-                            ContentType.VIDEO -> Icons.Default.Videocam
-                            else -> Icons.Default.CameraAlt
-                        }
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            tint = Color(0xFF232066).copy(alpha = 0.5f),
-                            modifier = Modifier.size(56.dp)
-                        )
-                    }
+                    AsyncImage(
+                        model = item.mediaUrl,
+                        contentDescription = item.title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
             }
