@@ -52,6 +52,7 @@ kotlin {
             implementation(libs.lifecycle.viewmodel.compose)
             implementation(libs.lifecycle.runtime.compose)
             implementation(compose.materialIconsExtended)
+            implementation("dev.gitlive:firebase-firestore:1.13.0")
         }
         androidMain.dependencies {
             implementation(libs.androidx.material.icons.core)

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,6 +22,7 @@ import com.neval.anoba.chat.privatechat.SharedPrivateChatScreen
 import com.neval.anoba.drawer.DrawerSheetContent
 import com.neval.anoba.guide.SharedGuideScreen
 import com.neval.anoba.home.SharedHomeScreen
+import com.neval.anoba.home.SharedHomeViewModel
 import com.neval.anoba.letter.SharedLetterCommentsScreen
 import com.neval.anoba.letter.SharedLetterCreateScreen
 import com.neval.anoba.letter.SharedLetterDetailScreen
@@ -76,6 +78,9 @@ fun App() {
 private fun MainAppScreen(
     onLogout: () -> Unit = {}
 ) {
+    val homeViewModel = remember { SharedHomeViewModel() }
+    val homeFeedItems by homeViewModel.feedItems.collectAsState()
+
     var activeView by remember { mutableStateOf("HOME") }
     var selectedLetter by remember { mutableStateOf<SharedLetterModel?>(null) }
     var selectedPhoto by remember { mutableStateOf<SharedPhotoModel?>(null) }
@@ -389,6 +394,7 @@ private fun MainAppScreen(
                 )
 
                 else -> SharedHomeScreen(
+                    feedItems = homeFeedItems,
                     onOpenDrawer = { isDrawerOpen = true },
                     onOpenMarket = { activeView = "MARKET" },
                     onOpenChat = { activeView = "CHAT" },
