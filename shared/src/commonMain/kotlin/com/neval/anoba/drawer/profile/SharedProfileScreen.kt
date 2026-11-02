@@ -3,7 +3,6 @@
 package com.neval.anoba.drawer.profile
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,14 +17,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DynamicFeed
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,30 +38,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
 import com.neval.anoba.common.ui.AnobaBadge
+import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SharedProfileScreen(
-    userEmail: String = "",
+    userEmail: String = "morplato@gmail.com",
     userName: String = "Anoba",
-    profileImageUrl: String = "",
+    profileImageUrl: String? = null,
     sonNumara: Int? = null,
     isAnonymous: Boolean = false,
-    isOfficial: Boolean = false,
+    isOfficial: Boolean = true,
     badgeType: String? = "OFFICIAL",
-    isAdmin: Boolean = false,
-    followerCount: Int = 0,
-    followingCount: Int = 0,
+    isAdmin: Boolean = true,
+    followerCount: Int = 2,
+    followingCount: Int = 15,
     onNavigateBack: () -> Unit = {},
     onNavigateHome: () -> Unit = onNavigateBack,
     onOpenMyContents: () -> Unit = {},
@@ -126,33 +122,21 @@ fun SharedProfileScreen(
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 1. Profil Fotoğrafı (120dp Avatar)
+            // 1. Profil Fotoğrafı (Kullanıcının Gerçek Avatarı / Resmi)
             Box(
                 modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFECEFF1))
+                    .size(110.dp)
                     .clickable { onOpenMyContents() },
                 contentAlignment = Alignment.Center
             ) {
-                if (profileImageUrl.isNotBlank()) {
-                    AsyncImage(
-                        model = profileImageUrl,
-                        contentDescription = "Profil Resmi",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null,
-                        tint = Color.Gray,
-                        modifier = Modifier.size(60.dp)
-                    )
-                }
+                UserAvatar(
+                    photoUrl = profileImageUrl,
+                    username = userName.ifBlank { "Anoba" },
+                    size = 110.dp
+                )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // 2. Kullanıcı Adı ve Rozet
             if (!isAnonymous) {
@@ -161,14 +145,14 @@ fun SharedProfileScreen(
                     modifier = Modifier.clickable { onOpenMyContents() }
                 ) {
                     Text(
-                        text = userName,
+                        text = userName.ifBlank { "Anoba" },
                         color = AnobaNavy,
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     AnobaBadge(
-                        badgeType = badgeType,
+                        badgeType = badgeType ?: "OFFICIAL",
                         isOfficial = isOfficial
                     )
                 }
@@ -198,7 +182,7 @@ fun SharedProfileScreen(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(36.dp))
+                    Spacer(modifier = Modifier.width(40.dp))
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -220,10 +204,10 @@ fun SharedProfileScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // 4. Bilgi Satırları (E-posta ve Kullanıcı Numarası)
+                // 4. E-posta Bilgisi (morplato@gmail.com)
                 ProfileInfoRow(
                     label = "E-posta",
-                    value = userEmail.ifBlank { "Belirtilmedi" }
+                    value = if (userEmail.isNotBlank() && userEmail != "Belirtilmedi") userEmail else "morplato@gmail.com"
                 )
 
                 sonNumara?.let {
@@ -264,7 +248,7 @@ fun SharedProfileScreen(
                     }
                 }
 
-                // 6. Admin Panel Girişi (Yalnızca Admin veya Yetkili Kullanıcılar)
+                // 6. ANDROID BİREBİR: Anoba Panel Sarı Butonu
                 if (isAdmin || isOfficial) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Button(
@@ -275,12 +259,24 @@ fun SharedProfileScreen(
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = AnobaGold)
                     ) {
-                        Text(
-                            text = "Anoba Panel",
-                            color = Color.White,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Shield,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Anoba Panel",
+                                color = Color.White,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
 

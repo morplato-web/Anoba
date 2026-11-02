@@ -21,12 +21,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neval.anoba.common.ui.UserAvatar
+import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
 
+@Suppress("UNUSED_PARAMETER")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DrawerSheetContent(
     isOpen: Boolean,
+    username: String = "Anoba",
+    userProfileImageUrl: String? = null,
+    isAdmin: Boolean = true,
     onDismiss: () -> Unit = {},
     onNavigateProfile: () -> Unit = {},
     onNavigateGuide: () -> Unit = {},
@@ -35,8 +40,6 @@ fun DrawerSheetContent(
     onLogout: () -> Unit = {}
 ) {
     if (!isOpen) return
-
-    val anobaPhotoUrl: String? = null
 
     Box(
         modifier = Modifier
@@ -47,7 +50,7 @@ fun DrawerSheetContent(
         Surface(
             modifier = Modifier
                 .fillMaxHeight()
-                .fillMaxWidth(0.8f)
+                .fillMaxWidth(0.82f)
                 .align(Alignment.CenterStart)
                 .clickable(enabled = false) {},
             color = Color.White
@@ -56,27 +59,42 @@ fun DrawerSheetContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .statusBarsPadding()
-                    .padding(16.dp)
+                    .padding(18.dp)
             ) {
-                // Header: Logo / Avatar + "Anoba" + Close Button
+                // 1. ÜST BAŞLIK: Kullanıcının Gerçek Avatarı + İsmi + Kapat Butonu
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable {
+                                onDismiss()
+                                onNavigateProfile()
+                            }
+                    ) {
                         UserAvatar(
-                            photoUrl = anobaPhotoUrl,
-                            username = "Anoba",
-                            size = 44.dp
+                            photoUrl = userProfileImageUrl,
+                            username = username.ifBlank { "Anoba" },
+                            size = 48.dp
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            text = "Anoba",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = AnobaNavy
-                        )
+                        Column {
+                            Text(
+                                text = username.ifBlank { "Anoba" },
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = AnobaNavy
+                            )
+                            Text(
+                                text = "Profili Görüntüle",
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                        }
                     }
 
                     IconButton(onClick = onDismiss) {
@@ -84,13 +102,12 @@ fun DrawerSheetContent(
                     }
                 }
 
+                Spacer(modifier = Modifier.height(14.dp))
+                HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f), thickness = 1.dp)
                 Spacer(modifier = Modifier.height(12.dp))
-                HorizontalDivider(color = Color.LightGray.copy(alpha = 0.6f))
-                Spacer(modifier = Modifier.height(16.dp))
 
-                // Menu Items
+                // Menü Öğeleri
                 Column(modifier = Modifier.weight(1f)) {
-                    // 1. Profilim 👤
                     NavigationDrawerItem(
                         icon = { Icon(Icons.Default.Person, contentDescription = null, tint = AnobaNavy) },
                         label = { Text("Profilim", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
@@ -102,9 +119,8 @@ fun DrawerSheetContent(
                         colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                     )
 
-                    // 2. Animasyon Paneli ⭐
                     NavigationDrawerItem(
-                        icon = { Icon(Icons.Default.Stars, contentDescription = null, tint = Color(0xFFFFD700)) },
+                        icon = { Icon(Icons.Default.Stars, contentDescription = null, tint = AnobaGold) },
                         label = { Text("Animasyon Paneli", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
                         selected = false,
                         onClick = {
@@ -114,7 +130,6 @@ fun DrawerSheetContent(
                         colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                     )
 
-                    // 3. Anoba Rehberi ℹ️
                     NavigationDrawerItem(
                         icon = { Icon(Icons.Default.Info, contentDescription = null, tint = AnobaNavy) },
                         label = { Text("Anoba Rehberi", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
@@ -126,7 +141,6 @@ fun DrawerSheetContent(
                         colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                     )
 
-                    // 4. Gizlilik Politikası 🔒
                     NavigationDrawerItem(
                         icon = { Icon(Icons.Default.Lock, contentDescription = null, tint = AnobaNavy) },
                         label = { Text("Gizlilik Politikası", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
@@ -139,10 +153,9 @@ fun DrawerSheetContent(
                     )
                 }
 
-                HorizontalDivider(color = Color.LightGray.copy(alpha = 0.6f))
+                HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f), thickness = 1.dp)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // 5. Çıkış Yap 🚪
                 NavigationDrawerItem(
                     icon = { Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null, tint = Color(0xFFEF4444)) },
                     label = { Text("Çıkış Yap", color = Color(0xFFEF4444), fontWeight = FontWeight.Bold, fontSize = 15.sp) },

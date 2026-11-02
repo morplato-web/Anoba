@@ -84,6 +84,11 @@ fun App() {
 private fun MainAppScreen(
     onLogout: () -> Unit = {}
 ) {
+    val currentUserEmail = "morplato@gmail.com"
+    val currentUserName = "Anoba"
+    val currentUserProfileImageUrl: String? = "https://firebasestorage.googleapis.com/v0/b/anoba-cd9de.appspot.com/o/profile_photos%2Fanoba_official.jpg?alt=media"
+    val isUserAdmin = true
+
     val homeViewModel = remember { SharedHomeViewModel() }
     val homeFeedItems by homeViewModel.feedItems.collectAsState()
 
@@ -168,8 +173,17 @@ private fun MainAppScreen(
                 )
 
                 "PROFILE" -> SharedProfileScreen(
+                    userEmail = currentUserEmail,
+                    userName = currentUserName,
+                    profileImageUrl = currentUserProfileImageUrl,
+                    isAdmin = isUserAdmin,
+                    isOfficial = true,
+                    badgeType = "OFFICIAL",
+                    followerCount = 2,
+                    followingCount = 15,
                     onNavigateBack = { activeView = "HOME" },
                     onNavigateHome = { activeView = "HOME" },
+                    onOpenMyContents = { activeView = "MY_CONTENT" },
                     onCloseApp = onLogout
                 )
 
@@ -419,6 +433,9 @@ private fun MainAppScreen(
         // Sol Yan Menü (Drawer)
         DrawerSheetContent(
             isOpen = isDrawerOpen,
+            username = currentUserName,
+            userProfileImageUrl = currentUserProfileImageUrl,
+            isAdmin = isUserAdmin,
             onDismiss = { isDrawerOpen = false },
             onNavigateProfile = {
                 isDrawerOpen = false
