@@ -52,6 +52,7 @@ import com.neval.anoba.ui.theme.AnobaTheme
 import com.neval.anoba.video.SharedCameraScreen
 import com.neval.anoba.video.SharedVideoCommentsScreen
 import com.neval.anoba.video.SharedVideoDetailModel
+import com.neval.anoba.login.SharedSplashScreen
 import com.neval.anoba.video.SharedVideoDetailScreen
 import com.neval.anoba.video.SharedVideoEditScreen
 import com.neval.anoba.video.SharedVideoHomeScreen
@@ -60,9 +61,14 @@ import com.neval.anoba.video.SharedVideoModel
 @Composable
 fun App() {
     AnobaTheme {
-        var isAuthenticated by remember { mutableStateOf(false) }
+        var isSplashVisible by remember { mutableStateOf(true) }
+        var isAuthenticated by remember { mutableStateOf(true) }
 
-        if (!isAuthenticated) {
+        if (isSplashVisible) {
+            SharedSplashScreen(
+                onSplashFinished = { isSplashVisible = false }
+            )
+        } else if (!isAuthenticated) {
             AuthContainerView(
                 onLoginSuccess = { isAuthenticated = true }
             )
