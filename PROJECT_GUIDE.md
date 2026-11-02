@@ -262,6 +262,7 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **Giriş URL:** `https://developer.apple.com/account` veya `https://appstoreconnect.apple.com`
 - **Apple ID (Gmail):** `morplato@gmail.com`
 - **Şifre:** `fabrikalaR3019`
+- **Apple Destek Takip Kodu (Case ID):** `103017117489` *(Enrollment İnceleme Desteği Gönderildi)*
 
 ---
 
