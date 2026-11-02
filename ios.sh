@@ -82,28 +82,28 @@ echo "📦 Bulunan App Paketi: $APP_PATH"
 
 # 6. Simülatörü temizle ve başlat
 echo "📱 5/5: Simülatör hazırlanıyor ve uygulama yükleniyor..."
-xcrun simctl shutdown all 2>/dev/null || true
-
-SIM_ID=$(xcrun simctl list devices | grep "iPhone" | grep -v "unavailable" | head -n 1 | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
-
-if [ -n "$SIM_ID" ]; then
-    echo "📱 Simülatör Başlatılıyor (UDID: $SIM_ID)..."
-    xcrun simctl boot "$SIM_ID" 2>/dev/null || true
-fi
 
 open -a Simulator
-xcrun simctl bootstatus "$SIM_ID" -b 2>/dev/null || sleep 6
+sleep 4
+
+BOOTED_SIM=$(xcrun simctl list devices | grep "Booted" | head -n 1 | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
+
+if [ -z "$BOOTED_SIM" ]; then
+    SIM_ID=$(xcrun simctl list devices | grep "iPhone" | grep -v "unavailable" | head -n 1 | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
+    xcrun simctl boot "$SIM_ID" 2>/dev/null || true
+    sleep 3
+fi
 
 # Eski uygulamayı kaldır
-xcrun simctl uninstall "$SIM_ID" com.neval.anoba 2>/dev/null || true
-xcrun simctl uninstall "$SIM_ID" com.neval.anoba.iosApp 2>/dev/null || true
+xcrun simctl uninstall booted com.neval.anoba 2>/dev/null || true
+xcrun simctl uninstall booted com.neval.anoba.iosApp 2>/dev/null || true
 
 # Uygulamayı yükle
 echo "🚀 Uygulama simülatöre yükleniyor..."
-xcrun simctl install "$SIM_ID" "$APP_PATH"
+xcrun simctl install booted "$APP_PATH"
 
-echo "📱 Uygulama canlı başlatılıyor (Log Akışı)..."
-xcrun simctl launch --console-pty "$SIM_ID" com.neval.anoba || xcrun simctl launch --console-pty "$SIM_ID" com.neval.anoba.iosApp
+echo "📱 Uygulama canlı başlatılıyor..."
+xcrun simctl launch booted com.neval.anoba || xcrun simctl launch booted com.neval.anoba.iosApp
 
 echo "=========================================="
 echo "🎉 İŞLEM TAMAMLANDI!"
