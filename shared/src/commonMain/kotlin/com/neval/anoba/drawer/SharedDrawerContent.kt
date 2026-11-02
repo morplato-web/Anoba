@@ -61,7 +61,7 @@ fun DrawerSheetContent(
                     .statusBarsPadding()
                     .padding(18.dp)
             ) {
-                // 1. ÜST BAŞLIK: Kullanıcının Gerçek Avatarı + İsmi + Kapat Butonu
+                // 1. ÜST BAŞLIK: Kullanıcı Avatarı + İsim + Kapat Butonu
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -79,22 +79,15 @@ fun DrawerSheetContent(
                         UserAvatar(
                             photoUrl = userProfileImageUrl,
                             username = username.ifBlank { "Anoba" },
-                            size = 48.dp
+                            size = 46.dp
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Column {
-                            Text(
-                                text = username.ifBlank { "Anoba" },
-                                fontSize = 17.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = AnobaNavy
-                            )
-                            Text(
-                                text = "Profili Görüntüle",
-                                fontSize = 12.sp,
-                                color = Color.Gray
-                            )
-                        }
+                        Text(
+                            text = username.ifBlank { "Anoba" },
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = AnobaNavy
+                        )
                     }
 
                     IconButton(onClick = onDismiss) {

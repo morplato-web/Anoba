@@ -80,9 +80,12 @@ import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
 import kotlinx.coroutines.launch
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun SharedHomeScreen(
     countryCode: String? = null,
+    currentUserId: String = "",
+    isAdmin: Boolean = false,
     onClearCountryFilter: () -> Unit = {},
     onOpenDrawer: () -> Unit = {},
     onOpenMarket: () -> Unit = {},
@@ -104,7 +107,8 @@ fun SharedHomeScreen(
     hasPinnedItems: Boolean = false,
     isFollowingFilterActive: Boolean = false,
     feedItems: List<SharedFeedItem> = emptyList(),
-    onItemClick: (SharedFeedItem) -> Unit = {}
+    onItemClick: (SharedFeedItem) -> Unit = {},
+    onDeleteItem: (SharedFeedItem) -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
@@ -182,7 +186,7 @@ fun SharedHomeScreen(
 
                             Spacer(modifier = Modifier.width(2.dp))
 
-                            // 3 Nokta Menüsü
+                            // 3 Nokta Menüsü (Android ile Birebir)
                             Box {
                                 IconButton(
                                     modifier = Modifier.size(28.dp),
@@ -200,7 +204,7 @@ fun SharedHomeScreen(
                                     expanded = showMoreMenu,
                                     onDismissRequest = { showMoreMenu = false }
                                 ) {
-                                    // 1000+ Popüler İçerikler
+                                    // 1. 1000+ Popüler İçerikler
                                     DropdownMenuItem(
                                         text = {
                                             Row(
@@ -239,7 +243,7 @@ fun SharedHomeScreen(
                                         }
                                     )
 
-                                    // Karantina Havuzu
+                                    // 2. Karantina Havuzu
                                     DropdownMenuItem(
                                         text = {
                                             Row(
@@ -278,14 +282,14 @@ fun SharedHomeScreen(
                                         }
                                     )
 
-                                    // Mete
+                                    // 3. Mete (Android ile Birebir ☪️ Emojisi)
                                     DropdownMenuItem(
                                         text = {
                                             Row(
                                                 verticalAlignment = Alignment.CenterVertically,
                                                 modifier = Modifier.padding(vertical = 2.dp)
                                             ) {
-                                                Text(text = "🇹🇷", fontSize = 16.sp)
+                                                Text(text = "☪️", fontSize = 16.sp)
                                                 Spacer(Modifier.width(10.dp))
                                                 Text(
                                                     text = "Mete",
@@ -298,52 +302,6 @@ fun SharedHomeScreen(
                                         onClick = {
                                             showMoreMenu = false
                                             onOpenMete()
-                                        }
-                                    )
-
-                                    // Mektuplar
-                                    DropdownMenuItem(
-                                        text = {
-                                            Row(
-                                                verticalAlignment = Alignment.CenterVertically,
-                                                modifier = Modifier.padding(vertical = 2.dp)
-                                            ) {
-                                                Text(text = "✉️", fontSize = 16.sp)
-                                                Spacer(Modifier.width(10.dp))
-                                                Text(
-                                                    text = "Mektuplar",
-                                                    style = MaterialTheme.typography.bodyMedium,
-                                                    color = AnobaNavy,
-                                                    fontWeight = FontWeight.SemiBold
-                                                )
-                                            }
-                                        },
-                                        onClick = {
-                                            showMoreMenu = false
-                                            onOpenLetter()
-                                        }
-                                    )
-
-                                    // Profilim
-                                    DropdownMenuItem(
-                                        text = {
-                                            Row(
-                                                verticalAlignment = Alignment.CenterVertically,
-                                                modifier = Modifier.padding(vertical = 2.dp)
-                                            ) {
-                                                Text(text = "👤", fontSize = 16.sp)
-                                                Spacer(Modifier.width(10.dp))
-                                                Text(
-                                                    text = "Profilim",
-                                                    style = MaterialTheme.typography.bodyMedium,
-                                                    color = AnobaNavy,
-                                                    fontWeight = FontWeight.SemiBold
-                                                )
-                                            }
-                                        },
-                                        onClick = {
-                                            showMoreMenu = false
-                                            onOpenProfile()
                                         }
                                     )
                                 }
@@ -465,12 +423,14 @@ fun SharedHomeScreen(
                             .fillMaxWidth()
                             .background(Color.White)
                             .padding(vertical = 10.dp, horizontal = 14.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        // ANDROID BİREBİR: Sabit Kompakt Mozaik Butonu (105.dp x 36.dp)
                         Card(
                             modifier = Modifier
-                                .height(38.dp)
-                                .weight(1f)
+                                .width(105.dp)
+                                .height(36.dp)
                                 .clip(RoundedCornerShape(8.dp))
                                 .clickable { showMosaicSheet = true },
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF37474F)),
@@ -498,16 +458,15 @@ fun SharedHomeScreen(
                             }
                         }
 
-                        Spacer(modifier = Modifier.width(12.dp))
-
                         val iconSize = 20.dp
-                        val cardHeight = 30.dp
-                        val cardWidth = 32.dp
+                        val cardHeight = 32.dp
+                        val cardWidth = 34.dp
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
+                            // ANDROID BİREBİR: Sıcak Sarı Zemin + Canlı Turuncu Zil
                             BadgedBox(
                                 modifier = Modifier.size(width = cardWidth, height = cardHeight),
                                 badge = {
@@ -520,8 +479,8 @@ fun SharedHomeScreen(
                                     modifier = Modifier.fillMaxSize(),
                                     onClick = onOpenNotifications,
                                     icon = Icons.Default.Notifications,
-                                    cardColor = if (hasUnreadNotifications) Color(0xFFFFF3CD) else Color(0xFFECEFF1),
-                                    iconColor = if (hasUnreadNotifications) Color(0xFFE65100) else Color(0xFF455A64),
+                                    cardColor = Color(0xFFFFF3CD),
+                                    iconColor = Color(0xFFE65100),
                                     size = iconSize
                                 )
                             }
@@ -591,9 +550,12 @@ fun SharedHomeScreen(
                     }
                 } else {
                     items(feedItems, key = { it.id }) { item ->
+                        val canDelete = isAdmin || (currentUserId.isNotBlank() && item.ownerId == currentUserId)
                         SharedFeedCard(
                             item = item,
-                            onItemClick = { onItemClick(item) }
+                            canDelete = canDelete,
+                            onItemClick = { onItemClick(item) },
+                            onDeleteClick = { onDeleteItem(item) }
                         )
                     }
                 }
