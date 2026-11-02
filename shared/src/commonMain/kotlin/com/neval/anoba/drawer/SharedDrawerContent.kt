@@ -112,16 +112,19 @@ fun DrawerSheetContent(
                         colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                     )
 
-                    NavigationDrawerItem(
-                        icon = { Icon(Icons.Default.Stars, contentDescription = null, tint = AnobaGold) },
-                        label = { Text("Animasyon Paneli", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
-                        selected = false,
-                        onClick = {
-                            onDismiss()
-                            onOpenAdminPanel()
-                        },
-                        colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-                    )
+                    // Yalnızca Admin kullanıcılara görünür
+                    if (isAdmin) {
+                        NavigationDrawerItem(
+                            icon = { Icon(Icons.Default.Stars, contentDescription = null, tint = AnobaGold) },
+                            label = { Text("Animasyon Paneli", color = AnobaNavy, fontWeight = FontWeight.Bold, fontSize = 15.sp) },
+                            selected = false,
+                            onClick = {
+                                onDismiss()
+                                onOpenAdminPanel()
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
+                        )
+                    }
 
                     NavigationDrawerItem(
                         icon = { Icon(Icons.Default.Info, contentDescription = null, tint = AnobaNavy) },
