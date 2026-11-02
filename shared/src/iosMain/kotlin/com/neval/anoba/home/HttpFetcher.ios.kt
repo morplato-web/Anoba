@@ -18,4 +18,4 @@ actual fun httpGet(urlString: String): String {
     }
 }
 
-actual fun currentTimeMillis(): Long = (NSDate().timeIntervalSince1970 * 1000).toLong()
+actual fun currentTimeMillis(): Long = (NSDate().timeIntervalSince1970 * 1000.0).toLong()

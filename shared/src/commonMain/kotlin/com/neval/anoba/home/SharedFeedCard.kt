@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Comment
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Visibility
@@ -28,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -43,9 +43,11 @@ import com.neval.anoba.common.utils.getRelativeTimeString
 @Composable
 fun SharedFeedCard(
     item: SharedFeedItem,
+    canDelete: Boolean = false,
     onItemClick: (SharedFeedItem) -> Unit = {},
     onUserClick: (String) -> Unit = {},
-    onCommentClick: (SharedFeedItem) -> Unit = {}
+    onCommentClick: (SharedFeedItem) -> Unit = {},
+    onDeleteClick: (SharedFeedItem) -> Unit = {}
 ) {
     val isMediaPost = !item.mediaUrl.isNullOrBlank() && (item.type == ContentType.PHOTO || item.type == ContentType.VIDEO)
     val cardBgColor = if (isMediaPost) Color.White else Color(0xFFFFFDE7) // Krem Zarf Rengi
@@ -57,7 +59,7 @@ fun SharedFeedCard(
     ) {
         // ==========================================
         // 1. ÜST BANT (KARTIN DIŞINDA)
-        // Avatar, Kullanıcı Adı, Onay Rozeti, Pin, Zaman Damgası
+        // Avatar, Kullanıcı Adı, Onay Rozeti, [Çöp Kutusu], Pin, Zaman Damgası
         // ==========================================
         Row(
             modifier = Modifier
@@ -98,11 +100,27 @@ fun SharedFeedCard(
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                // Pin (İğne) ikonu (varsa veya varsayılan gösterim)
+                // ANDROID BİREBİR: Yönetici veya İçerik Sahibine Özel Kırmızı Çöp Kutusu Butonu
+                if (canDelete) {
+                    IconButton(
+                        onClick = { onDeleteClick(item) },
+                        modifier = Modifier.size(24.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "İçeriği Sil",
+                            tint = Color(0xFFE53935),
+                            modifier = Modifier.size(17.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+                }
+
+                // Pin (İğne) ikonu
                 Icon(
                     imageVector = Icons.Default.PushPin,
                     contentDescription = "Sabitlendi",
-                    tint = Color(0xFFE5A93C),
+                    tint = Color(0xFFB0BEC5),
                     modifier = Modifier.size(15.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
@@ -155,12 +173,12 @@ fun SharedFeedCard(
 
                 // Generic Başlık Kontrolü (Gereksiz varsayılan başlıkları gizler)
                 val isGenericTitle = item.title.isBlank() ||
-                    item.title.equals("Yeni Anı", ignoreCase = true) ||
-                    item.title.equals("Mektup", ignoreCase = true) ||
-                    item.title.equals("Fotoğraf", ignoreCase = true) ||
-                    item.title.equals("Video", ignoreCase = true) ||
-                    item.title.equals("Ses Kaydı", ignoreCase = true) ||
-                    item.title.trim() == item.description.trim()
+                        item.title.equals("Yeni Anı", ignoreCase = true) ||
+                        item.title.equals("Mektup", ignoreCase = true) ||
+                        item.title.equals("Fotoğraf", ignoreCase = true) ||
+                        item.title.equals("Video", ignoreCase = true) ||
+                        item.title.equals("Ses Kaydı", ignoreCase = true) ||
+                        item.title.trim() == item.description.trim()
 
                 // Mektup / Açıklama Metin Alanı
                 val hasTextContent = !isGenericTitle || item.description.isNotBlank()
