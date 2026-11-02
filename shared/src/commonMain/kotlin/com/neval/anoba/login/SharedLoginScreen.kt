@@ -56,6 +56,7 @@ import com.neval.anoba.common.ui.GoogleLogoIcon
 
 private val LoginPrimaryColor = Color(0xFF232066)
 private val AnobaGoldColor = Color(0xFFFFD700)
+private const val ANOBA_OFFICIAL_AVATAR = "https://firebasestorage.googleapis.com/v0/b/anoba-cd9de.appspot.com/o/profile_photos%2Fanoba_official.jpg?alt=media"
 
 @Composable
 fun AuthContainerView(
@@ -88,10 +89,15 @@ fun AuthContainerView(
                 onNavigateBack = { authMode = "LOGIN" },
                 onSignUpClick = {
                     val derivedName = regUsername.ifBlank { regEmail.substringBefore("@").replaceFirstChar { it.uppercase() } }
-                    onLoginSuccess(regEmail, derivedName, null)
+                    val photoUrl = if (regEmail.trim().equals("morplato@gmail.com", ignoreCase = true)) ANOBA_OFFICIAL_AVATAR else null
+                    onLoginSuccess(regEmail.trim(), derivedName, photoUrl)
                 },
                 onGoogleSignUpClick = {
-                    onLoginSuccess(regEmail.ifBlank { "morplato@gmail.com" }, regUsername.ifBlank { "Anoba" }, null)
+                    val actualEmail = regEmail.trim().ifBlank { "morplato@gmail.com" }
+                    val isOfficial = actualEmail.equals("morplato@gmail.com", ignoreCase = true)
+                    val photoUrl = if (isOfficial) ANOBA_OFFICIAL_AVATAR else null
+                    val name = if (isOfficial) "Anoba" else regUsername.ifBlank { actualEmail.substringBefore("@").replaceFirstChar { it.uppercase() } }
+                    onLoginSuccess(actualEmail, name, photoUrl)
                 },
             )
         }
@@ -115,18 +121,23 @@ fun AuthContainerView(
                 onRememberMeChange = { rememberMe = it },
                 onLoginClick = {
                     val trimmedEmail = email.trim()
-                    val derivedName = if (trimmedEmail.contains("@")) {
+                    val isOfficial = trimmedEmail.equals("morplato@gmail.com", ignoreCase = true)
+                    val derivedName = if (isOfficial) {
+                        "Anoba"
+                    } else if (trimmedEmail.contains("@")) {
                         trimmedEmail.substringBefore("@").replaceFirstChar { it.uppercase() }
                     } else {
                         "Kullanıcı"
                     }
-                    onLoginSuccess(trimmedEmail, derivedName, null)
+                    val photoUrl = if (isOfficial) ANOBA_OFFICIAL_AVATAR else null
+                    onLoginSuccess(trimmedEmail, derivedName, photoUrl)
                 },
                 onGoogleLoginClick = {
-                    // Google ile giriş varsayılanı
                     val actualEmail = email.trim().ifBlank { "morplato@gmail.com" }
-                    val actualName = if (actualEmail.contains("@")) actualEmail.substringBefore("@").replaceFirstChar { it.uppercase() } else "Anoba"
-                    onLoginSuccess(actualEmail, actualName, null)
+                    val isOfficial = actualEmail.equals("morplato@gmail.com", ignoreCase = true)
+                    val derivedName = if (isOfficial) "Anoba" else actualEmail.substringBefore("@").replaceFirstChar { it.uppercase() }
+                    val photoUrl = if (isOfficial) ANOBA_OFFICIAL_AVATAR else null
+                    onLoginSuccess(actualEmail, derivedName, photoUrl)
                 },
                 onGuestLoginClick = {
                     onLoginSuccess("misafir@anoba.com", "Misafir", null)
@@ -182,7 +193,6 @@ fun SharedLoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Google ile Giriş
             OutlinedButton(
                 onClick = onGoogleLoginClick,
                 modifier = Modifier
@@ -206,7 +216,6 @@ fun SharedLoginScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Ayraç
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -228,7 +237,6 @@ fun SharedLoginScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // E-posta Alanı
             OutlinedTextField(
                 value = email,
                 onValueChange = onEmailChange,
@@ -244,7 +252,6 @@ fun SharedLoginScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Şifre Alanı
             OutlinedTextField(
                 value = password,
                 onValueChange = onPasswordChange,
@@ -270,7 +277,6 @@ fun SharedLoginScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Beni Hatırla & Şifremi Unuttum
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -298,7 +304,6 @@ fun SharedLoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Giriş Yap Butonu
             Button(
                 onClick = onLoginClick,
                 enabled = isFormValid && !isLoading,
@@ -321,7 +326,6 @@ fun SharedLoginScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Misafir Girişi Butonu
             OutlinedButton(
                 onClick = onGuestLoginClick,
                 modifier = Modifier
@@ -341,7 +345,6 @@ fun SharedLoginScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Kayıt Ol Butonu
             TextButton(onClick = onSignUpClick) {
                 Text(
                     text = "Kayıt Ol",
