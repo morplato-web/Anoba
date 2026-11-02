@@ -122,7 +122,10 @@ fun SharedFeedCard(
                         model = item.mediaUrl,
                         contentDescription = item.title,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        onError = { state ->
+                            println("COIL_HATA: URL=${item.mediaUrl} Sebep=${state.result.throwable.message}")
+                        }
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))

@@ -56,11 +56,22 @@ class SharedHomeRepository {
                     val title = parseString(fields, "title")
                     val text = parseString(fields, "content")
                         .ifBlank { parseString(fields, "text") }
+                        .ifBlank { parseString(fields, "message") }
+                        .ifBlank { parseString(fields, "letter") }
+                        .ifBlank { parseString(fields, "caption") }
+                        .ifBlank { parseString(fields, "body") }
                         .ifBlank { parseString(fields, "personalNote") }
 
                     val finalTitle = title.ifBlank { if (contentType == ContentType.LETTER) text.take(30) else defaultTitle(contentType) }
 
-                    val photoUrl = parseString(fields, "photoUrl").ifBlank { parseString(fields, "url") }.ifBlank { parseString(fields, "imageUrl") }
+                    val photoUrl = parseString(fields, "photoUrl")
+                        .ifBlank { parseString(fields, "url") }
+                        .ifBlank { parseString(fields, "imageUrl") }
+                        .ifBlank { parseString(fields, "downloadUrl") }
+                        .ifBlank { parseString(fields, "mediaUrl") }
+                        .ifBlank { parseString(fields, "image_url") }
+                        .ifBlank { parseString(fields, "photo_url") }
+                        .ifBlank { parseString(fields, "thumbnailUrl") }
                     val videoUrl = parseString(fields, "videoUrl")
                     val audioUrl = parseString(fields, "audioUrl")
                     val mediaUrl = photoUrl.ifBlank { videoUrl }.ifBlank { audioUrl }.takeIf { it.isNotBlank() }

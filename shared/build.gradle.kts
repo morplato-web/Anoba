@@ -49,6 +49,7 @@ kotlin {
             implementation(libs.androidx.room.paging)
             implementation(libs.coil.compose)
             implementation("io.coil-kt.coil3:coil-network-ktor3:3.1.0")
+            implementation("io.ktor:ktor-client-core:3.0.0")
             implementation(libs.koin.compose)
             implementation(libs.lifecycle.viewmodel.compose)
             implementation(libs.lifecycle.runtime.compose)
