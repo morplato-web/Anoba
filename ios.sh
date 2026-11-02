@@ -60,8 +60,11 @@ if [ ! -d "$FRAMEWORK_SRC" ]; then
     exit 1
 fi
 
-# 3. Kütüphaneyi iosApp/Frameworks dizinine kopyala
+# 3. Kütüphaneyi iosApp/Frameworks ve build dizinine kopyala
+mkdir -p iosApp/Frameworks
+mkdir -p iosApp/build
 cp -R "$FRAMEWORK_SRC" iosApp/Frameworks/
+cp -R "$FRAMEWORK_SRC" iosApp/build/
 echo "✅ SharedKit.framework kopyalandı."
 
 # 4. Xcode projesini derle
