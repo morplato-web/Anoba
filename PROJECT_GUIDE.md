@@ -374,6 +374,32 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **Proje Zip Yedeği:** **`D:\anobadepo\Anoba_v9.2.4_v148_Final.zip`** adresi üzerine tam yedek alındı. 📦
 - Tüm proje kodları ve rehber GitHub `origin/main` deposuna yüklenmiştir.
 
+---
+
+## 31. KMP iOS Canlı Akış, Birebir Android Kart Mimarisi & Profil Hizalaması (v160 Güncellemeleri)
+
+### 📌 Tamamlanan Çalışmalar
+1. **KMP Firestore Canlı Veri Akışı (`SharedHomeRepository.kt` & `HttpFetcher`):**
+   - Firebase Firestore REST API (`anoba-cd9de`) entegrasyonu sağlandı. Mektup (`content`), fotoğraf (`photoUrl`), video (`videoUrl`) ve ses (`audioUrl`) koleksiyon alanları eksiksiz eşlendi.
+   - iOS tarafında CocoaPods çakışmalarını önlemek için `HttpFetcher` native motoru ve `coil-network-ktor3` bağlandı.
+2. **Birebir Android 3 Katmanlı Kart Mimarisi (`SharedFeedCard.kt`):**
+   - **Üst Bant (Kart Dışında):** Profil resmi, kullanıcı adı, rozet, iğne (pin), kırmızı çöp kutusu (delete) ikonu ve zaman damgası.
+   - **Orta Bölüm (Kart İçinde):** Krem zeminli mektup zarfı (`#FFFDE7`) veya fotoğraf görseli.
+   - **Alt Bant (Kart Dışında):** İzlenme sayısı (`👁️`), reaksiyon lideri ve skoru, paylaşım ve yorum ikonları.
+3. **Kombine Karışık Akış & Tasarım Detayları:**
+   - Fotoğraf, mektup, video ve ses içeriklerini sırayla harmanlayan Round-Robin algoritması bağlandı.
+   - Kartların zeminle bütünleşmesini önlemek için akış arka planı açık griye (`#F6F7F9`) çekildi ve 12.dp kart aralığı verildi.
+   - "Yeni Anı" ve jenerik başlıklar gizlendi.
+4. **Profil & Çekmece (Drawer) Hizalaması:**
+   - `SharedDrawerContent.kt` ve `SharedProfileScreen.kt` içinde kullanıcının gerçek avatar resmi (`UserAvatar`), e-posta adresi (`morplato@gmail.com`) ve sarı **Anoba Panel** butonu aktif edildi.
+5. **Apple Developer Hesabı Desteği:**
+   - Apple Destek Takip Kodu (Case ID): `103017117489` olusturularak inceleme talebi gönderildi.
+
+### 🧪 Derleme & GitHub Durumu
+- **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- Tüm değişiklikler GitHub `origin/main` deposuna başarıyla push edilmiştir (`working tree clean`).
+
 
 
 
