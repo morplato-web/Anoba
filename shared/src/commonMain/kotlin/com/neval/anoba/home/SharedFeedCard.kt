@@ -1,5 +1,6 @@
 package com.neval.anoba.home
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,9 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Comment
-import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -47,7 +46,7 @@ fun SharedFeedCard(
     onUserClick: (String) -> Unit = {},
     onCommentClick: (SharedFeedItem) -> Unit = {}
 ) {
-    val isMediaPost = !item.mediaUrl.isNullOrBlank() || item.type == ContentType.PHOTO || item.type == ContentType.VIDEO
+    val isMediaPost = !item.mediaUrl.isNullOrBlank() && (item.type == ContentType.PHOTO || item.type == ContentType.VIDEO)
     val cardBgColor = if (isMediaPost) Color.White else Color(0xFFFFFDE7) // Cream Light Yellow for Text/Letter posts
 
     Card(
@@ -56,6 +55,7 @@ fun SharedFeedCard(
             .clickable { onItemClick(item) },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = cardBgColor),
+        border = BorderStroke(0.5.dp, Color(0xFFE2E8F0)),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth().padding(14.dp)) {
