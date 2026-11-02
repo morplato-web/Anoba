@@ -62,7 +62,13 @@ import com.neval.anoba.video.SharedVideoModel
 fun App() {
     AnobaTheme {
         var isSplashVisible by remember { mutableStateOf(true) }
-        var isAuthenticated by remember { mutableStateOf(true) }
+        var isAuthenticated by remember { mutableStateOf(false) }
+
+        // Dinamik Oturum State'leri
+        var currentUserEmail by remember { mutableStateOf("") }
+        var currentUserName by remember { mutableStateOf("") }
+        var currentUserProfileImageUrl by remember { mutableStateOf<String?>(null) }
+        var isUserAdmin by remember { mutableStateOf(false) }
 
         if (isSplashVisible) {
             SharedSplashScreen(
@@ -70,11 +76,31 @@ fun App() {
             )
         } else if (!isAuthenticated) {
             AuthContainerView(
-                onLoginSuccess = { isAuthenticated = true }
+                onLoginSuccess = {
+                    // Not: Eğer AuthContainerView parametre olarak (email, name, photoUrl) iletiyorsa
+                    // doğrudan bu değişkenlere eşleyebilirsiniz.
+                    // Parametresiz tetikleniyorsa varsayılan oturum verisi tanımlanabilir:
+                    if (currentUserEmail.isBlank()) {
+                        currentUserEmail = "kullanici@anoba.com"
+                        currentUserName = "Kullanıcı"
+                    }
+                    isAuthenticated = true
+                }
             )
         } else {
             MainAppScreen(
-                onLogout = { isAuthenticated = false }
+                currentUserEmail = currentUserEmail,
+                currentUserName = currentUserName,
+                currentUserProfileImageUrl = currentUserProfileImageUrl,
+                isUserAdmin = isUserAdmin,
+                onLogout = {
+                    // Oturum durumunu temizle ve giriş ekranına dön
+                    currentUserEmail = ""
+                    currentUserName = ""
+                    currentUserProfileImageUrl = null
+                    isUserAdmin = false
+                    isAuthenticated = false
+                }
             )
         }
     }
@@ -82,13 +108,12 @@ fun App() {
 
 @Composable
 private fun MainAppScreen(
+    currentUserEmail: String,
+    currentUserName: String,
+    currentUserProfileImageUrl: String?,
+    isUserAdmin: Boolean,
     onLogout: () -> Unit = {}
 ) {
-    val currentUserEmail = "morplato@gmail.com"
-    val currentUserName = "Anoba"
-    val currentUserProfileImageUrl: String? = "https://firebasestorage.googleapis.com/v0/b/anoba-cd9de.appspot.com/o/profile_photos%2Fanoba_official.jpg?alt=media"
-    val isUserAdmin = true
-
     val homeViewModel = remember { SharedHomeViewModel() }
     val homeFeedItems by homeViewModel.feedItems.collectAsState()
 
@@ -119,9 +144,9 @@ private fun MainAppScreen(
                     onNavigateBack = { activeView = "HOME" },
                     onHomeClick = { activeView = "HOME" },
                     onOpenGroupsClick = { activeView = "GROUP_CHAT" },
-                    onOpenPrivateChatClick = { 
+                    onOpenPrivateChatClick = {
                         activePartnerId = null
-                        activeView = "PRIVATE_CHAT" 
+                        activeView = "PRIVATE_CHAT"
                     }
                 )
 
@@ -174,13 +199,13 @@ private fun MainAppScreen(
 
                 "PROFILE" -> SharedProfileScreen(
                     userEmail = currentUserEmail,
-                    userName = currentUserName,
+                    userName = currentUserName.ifBlank { "Anoba Kullanıcısı" },
                     profileImageUrl = currentUserProfileImageUrl,
                     isAdmin = isUserAdmin,
-                    isOfficial = true,
-                    badgeType = "OFFICIAL",
-                    followerCount = 2,
-                    followingCount = 15,
+                    isOfficial = isUserAdmin,
+                    badgeType = if (isUserAdmin) "OFFICIAL" else "NONE",
+                    followerCount = 0,
+                    followingCount = 0,
                     onNavigateBack = { activeView = "HOME" },
                     onNavigateHome = { activeView = "HOME" },
                     onOpenMyContents = { activeView = "MY_CONTENT" },
@@ -433,7 +458,7 @@ private fun MainAppScreen(
         // Sol Yan Menü (Drawer)
         DrawerSheetContent(
             isOpen = isDrawerOpen,
-            username = currentUserName,
+            username = currentUserName.ifBlank { "Misafir" },
             userProfileImageUrl = currentUserProfileImageUrl,
             isAdmin = isUserAdmin,
             onDismiss = { isDrawerOpen = false },
