@@ -376,12 +376,12 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 
 ---
 
-## 31. KMP iOS Canlı Akış, Birebir Android Kart Mimarisi & Profil Hizalaması (v160 Güncellemeleri)
+## 31. KMP iOS Canlı Akış, Birebir Android Kart Mimarisi & Profil Hizalaması (v163 Güncellemeleri)
 
 ### 📌 Tamamlanan Çalışmalar
 1. **KMP Firestore Canlı Veri Akışı (`SharedHomeRepository.kt` & `HttpFetcher`):**
    - Firebase Firestore REST API (`anoba-cd9de`) entegrasyonu sağlandı. Mektup (`content`), fotoğraf (`photoUrl`), video (`videoUrl`) ve ses (`audioUrl`) koleksiyon alanları eksiksiz eşlendi.
-   - iOS tarafında CocoaPods çakışmalarını önlemek için `HttpFetcher` native motoru ve `coil-network-ktor3` bağlandı.
+   - iOS tarafında CocoaPods çakışmalarını önlemek için `HttpFetcher` native motoru, `coil-network-ktor3` ve `ktor-client-core` bağlandı.
 2. **Birebir Android 3 Katmanlı Kart Mimarisi (`SharedFeedCard.kt`):**
    - **Üst Bant (Kart Dışında):** Profil resmi, kullanıcı adı, rozet, iğne (pin), kırmızı çöp kutusu (delete) ikonu ve zaman damgası.
    - **Orta Bölüm (Kart İçinde):** Krem zeminli mektup zarfı (`#FFFDE7`) veya fotoğraf görseli.
@@ -390,10 +390,16 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
    - Fotoğraf, mektup, video ve ses içeriklerini sırayla harmanlayan Round-Robin algoritması bağlandı.
    - Kartların zeminle bütünleşmesini önlemek için akış arka planı açık griye (`#F6F7F9`) çekildi ve 12.dp kart aralığı verildi.
    - "Yeni Anı" ve jenerik başlıklar gizlendi.
+   - Mozaik butonu `width(105.dp)` ve `height(36.dp)` boyutuna çekildi.
+   - Bildirim ikonu sarı zemin (`#FFF3CD`) ve canlı turuncu çan ikonu (`#E65100`) olarak güncellendi.
 4. **Profil & Çekmece (Drawer) Hizalaması:**
    - `SharedDrawerContent.kt` ve `SharedProfileScreen.kt` içinde kullanıcının gerçek avatar resmi (`UserAvatar`), e-posta adresi (`morplato@gmail.com`) ve sarı **Anoba Panel** butonu aktif edildi.
-5. **Apple Developer Hesabı Desteği:**
-   - Apple Destek Takip Kodu (Case ID): `103017117489` olusturularak inceleme talebi gönderildi.
+   - Sol çekmecedeki gereksiz "Profili Görüntüle" yazısı temizlendi.
+5. **Xcode & Derleme Otomasyonu (`ios.sh` & `project.pbxproj`):**
+   - `SharedKit.framework` kütüphanesi hem `iosApp/Frameworks` hem de `iosApp/build` klasörüne kopyalanacak şekilde ayarlandı.
+   - Xcode'un içindeki mükerrer Gradle çalıştırma adımı pasifize edildi.
+6. **Apple Developer Hesabı Desteği:**
+   - Apple Destek Takip Kodu (Case ID): `103017117489` oluşturularak inceleme talebi gönderildi.
 
 ### 🧪 Derleme & GitHub Durumu
 - **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
