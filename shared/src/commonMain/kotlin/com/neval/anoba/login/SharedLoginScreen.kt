@@ -293,7 +293,7 @@ fun SharedLoginScreen(
                 ),
             ) {
                 Text(
-                    text = "Giriş Yap",
+                    text = "Giriş",
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
                 )
