@@ -23,7 +23,6 @@ class SharedHomeRepository {
         val videos = fetchCollection("videos", ContentType.VIDEO)
         val audios = fetchCollection("sesler", ContentType.AUDIO)
 
-        // Karışık Akış (Interleave Round-Robin): Fotoğraf -> Mektup -> Video -> Ses
         val mixedList = mutableListOf<SharedFeedItem>()
         val maxLen = maxOf(letters.size, photos.size, videos.size, audios.size)
 
@@ -38,7 +37,7 @@ class SharedHomeRepository {
     }.flowOn(Dispatchers.IO)
 
     private fun fetchCollection(collectionName: String, contentType: ContentType): List<SharedFeedItem> {
-        val url = "$baseUrl/$collectionName?pageSize=50"
+        val url = "$baseUrl/$collectionName?pageSize=100"
         val rawJson = httpGet(url)
         if (rawJson.isBlank()) return emptyList()
 
@@ -81,6 +80,7 @@ class SharedHomeRepository {
                     val audioUrl = parseString(fields, "audioUrl")
                     val mediaUrl = photoUrl.ifBlank { videoUrl }.ifBlank { audioUrl }.takeIf { it.isNotBlank() }
 
+                    // Kullanıcı kimliği (ID/Email) için tüm olası varyasyonlar
                     val ownerId = parseString(fields, "ownerId")
                         .ifBlank { parseString(fields, "userId") }
                         .ifBlank { parseString(fields, "user_id") }
@@ -88,18 +88,33 @@ class SharedHomeRepository {
                         .ifBlank { parseString(fields, "authorId") }
                         .ifBlank { parseString(fields, "author_id") }
                         .ifBlank { parseString(fields, "creatorId") }
+                        .ifBlank { parseString(fields, "publisherId") }
                         .ifBlank { parseString(fields, "email") }
                         .ifBlank { parseString(fields, "userEmail") }
+                        .ifBlank { parseString(fields, "senderEmail") }
 
+                    // Kullanıcı adı için tüm olası varyasyonlar
                     val username = parseString(fields, "username")
                         .ifBlank { parseString(fields, "userName") }
                         .ifBlank { parseString(fields, "displayName") }
-                        .ifBlank { parseString(fields, "user") }
                         .ifBlank { parseString(fields, "author") }
+                        .ifBlank { parseString(fields, "authorName") }
+                        .ifBlank { parseString(fields, "author_name") }
+                        .ifBlank { parseString(fields, "user") }
                         .ifBlank { parseString(fields, "name") }
-                        .ifBlank { "Anonim" }
+                        .ifBlank { parseString(fields, "senderName") }
+                        .ifBlank { parseString(fields, "ownerName") }
+                        .ifBlank {
+                            // Eğer isim boşsa ve ownerId bir e-posta içeriyorsa e-posta ön ekini al
+                            if (ownerId.contains("@")) ownerId.substringBefore("@") else "Anonim"
+                        }
 
-                    val userProfileImageUrl = parseString(fields, "userProfileImageUrl").takeIf { it.isNotBlank() }
+                    val userProfileImageUrl = parseString(fields, "userProfileImageUrl")
+                        .ifBlank { parseString(fields, "profileImageUrl") }
+                        .ifBlank { parseString(fields, "photo_url") }
+                        .ifBlank { parseString(fields, "avatarUrl") }
+                        .takeIf { it.isNotBlank() }
+
                     val isOfficial = parseBoolean(fields, "isOfficial", default = false)
                     val badgeType = parseString(fields, "userBadgeType").ifBlank { "NONE" }
                     val reactionCount = parseLong(fields, "reactionCount").toInt()

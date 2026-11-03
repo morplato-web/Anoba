@@ -423,36 +423,39 @@ private fun MainAppScreen(
                 )
 
                 "MY_CONTENT" -> {
-                    val cleanUsername = currentUserName.trim()
-                    val cleanEmail = currentUserEmail.trim()
+                    val cleanUsername = currentUserName.trim().lowercase()
+                    val cleanEmail = currentUserEmail.trim().lowercase()
                     val emailPrefix = if (cleanEmail.contains("@")) cleanEmail.substringBefore('@').trim() else ""
 
-                    // Kullanıcıya ait içerikleri filtreleme
+                    // Kullanıcıya ait içerikleri filtreleme (Küçük harf normalizasyonu ve esnek eşleşme)
                     val userFeedItems = homeFeedItems.filter { item ->
-                        val itemUser = item.username.trim()
-                        val itemOwner = item.ownerId.trim()
+                        val itemUser = item.username.trim().lowercase()
+                        val itemOwner = item.ownerId.trim().lowercase()
 
                         if (isUserAdmin) {
-                            itemUser.equals("Anoba", ignoreCase = true) ||
-                                    itemOwner.contains("morplato", ignoreCase = true) ||
-                                    (cleanUsername.isNotBlank() && itemUser.equals(cleanUsername, ignoreCase = true)) ||
-                                    (cleanUsername.isNotBlank() && itemOwner.equals(cleanUsername, ignoreCase = true))
+                            itemUser == "anoba" ||
+                                    itemOwner.contains("morplato") ||
+                                    (cleanUsername.isNotBlank() && itemUser == cleanUsername) ||
+                                    (cleanUsername.isNotBlank() && itemOwner == cleanUsername)
                         } else {
                             val matchesUsername = cleanUsername.isNotBlank() && (
-                                    itemUser.equals(cleanUsername, ignoreCase = true) ||
-                                            itemOwner.equals(cleanUsername, ignoreCase = true) ||
-                                            itemUser.contains(cleanUsername, ignoreCase = true)
+                                    itemUser == cleanUsername ||
+                                            itemOwner == cleanUsername ||
+                                            itemUser.contains(cleanUsername) ||
+                                            cleanUsername.contains(itemUser)
                                     )
                             val matchesEmail = cleanEmail.isNotBlank() && (
-                                    itemOwner.equals(cleanEmail, ignoreCase = true) ||
-                                            itemUser.equals(cleanEmail, ignoreCase = true)
+                                    itemOwner == cleanEmail ||
+                                            itemUser == cleanEmail
                                     )
                             val matchesPrefix = emailPrefix.isNotBlank() && (
-                                    itemUser.equals(emailPrefix, ignoreCase = true) ||
-                                            itemOwner.equals(emailPrefix, ignoreCase = true)
+                                    itemUser == emailPrefix ||
+                                            itemOwner == emailPrefix ||
+                                            itemUser.contains(emailPrefix) ||
+                                            itemOwner.contains(emailPrefix)
                                     )
 
-                            matchesUsername || matchesEmail || matchesPrefix
+                            itemUser != "anonim" && (matchesUsername || matchesEmail || matchesPrefix)
                         }
                     }
 
