@@ -505,6 +505,7 @@ private fun MainAppScreen(
 
                     SharedMyContentScreen(
                         isOwner = true,
+                        targetUsername = currentUserName.ifBlank { "İçeriklerim" },
                         isAnobaUser = isUserAdmin,
                         publishedContent = myPublishedItems,
                         draftContent = myDraftItems,

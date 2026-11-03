@@ -165,14 +165,13 @@ fun SharedMyContentScreen(
                             IconButton(onClick = onNavigateBack) {
                                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = Color.White)
                             }
-                            if (!isOwner && !targetUsername.isNullOrBlank()) {
-                                Text(
-                                    text = targetUsername,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White,
-                                )
-                            }
+                            val displayTitle = targetUsername?.ifBlank { "İçeriklerim" } ?: "İçeriklerim"
+                            Text(
+                                text = displayTitle,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                            )
                         }
 
                         Row(
