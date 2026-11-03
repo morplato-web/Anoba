@@ -427,7 +427,7 @@ private fun MainAppScreen(
                     val cleanEmail = currentUserEmail.trim()
                     val emailPrefix = if (cleanEmail.contains("@")) cleanEmail.substringBefore('@').trim() else ""
 
-                    // 1. Sadece oturum açan kullanıcıya ait öğeleri filtrele (Bulunamadıysa kullanıcıya akıştaki öğelerini göster)
+                    // 1. Sadece oturum açan kullanıcıya ait öğeleri filtrele (Başkasının içeriği asla görünmez)
                     val userFeedItems = homeFeedItems.filter { item ->
                         val itemUser = item.username.trim()
                         val itemOwner = item.ownerId.trim()
@@ -440,7 +440,7 @@ private fun MainAppScreen(
                                 itemUser.equals(cleanUsername, ignoreCase = true) ||
                                 itemOwner.equals(cleanUsername, ignoreCase = true)
                             }
-                            // Normal kullanıcı kontrolü (İsim, UID veya E-posta ön eki eşleşmesi)
+                            // Normal kullanıcı kontrolü (Sadece kullanıcının kendi ismi/e-postası)
                             else -> {
                                 (cleanUsername.isNotBlank() && itemUser.contains(cleanUsername, ignoreCase = true)) ||
                                 (cleanUsername.isNotBlank() && itemOwner.contains(cleanUsername, ignoreCase = true)) ||
@@ -448,7 +448,7 @@ private fun MainAppScreen(
                                 (emailPrefix.isNotBlank() && itemUser.contains(emailPrefix, ignoreCase = true))
                             }
                         }
-                    }.ifEmpty { homeFeedItems }
+                    }
 
                     // 2. Yayınlananlar Listesi (Dolu alanları önceliklendirerek güvenli mapleme)
                     val myPublishedItems = userFeedItems.map { item ->
