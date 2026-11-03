@@ -34,6 +34,9 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mic
@@ -44,6 +47,7 @@ import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -101,6 +105,7 @@ fun SharedGroupChatScreen(
     var isSearchActive by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
     var showAttachmentSheet by remember { mutableStateOf(false) }
+    var selectedMessageForAction by remember { mutableStateOf<SharedChatMessage?>(null) }
 
     val filteredMessages = remember(messages, searchQuery) {
         if (searchQuery.isBlank()) {
@@ -338,7 +343,10 @@ fun SharedGroupChatScreen(
                                 message = msg,
                                 isSentByMe = msg.senderId == currentUserId,
                                 onClick = { onMessageClick(msg) },
-                                onLongClick = { onMessageLongClick(msg) }
+                                onLongClick = {
+                                    selectedMessageForAction = msg
+                                    onMessageLongClick(msg)
+                                }
                             )
                         }
                     }
@@ -395,6 +403,82 @@ fun SharedGroupChatScreen(
                         onSendMediaClick("VIDEO")
                     }
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
+
+    selectedMessageForAction?.let { msg ->
+        ModalBottomSheet(
+            onDismissRequest = { selectedMessageForAction = null },
+            containerColor = Color.White
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "Mesaj Seçenekleri 💬",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = AnobaNavy
+                )
+                HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
+
+                // 1. Kopyala 📋
+                if (!msg.content.isNullOrBlank()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onMessageClick(msg)
+                                selectedMessageForAction = null
+                            }
+                            .padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Default.ContentCopy, contentDescription = null, tint = AnobaNavy)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text("Metni Kopyala", color = AnobaNavy, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+                    }
+                }
+
+                // 2. Düzenle ✏️ (Kendi mesajımız ise)
+                if (msg.senderId == currentUserId) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onMessageClick(msg)
+                                selectedMessageForAction = null
+                            }
+                            .padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Default.Edit, contentDescription = null, tint = Color(0xFF0288D1))
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text("Mesajı Düzenle", color = Color(0xFF0288D1), fontSize = 15.sp, fontWeight = FontWeight.Medium)
+                    }
+                }
+
+                // 3. Sil 🗑️
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onMessageLongClick(msg)
+                            selectedMessageForAction = null
+                        }
+                        .padding(vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Default.Delete, contentDescription = null, tint = Color(0xFFEF4444))
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text("Mesajı Sil", color = Color(0xFFEF4444), fontSize = 15.sp, fontWeight = FontWeight.Medium)
+                }
+
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
