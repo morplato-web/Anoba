@@ -428,8 +428,9 @@ private fun MainAppScreen(
                         isUserAdmin ||
                                 item.username.equals(currentUserName, ignoreCase = true) ||
                                 item.ownerId.equals(currentUserName, ignoreCase = true) ||
-                                item.ownerId.equals(currentUserEmail, ignoreCase = true)
-                    }
+                                item.ownerId.equals(currentUserEmail, ignoreCase = true) ||
+                                item.username.contains(currentUserName.substringBefore('@'), ignoreCase = true)
+                    }.ifEmpty { homeFeedItems }
 
                     val myPublishedItems = userFeedItems.map { item ->
                         when (item.type) {
