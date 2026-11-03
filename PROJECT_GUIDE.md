@@ -406,6 +406,23 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **`:shared:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
 - Tüm değişiklikler GitHub `origin/main` deposuna başarıyla push edilmiştir (`working tree clean`).
 
+---
+
+## 32. MacInCloud Aylık Plan & Kimlik / Hesap Bilgileri (v184 Güncellemeleri)
+
+### 🖥️ MacInCloud Sunucu & Üyelik Bilgileri
+- **E-posta (Portal Üyelik):** `nevalcicek@hotmail.com`
+- **Giriş / Sunucu Kullanıcı Adı:** `user299223`
+- **Mac VNC / Terminal Şifresi:** `pkp45927chd`
+- **Sunucu Kodu:** `FF376 - user299223`
+- **Aktif Plan:** **Aylık Plan (Managed Server Monthly - Europe Germany)** *(Haftalık plan iptal edildi, aylık üyelik ödemesi çekildi).*
+
+### 🍎 Apple Developer Geliştirici Hesabı
+- **Apple ID (E-posta):** `morplato@gmail.com`
+- **Giriş Şifresi:** `fabrikalaR3019`
+- **Apple Destek İnceleme Kodu (Case ID):** `103017117489`
+
+
 
 
 
