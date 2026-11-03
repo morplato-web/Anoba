@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +25,7 @@ import com.neval.anoba.drawer.profile.SharedProfileScreen
 import com.neval.anoba.guide.SharedGuideScreen
 import com.neval.anoba.guide.SharedPrivacyPolicyScreen
 import com.neval.anoba.home.ContentType
+import com.neval.anoba.home.SharedHomeRepository
 import com.neval.anoba.home.SharedHomeScreen
 import com.neval.anoba.home.SharedHomeViewModel
 import com.neval.anoba.letter.SharedLetterCommentsScreen
@@ -60,6 +62,10 @@ import com.neval.anoba.video.SharedVideoDetailScreen
 import com.neval.anoba.video.SharedVideoEditScreen
 import com.neval.anoba.video.SharedVideoHomeScreen
 import com.neval.anoba.video.SharedVideoModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val ANOBA_OFFICIAL_AVATAR = "https://firebasestorage.googleapis.com/v0/b/anoba-cd9de.appspot.com/o/profile_photos%2Fanoba_official.jpg?alt=media"
 
@@ -74,6 +80,9 @@ fun App() {
         var currentUserProfileImageUrl by remember { mutableStateOf<String?>(null) }
         var isUserAdmin by remember { mutableStateOf(false) }
 
+        val scope = rememberCoroutineScope()
+        val repo = remember { SharedHomeRepository() }
+
         if (isSplashVisible) {
             SharedSplashScreen(
                 onSplashFinished = { isSplashVisible = false }
@@ -83,11 +92,23 @@ fun App() {
                 onLoginSuccess = { loggedInEmail, loggedInUsername, photoUrl ->
                     currentUserEmail = loggedInEmail
                     val isOfficialAdmin = loggedInEmail.equals("morplato@gmail.com", ignoreCase = true)
-
-                    currentUserName = if (isOfficialAdmin) "Anoba" else loggedInUsername
-                    currentUserProfileImageUrl = if (isOfficialAdmin) ANOBA_OFFICIAL_AVATAR else photoUrl
                     isUserAdmin = isOfficialAdmin
-                    isAuthenticated = true
+
+                    if (isOfficialAdmin) {
+                        currentUserName = "Anoba"
+                        currentUserProfileImageUrl = ANOBA_OFFICIAL_AVATAR
+                        isAuthenticated = true
+                    } else {
+                        // Normal kullanıcı için Firestore'dan gerçek adı ve profil resmini çek
+                        scope.launch {
+                            val userProfile = withContext(Dispatchers.IO) {
+                                repo.fetchUserProfileByEmail(loggedInEmail)
+                            }
+                            currentUserName = userProfile.first.ifBlank { loggedInUsername }
+                            currentUserProfileImageUrl = userProfile.second ?: photoUrl
+                            isAuthenticated = true
+                        }
+                    }
                 }
             )
         } else {
@@ -425,37 +446,24 @@ private fun MainAppScreen(
                 "MY_CONTENT" -> {
                     val cleanUsername = currentUserName.trim().lowercase()
                     val cleanEmail = currentUserEmail.trim().lowercase()
-                    val emailPrefix = if (cleanEmail.contains("@")) cleanEmail.substringBefore('@').trim() else ""
+                    val emailPrefix = if (cleanEmail.contains("@")) cleanEmail.substringBefore('@').trim().lowercase() else ""
 
-                    // Kullanıcıya ait içerikleri filtreleme (Küçük harf normalizasyonu ve esnek eşleşme)
+                    // Başkasının içeriklerini sızdırmayan kesin ve tam eşitlik filtresi
                     val userFeedItems = homeFeedItems.filter { item ->
                         val itemUser = item.username.trim().lowercase()
                         val itemOwner = item.ownerId.trim().lowercase()
 
                         if (isUserAdmin) {
-                            itemUser == "anoba" ||
-                                    itemOwner.contains("morplato") ||
-                                    (cleanUsername.isNotBlank() && itemUser == cleanUsername) ||
-                                    (cleanUsername.isNotBlank() && itemOwner == cleanUsername)
+                            itemUser == "anoba" || itemOwner.contains("morplato")
                         } else {
-                            val matchesUsername = cleanUsername.isNotBlank() && (
+                            // "Anonim" hariç tutulur; isim, ID veya e-posta TAM EŞİTLİKLE kontrol edilir
+                            itemUser != "anonim" && (
                                     itemUser == cleanUsername ||
                                             itemOwner == cleanUsername ||
-                                            itemUser.contains(cleanUsername) ||
-                                            cleanUsername.contains(itemUser)
+                                            itemOwner == cleanEmail ||
+                                            itemUser == emailPrefix ||
+                                            itemOwner == emailPrefix
                                     )
-                            val matchesEmail = cleanEmail.isNotBlank() && (
-                                    itemOwner == cleanEmail ||
-                                            itemUser == cleanEmail
-                                    )
-                            val matchesPrefix = emailPrefix.isNotBlank() && (
-                                    itemUser == emailPrefix ||
-                                            itemOwner == emailPrefix ||
-                                            itemUser.contains(emailPrefix) ||
-                                            itemOwner.contains(emailPrefix)
-                                    )
-
-                            itemUser != "anonim" && (matchesUsername || matchesEmail || matchesPrefix)
                         }
                     }
 

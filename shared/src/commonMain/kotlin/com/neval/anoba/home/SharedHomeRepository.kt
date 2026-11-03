@@ -36,6 +36,45 @@ class SharedHomeRepository {
         emit(mixedList)
     }.flowOn(Dispatchers.IO)
 
+    // E-posta ile kullanıcının Firestore'daki gerçek adını ve profil resmini bulur
+    fun fetchUserProfileByEmail(email: String): Pair<String, String?> {
+        return try {
+            val cleanEmail = email.trim().lowercase()
+            if (cleanEmail.isBlank()) return Pair("Kullanıcı", null)
+
+            val url = "$baseUrl/users?pageSize=100"
+            val rawJson = httpGet(url)
+            if (rawJson.isBlank()) return Pair(email.substringBefore("@"), null)
+
+            val root = json.parseToJsonElement(rawJson).jsonObject
+            val documents = root["documents"]?.jsonArray ?: return Pair(email.substringBefore("@"), null)
+
+            for (doc in documents) {
+                val fields = doc.jsonObject["fields"]?.jsonObject ?: continue
+                val docEmail = parseString(fields, "email")
+                    .ifBlank { parseString(fields, "userEmail") }
+                    .trim().lowercase()
+
+                if (docEmail == cleanEmail) {
+                    val realName = parseString(fields, "username")
+                        .ifBlank { parseString(fields, "userName") }
+                        .ifBlank { parseString(fields, "name") }
+                        .ifBlank { parseString(fields, "displayName") }
+
+                    val photo = parseString(fields, "userProfileImageUrl")
+                        .ifBlank { parseString(fields, "profileImageUrl") }
+                        .ifBlank { parseString(fields, "photoUrl") }
+                        .takeIf { it.isNotBlank() }
+
+                    return Pair(realName.ifBlank { email.substringBefore("@") }, photo)
+                }
+            }
+            Pair(email.substringBefore("@"), null)
+        } catch (_: Exception) {
+            Pair(email.substringBefore("@"), null)
+        }
+    }
+
     private fun fetchCollection(collectionName: String, contentType: ContentType): List<SharedFeedItem> {
         val url = "$baseUrl/$collectionName?pageSize=100"
         val rawJson = httpGet(url)
@@ -80,7 +119,6 @@ class SharedHomeRepository {
                     val audioUrl = parseString(fields, "audioUrl")
                     val mediaUrl = photoUrl.ifBlank { videoUrl }.ifBlank { audioUrl }.takeIf { it.isNotBlank() }
 
-                    // Kullanıcı kimliği (ID/Email) için tüm olası varyasyonlar
                     val ownerId = parseString(fields, "ownerId")
                         .ifBlank { parseString(fields, "userId") }
                         .ifBlank { parseString(fields, "user_id") }
@@ -91,9 +129,7 @@ class SharedHomeRepository {
                         .ifBlank { parseString(fields, "publisherId") }
                         .ifBlank { parseString(fields, "email") }
                         .ifBlank { parseString(fields, "userEmail") }
-                        .ifBlank { parseString(fields, "senderEmail") }
 
-                    // Kullanıcı adı için tüm olası varyasyonlar
                     val username = parseString(fields, "username")
                         .ifBlank { parseString(fields, "userName") }
                         .ifBlank { parseString(fields, "displayName") }
@@ -105,14 +141,12 @@ class SharedHomeRepository {
                         .ifBlank { parseString(fields, "senderName") }
                         .ifBlank { parseString(fields, "ownerName") }
                         .ifBlank {
-                            // Eğer isim boşsa ve ownerId bir e-posta içeriyorsa e-posta ön ekini al
                             if (ownerId.contains("@")) ownerId.substringBefore("@") else "Anonim"
                         }
 
                     val userProfileImageUrl = parseString(fields, "userProfileImageUrl")
                         .ifBlank { parseString(fields, "profileImageUrl") }
                         .ifBlank { parseString(fields, "photo_url") }
-                        .ifBlank { parseString(fields, "avatarUrl") }
                         .takeIf { it.isNotBlank() }
 
                     val isOfficial = parseBoolean(fields, "isOfficial", default = false)
