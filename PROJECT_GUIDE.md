@@ -408,14 +408,15 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 
 ---
 
-## 32. MacInCloud Aylık Plan & Kimlik / Hesap Bilgileri (v184 Güncellemeleri)
+## 32. MacInCloud Aylık Plan & Kimlik / Hesap Bilgileri (v185 Güncellemeleri)
 
-### 🖥️ MacInCloud Sunucu & Üyelik Bilgileri
+### 🖥️ MacInCloud Sunucu & Üyelik Bilgileri (YENİ AYLIK PLAN)
 - **E-posta (Portal Üyelik):** `nevalcicek@hotmail.com`
-- **Giriş / Sunucu Kullanıcı Adı:** `user299223`
-- **Mac VNC / Terminal Şifresi:** `pkp45927chd`
-- **Sunucu Kodu:** `FF376 - user299223`
-- **Aktif Plan:** **Aylık Plan (Managed Server Monthly - Europe Germany)** *(Haftalık plan iptal edildi, aylık üyelik ödemesi çekildi).*
+- **Sunucu Adı (Hostname):** `FF775.macincloud.com`
+- **Sunucu IP Adresi:** `195.82.45.175`
+- **Giriş / Sunucu Kullanıcı Adı:** `user306378`
+- **Mac VNC / Terminal Şifresi:** `kst56487ejt`
+- **Aktif Plan:** **Aylık Plan (Managed Server Monthly - Europe Germany)** *(Yeni aylık Mac sunucusu).*
 
 ### 🍎 Apple Developer Geliştirici Hesabı
 - **Apple ID (E-posta):** `morplato@gmail.com`
