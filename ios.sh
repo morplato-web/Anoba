@@ -61,17 +61,15 @@ if [ ! -d "$FRAMEWORK_SRC" ]; then
     exit 1
 fi
 
-# 3. Kütüphaneyi iosApp/Frameworks ve build dizinine kopyala
+# 3. Kütüphaneyi iosApp/Frameworks dizinine kopyala
 mkdir -p iosApp/Frameworks
-mkdir -p iosApp/build
 cp -R "$FRAMEWORK_SRC" iosApp/Frameworks/
-cp -R "$FRAMEWORK_SRC" iosApp/build/
 echo "✅ SharedKit.framework kopyalandı."
 
 # 4. Xcode projesini derle
 echo "🔨 4/5: iOS Uygulaması derleniyor (xcodebuild)..."
 cd "$HOME/Anoba/iosApp" || exit 1
-xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator ONLY_ACTIVE_ARCH=YES ARCHS="$ARCH" CONFIGURATION_BUILD_DIR="$HOME/Anoba/iosApp/build" build
+xcodebuild -project iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator ONLY_ACTIVE_ARCH=YES ARCHS="$ARCH" build
 BUILD_STATUS=$?
 cd "$HOME/Anoba" || exit 1
 
@@ -81,11 +79,7 @@ if [ $BUILD_STATUS -ne 0 ]; then
 fi
 
 # 5. Derlenen .app paketini bul
-APP_PATH="$HOME/Anoba/iosApp/build/Anoba.app"
-
-if [ ! -d "$APP_PATH" ]; then
-    APP_PATH=$(find "$HOME/Library/Developer/Xcode/DerivedData" -path "*/Build/Products/Debug-iphonesimulator/*.app" | head -n 1)
-fi
+APP_PATH=$(find "$HOME/Library/Developer/Xcode/DerivedData" -path "*/Build/Products/Debug-iphonesimulator/*.app" | head -n 1)
 
 if [ -z "$APP_PATH" ] || [ ! -d "$APP_PATH" ]; then
     echo "❌ HATA: Derlenen .app paketi bulunamadı!"
