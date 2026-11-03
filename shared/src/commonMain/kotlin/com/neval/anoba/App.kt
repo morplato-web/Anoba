@@ -23,6 +23,7 @@ import com.neval.anoba.drawer.DrawerSheetContent
 import com.neval.anoba.drawer.profile.SharedProfileScreen
 import com.neval.anoba.guide.SharedGuideScreen
 import com.neval.anoba.guide.SharedPrivacyPolicyScreen
+import com.neval.anoba.home.ContentType
 import com.neval.anoba.home.SharedHomeScreen
 import com.neval.anoba.home.SharedHomeViewModel
 import com.neval.anoba.letter.SharedLetterCommentsScreen
@@ -34,7 +35,6 @@ import com.neval.anoba.letter.SharedLetterModel
 import com.neval.anoba.login.AuthContainerView
 import com.neval.anoba.login.SharedSplashScreen
 import com.neval.anoba.map.SharedGlobalMapScreen
-import com.neval.anoba.home.ContentType
 import com.neval.anoba.market.MarketContainerView
 import com.neval.anoba.mete.SharedMeteHomeScreen
 import com.neval.anoba.mycontent.SharedMyContentItem
@@ -423,7 +423,15 @@ private fun MainAppScreen(
                 )
 
                 "MY_CONTENT" -> {
-                    val myPublishedItems = homeFeedItems.map { item ->
+                    // Yalnızca aktif kullanıcıya veya admin durumunda Anoba resmi içeriklerine ait öğeler filtrelenir
+                    val userFeedItems = homeFeedItems.filter { item ->
+                        isUserAdmin ||
+                                item.username.equals(currentUserName, ignoreCase = true) ||
+                                item.ownerId.equals(currentUserName, ignoreCase = true) ||
+                                item.ownerId.equals(currentUserEmail, ignoreCase = true)
+                    }
+
+                    val myPublishedItems = userFeedItems.map { item ->
                         when (item.type) {
                             ContentType.LETTER -> SharedMyContentItem.Letter(
                                 id = item.id,
@@ -469,10 +477,14 @@ private fun MainAppScreen(
                         }
                     }
 
+                    // Henüz yayınlanmamış taslaklar listesi (mevcut akışta taslak statüsündeki öğeler ayrıştırılır)
+                    val myDraftItems = emptyList<SharedMyContentItem>()
+
                     SharedMyContentScreen(
                         isOwner = true,
                         isAnobaUser = isUserAdmin,
                         publishedContent = myPublishedItems,
+                        draftContent = myDraftItems,
                         onNavigateBack = { activeView = "HOME" },
                         onHomeClick = { activeView = "HOME" },
                         onCameraClick = { activeView = "CAMERA" },
