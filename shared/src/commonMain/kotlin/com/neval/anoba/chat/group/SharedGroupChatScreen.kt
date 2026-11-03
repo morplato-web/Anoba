@@ -455,7 +455,7 @@ private fun GroupChatBubbleItem(
                 bottomStart = if (isSentByMe) 16.dp else 4.dp,
                 bottomEnd = if (isSentByMe) 4.dp else 16.dp,
             ),
-            color = if (isSentByMe) AnobaNavy else Color.White,
+            color = if (isSentByMe) Color(0xFFE3F2FD) else Color.White,
             shadowElevation = 1.5.dp,
             modifier = Modifier
                 .fillMaxWidth(0.82f)
@@ -512,13 +512,13 @@ private fun GroupChatBubbleItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(8.dp))
-                            .background(if (isSentByMe) Color.White.copy(alpha = 0.15f) else Color(0xFFF1F5F9))
+                            .background(if (isSentByMe) Color(0xFFBBDEFB) else Color(0xFFF1F5F9))
                             .padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(Icons.Default.Mic, contentDescription = null, tint = if (isSentByMe) Color.White else AnobaNavy, modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.Mic, contentDescription = null, tint = AnobaNavy, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Sesli Mesaj", fontSize = 13.sp, color = if (isSentByMe) Color.White else AnobaNavy, fontWeight = FontWeight.Medium)
+                        Text("Sesli Mesaj", fontSize = 13.sp, color = AnobaNavy, fontWeight = FontWeight.Medium)
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                 }
@@ -527,7 +527,7 @@ private fun GroupChatBubbleItem(
                     Text(
                         text = message.content,
                         fontSize = 14.sp,
-                        color = if (isSentByMe) Color.White else Color(0xFF1E293B),
+                        color = AnobaNavy,
                         lineHeight = 18.sp
                     )
                 }
