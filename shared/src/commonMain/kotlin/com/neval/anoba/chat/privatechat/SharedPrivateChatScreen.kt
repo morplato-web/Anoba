@@ -84,6 +84,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.neval.anoba.chat.general.SharedChatMessage
+import com.neval.anoba.chat.ui.SharedSelectionModeTopAppBar
 import com.neval.anoba.common.ui.AnobaBadge
 import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.ui.theme.AnobaGold
@@ -126,6 +127,7 @@ fun SharedPrivateChatScreen(
     var showAttachmentSheet by remember { mutableStateOf(false) }
     var showBlockDialog by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
+    var selectedMessageForAction by remember { mutableStateOf<SharedChatMessage?>(null) }
     val listState = rememberLazyListState()
 
     LaunchedEffect(messages.size) {
@@ -264,13 +266,35 @@ fun SharedPrivateChatScreen(
         Scaffold(
             containerColor = Color(0xFFF1F5F9),
             topBar = {
-                Surface(
-                    color = Color.White.copy(alpha = 0.95f),
-                    shadowElevation = 4.dp,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TopAppBar(
-                        title = {
+                if (selectedMessageForAction != null) {
+                    val selectedMsg = selectedMessageForAction!!
+                    SharedSelectionModeTopAppBar(
+                        selectedCount = 1,
+                        onCloseSelectionMode = { selectedMessageForAction = null },
+                        canDeleteAnySelected = true,
+                        onDeleteSelected = {
+                            onMessageLongClick(selectedMsg)
+                            selectedMessageForAction = null
+                        },
+                        canCopyAnySelected = !selectedMsg.content.isNullOrBlank(),
+                        onCopySelected = {
+                            onMessageClick(selectedMsg)
+                            selectedMessageForAction = null
+                        },
+                        canEdit = selectedMsg.senderId == currentUserId && !selectedMsg.content.isNullOrBlank(),
+                        onEditSelected = {
+                            onMessageClick(selectedMsg)
+                            selectedMessageForAction = null
+                        }
+                    )
+                } else {
+                    Surface(
+                        color = Color.White.copy(alpha = 0.95f),
+                        shadowElevation = 4.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        TopAppBar(
+                            title = {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 UserAvatar(photoUrl = partner.photoUrl, username = partner.username, size = 38.dp)
                                 Spacer(modifier = Modifier.width(10.dp))
@@ -332,7 +356,8 @@ fun SharedPrivateChatScreen(
                         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
                     )
                 }
-            },
+            }
+        },
             bottomBar = {
                 if (isPendingRequest) {
                     // Sohbet İsteği Onay Barı
@@ -501,7 +526,10 @@ fun SharedPrivateChatScreen(
                                 message = msg,
                                 isSentByMe = msg.senderId == currentUserId,
                                 onClick = { onMessageClick(msg) },
-                                onLongClick = { onMessageLongClick(msg) }
+                                onLongClick = {
+                                    selectedMessageForAction = msg
+                                    onMessageLongClick(msg)
+                                }
                             )
                         }
                     }
@@ -589,7 +617,7 @@ private fun PrivateChatBubble(
                 bottomStart = if (isSentByMe) 16.dp else 4.dp,
                 bottomEnd = if (isSentByMe) 4.dp else 16.dp
             ),
-            color = if (isSentByMe) AnobaNavy else Color.White,
+            color = if (isSentByMe) Color(0xFFD2D6E8) else Color.White,
             shadowElevation = 1.5.dp,
             modifier = Modifier
                 .fillMaxWidth(0.82f)
@@ -636,13 +664,13 @@ private fun PrivateChatBubble(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(8.dp))
-                            .background(if (isSentByMe) Color.White.copy(alpha = 0.15f) else Color(0xFFF1F5F9))
+                            .background(if (isSentByMe) Color(0xFFBBDEFB) else Color(0xFFF1F5F9))
                             .padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(Icons.Default.Mic, contentDescription = null, tint = if (isSentByMe) Color.White else AnobaNavy, modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.Mic, contentDescription = null, tint = AnobaNavy, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Sesli Mesaj", fontSize = 13.sp, color = if (isSentByMe) Color.White else AnobaNavy, fontWeight = FontWeight.Medium)
+                        Text("Sesli Mesaj", fontSize = 13.sp, color = AnobaNavy, fontWeight = FontWeight.Medium)
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                 }
@@ -651,7 +679,7 @@ private fun PrivateChatBubble(
                     Text(
                         text = message.content,
                         fontSize = 14.sp,
-                        color = if (isSentByMe) Color.White else Color(0xFF1E293B),
+                        color = AnobaNavy,
                         lineHeight = 18.sp
                     )
                 }

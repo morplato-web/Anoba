@@ -79,6 +79,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.neval.anoba.chat.general.SharedChatMessage
+import com.neval.anoba.chat.ui.SharedSelectionModeTopAppBar
 import com.neval.anoba.common.ui.UserAvatar
 import com.neval.anoba.ui.theme.AnobaGold
 import com.neval.anoba.ui.theme.AnobaNavy
@@ -127,7 +128,28 @@ fun SharedGroupChatScreen(
     Scaffold(
         containerColor = Color(0xFFF1F5F9),
         topBar = {
-            if (isSearchActive) {
+            if (selectedMessageForAction != null) {
+                val selectedMsg = selectedMessageForAction!!
+                SharedSelectionModeTopAppBar(
+                    selectedCount = 1,
+                    onCloseSelectionMode = { selectedMessageForAction = null },
+                    canDeleteAnySelected = true,
+                    onDeleteSelected = {
+                        onMessageLongClick(selectedMsg)
+                        selectedMessageForAction = null
+                    },
+                    canCopyAnySelected = !selectedMsg.content.isNullOrBlank(),
+                    onCopySelected = {
+                        onMessageClick(selectedMsg)
+                        selectedMessageForAction = null
+                    },
+                    canEdit = selectedMsg.senderId == currentUserId && !selectedMsg.content.isNullOrBlank(),
+                    onEditSelected = {
+                        onMessageClick(selectedMsg)
+                        selectedMessageForAction = null
+                    }
+                )
+            } else if (isSearchActive) {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
                     color = Color.White,
@@ -403,82 +425,6 @@ fun SharedGroupChatScreen(
                         onSendMediaClick("VIDEO")
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
-    }
-
-    selectedMessageForAction?.let { msg ->
-        ModalBottomSheet(
-            onDismissRequest = { selectedMessageForAction = null },
-            containerColor = Color.White
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = "Mesaj Seçenekleri 💬",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = AnobaNavy
-                )
-                HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
-
-                // 1. Kopyala 📋
-                if (!msg.content.isNullOrBlank()) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onMessageClick(msg)
-                                selectedMessageForAction = null
-                            }
-                            .padding(vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(Icons.Default.ContentCopy, contentDescription = null, tint = AnobaNavy)
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text("Metni Kopyala", color = AnobaNavy, fontSize = 15.sp, fontWeight = FontWeight.Medium)
-                    }
-                }
-
-                // 2. Düzenle ✏️ (Kendi mesajımız ise)
-                if (msg.senderId == currentUserId) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onMessageClick(msg)
-                                selectedMessageForAction = null
-                            }
-                            .padding(vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(Icons.Default.Edit, contentDescription = null, tint = Color(0xFF0288D1))
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text("Mesajı Düzenle", color = Color(0xFF0288D1), fontSize = 15.sp, fontWeight = FontWeight.Medium)
-                    }
-                }
-
-                // 3. Sil 🗑️
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onMessageLongClick(msg)
-                            selectedMessageForAction = null
-                        }
-                        .padding(vertical = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Default.Delete, contentDescription = null, tint = Color(0xFFEF4444))
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text("Mesajı Sil", color = Color(0xFFEF4444), fontSize = 15.sp, fontWeight = FontWeight.Medium)
-                }
-
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
