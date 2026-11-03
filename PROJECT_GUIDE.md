@@ -421,7 +421,7 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 ### 🍎 Apple Developer Geliştirici Hesabı
 - **Apple ID (E-posta):** `morplato@gmail.com`
 - **Giriş Şifresi:** `fabrikalaR3019`
-- **Apple Destek İnceleme Kodu (Case ID):** `103017117489`
+- **Apple Destek İnceleme Kodu (Case ID):** `103017117489` *(Hatırlatma mesajı gönderildi, ödeme onayı bekleniyor).*
 
 
 
