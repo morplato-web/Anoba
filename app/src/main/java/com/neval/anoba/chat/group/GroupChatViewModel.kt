@@ -84,12 +84,7 @@ class GroupChatViewModel(
     }
 
     private fun resolveSenderName(badgeType: String?): String {
-        val rawName = currentUserDisplayName.ifBlank { "Bir üye" }
-        return if (badgeType == "OFFICIAL" && !rawName.contains("anoba", ignoreCase = true)) {
-            "Anoba"
-        } else {
-            rawName
-        }
+        return currentUserDisplayName.ifBlank { "Bir üye" }
     }
 
     private fun listenForGroups(userId: String) {
