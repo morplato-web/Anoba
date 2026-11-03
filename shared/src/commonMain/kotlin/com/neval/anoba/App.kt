@@ -427,7 +427,7 @@ private fun MainAppScreen(
                     val cleanEmail = currentUserEmail.trim()
                     val emailPrefix = if (cleanEmail.contains("@")) cleanEmail.substringBefore('@').trim() else ""
 
-                    // 1. Sadece oturum açan kullanıcıya ait öğeleri filtrele
+                    // 1. Sadece oturum açan kullanıcıya ait öğeleri filtrele (Bulunamadıysa kullanıcıya akıştaki öğelerini göster)
                     val userFeedItems = homeFeedItems.filter { item ->
                         val itemUser = item.username.trim()
                         val itemOwner = item.ownerId.trim()
@@ -436,19 +436,19 @@ private fun MainAppScreen(
                             // Admin / Resmi hesap kontrolü
                             isUserAdmin -> {
                                 itemUser.equals("Anoba", ignoreCase = true) ||
-                                itemOwner.equals("morplato@gmail.com", ignoreCase = true) ||
+                                itemOwner.contains("morplato", ignoreCase = true) ||
                                 itemUser.equals(cleanUsername, ignoreCase = true) ||
                                 itemOwner.equals(cleanUsername, ignoreCase = true)
                             }
                             // Normal kullanıcı kontrolü (İsim, UID veya E-posta ön eki eşleşmesi)
                             else -> {
-                                (cleanUsername.isNotBlank() && itemUser.equals(cleanUsername, ignoreCase = true)) ||
-                                (cleanUsername.isNotBlank() && itemOwner.equals(cleanUsername, ignoreCase = true)) ||
-                                (cleanEmail.isNotBlank() && itemOwner.equals(cleanEmail, ignoreCase = true)) ||
-                                (emailPrefix.isNotBlank() && itemUser.equals(emailPrefix, ignoreCase = true))
+                                (cleanUsername.isNotBlank() && itemUser.contains(cleanUsername, ignoreCase = true)) ||
+                                (cleanUsername.isNotBlank() && itemOwner.contains(cleanUsername, ignoreCase = true)) ||
+                                (cleanEmail.isNotBlank() && itemOwner.contains(cleanEmail, ignoreCase = true)) ||
+                                (emailPrefix.isNotBlank() && itemUser.contains(emailPrefix, ignoreCase = true))
                             }
                         }
-                    }
+                    }.ifEmpty { homeFeedItems }
 
                     // 2. Yayınlananlar Listesi (Dolu alanları önceliklendirerek güvenli mapleme)
                     val myPublishedItems = userFeedItems.map { item ->

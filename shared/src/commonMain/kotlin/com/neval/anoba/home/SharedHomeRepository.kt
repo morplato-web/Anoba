@@ -82,7 +82,17 @@ class SharedHomeRepository {
                     val mediaUrl = photoUrl.ifBlank { videoUrl }.ifBlank { audioUrl }.takeIf { it.isNotBlank() }
 
                     val ownerId = parseString(fields, "ownerId")
-                    val username = parseString(fields, "username").ifBlank { "Anonim" }
+                        .ifBlank { parseString(fields, "userId") }
+                        .ifBlank { parseString(fields, "user_id") }
+                        .ifBlank { parseString(fields, "authorId") }
+                        .ifBlank { parseString(fields, "email") }
+                        .ifBlank { parseString(fields, "userEmail") }
+
+                    val username = parseString(fields, "username")
+                        .ifBlank { parseString(fields, "user") }
+                        .ifBlank { parseString(fields, "author") }
+                        .ifBlank { parseString(fields, "name") }
+                        .ifBlank { "Anonim" }
                     val userProfileImageUrl = parseString(fields, "userProfileImageUrl").takeIf { it.isNotBlank() }
                     val isOfficial = parseBoolean(fields, "isOfficial", default = false)
                     val badgeType = parseString(fields, "userBadgeType").ifBlank { "NONE" }
