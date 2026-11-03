@@ -38,7 +38,7 @@ class SharedHomeRepository {
     }.flowOn(Dispatchers.IO)
 
     private fun fetchCollection(collectionName: String, contentType: ContentType): List<SharedFeedItem> {
-        val url = "$baseUrl/$collectionName?pageSize=30"
+        val url = "$baseUrl/$collectionName?pageSize=50"
         val rawJson = httpGet(url)
         if (rawJson.isBlank()) return emptyList()
 
@@ -84,15 +84,21 @@ class SharedHomeRepository {
                     val ownerId = parseString(fields, "ownerId")
                         .ifBlank { parseString(fields, "userId") }
                         .ifBlank { parseString(fields, "user_id") }
+                        .ifBlank { parseString(fields, "uid") }
                         .ifBlank { parseString(fields, "authorId") }
+                        .ifBlank { parseString(fields, "author_id") }
+                        .ifBlank { parseString(fields, "creatorId") }
                         .ifBlank { parseString(fields, "email") }
                         .ifBlank { parseString(fields, "userEmail") }
 
                     val username = parseString(fields, "username")
+                        .ifBlank { parseString(fields, "userName") }
+                        .ifBlank { parseString(fields, "displayName") }
                         .ifBlank { parseString(fields, "user") }
                         .ifBlank { parseString(fields, "author") }
                         .ifBlank { parseString(fields, "name") }
                         .ifBlank { "Anonim" }
+
                     val userProfileImageUrl = parseString(fields, "userProfileImageUrl").takeIf { it.isNotBlank() }
                     val isOfficial = parseBoolean(fields, "isOfficial", default = false)
                     val badgeType = parseString(fields, "userBadgeType").ifBlank { "NONE" }
@@ -145,14 +151,12 @@ class SharedHomeRepository {
     private fun parseTimestamp(fields: kotlinx.serialization.json.JsonObject, fieldName: String): Long {
         val fieldObj = fields[fieldName]?.jsonObject ?: return 0L
 
-        // 1. integer / double
         val intVal = fieldObj["integerValue"]?.jsonPrimitive?.content?.toLongOrNull()
         if (intVal != null && intVal > 0) return intVal
 
         val doubleVal = fieldObj["doubleValue"]?.jsonPrimitive?.content?.toDoubleOrNull()?.toLong()
         if (doubleVal != null && doubleVal > 0) return doubleVal
 
-        // 2. timestampValue ISO string e.g. "2024-10-27T12:00:00Z"
         val isoStr = fieldObj["timestampValue"]?.jsonPrimitive?.content ?: return 0L
         return parseIsoToMillis(isoStr)
     }
@@ -165,7 +169,7 @@ class SharedHomeRepository {
             val dateTokens = datePart.split('-')
             val timeTokens = timePart.split(':')
             if (dateTokens.size == 3 && timeTokens.size >= 2) {
-                currentTimeMillis() - 86400000L * 6
+                currentTimeMillis() - 86400000L
             } else 0L
         } catch (_: Exception) {
             0L

@@ -427,30 +427,35 @@ private fun MainAppScreen(
                     val cleanEmail = currentUserEmail.trim()
                     val emailPrefix = if (cleanEmail.contains("@")) cleanEmail.substringBefore('@').trim() else ""
 
-                    // 1. Sadece oturum açan kullanıcıya ait öğeleri filtrele (Başkasının içeriği asla görünmez)
+                    // Kullanıcıya ait içerikleri filtreleme
                     val userFeedItems = homeFeedItems.filter { item ->
                         val itemUser = item.username.trim()
                         val itemOwner = item.ownerId.trim()
 
-                        when {
-                            // Admin / Resmi hesap kontrolü
-                            isUserAdmin -> {
-                                itemUser.equals("Anoba", ignoreCase = true) ||
-                                itemOwner.contains("morplato", ignoreCase = true) ||
-                                itemUser.equals(cleanUsername, ignoreCase = true) ||
-                                itemOwner.equals(cleanUsername, ignoreCase = true)
-                            }
-                            // Normal kullanıcı kontrolü (Sadece kullanıcının kendi ismi/e-postası)
-                            else -> {
-                                (cleanUsername.isNotBlank() && itemUser.contains(cleanUsername, ignoreCase = true)) ||
-                                (cleanUsername.isNotBlank() && itemOwner.contains(cleanUsername, ignoreCase = true)) ||
-                                (cleanEmail.isNotBlank() && itemOwner.contains(cleanEmail, ignoreCase = true)) ||
-                                (emailPrefix.isNotBlank() && itemUser.contains(emailPrefix, ignoreCase = true))
-                            }
+                        if (isUserAdmin) {
+                            itemUser.equals("Anoba", ignoreCase = true) ||
+                                    itemOwner.contains("morplato", ignoreCase = true) ||
+                                    (cleanUsername.isNotBlank() && itemUser.equals(cleanUsername, ignoreCase = true)) ||
+                                    (cleanUsername.isNotBlank() && itemOwner.equals(cleanUsername, ignoreCase = true))
+                        } else {
+                            val matchesUsername = cleanUsername.isNotBlank() && (
+                                    itemUser.equals(cleanUsername, ignoreCase = true) ||
+                                            itemOwner.equals(cleanUsername, ignoreCase = true) ||
+                                            itemUser.contains(cleanUsername, ignoreCase = true)
+                                    )
+                            val matchesEmail = cleanEmail.isNotBlank() && (
+                                    itemOwner.equals(cleanEmail, ignoreCase = true) ||
+                                            itemUser.equals(cleanEmail, ignoreCase = true)
+                                    )
+                            val matchesPrefix = emailPrefix.isNotBlank() && (
+                                    itemUser.equals(emailPrefix, ignoreCase = true) ||
+                                            itemOwner.equals(emailPrefix, ignoreCase = true)
+                                    )
+
+                            matchesUsername || matchesEmail || matchesPrefix
                         }
                     }
 
-                    // 2. Yayınlananlar Listesi (Dolu alanları önceliklendirerek güvenli mapleme)
                     val myPublishedItems = userFeedItems.map { item ->
                         when (item.type) {
                             ContentType.LETTER -> SharedMyContentItem.Letter(
@@ -497,10 +502,7 @@ private fun MainAppScreen(
                         }
                     }
 
-                    // 3. Pazar Yeri İlanları (Yayınlananlar içindeki pazar öğeleri)
                     val myMarketItems = myPublishedItems.filterIsInstance<SharedMyContentItem.Market>()
-
-                    // 4. Taslaklar (Henüz Firestore'dan taslak koleksiyonu bağlanana kadar boş liste)
                     val myDraftItems = emptyList<SharedMyContentItem>()
 
                     SharedMyContentScreen(
