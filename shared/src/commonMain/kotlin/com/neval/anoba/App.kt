@@ -423,33 +423,39 @@ private fun MainAppScreen(
                 )
 
                 "MY_CONTENT" -> {
-                    val currentCleanUsername = currentUserName.trim()
-                    val currentCleanEmail = currentUserEmail.trim()
-                    val usernamePrefix = if (currentCleanEmail.contains("@")) currentCleanEmail.substringBefore('@') else ""
+                    val cleanUsername = currentUserName.trim()
+                    val cleanEmail = currentUserEmail.trim()
+                    val emailPrefix = if (cleanEmail.contains("@")) cleanEmail.substringBefore('@').trim() else ""
 
-                    // Yalnızca aktif kullanıcının (veya Admin hesabı ise resmi Anoba'nın) içerikleri
+                    // 1. Sadece oturum açan kullanıcıya ait öğeleri filtrele
                     val userFeedItems = homeFeedItems.filter { item ->
-                        val itemOwner = item.ownerId.trim()
                         val itemUser = item.username.trim()
+                        val itemOwner = item.ownerId.trim()
 
-                        if (isUserAdmin) {
-                            itemUser.equals("Anoba", ignoreCase = true) ||
-                                    itemOwner.equals("morplato@gmail.com", ignoreCase = true) ||
-                                    itemUser.equals(currentCleanUsername, ignoreCase = true) ||
-                                    itemOwner.equals(currentCleanUsername, ignoreCase = true)
-                        } else {
-                            itemUser.equals(currentCleanUsername, ignoreCase = true) ||
-                                    itemOwner.equals(currentCleanUsername, ignoreCase = true) ||
-                                    (currentCleanEmail.isNotBlank() && itemOwner.equals(currentCleanEmail, ignoreCase = true)) ||
-                                    (usernamePrefix.isNotBlank() && itemUser.equals(usernamePrefix, ignoreCase = true))
+                        when {
+                            // Admin / Resmi hesap kontrolü
+                            isUserAdmin -> {
+                                itemUser.equals("Anoba", ignoreCase = true) ||
+                                itemOwner.equals("morplato@gmail.com", ignoreCase = true) ||
+                                itemUser.equals(cleanUsername, ignoreCase = true) ||
+                                itemOwner.equals(cleanUsername, ignoreCase = true)
+                            }
+                            // Normal kullanıcı kontrolü (İsim, UID veya E-posta ön eki eşleşmesi)
+                            else -> {
+                                (cleanUsername.isNotBlank() && itemUser.equals(cleanUsername, ignoreCase = true)) ||
+                                (cleanUsername.isNotBlank() && itemOwner.equals(cleanUsername, ignoreCase = true)) ||
+                                (cleanEmail.isNotBlank() && itemOwner.equals(cleanEmail, ignoreCase = true)) ||
+                                (emailPrefix.isNotBlank() && itemUser.equals(emailPrefix, ignoreCase = true))
+                            }
                         }
                     }
 
+                    // 2. Yayınlananlar Listesi (Dolu alanları önceliklendirerek güvenli mapleme)
                     val myPublishedItems = userFeedItems.map { item ->
                         when (item.type) {
                             ContentType.LETTER -> SharedMyContentItem.Letter(
                                 id = item.id,
-                                content = item.description.ifBlank { item.title },
+                                content = item.description.ifBlank { item.title }.ifBlank { "Mektup İçeriği" },
                                 isPublished = true,
                                 viewCount = item.viewCount,
                                 reactionsCount = item.reactionCount.toLong()
@@ -482,7 +488,7 @@ private fun MainAppScreen(
                             ContentType.MARKET -> SharedMyContentItem.Market(
                                 id = item.id,
                                 photoUrl = item.mediaUrl ?: "",
-                                title = item.title,
+                                title = item.title.ifBlank { "İlan" },
                                 price = "100",
                                 isPublished = true,
                                 viewCount = item.viewCount,
@@ -491,6 +497,10 @@ private fun MainAppScreen(
                         }
                     }
 
+                    // 3. Pazar Yeri İlanları (Yayınlananlar içindeki pazar öğeleri)
+                    val myMarketItems = myPublishedItems.filterIsInstance<SharedMyContentItem.Market>()
+
+                    // 4. Taslaklar (Henüz Firestore'dan taslak koleksiyonu bağlanana kadar boş liste)
                     val myDraftItems = emptyList<SharedMyContentItem>()
 
                     SharedMyContentScreen(
@@ -498,6 +508,7 @@ private fun MainAppScreen(
                         isAnobaUser = isUserAdmin,
                         publishedContent = myPublishedItems,
                         draftContent = myDraftItems,
+                        marketContent = myMarketItems,
                         onNavigateBack = { activeView = "HOME" },
                         onHomeClick = { activeView = "HOME" },
                         onCameraClick = { activeView = "CAMERA" },
