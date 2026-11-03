@@ -99,12 +99,7 @@ class PrivateChatViewModel(
     }
 
     private fun resolveSenderName(badgeType: String?): String {
-        val rawName = currentUserDisplayName.ifBlank { "Bir kullanıcı" }
-        return if (badgeType == "OFFICIAL" && !rawName.contains("anoba", ignoreCase = true)) {
-            "Anoba"
-        } else {
-            rawName
-        }
+        return currentUserDisplayName.ifBlank { "Bir kullanıcı" }
     }
 
     private fun setupSearch() {
