@@ -165,16 +165,14 @@ fun SharedMyContentScreen(
                             IconButton(onClick = onNavigateBack) {
                                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = Color.White)
                             }
-                            Text(
-                                text = if (!isOwner) {
-                                    targetUsername ?: "İçerikler"
-                                } else {
-                                    "İçeriklerim 🎬"
-                                },
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                            )
+                            if (!isOwner && !targetUsername.isNullOrBlank()) {
+                                Text(
+                                    text = targetUsername,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                )
+                            }
                         }
 
                         Row(
@@ -661,7 +659,7 @@ fun SharedContentCard(item: SharedMyContentItem, onClick: () -> Unit) {
         val personalNote = item.personalNote
 
         if (personalNote.isNotBlank()) {
-            var isExpanded by remember { mutableStateOf(value = false) }
+            var isExpanded by remember { mutableStateOf(false) }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -691,7 +689,7 @@ fun SharedMyContentLetterItem(
     val isAudio = !letter.audioUrl.isNullOrBlank()
     val isSealed = letter.privacy == "SEALED"
     val isTimeCapsule = letter.isTimeCapsule
-    var isExpanded by remember { mutableStateOf(value = false) }
+    var isExpanded by remember { mutableStateOf(false) }
 
     Card(
         modifier = modifier

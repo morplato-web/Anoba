@@ -20,7 +20,9 @@ import com.neval.anoba.chat.group.SharedGroupInfoScreen
 import com.neval.anoba.chat.privatechat.SharedChatPartner
 import com.neval.anoba.chat.privatechat.SharedPrivateChatScreen
 import com.neval.anoba.drawer.DrawerSheetContent
+import com.neval.anoba.drawer.profile.SharedProfileScreen
 import com.neval.anoba.guide.SharedGuideScreen
+import com.neval.anoba.guide.SharedPrivacyPolicyScreen
 import com.neval.anoba.home.SharedHomeScreen
 import com.neval.anoba.home.SharedHomeViewModel
 import com.neval.anoba.letter.SharedLetterCommentsScreen
@@ -30,9 +32,12 @@ import com.neval.anoba.letter.SharedLetterEditScreen
 import com.neval.anoba.letter.SharedLetterHomeScreen
 import com.neval.anoba.letter.SharedLetterModel
 import com.neval.anoba.login.AuthContainerView
+import com.neval.anoba.login.SharedSplashScreen
 import com.neval.anoba.map.SharedGlobalMapScreen
+import com.neval.anoba.home.ContentType
 import com.neval.anoba.market.MarketContainerView
 import com.neval.anoba.mete.SharedMeteHomeScreen
+import com.neval.anoba.mycontent.SharedMyContentItem
 import com.neval.anoba.mycontent.SharedMyContentScreen
 import com.neval.anoba.mycontent.SharedMyContentType
 import com.neval.anoba.photo.SharedPhotoCommentsScreen
@@ -41,8 +46,6 @@ import com.neval.anoba.photo.SharedPhotoDetailScreen
 import com.neval.anoba.photo.SharedPhotoEditScreen
 import com.neval.anoba.photo.SharedPhotoHomeScreen
 import com.neval.anoba.photo.SharedPhotoModel
-import com.neval.anoba.drawer.profile.SharedProfileScreen
-import com.neval.anoba.guide.SharedPrivacyPolicyScreen
 import com.neval.anoba.ses.SharedSesCommentsScreen
 import com.neval.anoba.ses.SharedSesDetailModel
 import com.neval.anoba.ses.SharedSesDetailScreen
@@ -53,7 +56,6 @@ import com.neval.anoba.ui.theme.AnobaTheme
 import com.neval.anoba.video.SharedCameraScreen
 import com.neval.anoba.video.SharedVideoCommentsScreen
 import com.neval.anoba.video.SharedVideoDetailModel
-import com.neval.anoba.login.SharedSplashScreen
 import com.neval.anoba.video.SharedVideoDetailScreen
 import com.neval.anoba.video.SharedVideoEditScreen
 import com.neval.anoba.video.SharedVideoHomeScreen
@@ -67,7 +69,6 @@ fun App() {
         var isSplashVisible by remember { mutableStateOf(true) }
         var isAuthenticated by remember { mutableStateOf(false) }
 
-        // Dinamik Oturum State'leri
         var currentUserEmail by remember { mutableStateOf("") }
         var currentUserName by remember { mutableStateOf("") }
         var currentUserProfileImageUrl by remember { mutableStateOf<String?>(null) }
@@ -96,7 +97,6 @@ fun App() {
                 currentUserProfileImageUrl = currentUserProfileImageUrl,
                 isUserAdmin = isUserAdmin,
                 onLogout = {
-                    // Oturum durumunu tamamen sıfırla
                     currentUserEmail = ""
                     currentUserName = ""
                     currentUserProfileImageUrl = null
@@ -422,22 +422,73 @@ private fun MainAppScreen(
                     onHomeClick = { activeView = "HOME" }
                 )
 
-                "MY_CONTENT" -> SharedMyContentScreen(
-                    onNavigateBack = { activeView = "HOME" },
-                    onHomeClick = { activeView = "HOME" },
-                    onCameraClick = { activeView = "CAMERA" },
-                    onLetterClick = { activeView = "LETTER_CREATE" },
-                    onGalleryClick = { activeView = "PHOTO" },
-                    onItemClick = { item ->
-                        activeView = when (item.type) {
-                            SharedMyContentType.LETTER -> "LETTER"
-                            SharedMyContentType.PHOTO -> "PHOTO"
-                            SharedMyContentType.VIDEO -> "VIDEO"
-                            SharedMyContentType.AUDIO -> "SES"
-                            SharedMyContentType.MARKET -> "MARKET"
+                "MY_CONTENT" -> {
+                    val myPublishedItems = homeFeedItems.map { item ->
+                        when (item.type) {
+                            ContentType.LETTER -> SharedMyContentItem.Letter(
+                                id = item.id,
+                                content = item.description.ifBlank { item.title },
+                                isPublished = true,
+                                viewCount = item.viewCount,
+                                reactionsCount = item.reactionCount.toLong()
+                            )
+                            ContentType.PHOTO -> SharedMyContentItem.Photo(
+                                id = item.id,
+                                photoUrl = item.mediaUrl ?: "",
+                                personalNote = item.title.ifBlank { item.description },
+                                isPublished = true,
+                                viewCount = item.viewCount,
+                                reactionsCount = item.reactionCount.toLong()
+                            )
+                            ContentType.VIDEO -> SharedMyContentItem.Video(
+                                id = item.id,
+                                videoUrl = item.mediaUrl ?: "",
+                                thumbnailUrl = item.mediaUrl ?: "",
+                                personalNote = item.title.ifBlank { item.description },
+                                isPublished = true,
+                                viewCount = item.viewCount,
+                                reactionsCount = item.reactionCount.toLong()
+                            )
+                            ContentType.AUDIO -> SharedMyContentItem.Audio(
+                                id = item.id,
+                                audioUrl = item.mediaUrl ?: "",
+                                personalNote = item.title.ifBlank { item.description },
+                                isPublished = true,
+                                viewCount = item.viewCount,
+                                reactionsCount = item.reactionCount.toLong()
+                            )
+                            ContentType.MARKET -> SharedMyContentItem.Market(
+                                id = item.id,
+                                photoUrl = item.mediaUrl ?: "",
+                                title = item.title,
+                                price = "100",
+                                isPublished = true,
+                                viewCount = item.viewCount,
+                                reactionsCount = item.reactionCount.toLong()
+                            )
                         }
                     }
-                )
+
+                    SharedMyContentScreen(
+                        isOwner = true,
+                        isAnobaUser = isUserAdmin,
+                        publishedContent = myPublishedItems,
+                        onNavigateBack = { activeView = "HOME" },
+                        onHomeClick = { activeView = "HOME" },
+                        onCameraClick = { activeView = "CAMERA" },
+                        onLetterClick = { activeView = "LETTER_CREATE" },
+                        onGalleryClick = { activeView = "PHOTO" },
+                        onItemClick = { item ->
+                            activeView = when (item.type) {
+                                SharedMyContentType.LETTER -> "LETTER"
+                                SharedMyContentType.PHOTO -> "PHOTO"
+                                SharedMyContentType.VIDEO -> "VIDEO"
+                                SharedMyContentType.AUDIO -> "SES"
+                                SharedMyContentType.MARKET -> "MARKET"
+                            }
+                        }
+                    )
+                }
 
                 "GLOBAL_MAP" -> SharedGlobalMapScreen(
                     onNavigateBack = { activeView = "HOME" },
