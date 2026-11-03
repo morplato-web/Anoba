@@ -423,14 +423,27 @@ private fun MainAppScreen(
                 )
 
                 "MY_CONTENT" -> {
-                    // Yalnızca aktif kullanıcıya veya admin durumunda Anoba resmi içeriklerine ait öğeler filtrelenir
+                    val currentCleanUsername = currentUserName.trim()
+                    val currentCleanEmail = currentUserEmail.trim()
+                    val usernamePrefix = if (currentCleanEmail.contains("@")) currentCleanEmail.substringBefore('@') else ""
+
+                    // Yalnızca aktif kullanıcının (veya Admin hesabı ise resmi Anoba'nın) içerikleri
                     val userFeedItems = homeFeedItems.filter { item ->
-                        isUserAdmin ||
-                                item.username.equals(currentUserName, ignoreCase = true) ||
-                                item.ownerId.equals(currentUserName, ignoreCase = true) ||
-                                item.ownerId.equals(currentUserEmail, ignoreCase = true) ||
-                                item.username.contains(currentUserName.substringBefore('@'), ignoreCase = true)
-                    }.ifEmpty { homeFeedItems }
+                        val itemOwner = item.ownerId.trim()
+                        val itemUser = item.username.trim()
+
+                        if (isUserAdmin) {
+                            itemUser.equals("Anoba", ignoreCase = true) ||
+                                    itemOwner.equals("morplato@gmail.com", ignoreCase = true) ||
+                                    itemUser.equals(currentCleanUsername, ignoreCase = true) ||
+                                    itemOwner.equals(currentCleanUsername, ignoreCase = true)
+                        } else {
+                            itemUser.equals(currentCleanUsername, ignoreCase = true) ||
+                                    itemOwner.equals(currentCleanUsername, ignoreCase = true) ||
+                                    (currentCleanEmail.isNotBlank() && itemOwner.equals(currentCleanEmail, ignoreCase = true)) ||
+                                    (usernamePrefix.isNotBlank() && itemUser.equals(usernamePrefix, ignoreCase = true))
+                        }
+                    }
 
                     val myPublishedItems = userFeedItems.map { item ->
                         when (item.type) {
@@ -478,7 +491,6 @@ private fun MainAppScreen(
                         }
                     }
 
-                    // Henüz yayınlanmamış taslaklar listesi (mevcut akışta taslak statüsündeki öğeler ayrıştırılır)
                     val myDraftItems = emptyList<SharedMyContentItem>()
 
                     SharedMyContentScreen(

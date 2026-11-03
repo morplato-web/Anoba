@@ -25,7 +25,9 @@ fun UserAvatar(
     size: Dp = 32.dp,
     imageLoader: ImageLoader? = null
 ) {
+    val cleanUrl = photoUrl?.trim()
     val isAnobaBrand = username?.contains("anoba", ignoreCase = true) == true
+    val fallbackName = username?.ifBlank { "Anonim" } ?: "Anonim"
 
     Box(
         modifier = modifier
@@ -34,19 +36,19 @@ fun UserAvatar(
             .background(Color(0xFFF1F5F9)),
         contentAlignment = Alignment.Center
     ) {
-        if (!photoUrl.isNullOrBlank()) {
+        if (!cleanUrl.isNullOrBlank()) {
             if (imageLoader != null) {
                 AsyncImage(
-                    model = photoUrl,
-                    contentDescription = null,
+                    model = cleanUrl,
+                    contentDescription = fallbackName,
                     imageLoader = imageLoader,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
             } else {
                 AsyncImage(
-                    model = photoUrl,
-                    contentDescription = null,
+                    model = cleanUrl,
+                    contentDescription = fallbackName,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
@@ -58,7 +60,7 @@ fun UserAvatar(
             )
         } else {
             InitialsAvatar(
-                name = username ?: "Anonim",
+                name = fallbackName,
                 modifier = Modifier.fillMaxSize()
             )
         }
