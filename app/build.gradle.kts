@@ -22,7 +22,7 @@ kotlin {
 
 android {
     namespace = "com.neval.anoba"
-    compileSdk = 36
+    compileSdk = 35
 
     signingConfigs {
         create("release") {
@@ -36,7 +36,7 @@ android {
     defaultConfig {
         applicationId = "com.neval.anoba"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 143
         versionName = "9.2.4"
 
@@ -44,7 +44,7 @@ android {
         resourceConfigurations += listOf("tr", "en", "ar", "fr", "ru", "sw", "af", "es", "it", "de", "pt", "id", "in")
 
         ndk {
-            abiFilters += listOf("armeabi-v7a", "arm64-v8a")
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
         }
 
         val localProperties = Properties()
