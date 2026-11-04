@@ -109,6 +109,20 @@ fun PrivateChatScreen(
                 privateChatViewModel.blockUser(targetUid)
                 privateChatViewModel.resetChatState()
             }
+        },
+        onDeleteMessage = { msg ->
+            val targetMsg = rawMessages.find { it.id == msg.id }
+            if (targetMsg != null) {
+                privateChatViewModel.onMessageLongClicked(targetMsg)
+                partner?.id?.let { partnerId ->
+                    privateChatViewModel.deleteSelectedMessages(partnerId)
+                }
+            }
+        },
+        onCopyMessage = { text ->
+            val clipboard = navController.context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as? android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText("mesaj", text)
+            clipboard?.setPrimaryClip(clip)
         }
     )
 }
