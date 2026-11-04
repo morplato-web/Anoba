@@ -426,6 +426,37 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 ### 💳 Dış İşlemler & İade Takip
 - **Tripo AI (1039 TL İade Talebi):** `support@tripo3d.ai` adresine iptal ve iade e-postası gönderildi. İade bekleniyor.
 
+---
+
+## 33. Oturum Özeti & Kullanıcı Çalışma Yönergeleri (v196 Güncellemeleri)
+
+### 🚨 KRİTİK ÇALIŞMA KURALLARI (MANDATORY DIRECTIVES)
+1. **ONAYSIZ İŞLEM KESİNLİKLE YAPILMAYACAK:**
+   Kullanıcı açıkça ve net şekilde onay vermediği sürece hiçbir dosyada kod değişikliği yapılmayacak, önceden açıklanıp onay alınacaktır.
+2. **KENDİLİĞİNDEN GİTHUB'A PUSH YAPILMAYACAK:**
+   Sadece kullanıcı talep ettiğinde veya onayladığında kod değişikliği yapılıp GitHub'a aktarılacaktır.
+3. **MİNİMUM VE NOKTA ATIŞI İŞLEM:**
+   Gereksiz dosya okumaları veya yan etki oluşturacak değişiklikler yapılmayacak, sadece kullanıcının sorduğu soruya doğrudan odaklanılacaktır.
+4. **ANDROID SDK UYARILARI:**
+   `targetSdk = 34` (Android 14 Play Store standardı) ve `compileSdk = 35` olarak sabitlendi. `targetSdk` kesinlikle izinsiz ve uyarısız değiştirilmeyecektir.
+
+### 📌 Bu Oturumda Tamamlanan İşlemler
+1. **Sohbet Üst Barı Standartlaştırması (Genel, Grup, Özel Sohbet):**
+   - Mesaja basılı tutulduğunda açılan Contextual Top Action Bar (`✕  1 seçildi   📋  ✏️  🗑️`) 3 sohbette de eşitlendi.
+   - 📋 Kopyala, ✏️ Düzenle ve 🗑️ Sil eylemleri ViewModel fonksiyonlarına eksiksiz bağlandı.
+   - Gönderilen mesaj balon rengi `#D2D6E8` (Açık Mor/Mavi) ve lacivert yazı rengi olarak ayarlandı.
+2. **Kullanıcı Adı Gösterimi:**
+   - Mesaj atan ister admin ister normal kullanıcı olsun, sohbet balonunda ezilmeden kendi gerçek kullanıcı adı gösterilmektedir.
+3. **İçeriklerim Ekranı Filtrelemesi:**
+   - `App.kt` içindeki `"MY_CONTENT"` rotasına `.trim().lowercase()` seviyesinde küçük harf normalizasyonu ve çapraz eşleme bağlandı.
+4. **Android Release AAB Derleme Düzeltmesi:**
+   - `:app` modülündeki mükerrer `FullScreenImageViewer.kt` silinerek `:app:bundleRelease` (İmzalı AAB) derlemesi `BUILD SUCCESSFUL` hale getirildi.
+5. **Apple & MacInCloud Takip:**
+   - Apple Developer Case ID: `103017117489` (Hatırlatma mesajı atıldı).
+   - MacInCloud Sunucu: `FF775` / `user306378` / `kst56487ejt` (Kevin N.'e şifre sıfırlama yanıtı atıldı).
+   - Tripo AI 1039 TL İade Talebi: `support@tripo3d.ai` adresine iletildi.
+
+
 
 
 
