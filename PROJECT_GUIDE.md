@@ -423,6 +423,9 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **Giriş Şifresi:** `fabrikalaR3019`
 - **Apple Destek İnceleme Kodu (Case ID):** `103017117489` *(Hatırlatma mesajı gönderildi, ödeme onayı bekleniyor).*
 
+### 💳 Dış İşlemler & İade Takip
+- **Tripo AI (1039 TL İade Talebi):** `support@tripo3d.ai` adresine iptal ve iade e-postası gönderildi. İade bekleniyor.
+
 
 
 
