@@ -416,7 +416,7 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 - **Sunucu IP Adresi:** `195.82.45.175`
 - **Giriş / Sunucu Kullanıcı Adı:** `user306378`
 - **Mac VNC / Terminal Şifresi:** `kst56487ejt`
-- **Aktif Plan:** **Aylık Plan (Managed Server Monthly - Europe Germany)** *(Destek Bileti #320302 ile Reboot ve kilit açma işlemi yapılıyor).*
+- **Aktif Plan:** **Aylık Plan (Managed Server Monthly - Europe Germany)** *(MacInCloud Temsilcisi Kevin N. tarafından uzaktan masaüstü servisi yeniden başlatıldı).*
 
 ### 🍎 Apple Developer Geliştirici Hesabı
 - **Apple ID (E-posta):** `morplato@gmail.com`
