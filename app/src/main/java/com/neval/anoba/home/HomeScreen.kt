@@ -53,6 +53,7 @@ import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material.icons.outlined.ShoppingBag
 import androidx.compose.material3.AlertDialog
@@ -931,6 +932,16 @@ fun HomeScreen(
                                             icon = Icons.Filled.DynamicFeed,
                                             cardColor = Color(0xFFECEFF1),
                                             iconColor = Color(0xFF37474F),
+                                            size = iconSize
+                                        )
+
+                                        // 🎮 6. ANOBA FREEROOM (DİSCORD SERBEST ODALAR / KLAN)
+                                        IconInCardButton(
+                                            modifier = Modifier.size(width = cardWidth, height = cardHeight),
+                                            onClick = { navController.navigate(Constants.COMMUNITY_HUB_SCREEN) },
+                                            icon = Icons.Filled.SportsEsports,
+                                            cardColor = Color(0xFFE8EAF6),
+                                            iconColor = Color(0xFF1A237E),
                                             size = iconSize
                                         )
                                     }

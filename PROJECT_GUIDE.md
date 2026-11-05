@@ -1,4 +1,4 @@
-# Anoba Proje Özeti & Mimarî Protokol (Sürüm 9.2.2 - v142)
+# Anoba Proje Özeti & Mimarî Protokol (Sürüm 9.2.6 - v198)
 
 ⚠️ **GELİŞTİRİCİ İÇİN KRİTİK KURALLAR (ASLA BOZMA)** ⚠️
 1. **Listing Tasarımı:** Ana akıştaki kartlar (Listing) daima SADE kalmalıdır. Sadece "En Çok Beğenilen Emoji + Sayı" görünür. Emoji seçim barı ASLA listing kartlarına eklenmez, sadece Detay sayfalarında olur.
@@ -114,6 +114,7 @@
 Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` hesabına bağlı Google Drive'da saklanmaktadır.
 
 ### 💾 Önemli Yedek Dosyaları
+- **`Anoba_v9.2.6_v198_PreCommunityHub.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v9.2.6_v198_PreCommunityHub.zip`) TargetSdk 36, CompileSdk 36, VersionCode 146, VersionName 9.2.6, Google Play Console AAB derlemesi tam ve sorunsuz olan, Discord / Hub modülünden hemen önce alınan eksiksiz tam proje yedeği. 📦
 - **`Anoba_v8.9.8_Global_v139_Media3_GroupSync.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v8.9.8_Global_v139_Media3_GroupSync.zip`) Media3 Transformer 1080p + 3.5 Mbps otomatik video sıkıştırma, AuthService canlı yetki/rozet (PIONEER/Yeşil Tik) senkronizasyonu, Herkese Açık Grup Canlı Akışı (`combine`), R8/ProGuard güvenliği ve yarış durumu (race condition) koruması içeren en güncel ve eksiksiz sürüm yedeği.
 - **`Anoba_v8.9.8_Global_v128_emojisonhali.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v8.9.8_Global_v128_emojisonhali.zip`) Emojiye basınca reaksiyon veren kullanıcılar listesinin tüm kullanıcılara açıldığı (Firestore koleksiyon grubu kuralları, buluta deploy edilmiş indeksler ve çökmez DocumentSnapshot parsing), 11 Dil Desteği, Local-First Reaksiyon Hızı ve Instagram Akıllı Linkini içeren sürüm yedeği.
 - **`Anoba_v8.9.8_Global_v128_Final.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v8.9.8_Global_v128_Final.zip`) Önceki final yedek dosyası.
@@ -438,7 +439,7 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 3. **MİNİMUM VE NOKTA ATIŞI İŞLEM:**
    Gereksiz dosya okumaları veya yan etki oluşturacak değişiklikler yapılmayacak, sadece kullanıcının sorduğu soruya doğrudan odaklanılacaktır.
 4. **ANDROID SDK UYARILARI:**
-   `targetSdk = 34` (Android 14 Play Store standardı) ve `compileSdk = 35` olarak sabitlendi. `targetSdk` kesinlikle izinsiz ve uyarısız değiştirilmeyecektir.
+   Google Play Console zorunluluğu gereği `targetSdk = 36` ve `compileSdk = 36` olarak güncellendi. `minSdk = 24` korunmaktadır.
 
 ### 📌 Bu Oturumda Tamamlanan İşlemler
 1. **Sohbet Üst Barı Standartlaştırması (Genel, Grup, Özel Sohbet):**
@@ -455,6 +456,82 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
    - Apple Developer Case ID: `103017117489` (Hatırlatma mesajı atıldı).
    - MacInCloud Sunucu: `FF775` / `user306378` / `kst56487ejt` (Kevin N.'e şifre sıfırlama yanıtı atıldı).
    - Tripo AI 1039 TL İade Talebi: `support@tripo3d.ai` adresine iletildi.
+
+---
+
+## 34. Donanım Filtreleri Temizliği, Android 14 FGS Koruması & Sürüm Yükseltme (v197 Güncellemeleri)
+
+### 📌 Tamamlanan Çalışmalar
+1. **Google Play Donanım Engel Düzeltmesi (`AndroidManifest.xml`):**
+   - CameraX ve Agora SDK kaynaklı gizli donanım dayatmalarını aşmak için `camera`, `autofocus`, `front`, `any`, `microphone`, `bluetooth`, `wifi` ve `telephony` donanım özelliklerine `android:required="false"` ve `tools:replace="android:required"` eklendi.
+   - Eski Xiaomi/Oppo/Vivo cihazlarda sayfa hizalaması ve native kütüphane çakışmasını engellemek için `extractNativeLibs="false"` kaldırıldı.
+2. **Android 14 (targetSdk 34) Foreground Service Çökme Koruması:**
+   - `AndroidManifest.xml` içerisine `FOREGROUND_SERVICE` ve `FOREGROUND_SERVICE_MEDIA_PLAYBACK` izinleri eklendi.
+   - `RingtoneService` tanımına `android:foregroundServiceType="mediaPlayback"` parametresi eklendi.
+   - `MyFirebaseMessagingService.kt` içerisinde zil sesi başlatılırken Android 14 uyumlu `ContextCompat.startForegroundService` çağrısına geçildi.
+3. **SDK ve Sürüm Hizalaması:**
+   - `:shared` modülünün `compileSdk = 36` değeri `:app` ile eşitlenerek `35` yapıldı.
+   - `:app/build.gradle.kts` içinde `versionCode = 144`, `versionName = "9.2.5"` seviyesine yükseltildi (`targetSdk = 34`, `minSdk = 24` korundu).
+
+### 🧪 Derleme Durumu
+- **`:app:bundleRelease`** (Google Play İmzalı AAB) ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+
+---
+
+## 35. Google Play Console API 36 Zorunluluğu & Sürüm Güncellemesi (v198 / v9.2.6 - versionCode 146)
+
+### 📌 Tamamlanan Çalışmalar
+1. **Google Play Console API Level 36 Uyumlaştırılması:**
+   - Google Play Console yeni sürüm yüklemelerindeki en düşük hedef API düzeyi 36 zorunluluğu karşılandı.
+   - `:app/build.gradle.kts`: `compileSdk = 36`, `targetSdk = 36`, `versionCode = 146`, `versionName = "9.2.6"`, `minSdk = 24` (korundu).
+2. **Modül Hizalaması:**
+   - `:shared/build.gradle.kts`: `compileSdk = 36` olarak `:app` ile tam hizalandı.
+
+### 🧪 Derleme Durumu
+- **`:app:bundleRelease`** (Google Play İmzalı AAB) ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **Proje Zip Yedeği:** **`D:\anobadepo\Anoba_v9.2.6_v198_PreCommunityHub.zip`** adresi üzerine tam yedek alındı. 📦
+
+### ⏳ Gelecekte Yapılacak İşlemler (Hatırlatma Notu)
+- **Google Play Satıcı Durumu Beyanı (Trader Status Declaration):**
+  - **Son Tarih:** 1 Şubat 2027.
+  - **Yapılacak İşlem:** Google Play Console ➔ Hesabı yönet ➔ Hesap ayrıntıları ➔ Satıcı Durumu ➔ **"Satıcı Değil" (Non-trader)** seçilecek (bireysel kişisel bilgilerin ve adres/telefonun mağazada halka açık görünmesini engellemek için).
+  - **Not:** Kullanıcı bugün işlem yapmayı erteledi. İlerleyen oturumlarda uygun bir zamanda hatırlatılıp yapılacaktır.
+
+---
+
+## 36. Bağımsız Discord Tarzı Community Hub Modülü İzolasyonu ("Anoba FreeRoom") (v199 Güncellemeleri)
+
+### 📌 Tamamlanan Çalışmalar
+1. **İzole Paket Yapısı (`com.neval.anoba.community`):**
+   - Eski kodlara ve mevcut chat/video/letter/photo paketlerine dokunmamak için tamamen bağımsız yeni paket açıldı.
+2. **1. Aşama Bağımsız Veri Modelleri (Data Layer):**
+   - `ServerModel.kt`: Sunucu/Topluluk (Anoba Gaming 🎮, PUBG Squad 🔫 vb.) modeli.
+   - `ChannelModel.kt`: Metin (`TEXT`) ve Ses (`VOICE`, `STAGE`) kanalları modeli.
+   - `VoiceMemberModel.kt`: Ses kanalındaki aktif oyuncuların durumları (Muted, Deafened, Speaking, Streaming).
+3. **Firestore Repository Altyapısı (`CommunityRepository.kt`):**
+   - `community_servers` ve `channels/voice_members` koleksiyonları için izole canlı akışlar (`Flow`) ve örnek varsayılan sunucu oluşturma metodları eklendi.
+4. **2. Aşama PC Öncelikli 3 Sütunlu Arayüz (`CommunityHubScreen.kt` & `CommunityHubContainerScreen.kt`):**
+   - **Koyu Tema (Dark Theme):** Kömür ve Koyu Lacivert arka plan.
+   - **1. Sütun (Sol 72dp):** Sunucu ikonları ve canlı seçim çizgisi.
+   - **2. Sütun (Orta 240dp):** Metin ve ses kanalları, ses kanalındaki oyuncu listesi ve en alta sabitlenmiş **VoiceControlBottomPanel** (Profil, Mikrofon, Kulaklık, Kırmızı Telefon Ayrıl butonu).
+   - **3. Sütun (Sağ Sahne / Dynamic Grid):** Konuşmacı kartları (Konuşan etrafında yeşil halka yanan `BorderStroke(2.dp, SpeakingGreen)` alan).
+5. **Ana Sayfa Giriş Butonu (`HomeScreen.kt` & `Constants.kt`):**
+   - `HomeScreen.kt` 2. sıradaki üst barın sağ tarafına 🎮 **Anoba FreeRoom** hızlı yönlendirme butonu eklendi.
+6. **3. Aşama Agora Canlı Ses Motoru (`CommunityVoiceEngine.kt`):**
+   - **Oyun & Sesli Sohbet Profili:** `CHANNEL_PROFILE_LIVE_BROADCASTING`, `CLIENT_ROLE_BROADCASTER` ve `AUDIO_SCENARIO_GAME_STREAMING` (Oyun içi ses efektlerini boğmaz, yankı engeller).
+   - **Yeşil Halka Sinyali:** `enableAudioVolumeIndication(200, 3, true)` callback'i ile canlı desibel ölçümü ve konuşan oyuncunun avatarında anlık yeşil halka yakma.
+   - **Mute & Deafen Ayrımı:** Mikrofon kapatma (`muteLocalAudioStream`) ve kulaklık sağırlaştırma (`muteAllRemoteAudioStreams`) kontrolleri bağlandı.
+7. **4. Aşama Windows PC Gaming & Bas-Konuş (Push-to-Talk) Mimarisi (`DesktopVoiceListener.kt` & `DesktopWindowConfig.kt`):**
+   - **VoiceEngine Soyutlama Katmanı:** `VoiceEngineInterface.kt` ortak arayüzü kuruldu; Android ve Desktop JVM platformları için izole edildi.
+   - **Bas-Konuş (PTT) Küresel Dinleyici (`DesktopVoiceListener.kt`):** Windows üzerinde oyun oynarken (PUBG, Valorant vb.) arkada basılı tutulan tuşu dinleyerek mikrofonu otomatik açıp kapatan `onGlobalKeyPressed` / `onGlobalKeyReleased` yapısı bağlandı.
+   - **Masaüstü Pencere Yapılandırması (`DesktopWindowConfig.kt`):** 3 sütunlu yapının bozulmaması için `minWidth = 960.dp`, `minHeight = 600.dp`, başlık `"Anoba FreeRoom 🎮"` ve arka planda kapanmadan çalışma (System Tray) yapılandırması sabitlendi.
+
+### 🧪 Derleme Durumu
+- **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+
+
+
 
 
 

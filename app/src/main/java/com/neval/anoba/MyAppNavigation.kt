@@ -48,5 +48,6 @@ fun MainAppNavHost(
         composable(Constants.GUIDE_NAV_GRAPH) { GuideScreen(navController) }
         composable(Constants.GLOBAL_MAP_SCREEN) { GlobalMapScreen(navController) }
         composable(Constants.METE_SCREEN) { com.neval.anoba.mete.MeteScreen(navController = navController) }
+        composable(Constants.COMMUNITY_HUB_SCREEN) { com.neval.anoba.community.ui.CommunityHubContainerScreen(onNavigateBack = { navController.popBackStack() }) }
     }
 }

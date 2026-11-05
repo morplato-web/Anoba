@@ -22,7 +22,7 @@ kotlin {
 
 android {
     namespace = "com.neval.anoba"
-    compileSdk = 35
+    compileSdk = 36
 
     signingConfigs {
         create("release") {
@@ -36,9 +36,9 @@ android {
     defaultConfig {
         applicationId = "com.neval.anoba"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 143
-        versionName = "9.2.4"
+        targetSdk = 36
+        versionCode = 146
+        versionName = "9.2.6"
 
         // tüm desteklenen diller (13 dil klasörü)
         resourceConfigurations += listOf("tr", "en", "ar", "fr", "ru", "sw", "af", "es", "it", "de", "pt", "id", "in")

@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -88,7 +89,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
             action = RingtoneService.ACTION_START
         }
         try {
-            startService(ringtoneIntent)
+            ContextCompat.startForegroundService(this, ringtoneIntent)
         } catch (e: Exception) {
             Log.e(TAG, "Ringtone başlatılamadı: ${e.message}")
         }

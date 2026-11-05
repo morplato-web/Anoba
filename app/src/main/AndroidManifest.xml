@@ -17,6 +17,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <!-- Gereksiz Media Projection iznini zorla kaldırıyoruz -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" tools:node="remove" />
@@ -26,9 +28,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
-    <!-- Donanım Özellikleri -->
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+    <!-- Donanım Özellikleri: Alt kütüphanelerin cihazı filtrelemesini engelliyoruz -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" tools:replace="android:required" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
+    <uses-feature android:name="android.hardware.microphone" android:required="false" tools:replace="android:required" />
+    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+    <uses-feature android:name="android.hardware.wifi" android:required="false" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
     <!-- Paket Görünürlüğü (Android 11+ için Web Link ve Paylaşım Desteği) -->
     <queries>
@@ -55,7 +63,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Anoba"
         android:usesCleartextTraffic="false"
-        android:extractNativeLibs="false"
         tools:targetApi="31">
 
         <!-- Google Play Services sürüm bilgisi -->
@@ -105,6 +112,7 @@
 
         <service
             android:name="com.neval.anoba.common.services.RingtoneService"
+            android:foregroundServiceType="mediaPlayback"
             android:exported="false" />
 
     </application>

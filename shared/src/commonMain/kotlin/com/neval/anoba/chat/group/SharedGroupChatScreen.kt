@@ -99,7 +99,10 @@ fun SharedGroupChatScreen(
     onSendMediaClick: (mediaType: String) -> Unit = {},
     onRecordAudioClick: () -> Unit = {},
     onMessageClick: (SharedChatMessage) -> Unit = {},
-    onMessageLongClick: (SharedChatMessage) -> Unit = {}
+    onMessageLongClick: (SharedChatMessage) -> Unit = {},
+    onDeleteMessage: (SharedChatMessage) -> Unit = {},
+    onCopyMessage: (String) -> Unit = {},
+    onEditMessage: (SharedChatMessage) -> Unit = {}
 ) {
     val listState = rememberLazyListState()
     var inputMessage by remember { mutableStateOf("") }
@@ -135,17 +138,17 @@ fun SharedGroupChatScreen(
                     onCloseSelectionMode = { selectedMessageForAction = null },
                     canDeleteAnySelected = true,
                     onDeleteSelected = {
-                        onMessageLongClick(selectedMsg)
+                        onDeleteMessage(selectedMsg)
                         selectedMessageForAction = null
                     },
                     canCopyAnySelected = !selectedMsg.content.isNullOrBlank(),
                     onCopySelected = {
-                        onMessageClick(selectedMsg)
+                        onCopyMessage(selectedMsg.content ?: "")
                         selectedMessageForAction = null
                     },
                     canEdit = selectedMsg.senderId == currentUserId && !selectedMsg.content.isNullOrBlank(),
                     onEditSelected = {
-                        onMessageClick(selectedMsg)
+                        onEditMessage(selectedMsg)
                         selectedMessageForAction = null
                     }
                 )

@@ -75,6 +75,9 @@ object Constants {
     const val MARKET_DETAIL_SCREEN = "market_detail_screen/{itemId}"
     const val MARKET_EDIT_SCREEN = "market_edit_screen/{itemId}"
 
+    // --- COMMUNITY / DISCORD HUB ---
+    const val COMMUNITY_HUB_SCREEN = "community_hub_screen"
+
     // --- AGORA ---
     const val AGORA_APP_ID = "c027fbb214d14f96807be938ad733a92"
 
