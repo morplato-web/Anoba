@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ScreenShare
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.CallEnd
 import androidx.compose.material.icons.filled.Mic
@@ -48,11 +50,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.neval.anoba.R
 import com.neval.anoba.community.model.ChannelModel
 import com.neval.anoba.community.model.ChannelType
 import com.neval.anoba.community.model.ServerModel
@@ -67,7 +71,7 @@ private val AnobaNavyAccent = Color(0xFF1A237E)
 private val TextWhite = Color(0xFFF2F3F5)
 private val TextMuted = Color(0xFF949BA4)
 
-@Suppress("UNUSED_PARAMETER")
+@Suppress("UNUSED_PARAMETER", "UnusedBoxWithConstraintsScope")
 @Composable
 fun CommunityHubScreen(
     servers: List<ServerModel>,
@@ -86,115 +90,39 @@ fun CommunityHubScreen(
     onJoinVoice: (ChannelModel) -> Unit,
     modifier: Modifier = Modifier,
     isPushToTalkEnabled: Boolean = false,
+    isScreenSharing: Boolean = false,
     activeSpeakingUserIds: Set<Int> = emptySet(),
     onTogglePushToTalk: () -> Unit = {},
+    onToggleScreenShare: () -> Unit = {},
     onPushToTalkKeyPressed: () -> Unit = {},
     onPushToTalkKeyReleased: () -> Unit = {}
 ) {
     var isMuted by remember { mutableStateOf(false) }
     var isDeafened by remember { mutableStateOf(false) }
+    var showStageOnMobile by remember { mutableStateOf(false) }
 
     val activeVoiceChannel = channels.find { it.id == selectedChannelId && it.type == ChannelType.VOICE }
     val selectedServer = servers.find { it.id == selectedServerId }
 
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = StageBackground
+    BoxWithConstraints(
+        modifier = modifier.fillMaxSize()
     ) {
-        Row(modifier = Modifier.fillMaxSize()) {
+        val isMobile = maxWidth < 600.dp
 
-            // 🔴 1. SÜTUN: Sol Sunucu Barı (72.dp Sabit)
-            ServerListColumn(
-                servers = servers,
-                selectedServerId = selectedServerId,
-                onServerSelected = onServerSelected,
-                modifier = Modifier
-                    .width(72.dp)
-                    .fillMaxHeight()
-                    .background(ServerBarBackground)
-            )
-
-            // 🟠 2. SÜTUN: Orta Kanal Listesi + Ses Kontrol Barı (240.dp Sabit)
-            Column(
-                modifier = Modifier
-                    .width(240.dp)
-                    .fillMaxHeight()
-                    .background(ChannelBarBackground)
-            ) {
-                // Sunucu Başlığı
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp)
-                        .background(ServerBarBackground.copy(alpha = 0.5f))
-                        .padding(horizontal = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = selectedServer?.name ?: "Anoba Hub",
-                        color = TextWhite,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-
-                // Kanal Listesi
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    contentPadding = PaddingValues(vertical = 8.dp)
-                ) {
-                    items(channels, key = { it.id }) { channel ->
-                        ChannelItemRow(
-                            channel = channel,
-                            isSelected = channel.id == selectedChannelId,
-                            voiceMembers = if (channel.type == ChannelType.VOICE) voiceMembers.filter { it.channelId == channel.id } else emptyList(),
-                            activeSpeakingUserIds = activeSpeakingUserIds,
-                            onClick = {
-                                onChannelSelected(channel)
-                                if (channel.type == ChannelType.VOICE) {
-                                    onJoinVoice(channel)
-                                }
-                            }
-                        )
-                    }
-                }
-
-                // 🟢 Alt Ses Kontrol Barı (Sabit En Alt)
-                VoiceControlBottomPanel(
-                    username = currentUsername,
-                    avatarUrl = currentUserAvatar,
-                    connectedChannelName = activeVoiceChannel?.name,
-                    isMuted = isMuted,
-                    isDeafened = isDeafened,
-                    isPushToTalkEnabled = isPushToTalkEnabled,
-                    onToggleMute = {
-                        isMuted = !isMuted
-                        onToggleMute()
-                    },
-                    onToggleDeafen = {
-                        isDeafened = !isDeafened
-                        onToggleDeafen()
-                    },
-                    onTogglePushToTalk = onTogglePushToTalk,
-                    onLeaveVoice = onLeaveVoice
-                )
-            }
-
-            // 🟡 3. SÜTUN: Sağ Sahne (Grid Kartlar - weight(1f) Dinamik Esnek)
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .background(StageBackground)
-                    .padding(16.dp)
-            ) {
-                if (activeVoiceChannel != null) {
-                    // Odadaki Oyuncuların Grid Kartları
-                    Column(modifier = Modifier.fillMaxSize()) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = StageBackground
+        ) {
+            if (isMobile) {
+                // 📱 MOBİL YERLEŞİM (maxWidth < 600.dp) - Tek Ekran Esnek Görünüm
+                if (showStageOnMobile && activeVoiceChannel != null) {
+                    // Mobil Tam Ekran Sahne / Grid Kartlar
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(12.dp)
+                    ) {
+                        // Üst Bar: Kanallara Geri Dön Butonu
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -202,31 +130,50 @@ fun CommunityHubScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(ChannelBarBackground)
+                                    .clickable { showStageOnMobile = false }
+                                    .padding(horizontal = 10.dp, vertical = 6.dp)
+                            ) {
+                                Text(
+                                    text = "◀ ${stringResource(R.string.freehub_channels)}",
+                                    color = TextWhite,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp
+                                )
+                            }
+
                             Text(
-                                text = "🔊 ${activeVoiceChannel.name} (${voiceMembers.size} Oyuncu)",
+                                text = "🔊 ${activeVoiceChannel.name}",
                                 color = TextWhite,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp
+                                fontSize = 15.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
 
+                        // Grid Kartlar
                         if (voiceMembers.isEmpty()) {
                             Box(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier.weight(1f).fillMaxWidth(),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = "Odada henüz kimse yok. Ses kanalına katıldınız!",
+                                    text = stringResource(R.string.freehub_empty_room),
                                     color = TextMuted,
                                     fontSize = 14.sp
                                 )
                             }
                         } else {
                             LazyVerticalGrid(
-                                columns = GridCells.Adaptive(minSize = 220.dp),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                verticalArrangement = Arrangement.spacedBy(12.dp),
-                                modifier = Modifier.fillMaxSize()
+                                columns = GridCells.Adaptive(minSize = 140.dp),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                verticalArrangement = Arrangement.spacedBy(10.dp),
+                                modifier = Modifier.weight(1f).fillMaxWidth()
                             ) {
                                 items(voiceMembers, key = { it.userId }) { member ->
                                     SpeakerGridCard(
@@ -236,33 +183,278 @@ fun CommunityHubScreen(
                                 }
                             }
                         }
+
+                        // Mobil Alt Ses Kontrol Barı
+                        VoiceControlBottomPanel(
+                            username = currentUsername,
+                            avatarUrl = currentUserAvatar,
+                            connectedChannelName = activeVoiceChannel.name,
+                            isMuted = isMuted,
+                            isDeafened = isDeafened,
+                            isPushToTalkEnabled = isPushToTalkEnabled,
+                            isScreenSharing = isScreenSharing,
+                            onToggleMute = {
+                                isMuted = !isMuted
+                                onToggleMute()
+                            },
+                            onToggleDeafen = {
+                                isDeafened = !isDeafened
+                                onToggleDeafen()
+                            },
+                            onTogglePushToTalk = onTogglePushToTalk,
+                            onToggleScreenShare = onToggleScreenShare,
+                            onLeaveVoice = {
+                                onLeaveVoice()
+                                showStageOnMobile = false
+                            }
+                        )
                     }
                 } else {
-                    // Kanal Seçilmedi veya Ses Kanalında Değil
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                    // Mobil Sunucu Barı (64dp) + Kanal Listesi (Kalan Alan)
+                    Row(modifier = Modifier.fillMaxSize()) {
+                        ServerListColumn(
+                            servers = servers,
+                            selectedServerId = selectedServerId,
+                            onServerSelected = onServerSelected,
+                            modifier = Modifier
+                                .width(64.dp)
+                                .fillMaxHeight()
+                                .background(ServerBarBackground)
+                        )
+
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(ChannelBarBackground)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(52.dp)
+                                    .background(ServerBarBackground.copy(alpha = 0.5f))
+                                    .padding(horizontal = 16.dp),
+                                contentAlignment = Alignment.CenterStart
+                            ) {
+                                Text(
+                                    text = selectedServer?.name ?: "FreeHub",
+                                    color = TextWhite,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+
+                            LazyColumn(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxWidth(),
+                                contentPadding = PaddingValues(vertical = 8.dp)
+                            ) {
+                                items(channels, key = { it.id }) { channel ->
+                                    ChannelItemRow(
+                                        channel = channel,
+                                        isSelected = channel.id == selectedChannelId,
+                                        voiceMembers = if (channel.type == ChannelType.VOICE) voiceMembers.filter { it.channelId == channel.id } else emptyList(),
+                                        activeSpeakingUserIds = activeSpeakingUserIds,
+                                        onClick = {
+                                            onChannelSelected(channel)
+                                            if (channel.type == ChannelType.VOICE) {
+                                                onJoinVoice(channel)
+                                                showStageOnMobile = true
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+
+                            VoiceControlBottomPanel(
+                                username = currentUsername,
+                                avatarUrl = currentUserAvatar,
+                                connectedChannelName = activeVoiceChannel?.name,
+                                isMuted = isMuted,
+                                isDeafened = isDeafened,
+                                isPushToTalkEnabled = isPushToTalkEnabled,
+                                isScreenSharing = isScreenSharing,
+                                onToggleMute = {
+                                    isMuted = !isMuted
+                                    onToggleMute()
+                                },
+                                onToggleDeafen = {
+                                    isDeafened = !isDeafened
+                                    onToggleDeafen()
+                                },
+                                onTogglePushToTalk = onTogglePushToTalk,
+                                onToggleScreenShare = onToggleScreenShare,
+                                onLeaveVoice = onLeaveVoice
+                            )
+                        }
+                    }
+                }
+            } else {
+                // 💻 MASAÜSTÜ / TABLET DÜZENİ (maxWidth >= 600.dp) - 3 SÜTUN YAN YANA
+                Row(modifier = Modifier.fillMaxSize()) {
+
+                    // 🔴 1. SÜTUN: Sol Sunucu Barı (72.dp Sabit)
+                    ServerListColumn(
+                        servers = servers,
+                        selectedServerId = selectedServerId,
+                        onServerSelected = onServerSelected,
+                        modifier = Modifier
+                            .width(72.dp)
+                            .fillMaxHeight()
+                            .background(ServerBarBackground)
+                    )
+
+                    // 🟠 2. SÜTUN: Orta Kanal Listesi + Ses Kontrol Barı (240.dp Sabit)
+                    Column(
+                        modifier = Modifier
+                            .width(240.dp)
+                            .fillMaxHeight()
+                            .background(ChannelBarBackground)
                     ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.VolumeUp,
-                                contentDescription = null,
-                                tint = TextMuted,
-                                modifier = Modifier.size(64.dp)
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(52.dp)
+                                .background(ServerBarBackground.copy(alpha = 0.5f))
+                                .padding(horizontal = 16.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
                             Text(
-                                text = "Bir ses veya sohbet kanalına katılın",
+                                text = selectedServer?.name ?: "FreeHub",
                                 color = TextWhite,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 16.sp
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
-                            Text(
-                                text = "Sol listeden 🔊 işaretli bir ses odasına tıklayarak bağlanabilirsiniz.",
-                                color = TextMuted,
-                                fontSize = 13.sp,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
+                        }
+
+                        LazyColumn(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth(),
+                            contentPadding = PaddingValues(vertical = 8.dp)
+                        ) {
+                            items(channels, key = { it.id }) { channel ->
+                                ChannelItemRow(
+                                    channel = channel,
+                                    isSelected = channel.id == selectedChannelId,
+                                    voiceMembers = if (channel.type == ChannelType.VOICE) voiceMembers.filter { it.channelId == channel.id } else emptyList(),
+                                    activeSpeakingUserIds = activeSpeakingUserIds,
+                                    onClick = {
+                                        onChannelSelected(channel)
+                                        if (channel.type == ChannelType.VOICE) {
+                                            onJoinVoice(channel)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+
+                        VoiceControlBottomPanel(
+                            username = currentUsername,
+                            avatarUrl = currentUserAvatar,
+                            connectedChannelName = activeVoiceChannel?.name,
+                            isMuted = isMuted,
+                            isDeafened = isDeafened,
+                            isPushToTalkEnabled = isPushToTalkEnabled,
+                            isScreenSharing = isScreenSharing,
+                            onToggleMute = {
+                                isMuted = !isMuted
+                                onToggleMute()
+                            },
+                            onToggleDeafen = {
+                                isDeafened = !isDeafened
+                                onToggleDeafen()
+                            },
+                            onTogglePushToTalk = onTogglePushToTalk,
+                            onToggleScreenShare = onToggleScreenShare,
+                            onLeaveVoice = onLeaveVoice
+                        )
+                    }
+
+                    // 🟡 3. SÜTUN: Sağ Sahne (Grid Kartlar - weight(1f) Dinamik Esnek)
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                            .background(StageBackground)
+                            .padding(16.dp)
+                    ) {
+                        if (activeVoiceChannel != null) {
+                            Column(modifier = Modifier.fillMaxSize()) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 12.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "🔊 ${activeVoiceChannel.name} (${voiceMembers.size} Oyuncu)",
+                                        color = TextWhite,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp
+                                    )
+                                }
+
+                                if (voiceMembers.isEmpty()) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = "Odada henüz kimse yok. Ses kanalına katıldınız!",
+                                            color = TextMuted,
+                                            fontSize = 14.sp
+                                        )
+                                    }
+                                } else {
+                                    LazyVerticalGrid(
+                                        columns = GridCells.Adaptive(minSize = 220.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                                        modifier = Modifier.fillMaxSize()
+                                    ) {
+                                        items(voiceMembers, key = { it.userId }) { member ->
+                                            SpeakerGridCard(
+                                                member = member,
+                                                activeSpeakingUserIds = activeSpeakingUserIds
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                                        contentDescription = null,
+                                        tint = TextMuted,
+                                        modifier = Modifier.size(64.dp)
+                                    )
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                    Text(
+                                        text = stringResource(R.string.freehub_select_channel_prompt),
+                                        color = TextWhite,
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 16.sp
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.freehub_select_channel_subprompt),
+                                        color = TextMuted,
+                                        fontSize = 13.sp,
+                                        modifier = Modifier.padding(top = 4.dp)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -441,6 +633,23 @@ private fun ChannelItemRow(
                             overflow = TextOverflow.Ellipsis
                         )
 
+                        if (member.isStreaming) {
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(3.dp))
+                                    .background(Color.Red)
+                                    .padding(horizontal = 4.dp, vertical = 1.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.freehub_live_badge),
+                                    color = TextWhite,
+                                    fontSize = 8.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+
                         if (member.isMuted) {
                             Spacer(modifier = Modifier.width(4.dp))
                             Icon(
@@ -515,6 +724,35 @@ private fun SpeakerGridCard(
                 )
             }
 
+            // Yayın Yapıyorsa "Yayını İzle" Kutusu
+            if (member.isStreaming) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(Color.Black.copy(alpha = 0.85f))
+                        .border(1.dp, SpeakingGreen, RoundedCornerShape(6.dp))
+                        .clickable { }
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ScreenShare,
+                            contentDescription = null,
+                            tint = SpeakingGreen,
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = stringResource(R.string.freehub_watch_stream),
+                            color = TextWhite,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
             // Sağ üst mute ikonu
             if (member.isMuted) {
                 Box(
@@ -546,9 +784,11 @@ private fun VoiceControlBottomPanel(
     isMuted: Boolean,
     isDeafened: Boolean,
     isPushToTalkEnabled: Boolean = false,
+    isScreenSharing: Boolean = false,
     onToggleMute: () -> Unit,
     onToggleDeafen: () -> Unit,
     onTogglePushToTalk: () -> Unit = {},
+    onToggleScreenShare: () -> Unit = {},
     onLeaveVoice: () -> Unit
 ) {
     Column(
@@ -568,7 +808,7 @@ private fun VoiceControlBottomPanel(
             ) {
                 Column {
                     Text(
-                        text = "Ses Bağlantısı Kuruldu",
+                        text = stringResource(R.string.freehub_voice_connected),
                         color = SpeakingGreen,
                         fontWeight = FontWeight.Bold,
                         fontSize = 11.sp
@@ -658,7 +898,7 @@ private fun VoiceControlBottomPanel(
                         .padding(horizontal = 6.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = if (isPushToTalkEnabled) "PTT" else "SERBEST",
+                        text = if (isPushToTalkEnabled) stringResource(R.string.freehub_mode_ptt) else stringResource(R.string.freehub_mode_free),
                         color = if (isPushToTalkEnabled) SpeakingGreen else TextMuted,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold
@@ -685,6 +925,18 @@ private fun VoiceControlBottomPanel(
                         imageVector = Icons.Outlined.Headphones,
                         contentDescription = "Kulaklık",
                         tint = if (isDeafened) Color.Red else TextWhite,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+
+                IconButton(
+                    onClick = onToggleScreenShare,
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ScreenShare,
+                        contentDescription = "Ekran Paylaşımı",
+                        tint = if (isScreenSharing) SpeakingGreen else TextWhite,
                         modifier = Modifier.size(18.dp)
                     )
                 }

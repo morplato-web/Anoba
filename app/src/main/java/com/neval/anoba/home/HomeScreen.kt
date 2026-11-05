@@ -935,7 +935,7 @@ fun HomeScreen(
                                             size = iconSize
                                         )
 
-                                        // 🎮 6. ANOBA FREEROOM (DİSCORD SERBEST ODALAR / KLAN)
+                                        // 🎮 6. ANOBA FREEHUB (DİSCORD SERBEST MERKEZ / KLAN)
                                         IconInCardButton(
                                             modifier = Modifier.size(width = cardWidth, height = cardHeight),
                                             onClick = { navController.navigate(Constants.COMMUNITY_HUB_SCREEN) },

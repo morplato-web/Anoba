@@ -64,7 +64,7 @@ fun CommunityHubContainerScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Anoba FreeRoom 🎮",
+                        text = "FreeHub 🎮",
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
@@ -118,8 +118,12 @@ fun CommunityHubContainerScreen(
                     voiceEngine.setDeafened(nextDeafen)
                     viewModel.toggleDeafen(currentUserId)
                 },
+                isScreenSharing = uiState.isStreaming,
                 onTogglePushToTalk = {
                     viewModel.togglePushToTalkMode()
+                },
+                onToggleScreenShare = {
+                    viewModel.toggleStreaming(currentUserId)
                 },
                 onPushToTalkKeyPressed = {
                     voiceEngine.setMuted(false)
@@ -139,7 +143,7 @@ fun CommunityHubContainerScreen(
                         username = currentUsername,
                         userAvatar = currentUserAvatar
                     )
-                    voiceEngine.joinVoiceChannel("freeroom_${channel.id}", currentUserId.hashCode())
+                    voiceEngine.joinVoiceChannel("freehub_${channel.id}", currentUserId.hashCode())
                     viewModel.joinVoiceChannel(channel, member)
                 }
             )

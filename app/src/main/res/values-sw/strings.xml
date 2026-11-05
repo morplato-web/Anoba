@@ -913,4 +913,18 @@
     <string name="market_updated_toast">Tangazo limesasishwa.</string>
     <string name="market_published_toast">Tangazo lako limechapishwa kwa mafanikio! 🚀</string>
     <string name="market_tab_name">Soko 🛍️</string>
+
+    <!-- FreeHub -->
+    <string name="freehub_title">FreeHub 🎮</string>
+    <string name="freehub_back">Nyuma</string>
+    <string name="freehub_channels">Njia</string>
+    <string name="freehub_select_channel_prompt">Jiunge na njia ya sauti au mazungumzo</string>
+    <string name="freehub_select_channel_subprompt">Bofya chumba chenye 🔊 kwenye orodha ya kushoto.</string>
+    <string name="freehub_voice_connected">Sauti Imeunganishwa</string>
+    <string name="freehub_empty_room">Hakuna mtu bado. Umejiunga!</string>
+    <string name="freehub_watch_stream">Tazama Biti</string>
+    <string name="freehub_live_badge">MUBASHARA</string>
+    <string name="freehub_mode_ptt">PTT</string>
+    <string name="freehub_mode_free">WAZI</string>
+    <string name="freehub_player">Mchezaji</string>
 </resources>

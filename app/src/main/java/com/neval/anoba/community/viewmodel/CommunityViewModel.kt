@@ -23,6 +23,7 @@ data class CommunityUiState(
     val isMuted: Boolean = false,
     val isDeafened: Boolean = false,
     val isSpeaking: Boolean = false,
+    val isStreaming: Boolean = false,
     val isPushToTalkEnabled: Boolean = false,
     val pushToTalkKeyName: String = "Caps Lock"
 )
@@ -169,6 +170,27 @@ class CommunityViewModel(
                     isMuted = _uiState.value.isMuted,
                     isDeafened = newDeaf,
                     isSpeaking = _uiState.value.isSpeaking
+                )
+            }
+        }
+    }
+
+    fun toggleStreaming(userId: String) {
+        val newStreaming = !_uiState.value.isStreaming
+        _uiState.value = _uiState.value.copy(isStreaming = newStreaming)
+
+        val currentServerId = _uiState.value.selectedServerId
+        val currentConnChan = _uiState.value.connectedVoiceChannelId
+        if (currentConnChan.isNotBlank()) {
+            viewModelScope.launch {
+                repository.updateVoiceState(
+                    serverId = currentServerId,
+                    channelId = currentConnChan,
+                    userId = userId,
+                    isMuted = _uiState.value.isMuted,
+                    isDeafened = _uiState.value.isDeafened,
+                    isSpeaking = _uiState.value.isSpeaking,
+                    isStreaming = newStreaming
                 )
             }
         }

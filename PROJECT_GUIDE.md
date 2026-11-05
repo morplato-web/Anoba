@@ -114,6 +114,7 @@
 Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` hesabına bağlı Google Drive'da saklanmaktadır.
 
 ### 💾 Önemli Yedek Dosyaları
+- **`Anoba_v9.2.6_v200_FreeHubComplete.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v9.2.6_v200_FreeHubComplete.zip`) 4 Aşamalı FreeHub 🎮 (Discord Tarzı Topluluk & Ses Odaları), Duyarlı Mobil/Masaüstü Arayüzü, Agora Canlı Ses Motoru, Yeşil Halka Sinyali, Ekran Paylaşımı ve Bas-Konuş (PTT) desteğini içeren eksiksiz tam proje yedeği. 📦
 - **`Anoba_v9.2.6_v198_PreCommunityHub.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v9.2.6_v198_PreCommunityHub.zip`) TargetSdk 36, CompileSdk 36, VersionCode 146, VersionName 9.2.6, Google Play Console AAB derlemesi tam ve sorunsuz olan, Discord / Hub modülünden hemen önce alınan eksiksiz tam proje yedeği. 📦
 - **`Anoba_v8.9.8_Global_v139_Media3_GroupSync.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v8.9.8_Global_v139_Media3_GroupSync.zip`) Media3 Transformer 1080p + 3.5 Mbps otomatik video sıkıştırma, AuthService canlı yetki/rozet (PIONEER/Yeşil Tik) senkronizasyonu, Herkese Açık Grup Canlı Akışı (`combine`), R8/ProGuard güvenliği ve yarış durumu (race condition) koruması içeren en güncel ve eksiksiz sürüm yedeği.
 - **`Anoba_v8.9.8_Global_v128_emojisonhali.zip`:** (Yerel Dosya Adresi: `D:\anobadepo\Anoba_v8.9.8_Global_v128_emojisonhali.zip`) Emojiye basınca reaksiyon veren kullanıcılar listesinin tüm kullanıcılara açıldığı (Firestore koleksiyon grubu kuralları, buluta deploy edilmiş indeksler ve çökmez DocumentSnapshot parsing), 11 Dil Desteği, Local-First Reaksiyon Hızı ve Instagram Akıllı Linkini içeren sürüm yedeği.
@@ -500,7 +501,7 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 
 ---
 
-## 36. Bağımsız Discord Tarzı Community Hub Modülü İzolasyonu ("Anoba FreeRoom") (v199 Güncellemeleri)
+## 36. Bağımsız Discord Tarzı Community Hub Modülü İzolasyonu ("Anoba FreeHub") (v199 Güncellemeleri)
 
 ### 📌 Tamamlanan Çalışmalar
 1. **İzole Paket Yapısı (`com.neval.anoba.community`):**
@@ -517,7 +518,7 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
    - **2. Sütun (Orta 240dp):** Metin ve ses kanalları, ses kanalındaki oyuncu listesi ve en alta sabitlenmiş **VoiceControlBottomPanel** (Profil, Mikrofon, Kulaklık, Kırmızı Telefon Ayrıl butonu).
    - **3. Sütun (Sağ Sahne / Dynamic Grid):** Konuşmacı kartları (Konuşan etrafında yeşil halka yanan `BorderStroke(2.dp, SpeakingGreen)` alan).
 5. **Ana Sayfa Giriş Butonu (`HomeScreen.kt` & `Constants.kt`):**
-   - `HomeScreen.kt` 2. sıradaki üst barın sağ tarafına 🎮 **Anoba FreeRoom** hızlı yönlendirme butonu eklendi.
+   - `HomeScreen.kt` 2. sıradaki üst barın sağ tarafına 🎮 **Anoba FreeHub** hızlı yönlendirme butonu eklendi.
 6. **3. Aşama Agora Canlı Ses Motoru (`CommunityVoiceEngine.kt`):**
    - **Oyun & Sesli Sohbet Profili:** `CHANNEL_PROFILE_LIVE_BROADCASTING`, `CLIENT_ROLE_BROADCASTER` ve `AUDIO_SCENARIO_GAME_STREAMING` (Oyun içi ses efektlerini boğmaz, yankı engeller).
    - **Yeşil Halka Sinyali:** `enableAudioVolumeIndication(200, 3, true)` callback'i ile canlı desibel ölçümü ve konuşan oyuncunun avatarında anlık yeşil halka yakma.
@@ -525,10 +526,17 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
 7. **4. Aşama Windows PC Gaming & Bas-Konuş (Push-to-Talk) Mimarisi (`DesktopVoiceListener.kt` & `DesktopWindowConfig.kt`):**
    - **VoiceEngine Soyutlama Katmanı:** `VoiceEngineInterface.kt` ortak arayüzü kuruldu; Android ve Desktop JVM platformları için izole edildi.
    - **Bas-Konuş (PTT) Küresel Dinleyici (`DesktopVoiceListener.kt`):** Windows üzerinde oyun oynarken (PUBG, Valorant vb.) arkada basılı tutulan tuşu dinleyerek mikrofonu otomatik açıp kapatan `onGlobalKeyPressed` / `onGlobalKeyReleased` yapısı bağlandı.
-   - **Masaüstü Pencere Yapılandırması (`DesktopWindowConfig.kt`):** 3 sütunlu yapının bozulmaması için `minWidth = 960.dp`, `minHeight = 600.dp`, başlık `"Anoba FreeRoom 🎮"` ve arka planda kapanmadan çalışma (System Tray) yapılandırması sabitlendi.
+8. **Duyarlı (Responsive / Adaptive) Mobil & Masaüstü Düzen:**
+   - **`BoxWithConstraints` Mantığı:** Ekran genişliği `maxWidth < 600.dp` olduğunda mobil düzen aktifleşir. Sunucular (`64dp`) ve kanallar geniş alana yayılır. Ses kanalına girildiğinde sahne tam ekran açılır ve üstüne **"◀ Kanallar"** geri dön butonu yerleştirilir. `maxWidth >= 600.dp` (bilgisayar) olduğunda 3 sütun yan yana kusursuz görünür.
+   - **İsim Hizalaması:** Sayfa başlığı **`FreeHub 🎮`** olarak güncellendi.
 
-### 🧪 Derleme Durumu
+9. **Canlı Ekran Paylaşımı (Screen Share) & Yayın Rozeti:**
+   - **`VoiceControlBottomPanel`:** Alt kontrol barına canlı ekran paylaşım butonu eklendi.
+   - **Yayıncı Rozeti:** Yayın yapan oyuncunun yanında red `YAYINDA` etiketi ve sahne kartında **"Yayını İzle"** canlı geçiş butonu aktif edildi.
+
+### 🧪 Derleme & Yedekleme Durumu
 - **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **Proje Zip Yedeği:** **`D:\anobadepo\Anoba_v9.2.6_v200_FreeHubComplete.zip`** adresi üzerine tam yedek alındı. 📦
 
 
 

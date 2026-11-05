@@ -913,4 +913,18 @@
     <string name="market_updated_toast">Anzeige aktualisiert.</string>
     <string name="market_published_toast">Ihre Anzeige wurde erfolgreich veröffentlicht! 🚀</string>
     <string name="market_tab_name">Marktplatz 🛍️</string>
+
+    <!-- FreeHub -->
+    <string name="freehub_title">FreeHub 🎮</string>
+    <string name="freehub_back">Zurück</string>
+    <string name="freehub_channels">Kanäle</string>
+    <string name="freehub_select_channel_prompt">Tritt einem Sprach- oder Chatkanal bei</string>
+    <string name="freehub_select_channel_subprompt">Klicke links auf einen mit 🔊 markierten Sprachraum.</string>
+    <string name="freehub_voice_connected">Sprachverbindung hergestellt</string>
+    <string name="freehub_empty_room">Noch niemand im Raum. Du bist beigetreten!</string>
+    <string name="freehub_watch_stream">Stream ansehen</string>
+    <string name="freehub_live_badge">LIVE</string>
+    <string name="freehub_mode_ptt">PTT</string>
+    <string name="freehub_mode_free">OFFEN</string>
+    <string name="freehub_player">Spieler</string>
 </resources>

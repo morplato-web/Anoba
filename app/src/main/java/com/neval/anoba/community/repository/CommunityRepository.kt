@@ -98,13 +98,15 @@ class CommunityRepository {
         userId: String,
         isMuted: Boolean,
         isDeafened: Boolean,
-        isSpeaking: Boolean
+        isSpeaking: Boolean,
+        isStreaming: Boolean = false
     ) {
         if (serverId.isBlank() || channelId.isBlank() || userId.isBlank()) return
         val updates = mapOf(
             "isMuted" to isMuted,
             "isDeafened" to isDeafened,
-            "isSpeaking" to isSpeaking
+            "isSpeaking" to isSpeaking,
+            "isStreaming" to isStreaming
         )
         serversRef.document(serverId)
             .collection("channels").document(channelId)

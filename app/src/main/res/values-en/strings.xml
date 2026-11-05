@@ -914,4 +914,18 @@
     <string name="market_updated_toast">Listing updated.</string>
     <string name="market_published_toast">Your listing was published successfully! 🚀</string>
     <string name="market_tab_name">Marketplace 🛍️</string>
+
+    <!-- FreeHub -->
+    <string name="freehub_title">FreeHub 🎮</string>
+    <string name="freehub_back">Back</string>
+    <string name="freehub_channels">Channels</string>
+    <string name="freehub_select_channel_prompt">Join a voice or chat channel</string>
+    <string name="freehub_select_channel_subprompt">Click a 🔊 marked voice room on the left list to connect.</string>
+    <string name="freehub_voice_connected">Voice Connected</string>
+    <string name="freehub_empty_room">No one in the room yet. Joined voice channel!</string>
+    <string name="freehub_watch_stream">Watch Stream</string>
+    <string name="freehub_live_badge">LIVE</string>
+    <string name="freehub_mode_ptt">PTT</string>
+    <string name="freehub_mode_free">OPEN</string>
+    <string name="freehub_player">Player</string>
 </resources>

@@ -916,4 +916,18 @@
     <string name="market_updated_toast">İlan güncellendi.</string>
     <string name="market_published_toast">İlanınız başarıyla yayınlandı! 🚀</string>
     <string name="market_tab_name">Pazar Yeri 🛍️</string>
+
+    <!-- FreeHub Modülü -->
+    <string name="freehub_title">FreeHub 🎮</string>
+    <string name="freehub_back">Geri</string>
+    <string name="freehub_channels">Kanallar</string>
+    <string name="freehub_select_channel_prompt">Bir ses veya sohbet kanalına katılın</string>
+    <string name="freehub_select_channel_subprompt">Sol listeden 🔊 işaretli bir ses odasına tıklayarak bağlanabilirsiniz.</string>
+    <string name="freehub_voice_connected">Ses Bağlantısı Kuruldu</string>
+    <string name="freehub_empty_room">Odada henüz kimse yok. Ses kanalına katıldınız!</string>
+    <string name="freehub_watch_stream">Yayını İzle</string>
+    <string name="freehub_live_badge">YAYINDA</string>
+    <string name="freehub_mode_ptt">PTT</string>
+    <string name="freehub_mode_free">SERBEST</string>
+    <string name="freehub_player">Oyuncu</string>
 </resources>

@@ -3,6 +3,7 @@ package com.neval.anoba.community.model
 import androidx.annotation.Keep
 
 @Keep
+@Suppress("unused")
 enum class ChannelType {
     TEXT,
     VOICE,

@@ -913,4 +913,18 @@
     <string name="market_updated_toast">Объявление обновлено.</string>
     <string name="market_published_toast">Ваше объявление успешно опубликовано! 🚀</string>
     <string name="market_tab_name">Маркетплейс 🛍️</string>
+
+    <!-- FreeHub -->
+    <string name="freehub_title">FreeHub 🎮</string>
+    <string name="freehub_back">Назад</string>
+    <string name="freehub_channels">Каналы</string>
+    <string name="freehub_select_channel_prompt">Подключитесь к голосовому или текстовому каналу</string>
+    <string name="freehub_select_channel_subprompt">Нажмите на комнату со значком 🔊 в списке слева.</string>
+    <string name="freehub_voice_connected">Голосовое соединение установлено</string>
+    <string name="freehub_empty_room">В комнате пока никого нет. Вы подключились!</string>
+    <string name="freehub_watch_stream">Смотреть стрим</string>
+    <string name="freehub_live_badge">ЭФИР</string>
+    <string name="freehub_mode_ptt">PTT</string>
+    <string name="freehub_mode_free">СВОБОДНО</string>
+    <string name="freehub_player">Игрок</string>
 </resources>
