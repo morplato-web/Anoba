@@ -1,6 +1,5 @@
 package com.neval.anoba.community.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -84,15 +83,15 @@ fun CommunityHubScreen(
     currentUserId: String,
     currentUsername: String,
     currentUserAvatar: String,
-    isPushToTalkEnabled: Boolean = false,
     onServerSelected: (String) -> Unit,
     onChannelSelected: (ChannelModel) -> Unit,
     onToggleMute: () -> Unit,
     onToggleDeafen: () -> Unit,
-    onTogglePushToTalk: () -> Unit = {},
     onLeaveVoice: () -> Unit,
     onJoinVoice: (ChannelModel) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isPushToTalkEnabled: Boolean = false,
+    onTogglePushToTalk: () -> Unit = {}
 ) {
     var isMuted by remember { mutableStateOf(false) }
     var isDeafened by remember { mutableStateOf(false) }
