@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,6 +52,7 @@ fun CommunityHubContainerScreen(
     val channels by viewModel.channels.collectAsState()
     val voiceMembers by viewModel.voiceMembers.collectAsState()
     val authState by authService.authStateFlow.collectAsState()
+    val activeSpeakingUserIds by voiceEngine.speakingUserIds.collectAsState()
 
     val authenticatedUser = authState as? AuthState.Authenticated
     val currentUserId = authenticatedUser?.uid ?: "guest_${System.currentTimeMillis()}"
@@ -72,7 +73,7 @@ fun CommunityHubContainerScreen(
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Geri",
                             tint = Color.White
                         )
@@ -100,6 +101,7 @@ fun CommunityHubContainerScreen(
                 currentUsername = currentUsername,
                 currentUserAvatar = currentUserAvatar,
                 isPushToTalkEnabled = uiState.isPushToTalkEnabled,
+                activeSpeakingUserIds = activeSpeakingUserIds,
                 onServerSelected = { serverId ->
                     viewModel.selectServer(serverId)
                 },
@@ -118,6 +120,14 @@ fun CommunityHubContainerScreen(
                 },
                 onTogglePushToTalk = {
                     viewModel.togglePushToTalkMode()
+                },
+                onPushToTalkKeyPressed = {
+                    voiceEngine.setMuted(false)
+                    viewModel.onPushToTalkKeyPressed(currentUserId)
+                },
+                onPushToTalkKeyReleased = {
+                    voiceEngine.setMuted(true)
+                    viewModel.onPushToTalkKeyReleased(currentUserId)
                 },
                 onLeaveVoice = {
                     voiceEngine.leaveVoiceChannel()

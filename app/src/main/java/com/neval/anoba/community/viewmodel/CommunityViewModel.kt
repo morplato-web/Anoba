@@ -27,6 +27,7 @@ data class CommunityUiState(
     val pushToTalkKeyName: String = "Caps Lock"
 )
 
+@Suppress("unused")
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class CommunityViewModel(
     private val repository: CommunityRepository = CommunityRepository()
@@ -53,11 +54,7 @@ class CommunityViewModel(
     // Seçili Ses Kanalının Üyeleri
     val voiceMembers: StateFlow<List<VoiceMemberModel>> = _uiState
         .flatMapLatest { state ->
-            val voiceChanId = if (state.connectedVoiceChannelId.isNotBlank()) {
-                state.connectedVoiceChannelId
-            } else {
-                state.selectedChannelId
-            }
+            val voiceChanId = state.connectedVoiceChannelId.ifBlank { state.selectedChannelId }
             if (state.selectedServerId.isNotBlank() && voiceChanId.isNotBlank()) {
                 repository.getVoiceMembersStream(state.selectedServerId, voiceChanId)
             } else {

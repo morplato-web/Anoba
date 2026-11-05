@@ -86,7 +86,10 @@ fun CommunityHubScreen(
     onJoinVoice: (ChannelModel) -> Unit,
     modifier: Modifier = Modifier,
     isPushToTalkEnabled: Boolean = false,
-    onTogglePushToTalk: () -> Unit = {}
+    activeSpeakingUserIds: Set<Int> = emptySet(),
+    onTogglePushToTalk: () -> Unit = {},
+    onPushToTalkKeyPressed: () -> Unit = {},
+    onPushToTalkKeyReleased: () -> Unit = {}
 ) {
     var isMuted by remember { mutableStateOf(false) }
     var isDeafened by remember { mutableStateOf(false) }
@@ -149,6 +152,7 @@ fun CommunityHubScreen(
                             channel = channel,
                             isSelected = channel.id == selectedChannelId,
                             voiceMembers = if (channel.type == ChannelType.VOICE) voiceMembers.filter { it.channelId == channel.id } else emptyList(),
+                            activeSpeakingUserIds = activeSpeakingUserIds,
                             onClick = {
                                 onChannelSelected(channel)
                                 if (channel.type == ChannelType.VOICE) {
@@ -225,7 +229,10 @@ fun CommunityHubScreen(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 items(voiceMembers, key = { it.userId }) { member ->
-                                    SpeakerGridCard(member = member)
+                                    SpeakerGridCard(
+                                        member = member,
+                                        activeSpeakingUserIds = activeSpeakingUserIds
+                                    )
                                 }
                             }
                         }
@@ -359,6 +366,7 @@ private fun ChannelItemRow(
     channel: ChannelModel,
     isSelected: Boolean,
     voiceMembers: List<VoiceMemberModel>,
+    activeSpeakingUserIds: Set<Int> = emptySet(),
     onClick: () -> Unit
 ) {
     Column {
@@ -393,6 +401,7 @@ private fun ChannelItemRow(
         if (channel.type == ChannelType.VOICE && voiceMembers.isNotEmpty()) {
             Column(modifier = Modifier.padding(start = 32.dp, top = 2.dp, bottom = 4.dp)) {
                 voiceMembers.forEach { member ->
+                    val isSpeaking = member.isSpeaking || (member.userId.hashCode() in activeSpeakingUserIds)
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(vertical = 2.dp)
@@ -425,9 +434,9 @@ private fun ChannelItemRow(
 
                         Text(
                             text = member.username,
-                            color = if (member.isSpeaking) SpeakingGreen else TextMuted,
+                            color = if (isSpeaking) SpeakingGreen else TextMuted,
                             fontSize = 12.sp,
-                            fontWeight = if (member.isSpeaking) FontWeight.Bold else FontWeight.Normal,
+                            fontWeight = if (isSpeaking) FontWeight.Bold else FontWeight.Normal,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -449,14 +458,18 @@ private fun ChannelItemRow(
 }
 
 @Composable
-private fun SpeakerGridCard(member: VoiceMemberModel) {
+private fun SpeakerGridCard(
+    member: VoiceMemberModel,
+    activeSpeakingUserIds: Set<Int> = emptySet()
+) {
+    val isSpeaking = member.isSpeaking || (member.userId.hashCode() in activeSpeakingUserIds)
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(140.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = ChannelBarBackground),
-        border = if (member.isSpeaking) BorderStroke(2.dp, SpeakingGreen) else null
+        border = if (isSpeaking) BorderStroke(2.dp, SpeakingGreen) else null
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -469,8 +482,8 @@ private fun SpeakerGridCard(member: VoiceMemberModel) {
                         .clip(CircleShape)
                         .background(AnobaNavyAccent)
                         .border(
-                            width = if (member.isSpeaking) 3.dp else 0.dp,
-                            color = if (member.isSpeaking) SpeakingGreen else Color.Transparent,
+                            width = if (isSpeaking) 3.dp else 0.dp,
+                            color = if (isSpeaking) SpeakingGreen else Color.Transparent,
                             shape = CircleShape
                         ),
                     contentAlignment = Alignment.Center
