@@ -2,6 +2,7 @@ package com.neval.anoba.community.desktop
 
 import com.neval.anoba.community.engine.VoiceEngineInterface
 
+@Suppress("unused", "UNUSED_PARAMETER")
 class DesktopVoiceListener(
     private val voiceEngine: VoiceEngineInterface
 ) {

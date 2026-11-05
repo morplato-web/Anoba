@@ -3,6 +3,7 @@ package com.neval.anoba.community.desktop
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@Suppress("unused")
 object DesktopWindowConfig {
     const val WINDOW_TITLE = "Anoba FreeRoom 🎮"
     val MIN_WIDTH: Dp = 960.dp
