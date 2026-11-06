@@ -165,6 +165,14 @@ service cloud.firestore {
 
     match /admin_notifications/{docId} { allow read, write: if isAdmin(); }
 
+    // 9. TOPLULUK SUNUCULARI & FREEHUB (community_servers)
+    match /community_servers/{serverId} {
+      allow read, write: if true;
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
     match /{document=**} {
       allow read, write: if isAdmin();
     }

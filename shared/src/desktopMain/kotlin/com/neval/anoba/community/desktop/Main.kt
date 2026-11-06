@@ -22,6 +22,15 @@ import com.neval.anoba.community.model.ChannelType
 import com.neval.anoba.community.model.ServerModel
 import com.neval.anoba.community.model.VoiceMemberModel
 import com.neval.anoba.community.ui.SharedCommunityHubScreen
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import java.io.File
 import java.io.InputStream
 import javax.imageio.ImageIO
@@ -80,9 +89,18 @@ fun main() = application {
 
 @Composable
 fun FreeHubDesktopApp() {
-    var selectedServerId by remember { mutableStateOf("s1") }
-    var selectedChannelId by remember { mutableStateOf("c3") }
-    var connectedChannelId by remember { mutableStateOf("c3") }
+    val server1Id = "W63WMEO14jCdnqB6XF2I"
+    val server2Id = "V6b0gILICkuRN5yD9ZLo"
+
+    val bilekKadroId = "McrpiNRjYsDeUbsXqqeW"
+    val pubgSquadId = "xZ57ayxWJ2vMljuMbnkt"
+    val kurucuOdasiId = "T3i4nDF9S0HXWJn1WHyV"
+    val genelSohbetId = "olZu2DgiD0kmvl5mm3wC"
+    val oyunDuyuruId = "0sowTwchnlYF3JsWC5An"
+
+    var selectedServerId by remember { mutableStateOf(server1Id) }
+    var selectedChannelId by remember { mutableStateOf(bilekKadroId) }
+    var connectedChannelId by remember { mutableStateOf(bilekKadroId) }
     var isMuted by remember { mutableStateOf(false) }
     var isDeafened by remember { mutableStateOf(false) }
 
@@ -91,79 +109,116 @@ fun FreeHubDesktopApp() {
         if (envUser.isNullOrBlank() || envUser.lowercase() == "pc" || envUser.lowercase() == "user") "Oyuncu" else envUser
     }
     var currentUsername by remember { mutableStateOf(systemUsername) }
-    val currentUserId = remember(currentUsername) { "user_" + currentUsername.hashCode() }
+    val currentUserId = remember(currentUsername) { "desk_" + currentUsername.hashCode() }
 
     val sampleServers = remember {
         listOf(
-            ServerModel(id = "s1", name = "Anoba Gaming 🎮", description = "PUBG & Valorant", memberCount = 128),
-            ServerModel(id = "s2", name = "Serbest Alan ☕", description = "Sohbet & Müzik", memberCount = 64)
+            ServerModel(id = server1Id, name = "Anoba Gaming 🎮", description = "PUBG & Valorant", memberCount = 128),
+            ServerModel(id = server2Id, name = "Serbest Alan ☕", description = "Sohbet & Müzik", memberCount = 64)
         )
     }
 
     val sampleChannels = remember(selectedServerId) {
-        if (selectedServerId == "s1") {
+        if (selectedServerId == server1Id) {
             listOf(
-                ChannelModel(id = "c1", serverId = "s1", name = "genel-sohbet", type = ChannelType.TEXT, position = 0),
-                ChannelModel(id = "c2", serverId = "s1", name = "oyun-duyuru", type = ChannelType.TEXT, position = 1),
-                ChannelModel(id = "c3", serverId = "s1", name = "Bilek Kadro", type = ChannelType.VOICE, position = 2),
-                ChannelModel(id = "c4", serverId = "s1", name = "PUBG Squad", type = ChannelType.VOICE, position = 3),
-                ChannelModel(id = "c5", serverId = "s1", name = "Kurucu Odası", type = ChannelType.VOICE, position = 4)
+                ChannelModel(id = genelSohbetId, serverId = server1Id, name = "genel-sohbet", type = ChannelType.TEXT, position = 0),
+                ChannelModel(id = oyunDuyuruId, serverId = server1Id, name = "oyun-duyuru", type = ChannelType.TEXT, position = 1),
+                ChannelModel(id = bilekKadroId, serverId = server1Id, name = "Bilek Kadro", type = ChannelType.VOICE, position = 2),
+                ChannelModel(id = pubgSquadId, serverId = server1Id, name = "PUBG Squad", type = ChannelType.VOICE, position = 3),
+                ChannelModel(id = kurucuOdasiId, serverId = server1Id, name = "Kurucu Odası", type = ChannelType.VOICE, position = 4)
             )
         } else {
             listOf(
-                ChannelModel(id = "c6", serverId = "s2", name = "muhabbet", type = ChannelType.TEXT, position = 0),
-                ChannelModel(id = "c7", serverId = "s2", name = "Müzik & Ses", type = ChannelType.VOICE, position = 1)
+                ChannelModel(id = "c6", serverId = server2Id, name = "muhabbet", type = ChannelType.TEXT, position = 0),
+                ChannelModel(id = "c7", serverId = server2Id, name = "Müzik & Ses", type = ChannelType.VOICE, position = 1)
             )
         }
     }
 
-    var voiceMembersMap by remember {
-        mutableStateOf(
-            mapOf(
-                "c3" to listOf(
-                    VoiceMemberModel(userId = currentUserId, username = currentUsername, isSpeaking = true, isMuted = false)
-                ),
-                "c4" to listOf(
-                    VoiceMemberModel(userId = "u2", username = "ProGamer", isSpeaking = false)
-                )
-            )
-        )
-    }
+    var liveVoiceMembers by remember { mutableStateOf(emptyList<VoiceMemberModel>()) }
+    val client = remember { HttpClient() }
 
-    val activeVoiceMembers = remember(selectedChannelId, voiceMembersMap, connectedChannelId) {
+    // Live Sync with Firestore via REST API
+    LaunchedEffect(selectedServerId, selectedChannelId, connectedChannelId, isMuted, isDeafened) {
         val targetChan = if (connectedChannelId.isNotBlank()) connectedChannelId else selectedChannelId
-        voiceMembersMap[targetChan] ?: emptyList()
-    }
+        val targetServ = selectedServerId
 
-    fun joinChannel(channelId: String) {
-        connectedChannelId = channelId
-        selectedChannelId = channelId
-        val currentList = voiceMembersMap[channelId] ?: emptyList()
-        if (currentList.none { it.userId == currentUserId }) {
-            val updatedList = currentList + VoiceMemberModel(
-                userId = currentUserId,
-                username = currentUsername,
-                isSpeaking = !isMuted,
-                isMuted = isMuted,
-                isDeafened = isDeafened
-            )
-            voiceMembersMap = voiceMembersMap + (channelId to updatedList)
-        }
-    }
+        while (isActive) {
+            try {
+                if (connectedChannelId.isNotBlank() && targetServ.isNotBlank()) {
+                    val postUrl = "https://firestore.googleapis.com/v1/projects/anoba-cd9de/databases/(default)/documents/community_servers/$targetServ/channels/$connectedChannelId/voice_members/$currentUserId"
+                    val jsonBody = """
+                        {
+                          "fields": {
+                            "userId": { "stringValue": "$currentUserId" },
+                            "username": { "stringValue": "$currentUsername" },
+                            "serverId": { "stringValue": "$targetServ" },
+                            "channelId": { "stringValue": "$connectedChannelId" },
+                            "muted": { "booleanValue": $isMuted },
+                            "deafened": { "booleanValue": $isDeafened },
+                            "speaking": { "booleanValue": ${!isMuted} },
+                            "joinedAt": { "integerValue": "${System.currentTimeMillis()}" }
+                          }
+                        }
+                    """.trimIndent()
+                    client.post(postUrl) {
+                        contentType(ContentType.Application.Json)
+                        setBody(jsonBody)
+                    }
+                }
 
-    fun leaveChannel() {
-        if (connectedChannelId.isNotBlank()) {
-            val currentList = voiceMembersMap[connectedChannelId] ?: emptyList()
-            val updatedList = currentList.filterNot { it.userId == currentUserId }
-            voiceMembersMap = voiceMembersMap + (connectedChannelId to updatedList)
-            connectedChannelId = ""
+                if (targetServ.isNotBlank() && targetChan.isNotBlank()) {
+                    val getUrl = "https://firestore.googleapis.com/v1/projects/anoba-cd9de/databases/(default)/documents/community_servers/$targetServ/channels/$targetChan/voice_members"
+                    val responseText = client.get(getUrl).bodyAsText()
+                    if (responseText.contains("documents")) {
+                        val fetchedMembers = mutableListOf<VoiceMemberModel>()
+                        val docs = responseText.split("\"name\":")
+                        for (doc in docs) {
+                            if (doc.contains("userId") && doc.contains("stringValue")) {
+                                try {
+                                    val uId = doc.substringAfter("\"userId\"").substringAfter("\"stringValue\":").substringAfter("\"").substringBefore("\"")
+                                    val uName = if (doc.contains("\"username\"")) doc.substringAfter("\"username\"").substringAfter("\"stringValue\":").substringAfter("\"").substringBefore("\"") else "Oyuncu"
+                                    val isSpk = doc.contains("\"speaking\"") && doc.substringAfter("\"speaking\"").contains("true")
+                                    val isMut = doc.contains("\"muted\"") && doc.substringAfter("\"muted\"").contains("true")
+                                    val isDeaf = doc.contains("\"deafened\"") && doc.substringAfter("\"deafened\"").contains("true")
+                                    if (uId.isNotBlank() && uId.length > 2) {
+                                        fetchedMembers.add(
+                                            VoiceMemberModel(
+                                                userId = uId,
+                                                username = uName,
+                                                isSpeaking = isSpk,
+                                                isMuted = isMut,
+                                                isDeafened = isDeaf
+                                            )
+                                        )
+                                    }
+                                } catch (_: Exception) {}
+                            }
+                        }
+                        if (fetchedMembers.isNotEmpty()) {
+                            liveVoiceMembers = fetchedMembers.distinctBy { it.userId }
+                        } else if (connectedChannelId.isNotBlank()) {
+                            liveVoiceMembers = listOf(
+                                VoiceMemberModel(userId = currentUserId, username = currentUsername, isSpeaking = !isMuted, isMuted = isMuted)
+                            )
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                if (liveVoiceMembers.isEmpty() && connectedChannelId.isNotBlank()) {
+                    liveVoiceMembers = listOf(
+                        VoiceMemberModel(userId = currentUserId, username = currentUsername, isSpeaking = !isMuted, isMuted = isMuted)
+                    )
+                }
+            }
+            delay(2000)
         }
     }
 
     SharedCommunityHubScreen(
         servers = sampleServers,
         channels = sampleChannels,
-        voiceMembers = activeVoiceMembers,
+        voiceMembers = liveVoiceMembers,
         selectedServerId = selectedServerId,
         selectedChannelId = selectedChannelId,
         currentUserId = currentUserId,
@@ -171,36 +226,18 @@ fun FreeHubDesktopApp() {
         currentUserAvatar = "",
         onServerSelected = { serverId ->
             selectedServerId = serverId
-            val firstChan = if (serverId == "s1") "c1" else "c6"
+            val firstChan = if (serverId == server1Id) genelSohbetId else "c6"
             selectedChannelId = firstChan
         },
         onChannelSelected = { channel ->
             selectedChannelId = channel.id
             if (channel.type == ChannelType.VOICE) {
-                joinChannel(channel.id)
+                connectedChannelId = channel.id
             }
         },
-        onToggleMute = {
-            isMuted = !isMuted
-            if (connectedChannelId.isNotBlank()) {
-                val currentList = voiceMembersMap[connectedChannelId] ?: emptyList()
-                val updatedList = currentList.map {
-                    if (it.userId == currentUserId) it.copy(isMuted = isMuted, isSpeaking = !isMuted) else it
-                }
-                voiceMembersMap = voiceMembersMap + (connectedChannelId to updatedList)
-            }
-        },
-        onToggleDeafen = {
-            isDeafened = !isDeafened
-            if (connectedChannelId.isNotBlank()) {
-                val currentList = voiceMembersMap[connectedChannelId] ?: emptyList()
-                val updatedList = currentList.map {
-                    if (it.userId == currentUserId) it.copy(isDeafened = isDeafened) else it
-                }
-                voiceMembersMap = voiceMembersMap + (connectedChannelId to updatedList)
-            }
-        },
-        onLeaveVoice = { leaveChannel() },
-        onJoinVoice = { channel -> joinChannel(channel.id) }
+        onToggleMute = { isMuted = !isMuted },
+        onToggleDeafen = { isDeafened = !isDeafened },
+        onLeaveVoice = { connectedChannelId = "" },
+        onJoinVoice = { channel -> connectedChannelId = channel.id }
     )
 }
