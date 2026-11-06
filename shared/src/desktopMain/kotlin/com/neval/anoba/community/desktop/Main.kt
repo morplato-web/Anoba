@@ -82,8 +82,16 @@ fun main() = application {
 fun FreeHubDesktopApp() {
     var selectedServerId by remember { mutableStateOf("s1") }
     var selectedChannelId by remember { mutableStateOf("c3") }
+    var connectedChannelId by remember { mutableStateOf("c3") }
     var isMuted by remember { mutableStateOf(false) }
     var isDeafened by remember { mutableStateOf(false) }
+
+    val systemUsername = remember {
+        val envUser = System.getProperty("user.name")
+        if (envUser.isNullOrBlank() || envUser.lowercase() == "pc" || envUser.lowercase() == "user") "Oyuncu" else envUser
+    }
+    var currentUsername by remember { mutableStateOf(systemUsername) }
+    val currentUserId = remember(currentUsername) { "user_" + currentUsername.hashCode() }
 
     val sampleServers = remember {
         listOf(
@@ -109,26 +117,90 @@ fun FreeHubDesktopApp() {
         }
     }
 
-    val sampleVoiceMembers = remember {
-        listOf(
-            VoiceMemberModel(userId = "u1", username = "Anoba", isSpeaking = true)
+    var voiceMembersMap by remember {
+        mutableStateOf(
+            mapOf(
+                "c3" to listOf(
+                    VoiceMemberModel(userId = currentUserId, username = currentUsername, isSpeaking = true, isMuted = false)
+                ),
+                "c4" to listOf(
+                    VoiceMemberModel(userId = "u2", username = "ProGamer", isSpeaking = false)
+                )
+            )
         )
+    }
+
+    val activeVoiceMembers = remember(selectedChannelId, voiceMembersMap, connectedChannelId) {
+        val targetChan = if (connectedChannelId.isNotBlank()) connectedChannelId else selectedChannelId
+        voiceMembersMap[targetChan] ?: emptyList()
+    }
+
+    fun joinChannel(channelId: String) {
+        connectedChannelId = channelId
+        selectedChannelId = channelId
+        val currentList = voiceMembersMap[channelId] ?: emptyList()
+        if (currentList.none { it.userId == currentUserId }) {
+            val updatedList = currentList + VoiceMemberModel(
+                userId = currentUserId,
+                username = currentUsername,
+                isSpeaking = !isMuted,
+                isMuted = isMuted,
+                isDeafened = isDeafened
+            )
+            voiceMembersMap = voiceMembersMap + (channelId to updatedList)
+        }
+    }
+
+    fun leaveChannel() {
+        if (connectedChannelId.isNotBlank()) {
+            val currentList = voiceMembersMap[connectedChannelId] ?: emptyList()
+            val updatedList = currentList.filterNot { it.userId == currentUserId }
+            voiceMembersMap = voiceMembersMap + (connectedChannelId to updatedList)
+            connectedChannelId = ""
+        }
     }
 
     SharedCommunityHubScreen(
         servers = sampleServers,
         channels = sampleChannels,
-        voiceMembers = sampleVoiceMembers,
+        voiceMembers = activeVoiceMembers,
         selectedServerId = selectedServerId,
         selectedChannelId = selectedChannelId,
-        currentUserId = "u1",
-        currentUsername = "Anoba",
+        currentUserId = currentUserId,
+        currentUsername = currentUsername,
         currentUserAvatar = "",
-        onServerSelected = { serverId -> selectedServerId = serverId },
-        onChannelSelected = { channel -> selectedChannelId = channel.id },
-        onToggleMute = { isMuted = !isMuted },
-        onToggleDeafen = { isDeafened = !isDeafened },
-        onLeaveVoice = { },
-        onJoinVoice = { channel -> selectedChannelId = channel.id }
+        onServerSelected = { serverId ->
+            selectedServerId = serverId
+            val firstChan = if (serverId == "s1") "c1" else "c6"
+            selectedChannelId = firstChan
+        },
+        onChannelSelected = { channel ->
+            selectedChannelId = channel.id
+            if (channel.type == ChannelType.VOICE) {
+                joinChannel(channel.id)
+            }
+        },
+        onToggleMute = {
+            isMuted = !isMuted
+            if (connectedChannelId.isNotBlank()) {
+                val currentList = voiceMembersMap[connectedChannelId] ?: emptyList()
+                val updatedList = currentList.map {
+                    if (it.userId == currentUserId) it.copy(isMuted = isMuted, isSpeaking = !isMuted) else it
+                }
+                voiceMembersMap = voiceMembersMap + (connectedChannelId to updatedList)
+            }
+        },
+        onToggleDeafen = {
+            isDeafened = !isDeafened
+            if (connectedChannelId.isNotBlank()) {
+                val currentList = voiceMembersMap[connectedChannelId] ?: emptyList()
+                val updatedList = currentList.map {
+                    if (it.userId == currentUserId) it.copy(isDeafened = isDeafened) else it
+                }
+                voiceMembersMap = voiceMembersMap + (connectedChannelId to updatedList)
+            }
+        },
+        onLeaveVoice = { leaveChannel() },
+        onJoinVoice = { channel -> joinChannel(channel.id) }
     )
 }
