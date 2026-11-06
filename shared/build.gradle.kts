@@ -21,6 +21,15 @@ kotlin {
             }
         }
     }
+
+    // JVM Desktop (Windows / Mac) hedefi
+    jvm("desktop") {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
     
     // iOS hedefleri (XCFramework çıktısı için)
     listOf(
@@ -61,6 +70,30 @@ kotlin {
         }
         iosMain.dependencies {
             implementation("io.ktor:ktor-client-darwin:3.0.0")
+        }
+        getByName("desktopMain") {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation("io.ktor:ktor-client-cio:3.0.0")
+            }
+        }
+    }
+}
+
+compose.desktop {
+    application {
+        javaHome = "C:/Program Files/Java/jdk-24"
+        mainClass = "com.neval.anoba.community.desktop.MainKt"
+        nativeDistributions {
+            targetFormats(
+                org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi,
+                org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe
+            )
+            packageName = "AnobaFreeHub"
+            packageVersion = "9.2.6"
+            description = "Anoba FreeHub Desktop - Oyun ve Topluluk Merkeziniz"
+            copyright = "© 2026 Anoba"
+            vendor = "Anoba"
         }
     }
 }

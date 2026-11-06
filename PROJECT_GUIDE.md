@@ -534,8 +534,14 @@ Projenin kritik yedekleri ve markete gönderim anahtarı `morplato@gmail.com` he
    - **`VoiceControlBottomPanel`:** Alt kontrol barına canlı ekran paylaşım butonu eklendi.
    - **Yayıncı Rozeti:** Yayın yapan oyuncunun yanında red `YAYINDA` etiketi ve sahne kartında **"Yayını İzle"** canlı geçiş butonu aktif edildi.
 
+10. **Windows Masaüstü Kurulum Paketleri (`.exe` / `.msi`):**
+    - Compose Multiplatform Desktop Gradle derleme motoru bağlandı.
+    - `AnobaFreeHub-9.2.6.exe` (112 MB) ve `AnobaFreeHub-9.2.6.msi` kurulum paketleri sıfır hatayla üretildi.
+    - Kurulum paketi adresi: `D:\anobadepo\AnobaFreeHub-9.2.6.exe` 💻
+
 ### 🧪 Derleme & Yedekleme Durumu
-- **`:app:assembleDebug`** ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **`:shared:packageExe` / `:shared:packageMsi`** (Windows Masaüstü Kurulum Dosyaları) ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
+- **`:app:assembleDebug`** (Android Mobil Paket) ➔ **`BUILD SUCCESSFUL`** (0 Hata) ✅
 - **Proje Zip Yedeği:** **`D:\anobadepo\Anoba_v9.2.6_v200_FreeHubComplete.zip`** adresi üzerine tam yedek alındı. 📦
 
 

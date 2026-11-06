@@ -843,7 +843,7 @@ private fun VoiceControlBottomPanel(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f, fill = false)
             ) {
                 Box(
                     modifier = Modifier
@@ -880,6 +880,8 @@ private fun VoiceControlBottomPanel(
                     overflow = TextOverflow.Ellipsis
                 )
             }
+
+            Spacer(modifier = Modifier.width(4.dp))
 
             // Mikrofon & Kulaklık & Bas-Konuş Butonları
             Row(verticalAlignment = Alignment.CenterVertically) {
