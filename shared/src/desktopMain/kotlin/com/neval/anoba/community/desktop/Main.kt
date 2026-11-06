@@ -104,12 +104,31 @@ fun FreeHubDesktopApp() {
     var isMuted by remember { mutableStateOf(false) }
     var isDeafened by remember { mutableStateOf(false) }
 
+    // Persistent Unique User ID per PC installation (UUID)
+    val currentUserId = remember {
+        try {
+            val prefsFile = File(System.getProperty("user.home"), ".anoba_user_id")
+            if (prefsFile.exists() && prefsFile.readText().isNotBlank()) {
+                prefsFile.readText().trim()
+            } else {
+                val newId = "pc_" + java.util.UUID.randomUUID().toString().replace("-", "").take(8)
+                prefsFile.writeText(newId)
+                newId
+            }
+        } catch (_: Exception) {
+            "pc_" + java.util.UUID.randomUUID().toString().replace("-", "").take(8)
+        }
+    }
+
     val systemUsername = remember {
         val envUser = System.getProperty("user.name")
-        if (envUser.isNullOrBlank() || envUser.lowercase() == "pc" || envUser.lowercase() == "user") "Oyuncu" else envUser
+        if (envUser.isNullOrBlank() || envUser.lowercase() == "pc" || envUser.lowercase() == "user" || envUser.lowercase() == "admin") {
+            "Oyuncu_" + currentUserId.takeLast(4)
+        } else {
+            envUser
+        }
     }
     var currentUsername by remember { mutableStateOf(systemUsername) }
-    val currentUserId = remember(currentUsername) { "desk_" + currentUsername.hashCode() }
 
     val sampleServers = remember {
         listOf(
@@ -138,8 +157,8 @@ fun FreeHubDesktopApp() {
     var liveVoiceMembers by remember { mutableStateOf(emptyList<VoiceMemberModel>()) }
     val client = remember { HttpClient() }
 
-    // Live Sync with Firestore via REST API
-    LaunchedEffect(selectedServerId, selectedChannelId, connectedChannelId, isMuted, isDeafened) {
+    // Live Sync with Firestore via REST API with 2-second Polling
+    LaunchedEffect(selectedServerId, selectedChannelId, connectedChannelId, isMuted, isDeafened, currentUsername) {
         val targetChan = if (connectedChannelId.isNotBlank()) connectedChannelId else selectedChannelId
         val targetServ = selectedServerId
 
