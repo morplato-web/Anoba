@@ -96,6 +96,9 @@ compose.desktop {
             vendor = "Anoba"
             windows {
                 iconFile.set(project.file("src/desktopMain/resources/anoba_logo.ico"))
+                shortcut = true
+                menu = true
+                menuGroup = "Anoba"
             }
         }
     }
