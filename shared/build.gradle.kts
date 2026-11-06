@@ -90,10 +90,13 @@ compose.desktop {
                 org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe
             )
             packageName = "AnobaFreeHub"
-            packageVersion = "9.2.6"
+            packageVersion = "9.2.7"
             description = "Anoba FreeHub Desktop - Oyun ve Topluluk Merkeziniz"
             copyright = "© 2026 Anoba"
             vendor = "Anoba"
+            windows {
+                iconFile.set(project.file("src/desktopMain/resources/anoba_logo.ico"))
+            }
         }
     }
 }

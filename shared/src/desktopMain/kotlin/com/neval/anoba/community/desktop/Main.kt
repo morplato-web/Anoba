@@ -5,33 +5,63 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import androidx.compose.ui.res.painterResource
 import com.neval.anoba.community.model.ChannelModel
 import com.neval.anoba.community.model.ChannelType
 import com.neval.anoba.community.model.ServerModel
 import com.neval.anoba.community.model.VoiceMemberModel
 import com.neval.anoba.community.ui.SharedCommunityHubScreen
+import java.io.File
+import java.io.InputStream
+import javax.imageio.ImageIO
 
-@Suppress("DEPRECATION")
 fun main() = application {
+    val appIcon = remember {
+        try {
+            val fileCandidates = listOf(
+                File("shared/src/desktopMain/resources/anoba_logo.png"),
+                File("src/desktopMain/resources/anoba_logo.png"),
+                File("anoba_logo.png")
+            )
+            val existingFile = fileCandidates.firstOrNull { it.exists() }
+            if (existingFile != null) {
+                ImageIO.read(existingFile)
+            } else {
+                val stream: InputStream? = Thread.currentThread().contextClassLoader.getResourceAsStream("anoba_logo.png")
+                    ?: object {}.javaClass.getResourceAsStream("/anoba_logo.png")
+                stream?.use { ImageIO.read(it) }
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     Window(
         onCloseRequest = ::exitApplication,
         title = DesktopWindowConfig.WINDOW_TITLE,
-        icon = painterResource("anoba_logo.png"),
+        icon = appIcon?.let { BitmapPainter(it.toComposeImageBitmap()) },
         state = rememberWindowState(
             width = DesktopWindowConfig.DEFAULT_WIDTH,
             height = DesktopWindowConfig.DEFAULT_HEIGHT
         )
     ) {
+        LaunchedEffect(appIcon) {
+            if (appIcon != null) {
+                window.iconImage = appIcon
+            }
+        }
+
         MaterialTheme(
             colorScheme = darkColorScheme(
                 background = Color(0xFF313338),
