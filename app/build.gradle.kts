@@ -37,8 +37,8 @@ android {
         applicationId = "com.neval.anoba"
         minSdk = 24
         targetSdk = 36
-        versionCode = 146
-        versionName = "9.2.6"
+        versionCode = 147
+        versionName = "9.2.7"
 
         // tüm desteklenen diller (13 dil klasörü)
         resourceConfigurations += listOf("tr", "en", "ar", "fr", "ru", "sw", "af", "es", "it", "de", "pt", "id", "in")
