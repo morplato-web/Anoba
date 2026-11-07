@@ -3,6 +3,7 @@ package com.neval.anoba.community.repository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.neval.anoba.community.model.ChannelModel
 import com.neval.anoba.community.model.ChannelType
+import com.neval.anoba.community.model.ChatMessageModel
 import com.neval.anoba.community.model.ServerModel
 import com.neval.anoba.community.model.VoiceMemberModel
 import kotlinx.coroutines.channels.awaitClose
@@ -72,6 +73,38 @@ class CommunityRepository {
                 trySend(members)
             }
         awaitClose { listener.remove() }
+    }
+
+    fun getMessagesStream(serverId: String, channelId: String): Flow<List<ChatMessageModel>> = callbackFlow {
+        if (serverId.isBlank() || channelId.isBlank()) {
+            trySend(emptyList())
+            close()
+            return@callbackFlow
+        }
+        val listener = serversRef.document(serverId)
+            .collection("channels").document(channelId)
+            .collection("messages")
+            .orderBy("timestamp")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    trySend(emptyList())
+                    return@addSnapshotListener
+                }
+                val messages = snapshot?.documents?.mapNotNull { doc ->
+                    doc.toObject(ChatMessageModel::class.java)?.copy(id = doc.id)
+                } ?: emptyList()
+                trySend(messages)
+            }
+        awaitClose { listener.remove() }
+    }
+
+    suspend fun sendMessage(serverId: String, channelId: String, message: ChatMessageModel) {
+        if (serverId.isBlank() || channelId.isBlank() || message.text.isBlank()) return
+        serversRef.document(serverId)
+            .collection("channels").document(channelId)
+            .collection("messages")
+            .add(message.copy(timestamp = System.currentTimeMillis()))
+            .await()
     }
 
     suspend fun joinVoiceChannel(serverId: String, channelId: String, member: VoiceMemberModel) {

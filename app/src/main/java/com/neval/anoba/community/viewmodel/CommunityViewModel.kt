@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neval.anoba.community.model.ChannelModel
 import com.neval.anoba.community.model.ChannelType
+import com.neval.anoba.community.model.ChatMessageModel
 import com.neval.anoba.community.model.ServerModel
 import com.neval.anoba.community.model.VoiceMemberModel
 import com.neval.anoba.community.repository.CommunityRepository
@@ -63,6 +64,35 @@ class CommunityViewModel(
             }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    // Seçili Metin Kanalının Mesajları
+    val chatMessages: StateFlow<List<ChatMessageModel>> = _uiState
+        .flatMapLatest { state ->
+            if (state.selectedServerId.isNotBlank() && state.selectedChannelId.isNotBlank()) {
+                repository.getMessagesStream(state.selectedServerId, state.selectedChannelId)
+            } else {
+                flowOf(emptyList())
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    fun sendChatMessage(senderId: String, senderName: String, senderAvatar: String, text: String) {
+        val serverId = _uiState.value.selectedServerId
+        val channelId = _uiState.value.selectedChannelId
+        if (serverId.isBlank() || channelId.isBlank() || text.isBlank()) return
+
+        val message = ChatMessageModel(
+            serverId = serverId,
+            channelId = channelId,
+            senderId = senderId,
+            senderName = senderName,
+            senderAvatar = senderAvatar,
+            text = text.trim()
+        )
+        viewModelScope.launch {
+            repository.sendMessage(serverId, channelId, message)
+        }
+    }
 
     init {
         // İlk açılışta örnek varsayılan sunucu ve kanalları Firestore'a ekle (eğer yoksa)

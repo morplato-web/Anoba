@@ -51,6 +51,7 @@ fun CommunityHubContainerScreen(
     val servers by viewModel.servers.collectAsState()
     val channels by viewModel.channels.collectAsState()
     val voiceMembers by viewModel.voiceMembers.collectAsState()
+    val chatMessages by viewModel.chatMessages.collectAsState()
     val authState by authService.authStateFlow.collectAsState()
     val activeSpeakingUserIds by voiceEngine.speakingUserIds.collectAsState()
 
@@ -102,6 +103,10 @@ fun CommunityHubContainerScreen(
                 currentUserAvatar = currentUserAvatar,
                 isPushToTalkEnabled = uiState.isPushToTalkEnabled,
                 activeSpeakingUserIds = activeSpeakingUserIds,
+                chatMessages = chatMessages,
+                onSendChatMessage = { text ->
+                    viewModel.sendChatMessage(currentUserId, currentUsername, currentUserAvatar, text)
+                },
                 onServerSelected = { serverId ->
                     viewModel.selectServer(serverId)
                 },

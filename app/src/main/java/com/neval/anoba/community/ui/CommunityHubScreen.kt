@@ -59,6 +59,7 @@ import coil3.compose.AsyncImage
 import com.neval.anoba.R
 import com.neval.anoba.community.model.ChannelModel
 import com.neval.anoba.community.model.ChannelType
+import com.neval.anoba.community.model.ChatMessageModel
 import com.neval.anoba.community.model.ServerModel
 import com.neval.anoba.community.model.VoiceMemberModel
 
@@ -92,10 +93,13 @@ fun CommunityHubScreen(
     isPushToTalkEnabled: Boolean = false,
     isScreenSharing: Boolean = false,
     activeSpeakingUserIds: Set<Int> = emptySet(),
+    chatMessages: List<ChatMessageModel> = emptyList(),
+    onSendChatMessage: (String) -> Unit = {},
     onTogglePushToTalk: () -> Unit = {},
     onToggleScreenShare: () -> Unit = {},
     onPushToTalkKeyPressed: () -> Unit = {},
-    onPushToTalkKeyReleased: () -> Unit = {}
+    onPushToTalkKeyReleased: () -> Unit = {},
+    onOpenProfileSettings: () -> Unit = {}
 ) {
     var isMuted by remember { mutableStateOf(false) }
     var isDeafened by remember { mutableStateOf(false) }
